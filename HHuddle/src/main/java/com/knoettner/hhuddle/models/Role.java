@@ -6,13 +6,13 @@ import jakarta.persistence.*;
 import java.util.Set;
 
 @Entity
-public class role {
+public class Role {
     @Id
     private int id;
+    @Column(name = "user_role", nullable = false)
     private UserRole type;
     @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
-
-    private Set<user> users;
+    private Set<MyUser> Users;
 
 
 }
