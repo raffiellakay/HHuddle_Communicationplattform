@@ -18,5 +18,4 @@ public class House {
     private String adress;
     @OneToMany(mappedBy =  "house")
     private Set<Board> Boards;
-
 }

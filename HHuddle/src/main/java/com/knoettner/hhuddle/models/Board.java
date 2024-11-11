@@ -1,9 +1,6 @@
 package com.knoettner.hhuddle.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jdk.jfr.Category;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,5 +17,6 @@ public class Board {
     private Category category;
     @ManyToOne
     private House house;
+
 
 }
