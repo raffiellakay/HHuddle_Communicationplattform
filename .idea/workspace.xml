@@ -80,7 +80,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1731343223750</updated>
-      <workItem from="1731343225955" duration="10556000" />
+      <workItem from="1731343225955" duration="10870000" />
     </task>
     <task id="LOCAL-00001" summary="Entities chat + beziehungen (chatParticipants, chatmessages) - Entities facility u post begonnen; restrictions mit @Column (nullable = false, name,..) gesetzt wo es vmtl sinn macht">
       <option name="closed" value="true" />
