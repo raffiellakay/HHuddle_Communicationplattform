@@ -5,21 +5,23 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigInteger;
 import java.util.Set;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class user {
+public class MyUser {
     @Id
     @GeneratedValue (strategy = GenerationType.AUTO)
     private Long id;
 
     //wie encodieren?
+    @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
     private String mail;
+    @Column(nullable = false)
     private String username;
 
     @ManyToMany
@@ -28,5 +30,14 @@ public class user {
             joinColumns = @JoinColumn(name = "user_id_FK"),
             inverseJoinColumns = @JoinColumn(name = "role_id_FK")
     )
-    private Set<role> roles;
+    private Set<Role> roles;
+
+    @OneToMany(mappedBy = "user")
+    Set<ChatMessage> messages;
+
+    @OneToMany(mappedBy =  "firstUser")
+    Set<ChatParticipants> first_participantInChat;
+
+    @OneToMany (mappedBy = "secondUser")
+    Set<ChatParticipants> second_participantInChat;
 }
