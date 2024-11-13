@@ -4,20 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8c762a15-9227-41ab-84f3-ed66aabdd969" name="Changes" comment="Entities chat + beziehungen (chatParticipants, chatmessages) - Entities facility u post begonnen; restrictions mit @Column (nullable = false, name,..) gesetzt wo es vmtl sinn macht">
-      <change afterPath="$PROJECT_DIR$/HHuddle/src/main/java/com/knoettner/hhuddle/UserPostKey.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/HHuddle/src/main/java/com/knoettner/hhuddle/models/UserPost.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HHuddle/src/main/java/com/knoettner/hhuddle/models/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/HHuddle/src/main/java/com/knoettner/hhuddle/models/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HHuddle/src/main/java/com/knoettner/hhuddle/models/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/HHuddle/src/main/java/com/knoettner/hhuddle/Category.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HHuddle/src/main/java/com/knoettner/hhuddle/models/ChatMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/HHuddle/src/main/java/com/knoettner/hhuddle/models/ChatMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HHuddle/src/main/java/com/knoettner/hhuddle/models/Facility.java" beforeDir="false" afterPath="$PROJECT_DIR$/HHuddle/src/main/java/com/knoettner/hhuddle/models/Facility.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HHuddle/src/main/java/com/knoettner/hhuddle/models/House.java" beforeDir="false" afterPath="$PROJECT_DIR$/HHuddle/src/main/java/com/knoettner/hhuddle/models/House.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HHuddle/src/main/java/com/knoettner/hhuddle/models/MyUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/HHuddle/src/main/java/com/knoettner/hhuddle/models/MyUser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HHuddle/src/main/java/com/knoettner/hhuddle/models/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/HHuddle/src/main/java/com/knoettner/hhuddle/models/Post.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HHuddle/src/main/java/com/knoettner/hhuddle/models/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/HHuddle/src/main/java/com/knoettner/hhuddle/models/Role.java" afterDir="false" />
-    </list>
+    <list default="true" id="8c762a15-9227-41ab-84f3-ed66aabdd969" name="Changes" comment="Entities chat + beziehungen (chatParticipants, chatmessages) - Entities facility u post begonnen; restrictions mit @Column (nullable = false, name,..) gesetzt wo es vmtl sinn macht" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -96,7 +83,7 @@
       <option name="presentableId" value="Default" />
       <updated>1731343223750</updated>
       <workItem from="1731343225955" duration="11859000" />
-      <workItem from="1731497269468" duration="5389000" />
+      <workItem from="1731497269468" duration="5747000" />
     </task>
     <task id="LOCAL-00001" summary="Entities chat + beziehungen (chatParticipants, chatmessages) - Entities facility u post begonnen; restrictions mit @Column (nullable = false, name,..) gesetzt wo es vmtl sinn macht">
       <option name="closed" value="true" />
