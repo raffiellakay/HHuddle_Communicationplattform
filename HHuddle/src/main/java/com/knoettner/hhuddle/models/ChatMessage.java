@@ -17,11 +17,11 @@ public class ChatMessage {
    private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id_FK")
     private MyUser user;
 
     @ManyToOne
-    @JoinColumn(name = "chat_id")
+    @JoinColumn(name = "chat_id_FK")
     private Chat chat ;
 
     @Column(nullable = false)

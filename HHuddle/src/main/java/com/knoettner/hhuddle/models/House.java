@@ -17,5 +17,16 @@ public class House {
     private int id;
     private String adress;
     @OneToMany(mappedBy =  "house")
-    private Set<Board> Boards;
+    private Set<Board> boards;
+
+    @OneToMany(mappedBy = "house")
+    private Set<MyUser> residents;
+
+    @ManyToMany
+    @JoinTable(
+            name = "house_facilities",
+            joinColumns = @JoinColumn(name = "house_id_FK"),
+            inverseJoinColumns = @JoinColumn(name = "facility_id_FK")
+    )
+    private Set<Facility> facilities;
 }

@@ -26,7 +26,7 @@ public class MyUser {
 
     @ManyToMany
     @JoinTable(
-            name = "userRole",
+            name = "user_role",
             joinColumns = @JoinColumn(name = "user_id_FK"),
             inverseJoinColumns = @JoinColumn(name = "role_id_FK")
     )
@@ -35,9 +35,18 @@ public class MyUser {
     @OneToMany(mappedBy = "user")
     Set<ChatMessage> messages;
 
+    //unklar ob chatParticipants so stimmt
     @OneToMany(mappedBy =  "firstUser")
     Set<ChatParticipants> first_participantInChat;
 
     @OneToMany (mappedBy = "secondUser")
     Set<ChatParticipants> second_participantInChat;
+
+    @OneToMany(mappedBy =  "user")
+    Set<UserPost> userPosts;
+
+
+    @ManyToOne
+    @JoinColumn( name = "house_id_FK")
+    private House house;
 }

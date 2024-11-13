@@ -9,9 +9,9 @@ import java.util.Set;
 public class Role {
     @Id
     private int id;
-    @Column(name = "user_role", nullable = false)
+    @Column( nullable = false)
     private UserRole type;
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "roles")
     private Set<MyUser> Users;
 
 

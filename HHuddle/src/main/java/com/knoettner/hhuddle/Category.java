@@ -1,4 +1,4 @@
-package com.knoettner.hhuddle.models;
+package com.knoettner.hhuddle;
 
 public enum Category {
     BLACKBOARD,
