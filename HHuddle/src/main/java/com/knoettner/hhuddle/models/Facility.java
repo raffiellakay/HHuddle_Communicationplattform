@@ -25,4 +25,7 @@ public class Facility {
 
     @ManyToMany (mappedBy = "facilities", fetch = FetchType.EAGER)
     private Set<House> house;
+
+    @OneToMany (mappedBy = "facility")
+    private Set<Post> posts;
 }
