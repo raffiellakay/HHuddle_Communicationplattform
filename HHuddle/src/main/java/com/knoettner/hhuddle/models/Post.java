@@ -31,7 +31,7 @@ public class Post {
 
     private boolean isAnonymous;
 
-    private java.sql.Blob photo;
+   private java.sql.Blob photo;
 
     private LocalDateTime starttime;
     private LocalDateTime endtime;
