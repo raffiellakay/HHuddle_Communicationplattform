@@ -2,10 +2,7 @@ package com.knoettner.hhuddle.models;
 
 
 import com.knoettner.hhuddle.Category;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,12 +31,13 @@ public class Post {
 
     private boolean isAnonymous;
 
-    private java.sql.Blob photo;
+   private java.sql.Blob photo;
 
     private LocalDateTime starttime;
     private LocalDateTime endtime;
     private boolean isPrivate;
 
+    @ManyToOne
     private Facility facility;
 
     @OneToMany(mappedBy =  "post")
