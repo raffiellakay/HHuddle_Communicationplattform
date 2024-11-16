@@ -14,7 +14,7 @@ import java.util.Set;
 
 public class House {
     @Id
-    private int id;
+    private Long id;
     private String adress;
     @OneToMany(mappedBy =  "house")
     private Set<Board> boards;
@@ -22,11 +22,6 @@ public class House {
     @OneToMany(mappedBy = "house")
     private Set<MyUser> residents;
 
-    @ManyToMany
-    @JoinTable(
-            name = "house_facilities",
-            joinColumns = @JoinColumn(name = "house_id_FK"),
-            inverseJoinColumns = @JoinColumn(name = "facility_id_FK")
-    )
+    @OneToMany (mappedBy = "house",fetch = FetchType.EAGER)
     private Set<Facility> facilities;
 }

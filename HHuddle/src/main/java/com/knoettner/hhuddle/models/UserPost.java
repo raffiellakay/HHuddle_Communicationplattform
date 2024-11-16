@@ -1,10 +1,7 @@
 package com.knoettner.hhuddle.models;
 
 import com.knoettner.hhuddle.UserPostKey;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +19,7 @@ public class UserPost {
     @MapsId("userId")
     MyUser user;
 
-    @ManyToOne
+    @OneToOne
     @MapsId("postId")
     Post post;
 
