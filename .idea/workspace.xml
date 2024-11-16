@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8c762a15-9227-41ab-84f3-ed66aabdd969" name="Changes" comment="Entities chat + beziehungen (chatParticipants, chatmessages) - Entities facility u post begonnen; restrictions mit @Column (nullable = false, name,..) gesetzt wo es vmtl sinn macht" />
+    <list default="true" id="8c762a15-9227-41ab-84f3-ed66aabdd969" name="Changes" comment="Entities chat + beziehungen (chatParticipants, chatmessages) - Entities facility u post begonnen; restrictions mit @Column (nullable = false, name,..) gesetzt wo es vmtl sinn macht">
+      <change beforePath="$PROJECT_DIR$/.idea/HHuddle.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HHuddle/src/main/java/com/knoettner/hhuddle/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/HHuddle/src/main/java/com/knoettner/hhuddle/Category.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HHuddle/src/main/java/com/knoettner/hhuddle/models/Post.java" beforeDir="false" afterPath="$PROJECT_DIR$/HHuddle/src/main/java/com/knoettner/hhuddle/models/Post.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -25,6 +30,9 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -39,12 +47,11 @@
     "RequestMappingsPanelOrder1": "1",
     "RequestMappingsPanelWidth0": "75",
     "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "Spring Boot.HHuddleApplication.executor": "Run",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "raffy",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/user/Desktop/HHuddle project/HHuddle",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -71,8 +78,12 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-18abd8497189-intellij.indexing.shared.core-IU-241.14494.240" />
-        <option value="bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-IU-241.14494.240" />
+<<<<<<< Updated upstream
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.15989.150" />
+        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-IU-241.15989.150" />
+=======
+        <option value="jdk-22-openjdk-22-3183f394aec4-bad0321e" />
+>>>>>>> Stashed changes
       </set>
     </attachedChunks>
   </component>
@@ -86,7 +97,6 @@
       <updated>1731343223750</updated>
       <workItem from="1731343225955" duration="11859000" />
       <workItem from="1731497269468" duration="5747000" />
-      <workItem from="1731519613996" duration="354000" />
     </task>
     <task id="LOCAL-00001" summary="Entities chat + beziehungen (chatParticipants, chatmessages) - Entities facility u post begonnen; restrictions mit @Column (nullable = false, name,..) gesetzt wo es vmtl sinn macht">
       <option name="closed" value="true" />
@@ -104,15 +114,7 @@
       <option name="project" value="LOCAL" />
       <updated>1731354176969</updated>
     </task>
-    <task id="LOCAL-00003" summary="Entities chat + beziehungen (chatParticipants, chatmessages) - Entities facility u post begonnen; restrictions mit @Column (nullable = false, name,..) gesetzt wo es vmtl sinn macht">
-      <option name="closed" value="true" />
-      <created>1731519779695</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1731519779695</updated>
-    </task>
-    <option name="localTasksCounter" value="4" />
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

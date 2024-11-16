@@ -33,14 +33,14 @@ public class Post {
     //optionale Felder
 
     private boolean isAnonymous;
-    // wie mit datentyp blob umgehen? ist eig anderer Datentyp?
-    // private Blob photo;
+
+    private java.sql.Blob photo;
 
     private LocalDateTime starttime;
     private LocalDateTime endtime;
     private boolean isPrivate;
 
-    //fk facility?
+    private Facility facility;
 
     @OneToMany(mappedBy =  "post")
     Set<UserPost> userPosts;
