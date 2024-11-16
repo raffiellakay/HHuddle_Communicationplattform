@@ -23,9 +23,12 @@ public class Facility {
     private String type;
     private String description;
 
-    @ManyToMany (mappedBy = "facilities", fetch = FetchType.EAGER)
-    private Set<House> house;
+    @ManyToOne
+    @JoinColumn(name = "house_id_FK")
+    private House house;
+
 
     @OneToMany (mappedBy = "facility")
     private Set<Post> posts;
+
 }
