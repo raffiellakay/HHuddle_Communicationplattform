@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class ChatParticipants {
     @EmbeddedId
-    Role.ChatParticipantKey id;
+    ChatParticipantKey id;
 
     @ManyToOne
     @MapsId("firstUserId")

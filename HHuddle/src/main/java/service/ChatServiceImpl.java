@@ -4,11 +4,7 @@ import com.knoettner.hhuddle.dto.ChatDto;
 import com.knoettner.hhuddle.dto.ChatMessageDto;
 import com.knoettner.hhuddle.dto.mapper.ChatMapper;
 import com.knoettner.hhuddle.dto.mapper.ChatMessageMapper;
-import com.knoettner.hhuddle.models.Chat;
-import com.knoettner.hhuddle.models.ChatMessage;
-import com.knoettner.hhuddle.models.ChatParticipants;
-import com.knoettner.hhuddle.models.Role;
-import com.knoettner.hhuddle.models.MyUser;
+import com.knoettner.hhuddle.models.*;
 import com.knoettner.hhuddle.repository.ChatRepository;
 import com.knoettner.hhuddle.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +46,7 @@ public class ChatServiceImpl implements ChatService {
         chat.setParticipants(new HashSet<>()); // Sicherstellen, dass die Liste initialisiert ist
 
         // Create ChatParticipants
-        Role.ChatParticipantKey participantKey = new Role.ChatParticipantKey(firstUserId, secondUserId);
+        ChatParticipantKey participantKey = new ChatParticipantKey(firstUserId, secondUserId);
         ChatParticipants participants = new ChatParticipants();
         participants.setId(participantKey);
         participants.setFirstUser(firstUser);
