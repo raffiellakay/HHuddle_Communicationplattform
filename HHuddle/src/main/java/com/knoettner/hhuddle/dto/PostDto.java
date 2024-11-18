@@ -32,7 +32,7 @@ public class PostDto {
     private LocalDateTime endtime;
     private boolean isPrivate;
 
-    private Facility facility;
+    private Long facilityId;
 
     private Long userPostId;
 }

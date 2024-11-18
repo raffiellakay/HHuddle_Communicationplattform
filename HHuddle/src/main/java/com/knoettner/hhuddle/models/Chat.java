@@ -18,7 +18,7 @@ public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name ="chat_id")
-    private int id;
+    private Long id;
 
     @Column(nullable = false)
     private LocalDateTime timestamp;

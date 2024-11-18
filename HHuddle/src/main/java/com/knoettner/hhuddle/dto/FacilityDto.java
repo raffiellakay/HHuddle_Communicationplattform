@@ -10,7 +10,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
+
 
 @Data
 @AllArgsConstructor
@@ -22,5 +24,5 @@ public class FacilityDto {
     private String description;
 
     private Long houseId;
-
+    private Set<PostDto> postDtos;
 }

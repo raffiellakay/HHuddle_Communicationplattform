@@ -13,7 +13,6 @@ import java.util.Set;
 @Entity
 public class Role {
     @Id
-    private int id;
     @Column( nullable = false)
     private UserRole type;
     @ManyToMany(mappedBy = "roles")
