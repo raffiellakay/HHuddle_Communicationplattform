@@ -1,8 +1,6 @@
 package com.knoettner.hhuddle.models;
 
 
-import com.knoettner.hhuddle.ChatParticipantKey;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class ChatParticipants {
     @EmbeddedId
-    ChatParticipantKey id;
+    Role.ChatParticipantKey id;
 
     @ManyToOne
     @MapsId("firstUserId")

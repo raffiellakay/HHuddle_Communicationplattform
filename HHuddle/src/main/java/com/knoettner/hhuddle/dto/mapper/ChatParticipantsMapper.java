@@ -4,7 +4,7 @@ package com.knoettner.hhuddle.dto.mapper;
 
 import com.knoettner.hhuddle.dto.ChatParticipantsDto;
 import com.knoettner.hhuddle.models.ChatParticipants;
-import com.knoettner.hhuddle.ChatParticipantKey;
+import com.knoettner.hhuddle.models.Role;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,7 +14,7 @@ public class ChatParticipantsMapper {
         ChatParticipants chatParticipants = new ChatParticipants();
 
         // Set the composite key (ChatParticipantKey)
-        ChatParticipantKey key = new ChatParticipantKey();
+        Role.ChatParticipantKey key = new Role.ChatParticipantKey();
         key.setFirstUserId(chatParticipantsDto.getFirstUserId());
         key.setSecondUserId(chatParticipantsDto.getSecondUserId());
         chatParticipants.setId(key);
@@ -31,7 +31,7 @@ public class ChatParticipantsMapper {
         ChatParticipantsDto chatParticipantsDto = new ChatParticipantsDto();
 
         // Extract the composite key
-        ChatParticipantKey key = chatParticipants.getId();
+        Role.ChatParticipantKey key = chatParticipants.getId();
         if (key != null) {
             chatParticipantsDto.setFirstUserId(key.getFirstUserId());
             chatParticipantsDto.setSecondUserId(key.getSecondUserId());
