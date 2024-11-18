@@ -17,7 +17,7 @@ import java.util.Set;
 public class Board {
     @Id
     @GeneratedValue (strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
     @Column(nullable = false)
     private Category category;
 
@@ -25,7 +25,7 @@ public class Board {
     @JoinColumn( name = "house_id_FK")
     private House house;
 
-    @OneToMany(mappedBy =  "board")
+    @OneToMany(mappedBy = "board")
     Set<UserPost> userPosts;
 
 
