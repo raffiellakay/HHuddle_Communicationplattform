@@ -1,14 +1,15 @@
 package com.knoettner.hhuddle.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.knoettner.hhuddle.models.MyUser;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Data
 
 public class ChatParticipantsDto {
