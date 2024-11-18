@@ -2,11 +2,18 @@ package com.knoettner.hhuddle.models;
 
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
+@ToString
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+
 public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
