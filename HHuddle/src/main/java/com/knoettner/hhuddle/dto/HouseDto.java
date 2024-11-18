@@ -19,7 +19,7 @@ import java.util.Set;
 @NoArgsConstructor
 
 public class HouseDto {
-    private int id;
+    private Long id;
     private String adress;
     private Set<MyUser> residents;
     private Set<Facility> facilities;

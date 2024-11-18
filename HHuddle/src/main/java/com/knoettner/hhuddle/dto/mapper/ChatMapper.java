@@ -1,6 +1,8 @@
 package com.knoettner.hhuddle.dto.mapper;
 
 import com.knoettner.hhuddle.dto.ChatDto;
+import com.knoettner.hhuddle.dto.mapper.ChatMessageMapper;
+import com.knoettner.hhuddle.dto.mapper.ChatParticipantsMapper;
 import com.knoettner.hhuddle.models.Chat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,7 +11,7 @@ import java.util.stream.Collectors;
 
 @Component
 
-public class ChatMapper implements Mapper <ChatDto, Chat>{
+public class ChatMapper {
     @Autowired
     ChatMessageMapper chatMessageMapper;
     @Autowired
