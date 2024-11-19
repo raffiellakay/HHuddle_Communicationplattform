@@ -21,6 +21,6 @@ import java.util.Set;
 public class HouseDto {
     private Long id;
     private String adress;
-    private Set<MyUser> residents;
-    private Set<Facility> facilities;
+    private Set<MyUserDto> residents;
+    private Set<FacilityDto> facilities;
 }
