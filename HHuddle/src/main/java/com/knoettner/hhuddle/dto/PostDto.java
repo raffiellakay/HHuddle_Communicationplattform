@@ -2,6 +2,7 @@ package com.knoettner.hhuddle.dto;
 
 
 import com.knoettner.hhuddle.Category;
+import com.knoettner.hhuddle.UserPostKey;
 import com.knoettner.hhuddle.models.Facility;
 import com.knoettner.hhuddle.models.UserPost;
 import jakarta.persistence.Column;
@@ -24,6 +25,7 @@ public class PostDto {
     private String text;
     private Category category;
     private LocalDateTime timestamp;
+
     //optionale Felder
 
     private boolean isAnonymous;
@@ -33,6 +35,6 @@ public class PostDto {
     private boolean isPrivate;
 
     private Long facilityId;
-
-    private Long userPostId;
+// da zusammengesetzer Primary Key
+    private UserPostKey userPostId;
 }

@@ -10,6 +10,10 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.util.Set;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
 @Entity
 public class Role {
     @Id
