@@ -1,21 +1,19 @@
 <script setup>
-import {RouterLink, RouterView} from 'vue-router';
+import { RouterLink, RouterView } from 'vue-router';
 import Navbar from './components/Navbar.vue';
 
 </script>
 
 <template>
-
+  <v-app>
     <div id="app" data-app>
-    <RouterView></RouterView>
-  </div>
+      <RouterView></RouterView>
+    </div>
 
-      <Navbar/>
- 
+    <Navbar />
+  </v-app>
 
-  
+
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
