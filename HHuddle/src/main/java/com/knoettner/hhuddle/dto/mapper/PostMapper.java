@@ -19,7 +19,7 @@ public class PostMapper {
 
     @Autowired
     UserPostRepository userPostRepository;
-    //Mapper nicht fertig!
+
     public PostDto toDto (Post post) {
         PostDto postDto = new PostDto();
         postDto.setId(post.getId());
@@ -44,9 +44,10 @@ public class PostMapper {
             postDto.setFacilityId(post.getFacility().getId());
         }
 
-        //if (post.getUserPost() != null) {
-         //   postDto.setUserPostId(post.getUserPost().;
-        //}
+        if (post.getUserPost() != null) {
+            postDto.setUserPostId(post.getUserPost().getId()
+            );
+        }
 
         return postDto;
     }
@@ -77,7 +78,7 @@ public class PostMapper {
             }
 
         }
-        if (postdto.getUserPostId() != null) {
+        if (postdto.getUserPostId()!= null) {
 
             Optional<UserPost> maybeUserPosts = userPostRepository.findById(postdto.getUserPostId());
             if (maybeUserPosts.isPresent()) {
