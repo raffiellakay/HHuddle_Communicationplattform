@@ -24,6 +24,6 @@ public class Chat {
     @OneToMany(mappedBy = "chat")
     Set<ChatMessage> messages;
 
-    @OneToMany(mappedBy = "chat")
-    Set<ChatParticipants> participants;
+    @OneToOne(mappedBy = "chat")
+    private ChatParticipants participants;
 }

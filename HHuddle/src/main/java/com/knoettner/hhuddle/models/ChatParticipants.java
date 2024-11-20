@@ -24,7 +24,7 @@ public class ChatParticipants {
     @MapsId("secondUserId")
     MyUser secondUser;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn (name = "chat_id_FK")
     Chat chat;
 
