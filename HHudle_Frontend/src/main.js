@@ -2,7 +2,6 @@ import './assets/main.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-
 import App from './App.vue'
 import router from './router'
 
@@ -22,6 +21,8 @@ const vuetify = createVuetify({
 
 const app = createApp(App)
 
+
+
 app.use(createPinia())
 app.use(router)
 app.use(vuetify)
@@ -29,3 +30,5 @@ app.use(vuetify)
 
 
 app.mount('#app')
+
+//Reihenfolge der Plugins beachten: Es ist besser, Plugins wie Vuetify und Pinia vor app.mount('#app') zu registrieren. Könnte in manchen komplexeren Setups zu Problemen führen. 

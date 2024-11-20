@@ -1,23 +1,32 @@
 // src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
-import Navbar from '@/components/Navbar.vue';
-import Home from '@/components/Home.vue';
-
-
+import HomeLayout from '../layouts/HomeLayout.vue';
+import LoginLayout from '../layouts/LoginLayout.vue';
+import TestView from '../views/TestView.vue';
+import BoardView from '../views/BoardView.vue';
 
 const routes = [
-
   {
-    path: '/',
+    path: '',
     name: 'Home',
-    component: Home,
+    component: HomeLayout,
     children: [
       {
-        path: '/navbar',
-        name: 'Navbar',
-        component: Navbar,
+        path: '',
+        name: 'Test',
+        component: TestView,
+      },
+      {
+        path: '/board',
+        name: 'Board',
+        component: BoardView,
       }
-    ]
+    ],
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: LoginLayout,
   }
 
   // Weitere Routen können hier hinzugefügt werden
