@@ -9,8 +9,6 @@ import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 @Data
 
 public class ChatParticipantsDto {
@@ -20,8 +18,6 @@ public class ChatParticipantsDto {
         private Long secondUserId; // Korrespondiert mit ChatParticipantKey.secondUserId
         private Long chatId;       // Korrespondiert mit Chat.chat.id
 
-        private MyUser firstUser;  // Referenz auf das erste Benutzerobjekt
-        private MyUser secondUser; // Referenz auf das zweite Benutzerobjekt
-        private Chat chat;
+
 }
 

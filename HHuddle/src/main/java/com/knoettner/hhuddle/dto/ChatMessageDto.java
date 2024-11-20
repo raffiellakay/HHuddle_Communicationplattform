@@ -15,8 +15,8 @@ import java.util.Set;
 
 public class ChatMessageDto {
     private Long id;
-    private MyUser user;
-    private Chat chat ;
+    private Long myUserId;
+    private Long chatId ;
     private LocalDateTime timestamp;
     private String text;
 
