@@ -43,7 +43,7 @@ public class ChatServiceImpl implements ChatService {
         // Create a new chat
         Chat chat = new Chat();
         chat.setTimestamp(LocalDateTime.now());
-        chat.setParticipants(new HashSet<>()); // Sicherstellen, dass die Liste initialisiert ist
+
 
         // Create ChatParticipants
         ChatParticipantKey participantKey = new ChatParticipantKey(firstUserId, secondUserId);
@@ -54,7 +54,7 @@ public class ChatServiceImpl implements ChatService {
         participants.setChat(chat);
 
         // Add participants to chat
-        chat.getParticipants().add(participants);
+        chat.setParticipants(participants);
 
         // Save the chat
         Chat savedChat = chatRepository.save(chat);
@@ -71,9 +71,10 @@ public class ChatServiceImpl implements ChatService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Sender not found"));
 
         // Validate if sender is part of the chat
-        boolean isParticipant = chat.getParticipants().stream()
-                .anyMatch(p -> p.getFirstUser().getId().equals(sender.getId()) ||
-                        p.getSecondUser().getId().equals(sender.getId()));
+        boolean isParticipant =
+                chat.getParticipants().getFirstUser().getId().equals(sender.getId()) ||
+                        chat.getParticipants().getSecondUser().getId().equals(sender.getId());
+
         if (!isParticipant) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User is not a participant of the chat");
         }
