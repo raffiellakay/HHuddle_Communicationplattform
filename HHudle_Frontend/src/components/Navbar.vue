@@ -18,7 +18,6 @@ const toggleDrawer = () => {
 </script>
 
 <template>
-    <v-layout>
 
         <!--Navbar-->
         <v-app-bar :elevation="2" rounded color="primary">
@@ -51,10 +50,6 @@ const toggleDrawer = () => {
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-        <v-container>
-           
-        </v-container>
- </v-layout>
 </template>
 
 

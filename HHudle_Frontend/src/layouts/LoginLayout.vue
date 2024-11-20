@@ -1,32 +1,53 @@
 <script setup>
+import { RouterLink, RouterView } from 'vue-router';
 
-//JS Teil
 
+const login = () => {
+  console.log('Login');
+}
 </script>
 
-
-
-
-<template> 
-
-<div class="login-container">
-    <div class="login-card">
-      <h2>Login</h2>
-      <form>
-        <div class="form-group">
-          <label for="username">Benutzername</label>
-          <input type="text" id="username" placeholder="Gib deinen Benutzernamen ein" />
-        </div>
-        <div class="form-group">
-          <label for="password">Passwort</label>
-          <input type="password" id="password" placeholder="Gib dein Passwort ein" />
-        </div>
-        <button type="submit" class="login-button">Anmelden</button>
-      </form>
-    </div>
-  </div>
+<template>
+ 
+  <v-container class="d-flex align-center justify-center" style="min-height: 100vh;">
+    <v-card max-width="400" class="pa-4">
+      <v-card-title class="text-h5">Login</v-card-title>
+      <v-form @submit.prevent="login" v-model:valid="formValid">
+        <v-text-field
+          v-model="credentials.email"
+          label="E-Mail"
+          placeholder="Enter your email"
+          :rules="emailRules"
+          required
+          type="email"
+        ></v-text-field>
+        <v-text-field
+          v-model="credentials.password" 
+          label="Password"
+          placeholder="Enter your password"
+          :rules="passwordRules"
+          required
+          type="password"
+        ></v-text-field>
+        <v-btn
+          type="submit"
+          color="primary"
+          :disabled="!formValid"
+          class="mt-4"
+        >
+          Login
+        </v-btn>
+        <v-btn
+          to="/signup"
+          text
+          class="mt-2"
+        >
+          Don't have an account? Sign Up
+        </v-btn>
+      </v-form>
+    </v-card>
+  </v-container>
 </template>
-
 
 
 
@@ -125,3 +146,9 @@ input:focus {
   }
 }
 </style>
+
+
+
+
+
+
