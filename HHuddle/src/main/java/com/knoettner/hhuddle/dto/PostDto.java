@@ -23,7 +23,7 @@ public class PostDto {
     private Long id;
     private String title;
     private String text;
-    private Category category;
+    private String category;
     private LocalDateTime timestamp;
 
     //optionale Felder
@@ -35,6 +35,8 @@ public class PostDto {
     private boolean isPrivate;
 
     private Long facilityId;
-// da zusammengesetzer Primary Key
-    private UserPostKey userPostId;
+
+    // da zusammengesetzer Primary Key
+    private BasicUserDto user;
+    private Long boardId;
 }

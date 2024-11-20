@@ -1,4 +1,4 @@
-package com.knoettner.hhuddle.dto.mapper;
+package com.knoettner.hhuddle.dto;
 
 import com.knoettner.hhuddle.UserPostKey;
 import lombok.AllArgsConstructor;
@@ -10,9 +10,7 @@ import org.apache.catalina.User;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserPostDto {
-    private UserPostKey id;
     private Long userId;
     private Long postId;
     private Long boardId;
-
 }

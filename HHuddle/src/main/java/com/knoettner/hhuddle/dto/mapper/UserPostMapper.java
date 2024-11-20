@@ -1,5 +1,7 @@
 package com.knoettner.hhuddle.dto.mapper;
 
+import com.knoettner.hhuddle.UserPostKey;
+import com.knoettner.hhuddle.dto.UserPostDto;
 import com.knoettner.hhuddle.models.Board;
 import com.knoettner.hhuddle.models.MyUser;
 import com.knoettner.hhuddle.models.Post;
@@ -24,7 +26,7 @@ public class UserPostMapper {
     BoardRepository boardRepository;
 
     public UserPostDto toDto (UserPost userpost) {
-        UserPostDto userPostDto = new UserPostDto(userpost.getId(), userpost.getPost().getId(), userpost.getUser().getId(), userpost.getBoard().getId());
+        UserPostDto userPostDto = new UserPostDto(userpost.getPost().getId(), userpost.getUser().getId(), userpost.getBoard().getId());
         return userPostDto;
     }
 
@@ -33,12 +35,11 @@ public class UserPostMapper {
         Optional<MyUser> maybeUser = userRepository.findById(userPostDto.getUserId());
         Optional<Board> maybeBoard = boardRepository.findById(userPostDto.getBoardId());
         if (maybeBoard.isPresent() && maybeUser.isPresent() && maybePost.isPresent()) {
-            UserPost userPost = new UserPost(userPostDto.getId(), maybeUser.get(), maybePost.get(), maybeBoard.get());
+            UserPostKey userPostKey = new UserPostKey(maybeUser.get().getId(), maybePost.get().getId(), maybeBoard.get().getId());
+            UserPost userPost = new UserPost(userPostKey, maybeUser.get(), maybePost.get(), maybeBoard.get());
             return userPost;
         } else {
-            UserPost userPost = new UserPost(userPostDto.getId(),null, null, null );
-            return userPost;
+            return null;
         }
-
     }
 }

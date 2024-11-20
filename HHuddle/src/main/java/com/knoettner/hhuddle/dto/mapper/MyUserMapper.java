@@ -3,9 +3,9 @@ package com.knoettner.hhuddle.dto.mapper;
 import com.knoettner.hhuddle.dto.ChatMessageDto;
 import com.knoettner.hhuddle.dto.MyUserDto;
 import com.knoettner.hhuddle.dto.RoleDto;
+import com.knoettner.hhuddle.dto.UserPostDto;
 import com.knoettner.hhuddle.models.*;
 import com.knoettner.hhuddle.repository.HouseRepository;
-import org.apache.logging.log4j.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -1,6 +1,9 @@
 package com.knoettner.hhuddle.dto.mapper;
 
 
+import com.knoettner.hhuddle.Category;
+import com.knoettner.hhuddle.UserPostKey;
+import com.knoettner.hhuddle.dto.BasicUserDto;
 import com.knoettner.hhuddle.dto.PostDto;
 import com.knoettner.hhuddle.models.Facility;
 import com.knoettner.hhuddle.models.Post;
@@ -23,7 +26,7 @@ public class PostMapper {
     public PostDto toDto (Post post) {
         PostDto postDto = new PostDto();
         postDto.setId(post.getId());
-        postDto.setCategory(post.getCategory());
+        postDto.setCategory(post.getCategory().toString());
         postDto.setTimestamp(post.getTimestamp());
         postDto.setTitle(post.getTitle());
         postDto.setText(post.getText());
@@ -45,8 +48,10 @@ public class PostMapper {
         }
 
         if (post.getUserPost() != null) {
-            postDto.setUserPostId(post.getUserPost().getId()
-            );
+            postDto.setBoardId(post.getUserPost().getBoard().getId());
+            // TODO: map user to basicuserdto
+            BasicUserDto basicUserDto = new BasicUserDto();
+            postDto.setUser(basicUserDto);
         }
 
         return postDto;
@@ -55,7 +60,7 @@ public class PostMapper {
     public Post toEntity (PostDto postdto) {
         Post post = new Post();
         post.setId(postdto.getId());
-        post.setCategory(postdto.getCategory());
+        post.setCategory(Category.valueOf(postdto.getCategory().toUpperCase()));
         post.setTimestamp(postdto.getTimestamp());
         post.setTitle(postdto.getTitle());
         post.setText(postdto.getText());
@@ -78,9 +83,10 @@ public class PostMapper {
             }
 
         }
-        if (postdto.getUserPostId()!= null) {
-
-            Optional<UserPost> maybeUserPosts = userPostRepository.findById(postdto.getUserPostId());
+        if (postdto.getId() != null && postdto.getUser() != null && postdto.getBoardId() != null) {
+            // TODO: change 1L to correct userId
+            UserPostKey userPostKey = new UserPostKey(1L, postdto.getId(), postdto.getBoardId());
+            Optional<UserPost> maybeUserPosts = userPostRepository.findById(userPostKey);
             if (maybeUserPosts.isPresent()) {
                 post.setUserPost(maybeUserPosts.get());
             }
