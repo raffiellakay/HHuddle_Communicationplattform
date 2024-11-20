@@ -1,10 +1,20 @@
 <script setup>
-
-//JS Teil
+import { RouterLink, RouterView } from 'vue-router';
+import Navbar from './components/Navbar.vue';
 
 </script>
 
 <template>
+
+  <!-- **router von milly 
+  <v-app>
+    <div id="app" data-app>
+      <RouterView></RouterView>
+    </div>
+
+    <Navbar />
+  </v-app>
+  ** -->
   <v-container class="d-flex align-center justify-center" style="min-height: 100vh;">
     <v-card max-width="400" class="pa-4">
       <v-card-title class="text-h5">Login</v-card-title>
@@ -142,4 +152,9 @@ input:focus {
   }
 }
 </style>
+
+
+
+
+
 
