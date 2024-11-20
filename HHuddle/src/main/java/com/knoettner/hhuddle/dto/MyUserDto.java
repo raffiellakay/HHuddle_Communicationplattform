@@ -11,7 +11,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-
+//UserDto withouth Password!
 public class MyUserDto {
     private Long id;
     private String mail;

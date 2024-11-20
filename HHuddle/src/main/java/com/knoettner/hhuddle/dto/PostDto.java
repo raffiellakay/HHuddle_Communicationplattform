@@ -36,7 +36,9 @@ public class PostDto {
 
     private Long facilityId;
 
-    // da zusammengesetzer Primary Key
+
+    // combined Primary Key
+    //BasicUserDto --> only necessary Info to Frontend!
     private BasicUserDto user;
     private Long boardId;
 }
