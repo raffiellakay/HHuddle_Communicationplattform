@@ -5,38 +5,97 @@ import com.knoettner.hhuddle.dto.FacilityDto;
 import com.knoettner.hhuddle.dto.HouseDto;
 import com.knoettner.hhuddle.dto.MyUserDto;
 import com.knoettner.hhuddle.dto.PostDto;
+import com.knoettner.hhuddle.dto.mapper.HouseMapper;
+import com.knoettner.hhuddle.models.Board;
+import com.knoettner.hhuddle.models.House;
+import com.knoettner.hhuddle.models.Post;
+import com.knoettner.hhuddle.repository.HouseRepository;
+import com.knoettner.hhuddle.repository.PostRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
+import static com.knoettner.hhuddle.Category.*;
+
+@Service
 public class AdminServiceImpl implements AdminService {
-    @Override
-    public HouseDto createHouse(HouseDto house) {
-        return null;
-    }
+    @Autowired
+    HouseRepository houseRepository;
+
+    @Autowired
+    HouseMapper houseMapper;
+
+    @Autowired
+    PostRepository postRepository;
 
     @Override
+    public HouseDto createHouse(HouseDto house) {
+        House realHouse = houseMapper.toEntity(house);
+        house.setId(realHouse.getId());
+        houseRepository.save(realHouse);
+        createBoardsForHouse(realHouse.getId());
+
+        return house;
+    }
+
+    //wie bekomme ich admin/userid?
+    @Override
     public Set<HouseDto> getAllHouses() {
+
+
         return Set.of();
     }
 
     @Override
     public void deleteHouseById(Long id) {
-
+        houseRepository.deleteById(id);
     }
 
     @Override
-    public void createBoardsForHouse() {
+    public void createBoardsForHouse(Long houseId) {
+        Optional<House> maybeHouse = houseRepository.findById(houseId);
+        if (maybeHouse.isPresent()) {
+            House realHouse = maybeHouse.get();
+            Board Blackboard = new Board(null, BLACKBOARD, realHouse, new HashSet<>());
+            Board Frontpage = new Board(null, FRONTPAGE, realHouse, new HashSet<>() );
+            Board Package = new Board(null, PACKAGE, realHouse, new HashSet<>() );
+            Board Events = new Board(null, EVENTS, realHouse, new HashSet<>() );
+            Board Exchange = new Board(null, EXCHANGE, realHouse, new HashSet<>() );
+
+        }
 
     }
 
     @Override
     public Long getAdminBoardIdByHouseId(Long houseId) {
-        return 0L;
+        Optional<House> maybeHouse = houseRepository.findById(houseId);
+        if (maybeHouse.isPresent()) {
+            House realHouse = maybeHouse.get();
+            for (Board currentBoard : realHouse.getBoards()) {
+                if (currentBoard.getCategory().equals(FRONTPAGE)) {
+                    return currentBoard.getId();
+                }
+            }
+
+        }
+        return null;
     }
+
 
     @Override
     public PostDto createAdminPost(PostDto post) {
-        return null;
+        Post newAdminPost = new Post();
+        newAdminPost.setText(post.getText());
+        newAdminPost.setCategory(FRONTPAGE);
+        newAdminPost.setTitle(post.getTitle());
+        newAdminPost.setTimestamp(LocalDateTime.now());
+        postRepository.save(newAdminPost);
+        post.setId(newAdminPost.getId());
+        return post;
     }
 
     @Override

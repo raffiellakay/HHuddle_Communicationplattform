@@ -19,6 +19,7 @@ import java.util.Set;
 @Entity
 public class Post {
     @Id
+    @GeneratedValue (strategy = GenerationType.AUTO)
     private Long id;
     @Column(name = "post_title",nullable = false)
     private String title;
@@ -31,7 +32,7 @@ public class Post {
 
     private boolean isAnonymous;
 
-   private java.sql.Blob photo;
+    private java.sql.Blob photo;
 
     private LocalDateTime starttime;
     private LocalDateTime endtime;
