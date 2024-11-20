@@ -16,8 +16,9 @@ public class ChatDto {
 
     private Long id;
     private LocalDateTime timestamp;
+    private BasicUserDto first_participant;
+    private BasicUserDto second_participant;
     private Set<ChatMessageDto> messages;
-    private Set<ChatParticipantsDto> participants;
 
 
 }
