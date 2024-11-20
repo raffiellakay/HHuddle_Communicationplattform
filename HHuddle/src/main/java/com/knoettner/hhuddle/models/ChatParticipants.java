@@ -1,6 +1,7 @@
 package com.knoettner.hhuddle.models;
 
 
+import com.knoettner.hhuddle.ChatParticipantKey;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

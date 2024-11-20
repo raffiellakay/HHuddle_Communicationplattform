@@ -1,5 +1,6 @@
 package com.knoettner.hhuddle.service;
 
+import com.knoettner.hhuddle.ChatParticipantKey;
 import com.knoettner.hhuddle.dto.ChatDto;
 import com.knoettner.hhuddle.dto.ChatMessageDto;
 import com.knoettner.hhuddle.dto.mapper.ChatMapper;

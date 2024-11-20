@@ -3,9 +3,8 @@
 package com.knoettner.hhuddle.dto.mapper;
 
 import com.knoettner.hhuddle.dto.ChatParticipantsDto;
-import com.knoettner.hhuddle.models.ChatParticipantKey;
+import com.knoettner.hhuddle.ChatParticipantKey;
 import com.knoettner.hhuddle.models.ChatParticipants;
-import com.knoettner.hhuddle.models.Role;
 import org.springframework.stereotype.Component;
 
 @Component

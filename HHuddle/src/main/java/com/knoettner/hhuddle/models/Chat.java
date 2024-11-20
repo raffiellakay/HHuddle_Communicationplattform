@@ -7,13 +7,11 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@Entity
-@ToString
-@Getter
-@Setter
+
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Entity
 public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

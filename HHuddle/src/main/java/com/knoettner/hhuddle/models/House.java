@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
-@Entity
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Entity
 public class House {
     @Id
     private Long id;

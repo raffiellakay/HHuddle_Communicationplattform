@@ -1,4 +1,4 @@
-package com.knoettner.hhuddle.models;
+package com.knoettner.hhuddle;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
