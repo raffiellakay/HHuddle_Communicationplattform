@@ -6,9 +6,10 @@ import {ref} from 'vue'
 
 const router = useRouter()
 
+//showDrawer Konstante ist per default auf false
 const showDrawer = ref(false);
 
-
+//Aufrufen der Methode setzt showDrawer value auf true, dadurch wird v-navigation drawer sichtbar
 const toggleDrawer = () => {
     showDrawer.value = !showDrawer.value;
 }
@@ -22,6 +23,7 @@ const toggleDrawer = () => {
         <!--Navbar-->
         <v-app-bar :elevation="2" rounded color="primary">
             <template v-slot:prepend>
+                <!--Bei Klick auf bar-nav-icon wird toggleDrawer Methode aufgerufen-->
                 <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
             </template>
             <v-app-bar-title>Menü</v-app-bar-title>
