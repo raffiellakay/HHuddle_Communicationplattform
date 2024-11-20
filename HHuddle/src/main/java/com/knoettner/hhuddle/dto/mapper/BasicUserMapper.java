@@ -18,17 +18,15 @@ public class BasicUserMapper {
         return basicUserDto;
     }
 
-    public MyUser toEntity (BasicUserDto basicUserDto ) {
-        MyUser user = new MyUser();
+    public MyUser toEntity (BasicUserDto basicUserDto) {
+
         Optional<MyUser> maybeUser = userRepository.findById(basicUserDto.getId());
         if (maybeUser.isPresent()) {
-            MyUser realUser = maybeUser.get();
-
-            return realUser;
+            MyUser user = maybeUser.get();
+            return user;
         }
-        else return null;
-
-
+        return null;
     }
+
 
 }
