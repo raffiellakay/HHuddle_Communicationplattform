@@ -14,7 +14,7 @@ public class ChatMessageMapper {
     public ChatMessage toEntity(ChatMessageDto chatMessageDto) {
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.setId(chatMessageDto.getId());
-        chatMessage.setMyUserId(chatMessageDto.getMyUser().getId());
+        chatMessage.setMyUser(chatMessageDto.getMyUser().getId());
         chatMessage.setChat(chatMessageDto.getChat());
         chatMessage.setTimestamp(chatMessageDto.getTimestamp());
         chatMessage.setText(chatMessageDto.getText());
