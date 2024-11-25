@@ -5,21 +5,23 @@ import com.knoettner.hhuddle.dto.FacilityDto;
 import com.knoettner.hhuddle.dto.HouseDto;
 import com.knoettner.hhuddle.dto.MyUserDto;
 import com.knoettner.hhuddle.dto.PostDto;
+import com.knoettner.hhuddle.dto.mapper.FacilityMapper;
 import com.knoettner.hhuddle.dto.mapper.HouseMapper;
-import com.knoettner.hhuddle.models.Board;
-import com.knoettner.hhuddle.models.House;
-import com.knoettner.hhuddle.models.Post;
+import com.knoettner.hhuddle.dto.mapper.MyUserMapper;
+import com.knoettner.hhuddle.dto.mapper.PostMapper;
+import com.knoettner.hhuddle.models.*;
+import com.knoettner.hhuddle.repository.FacilityRepository;
 import com.knoettner.hhuddle.repository.HouseRepository;
 import com.knoettner.hhuddle.repository.PostRepository;
+import com.knoettner.hhuddle.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static com.knoettner.hhuddle.Category.*;
+import static com.knoettner.hhuddle.UserRole.RESIDENT;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -31,6 +33,21 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     PostRepository postRepository;
+
+    @Autowired
+    PostMapper postMapper;
+
+    @Autowired
+    FacilityMapper facilityMapper;
+
+    @Autowired
+    FacilityRepository facilityRepository;
+
+    @Autowired
+    MyUserMapper userMapper;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Override
     public HouseDto createHouse(HouseDto house) {
@@ -52,6 +69,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void deleteHouseById(Long id) {
+
         houseRepository.deleteById(id);
     }
 
@@ -100,41 +118,80 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void deleteAdminPost(UserPostKey id) {
-
+        postRepository.deleteById(id.getPostId());
     }
 
     @Override
     public Set<PostDto> getAdminPostsByHouseId(Long houseId) {
-        return Set.of();
+        Set<PostDto> allAdminPosts = new HashSet<>();
+        List<Post> allPosts = postRepository.findAll();
+        for (Post currentPost : allPosts) {
+            if (currentPost.getUserPost().getUser().getHouse().getId() == houseId && currentPost.getCategory() == FRONTPAGE) {
+                PostDto dto = postMapper.toDto(currentPost);
+                allAdminPosts.add(dto);
+            }
+
+        }
+        return allAdminPosts;
     }
 
     @Override
     public FacilityDto createFacility(FacilityDto facility) {
-        return null;
+        Facility realFacility = facilityMapper.toEntity(facility);
+        facilityRepository.save(realFacility);
+        facility.setId(realFacility.getId());
+        return facility;
     }
 
+    //Reicht das für Update?!
     @Override
-    public FacilityDto updateFacility(Long id, FacilityDto facility) {
-        return null;
+    public FacilityDto updateFacility( FacilityDto facility) {
+        facilityRepository.save(facilityMapper.toEntity(facility));
+        return facility;
     }
 
     @Override
     public void deleteFacilityById(Long id) {
-
+        facilityRepository.deleteById(id);
     }
 
     @Override
     public Set<FacilityDto> getAllFacilitiesByHouseId(Long houseId) {
-        return Set.of();
+        Set<FacilityDto> allFacilites = new HashSet<>();
+        for (Facility currentFacility : facilityRepository.findAll()) {
+            if (currentFacility.getHouse().getId() == houseId) {
+                allFacilites.add(facilityMapper.toDto(currentFacility));
+            }
+        }
+
+        return allFacilites;
     }
 
+    //RandomPW?
     @Override
     public MyUserDto createUser(MyUserDto userDto) {
-        return null;
+        MyUser user = userMapper.toEntity(userDto);
+        //Random PW
+        user.setPassword(UUID.randomUUID().toString());
+        //Role = Resident
+        Role resident = new Role(1L, RESIDENT, new HashSet<>());
+        Set<Role> roleSet = new HashSet<>();
+        roleSet.add(resident);
+        user.setRoles(roleSet);
+        //HashSets for the remaining fields
+        user.setUserPosts(new HashSet<>());
+        user.setSecond_participantInChat(new HashSet<>());
+        user.setFirst_participantInChat(new HashSet<>());
+        user.setMessages(new HashSet<>());
+        userRepository.save(user);
+        userDto.setId(user.getId());
+        return userDto;
     }
 
+    //Enough?
     @Override
-    public MyUserDto updateUser(Long id, MyUserDto user) {
-        return null;
+    public MyUserDto updateUser(MyUserDto user) {
+        userRepository.save(userMapper.toEntity(user));
+        return user;
     }
 }
