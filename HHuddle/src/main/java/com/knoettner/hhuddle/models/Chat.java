@@ -26,4 +26,7 @@ public class Chat {
 
     @OneToOne(mappedBy = "chat")
     private ChatParticipants participants;
+
+
+
 }
