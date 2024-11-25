@@ -38,7 +38,7 @@ public class AdminServiceImpl implements AdminService {
     PostMapper postMapper;
 
     @Autowired
-    FacilityMapper facilityMapper;
+    private FacilityMapper facilityMapper;
 
     @Autowired
     FacilityRepository facilityRepository;
@@ -55,7 +55,6 @@ public class AdminServiceImpl implements AdminService {
         house.setId(realHouse.getId());
         houseRepository.save(realHouse);
         createBoardsForHouse(realHouse.getId());
-
         return house;
     }
 
@@ -83,7 +82,14 @@ public class AdminServiceImpl implements AdminService {
             Board Package = new Board(null, PACKAGE, realHouse, new HashSet<>() );
             Board Events = new Board(null, EVENTS, realHouse, new HashSet<>() );
             Board Exchange = new Board(null, EXCHANGE, realHouse, new HashSet<>() );
-
+            Set<Board> boards = new HashSet<>();
+            boards.add(Blackboard);
+            boards.add(Frontpage);
+            boards.add(Package);
+            boards.add(Events);
+            boards.add(Exchange);
+            realHouse.setBoards(boards);
+            houseRepository.save(realHouse);
         }
 
     }
@@ -143,7 +149,7 @@ public class AdminServiceImpl implements AdminService {
         return facility;
     }
 
-    //Reicht das für Update?!
+
     @Override
     public FacilityDto updateFacility( FacilityDto facility) {
         facilityRepository.save(facilityMapper.toEntity(facility));
@@ -174,10 +180,10 @@ public class AdminServiceImpl implements AdminService {
         //Random PW
         user.setPassword(UUID.randomUUID().toString());
         //Role = Resident
-        Role resident = new Role(1L, RESIDENT, new HashSet<>());
-        Set<Role> roleSet = new HashSet<>();
-        roleSet.add(resident);
-        user.setRoles(roleSet);
+       // Role resident = new Role(1L, RESIDENT, new HashSet<>());
+        //Set<Role> roleSet = new HashSet<>();
+        //roleSet.add(resident);
+        //user.setRoles(roleSet);
         //HashSets for the remaining fields
         user.setUserPosts(new HashSet<>());
         user.setSecond_participantInChat(new HashSet<>());
