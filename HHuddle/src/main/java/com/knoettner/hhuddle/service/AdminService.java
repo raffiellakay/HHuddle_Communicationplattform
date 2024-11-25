@@ -17,7 +17,7 @@ public interface AdminService {
 //    HouseDto updateHouse(Long id, HouseDto house);
 
 //Boards for Houses - when House created necessary to create all 5 Boards for the house
-    void createBoardsForHouse();
+    void createBoardsForHouse(Long houseId);
     Long getAdminBoardIdByHouseId(Long houseId);
 
 //Posting for Admins
@@ -30,7 +30,7 @@ public interface AdminService {
 
 //Facilities for Houses
     FacilityDto createFacility (FacilityDto facility);
-    FacilityDto updateFacility(Long id, FacilityDto facility);
+    FacilityDto updateFacility(FacilityDto facility);
     void deleteFacilityById(Long id);
     Set<FacilityDto> getAllFacilitiesByHouseId(Long houseId);
 
@@ -39,7 +39,7 @@ public interface AdminService {
 //Residents for House when created
 
     MyUserDto createUser (MyUserDto userDto);
-    MyUserDto updateUser(Long id, MyUserDto user);
+    MyUserDto updateUser( MyUserDto user);
     //no delete necessary
     //no addFunction necessary bc HouseId is in MyUserDTO
 
