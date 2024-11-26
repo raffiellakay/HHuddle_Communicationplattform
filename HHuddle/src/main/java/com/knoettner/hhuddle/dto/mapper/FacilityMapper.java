@@ -46,10 +46,11 @@ public class FacilityMapper {
         newFacility.setId(facilityDto.getId());
         newFacility.setType(facilityDto.getType());
         newFacility.setDescription(facilityDto.getDescription());
-
-        Optional<House> optionalHouse = houseRepository.findById(facilityDto.getHouseId());
-        if (optionalHouse.isPresent()) {
-        newFacility.setHouse(optionalHouse.get());
+        if(facilityDto.getHouseId() != null) {
+            Optional<House> optionalHouse = houseRepository.findById(facilityDto.getHouseId());
+            if (optionalHouse.isPresent()) {
+                newFacility.setHouse(optionalHouse.get());
+            }
         }
         if(facilityDto.getPostDtos() != null) {
             Set<Post> posts = new HashSet<>();
