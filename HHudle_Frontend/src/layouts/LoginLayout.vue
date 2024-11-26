@@ -1,9 +1,15 @@
 <script setup>
 import { ref } from 'vue';
+import {useRouter } from 'vue-router'
 
 const username = ref('');
 const password = ref('');
 const errorMessage = ref('');
+
+const router = useRouter();
+const handleLogin = () => {
+  router.push('/home');
+}
 
 
 </script>

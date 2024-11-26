@@ -2,7 +2,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeLayout from '../layouts/HomeLayout.vue';
 import LoginLayout from '../layouts/LoginLayout.vue';
-import TestView from '../views/TestView.vue';
+import HomeView from '../views/HomeView.vue';
 import BoardView from '../views/BoardView.vue';
 
 const routes = [
@@ -12,9 +12,9 @@ const routes = [
     component: HomeLayout,
     children: [
       {
-        path: '',
-        name: 'Test',
-        component: TestView,
+        path: '/home',
+        name: 'Home',
+        component: HomeView,
       },
       {
         path: '/board',
@@ -24,9 +24,8 @@ const routes = [
       
     ],
   },
-
   {
-    path: '/login',
+    path: '/',
     name: 'Login',
     component: LoginLayout,
   }
