@@ -1,10 +1,12 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
+import CommonRoomsView from '@/views/CommonRoomsView.vue';
 
 
 
 const router = useRouter()
+
 
 //showDrawer Konstante ist per default auf false
 const showDrawer = ref(false);
@@ -14,7 +16,7 @@ const activeItem = ref(null);
 
 //Liste an Unteritems in Array
 const items = ref([
-  "Gemeinschaftsräume",
+  name: "Gemeinschaftsräume", route: CommonRoomsView,
   "Schwarzes Brett",
   "Paketfinder",
   "Suche - Biete - Tausche",

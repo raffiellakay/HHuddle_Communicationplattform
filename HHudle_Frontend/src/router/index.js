@@ -2,34 +2,59 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeLayout from '../layouts/HomeLayout.vue';
 import LoginLayout from '../layouts/LoginLayout.vue';
-import TestView from '../views/TestView.vue';
-import BoardView from '../views/BoardView.vue';
+import HomeView from '../views/HomeView.vue';
+import BoardLayout from '../layouts/BoardLayout.vue';
+import BlackBoardView from '@/views/BlackBoardView.vue';
+import CommonRoomsView from '@/views/CommonRoomsView.vue';
+import PackageFinderView from '@/views/PackageFinderView.vue';
+import SearchAndFindView from '@/views/SearchAndFindView.vue';
+
 
 const routes = [
+  { 
+    path: '/',
+    name: 'login',
+    path: LoginLayout
+  },
+
   {
-    path: '',
+    path: '/',
     name: 'Home',
     component: HomeLayout,
     children: [
       {
-        path: '',
-        name: 'Test',
-        component: TestView,
+        path: '/home',
+        name: 'Home',
+        component: HomeView,
       },
       {
         path: '/board',
         name: 'Board',
-        component: BoardView,
-      },
-      
+        component: BoardLayout,
+        children: [
+          {
+            path: '/commonrooms',
+            component: CommonRoomsView, 
+          },
+          {
+            path: '/blackboard',
+            component: BlackBoardView, 
+          },
+          {
+            path: '/packagefinder',
+            component: PackageFinderView,
+          },
+          {
+            path:'/search&find',
+            component: SearchAndFindView,
+          }
+
+        ]
+      }, 
     ],
   },
 
-  {
-    path: '/login',
-    name: 'Login',
-    component: LoginLayout,
-  }
+
 
   // Weitere Routen können hier hinzugefügt werden
 ];
