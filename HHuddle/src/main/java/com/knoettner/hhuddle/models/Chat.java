@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Set;
 
 
@@ -24,8 +25,13 @@ public class Chat {
     @OneToMany(mappedBy = "chat")
     Set<ChatMessage> messages;
 
-    @OneToOne(mappedBy = "chat")
-    private ChatParticipants participants;
+   @ManyToOne
+   @JoinColumn( name = "myUser_id_FK")
+    private MyUser firstParticipant;
+
+    @ManyToOne
+    @JoinColumn( name = "myUser_id_FK")
+    private MyUser secondParticipant;
 
 
 

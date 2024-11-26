@@ -7,5 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ChatRepository extends JpaRepository<Chat, Long> {
-    List<Chat> findAllByParticipants(MyUser user);
+    List<Chat> findAllByFirstParticipantAndSecondParticipant(MyUser firstUser, MyUser secondUser);
+    List<Chat> findAllByFirstParticipantOrSecondParticipant(MyUser firstUser, MyUser secondUser);
 }

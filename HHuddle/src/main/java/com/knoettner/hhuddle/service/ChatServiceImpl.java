@@ -40,21 +40,24 @@ public class ChatServiceImpl implements ChatService {
         MyUser secondUser = userRepository.findById(secondUserId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Second user not found"));
 
+
+
+       List list = chatRepository.findAllByFirstParticipantAndSecondParticipant( //suchen die Chats nach dem Participant
+               firstUserId>secondUserId?secondUser:firstUser,
+               firstUserId>secondUserId?firstUser:secondUser
+       );
+
+        if(!list.isEmpty())
+            throw new ResponseStatusException(HttpStatus.FOUND, "the chat has been already created");
+
         // Create a new chat
         Chat chat = new Chat();
         chat.setTimestamp(LocalDateTime.now());
 
 
-        // Create ChatParticipants
-        ChatParticipantKey participantKey = new ChatParticipantKey(firstUserId, secondUserId);
-        ChatParticipants participants = new ChatParticipants();
-        participants.setId(participantKey);
-        participants.setFirstUser(firstUser);
-        participants.setSecondUser(secondUser);
-        participants.setChat(chat);
+        chat.setFirstParticipant(firstUserId>secondUserId?secondUser:firstUser);
+        chat.setSecondParticipant(firstUserId>secondUserId?firstUser:secondUser);
 
-        // Add participants to chat
-        chat.setParticipants(participants);
 
         // Save the chat
         Chat savedChat = chatRepository.save(chat);
@@ -72,8 +75,8 @@ public class ChatServiceImpl implements ChatService {
 
         // Validate if sender is part of the chat
         boolean isParticipant =
-                chat.getParticipants().getFirstUser().getId().equals(sender.getId()) ||
-                        chat.getParticipants().getSecondUser().getId().equals(sender.getId());
+                        chat.getFirstParticipant().getId()  == sender.getId()||
+                        chat.getSecondParticipant().getId() == sender.getId();
 
         if (!isParticipant) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User is not a participant of the chat");
@@ -110,7 +113,7 @@ public class ChatServiceImpl implements ChatService {
         MyUser user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
-        List<Chat> chats = chatRepository.findAllByParticipants(user);
+        List<Chat> chats = chatRepository.findAllByFirstParticipantOrSecondParticipant(user, user);
         return chats.stream()
                 .map(chatMapper::toDto)
                 .collect(Collectors.toList());
