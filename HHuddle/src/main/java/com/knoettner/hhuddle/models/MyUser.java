@@ -37,10 +37,10 @@ public class MyUser {
     Set<ChatMessage> messages;
 
     //unklar ob chatParticipants so stimmt
-    @OneToMany(mappedBy =  "firstUser")
-    Set<Chat> first_participantInChat;// nach dem User schuaen in welchen Chats er ist
+    @OneToMany(mappedBy =  "firstParticipant")
+    Set<Chat> first_participantInChat;// nach dem User schauen in welchen Chats er ist
 
-    @OneToMany (mappedBy = "secondUser")
+    @OneToMany (mappedBy = "secondParticipant")
     Set<Chat> second_participantInChat;
 
     @OneToMany(mappedBy =  "user")
