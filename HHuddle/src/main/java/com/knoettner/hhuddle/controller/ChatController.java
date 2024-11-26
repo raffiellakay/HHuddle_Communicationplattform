@@ -11,7 +11,7 @@ import com.knoettner.hhuddle.service.ChatService;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/chat")
+@RequestMapping("api/chats")
 
 public class ChatController {
 
