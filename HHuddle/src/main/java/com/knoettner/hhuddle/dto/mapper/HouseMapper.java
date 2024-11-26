@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 public class HouseMapper {
     @Autowired
     BasicUserMapper basicUserMapper;
+
+    @Autowired
     FacilityMapper facilityMapper;
 
     public House toEntity(HouseDto houseDto) {
