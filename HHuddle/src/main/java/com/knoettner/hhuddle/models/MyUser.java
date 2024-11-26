@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 @Entity
@@ -37,10 +38,10 @@ public class MyUser {
 
     //unklar ob chatParticipants so stimmt
     @OneToMany(mappedBy =  "firstUser")
-    Set<ChatParticipants> first_participantInChat;
+    Set<Chat> first_participantInChat;// nach dem User schuaen in welchen Chats er ist
 
     @OneToMany (mappedBy = "secondUser")
-    Set<ChatParticipants> second_participantInChat;
+    Set<Chat> second_participantInChat;
 
     @OneToMany(mappedBy =  "user")
     Set<UserPost> userPosts;
