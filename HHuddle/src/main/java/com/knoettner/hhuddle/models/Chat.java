@@ -26,11 +26,11 @@ public class Chat {
     Set<ChatMessage> messages;
 
    @ManyToOne
-   @JoinColumn( name = "myUser_id_FK")
+   @JoinColumn( name = "first_participant_id")
     private MyUser firstParticipant;
 
     @ManyToOne
-    @JoinColumn( name = "myUser_id_FK")
+    @JoinColumn( name = "second_participant_id")
     private MyUser secondParticipant;
 
 
