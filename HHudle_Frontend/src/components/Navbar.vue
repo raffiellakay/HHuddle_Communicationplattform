@@ -12,7 +12,7 @@ const showDrawer = ref(false);
 //Zustand des aktiven Items im Untermenü von Boards 
 const activeItem = ref(null);
 
-//Liste an Unteritems
+//Liste an Unteritems in Array
 const items = ref([
   "Gemeinschaftsräume",
   "Schwarzes Brett",
@@ -26,6 +26,7 @@ const toggleDrawer = () => {
   showDrawer.value = !showDrawer.value;
 }
 
+//Ruft setActiveItem Methode auf, und übernimmt item als Parameter, setzt den value von activeItem auf das übergebene item
 const setActiveItem = (item) => {
   activeItem.value = item;
 }
