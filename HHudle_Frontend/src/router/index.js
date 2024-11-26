@@ -20,9 +20,11 @@ const routes = [
         path: '/board',
         name: 'Board',
         component: BoardView,
-      }
+      },
+      
     ],
   },
+
   {
     path: '/login',
     name: 'Login',
