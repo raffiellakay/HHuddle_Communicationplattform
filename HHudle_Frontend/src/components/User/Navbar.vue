@@ -10,6 +10,7 @@ const router = useRouter()
 //showDrawer Konstante ist per default auf false
 const showDrawer = ref(false);
 
+
 //Zustand des aktiven Items im Untermenü von Boards 
 const activeItem = ref(null);
 
@@ -51,7 +52,12 @@ const setActiveItem = (item) => {
     <v-app-bar-title>Menü</v-app-bar-title>
   </v-app-bar>
   <!--Linkes Seitenmenü ausklappbar-->
-  <v-navigation-drawer v-if="showDrawer" style="width:100%" app color="grey-darken-2" temporary width="100%">
+  <v-navigation-drawer 
+    v-if="showDrawer" 
+    app
+    :style="{ width: width }" 
+    color="grey-darken-2" 
+    class="custom-drawer">
 
 
 
@@ -88,4 +94,30 @@ const setActiveItem = (item) => {
 </template>
 
 
-<style scoped></style>
+<style scoped>
+
+.v-navigation-drawer {
+  padding: 0; 
+  margin: 0;
+}
+
+/*
+.custom-drawer {
+  width: 100%;
+  max-width: 100%;
+}*/
+
+@media (min-width: 1024px) {
+  .custom-drawer {
+    width: 30%;
+  }
+}
+
+@media (max-width: 400px) {
+  .custom-drawer {
+    width: 100%;
+    transform: none !important;
+  }
+}
+
+</style>

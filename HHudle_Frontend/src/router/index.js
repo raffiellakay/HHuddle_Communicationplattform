@@ -1,6 +1,6 @@
 // src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeLayout from '../layouts/HomeLayout.vue';
+import HomeLayout from '@/layouts/User/HomeLayout.vue';
 import LoginLayout from '../layouts/LoginLayout.vue';
 import HomeView from '../views/User/HomeView.vue';
 import BoardLayout from '../layouts/User/BoardLayout.vue';
