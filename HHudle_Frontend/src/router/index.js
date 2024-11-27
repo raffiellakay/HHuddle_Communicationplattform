@@ -2,21 +2,16 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeLayout from '../layouts/HomeLayout.vue';
 import LoginLayout from '../layouts/LoginLayout.vue';
-import HomeView from '../views/HomeView.vue';
-import BoardLayout from '../layouts/BoardLayout.vue';
-import BlackBoardView from '@/views/BlackBoardView.vue';
-import CommonRoomsView from '@/views/CommonRoomsView.vue';
-import PackageFinderView from '@/views/PackageFinderView.vue';
-import SearchAndFindView from '@/views/SearchAndFindView.vue';
+import HomeView from '../views/User/HomeView.vue';
+import BoardLayout from '../layouts/User/BoardLayout.vue';
+import BlackBoardView from '@/views/User/BlackBoardView.vue';
+import CommonRoomsView from '@/views/User/CommonRoomsView.vue';
+import PackageFinderView from '@/views/User/PackageFinderView.vue';
+import SearchAndFindView from '@/views/User/SearchAndFindView.vue';
 
 
 const routes = [
-  { 
-    path: '/',
-    name: 'login',
-    path: LoginLayout
-  },
-
+  
   {
     path: '/',
     name: 'Home',
@@ -26,6 +21,7 @@ const routes = [
         path: '/home',
         name: 'Home',
         component: HomeView,
+      }]
       },
       {
         path: '/board',
@@ -48,16 +44,17 @@ const routes = [
             path:'/search&find',
             component: SearchAndFindView,
           }
-
         ]
-      }, 
-    ],
-  },
+        },
+    ]
+ 
+
+  
 
 
 
   // Weitere Routen können hier hinzugefügt werden
-];
+
 
 const router = createRouter({
   history: createWebHistory(),

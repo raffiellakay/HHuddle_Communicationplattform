@@ -3,6 +3,6 @@
 </script>
 
 <template>
-
+Ich bin das schwarze Brett
     
 </template>

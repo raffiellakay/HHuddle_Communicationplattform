@@ -1,7 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-import CommonRoomsView from '@/views/CommonRoomsView.vue';
+import HomeView from '@/views/User/HomeView.vue';
 
 
 
@@ -16,10 +16,10 @@ const activeItem = ref(null);
 
 //Liste an Unteritems in Array
 const items = ref([
-  name: "Gemeinschaftsräume", route: CommonRoomsView,
-  "Schwarzes Brett",
-  "Paketfinder",
-  "Suche - Biete - Tausche",
+  {title: "Gemeinschaftsräume", route: "/commonrooms"},
+  {title:"Schwarzes Brett", route: "/blackboard"},
+  {title: "Paketfinder", route: "/packagefinder"},
+  {title: "Suche - Biete - Tausche", route: "/search&find"}
 ]);
 
 
@@ -28,10 +28,15 @@ const toggleDrawer = () => {
   showDrawer.value = !showDrawer.value;
 }
 
-//Ruft setActiveItem Methode auf, und übernimmt item als Parameter, setzt den value von activeItem auf das übergebene item
+//Ruft setActiveItem Methode auf, und übernimmt item als Parameter, setzt den value von activeItem auf den Titel des übergebenen Items.
+//Navigiert danach zur entsprechenden route des Items auf @click
 const setActiveItem = (item) => {
-  activeItem.value = item;
+  activeItem.value = item.title;
+  router.push(item.route);
+  showDrawer.value = false;
 }
+
+
 
 
 </script>
@@ -53,7 +58,11 @@ const setActiveItem = (item) => {
 
     <!-- Inhalte des Navigation Drawers -->
     <v-list>
-      <v-list-item>Startseite</v-list-item>
+      <v-list-item :to="{ path: '/home'}">
+        <v-list-item-title>Startseite</v-list-item-title>
+      </v-list-item>
+
+
       <v-list-group value="Boards">
         <template v-slot:activator="{props}">
         <v-list-item v-bind="props" title="Boards"></v-list-item>
@@ -62,11 +71,10 @@ const setActiveItem = (item) => {
 
         <template v-slot>
           <v-list-item v-for="item in items"
-          :key="item"
-          :title="item"
-          :class="{'v-list-item--active': activeItem === item}"
-          @click="setActiveItem(item)"
-          v-bind="props">
+          :key="item.title"
+          :title="item.title"
+          :class="{'v-list-item--active': activeItem === item.title}"
+          @click="setActiveItem(item)">
         </v-list-item>
           
         </template>
