@@ -85,7 +85,7 @@ public class PostServiceImpl implements PostService {
         Post EventPost = new Post();
         EventPost.setTitle(post.getTitle());
         EventPost.setText(post.getText());
-        EventPost.setCategory(EXCHANGE);
+        EventPost.setCategory(EVENTS);
         EventPost.setTimestamp(LocalDateTime.now());
         EventPost.setPhoto(post.getPhoto());
         EventPost.setStarttime(post.getStarttime());
@@ -96,6 +96,34 @@ public class PostServiceImpl implements PostService {
         return post;
 
     }
+@Override
+
+public PostDto updatePost(Long postId, PostDto updatedPost) {
+    Post existingPost = postRepository.findById(postId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
+
+    existingPost.setTitle(updatedPost.getTitle());
+    existingPost.setText(updatedPost.getText());
+    existingPost.setTimestamp(updatedPost.getTimestamp());
+
+    switch (existingPost.getCategory()) {
+        case EVENTS:
+            existingPost.setPhoto(updatedPost.getPhoto());
+            existingPost.setStarttime(updatedPost.getStarttime());
+            existingPost.setEndtime(updatedPost.getEndtime());
+
+            break;
+        case EXCHANGE:
+            existingPost.setPhoto(updatedPost.getPhoto());
+
+            break;
+
+            case
+
+    }
+
+    
+
     
 
     @Override
