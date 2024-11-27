@@ -1,9 +1,6 @@
 <script setup>
 
-import Navbar from '../components/Admin/Navbar.vue';
-import { useRouter } from 'vue-router';
-
-const router = useRouter();
+import Navbar from '@/components/Admin/Navbar.vue';
 
 </script>
 
