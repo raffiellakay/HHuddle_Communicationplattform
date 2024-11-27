@@ -6,6 +6,7 @@ import com.knoettner.hhuddle.UserPostKey;
 import com.knoettner.hhuddle.dto.BasicUserDto;
 import com.knoettner.hhuddle.dto.PostDto;
 import com.knoettner.hhuddle.models.Facility;
+import com.knoettner.hhuddle.models.MyUser;
 import com.knoettner.hhuddle.models.Post;
 import com.knoettner.hhuddle.models.UserPost;
 import com.knoettner.hhuddle.repository.FacilityRepository;
@@ -22,6 +23,9 @@ public class PostMapper {
 
     @Autowired
     UserPostRepository userPostRepository;
+
+    @Autowired
+    BasicUserMapper basicUserMapper;
 
     public PostDto toDto (Post post) {
         PostDto postDto = new PostDto();
@@ -49,8 +53,8 @@ public class PostMapper {
 
         if (post.getUserPost() != null) {
             postDto.setBoardId(post.getUserPost().getBoard().getId());
-            // TODO: map user to basicuserdto
-            BasicUserDto basicUserDto = new BasicUserDto();
+            MyUser user = post.getUserPost().getUser();
+            BasicUserDto basicUserDto = basicUserMapper.toDto(user);
             postDto.setUser(basicUserDto);
         }
 
@@ -84,8 +88,8 @@ public class PostMapper {
 
         }
         if (postdto.getId() != null && postdto.getUser() != null && postdto.getBoardId() != null) {
-            // TODO: change 1L to correct userId
-            UserPostKey userPostKey = new UserPostKey(1L, postdto.getId(), postdto.getBoardId());
+            Long userId = postdto.getUser().getId();
+            UserPostKey userPostKey = new UserPostKey(postdto.getBoardId(),userId, postdto.getId());
             Optional<UserPost> maybeUserPosts = userPostRepository.findById(userPostKey);
             if (maybeUserPosts.isPresent()) {
                 post.setUserPost(maybeUserPosts.get());
