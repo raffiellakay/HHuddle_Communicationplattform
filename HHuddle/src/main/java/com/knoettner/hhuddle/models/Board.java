@@ -26,6 +26,4 @@ public class Board {
 
     @OneToMany(mappedBy = "board")
     Set<UserPost> userPosts;
-
-
 }

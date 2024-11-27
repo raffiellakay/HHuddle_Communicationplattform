@@ -26,7 +26,8 @@ public class Post {
     private Category category;
     @Column(nullable = false)
     private LocalDateTime timestamp;
-
+    @OneToOne(mappedBy =  "post")
+    private UserPost userPost;
     //optionale Felder
 
     private boolean isAnonymous;
@@ -40,6 +41,5 @@ public class Post {
     @ManyToOne
     private Facility facility;
 
-    @OneToOne(mappedBy =  "post")
-    private UserPost userPost;
+
 }

@@ -42,7 +42,7 @@ public class MyUser {
     @OneToMany (mappedBy = "secondParticipant")
     Set<Chat> second_participantInChat;
 
-    @OneToMany(mappedBy =  "user")
+    @OneToMany(mappedBy = "user")
     Set<UserPost> userPosts;
 
 
