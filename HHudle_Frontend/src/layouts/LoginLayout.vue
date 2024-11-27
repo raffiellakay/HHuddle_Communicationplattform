@@ -8,7 +8,7 @@ const errorMessage = ref('');
 
 const router = useRouter();
 const handleLogin = () => {
-  router.push('/home');
+  router.push('/user/home');
 }
 
 

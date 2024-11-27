@@ -1,23 +1,27 @@
 // src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeLayout from '../layouts/HomeLayout.vue';
+import UserHomeLayout from '../layouts/User/UserHomeLayout.vue';
 import LoginLayout from '../layouts/LoginLayout.vue';
-import HomeView from '../views/HomeView.vue';
-import BoardView from '../views/BoardView.vue';
+import AdminHomeLayout from '../layouts/Admin/AdminHomeLayout.vue'; 
+
+
+import UserHomeView from '../views/User/UserHomeView.vue';
+import BoardView from '../views/User/BoardView.vue';
+import AdminHomeView from '../views/Admin/AdminHomeView.vue';
 
 const routes = [
   {
-    path: '',
+    path: '/user',
     name: 'Home',
-    component: HomeLayout,
+    component: UserHomeLayout,
     children: [
       {
-        path: '/home',
-        name: 'Home',
-        component: HomeView,
+        path: 'home',
+        name: 'UserHome',  //Achtung! Name muss unique sein
+        component: UserHomeView,
       },
       {
-        path: '/board',
+        path: 'board',
         name: 'Board',
         component: BoardView,
       },
@@ -25,10 +29,25 @@ const routes = [
     ],
   },
   {
+    path: '/admin',
+    name: 'admin',
+    component: AdminHomeLayout,
+    children: [
+      {
+        path: '/home',
+        name: 'AdminHome',
+        component: AdminHomeView,
+      },
+     
+    ],
+  },
+  {
     path: '/',
     name: 'Login',
     component: LoginLayout,
-  }
+  },
+ 
+
 
   // Weitere Routen können hier hinzugefügt werden
 ];
