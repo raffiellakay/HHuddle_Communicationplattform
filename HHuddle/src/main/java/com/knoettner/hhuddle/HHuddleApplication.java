@@ -24,7 +24,7 @@ public class HHuddleApplication implements CommandLineRunner  {
         Set<Role> roleSet = new HashSet<>();
         roleSet.add(role);
         MyUser user = new MyUser(null, "test", "test@test.at", "Top_1", roleSet, null, null, null, null,  house );
-
+        Post post = new Post();
 
     }
 
