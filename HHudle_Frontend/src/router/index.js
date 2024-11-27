@@ -23,7 +23,8 @@ const routes = [
         component: HomeView,
       }]
       },
-      {
+
+  {
         path: '/board',
         name: 'Board',
         component: BoardLayout,

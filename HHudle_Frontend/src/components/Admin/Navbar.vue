@@ -16,7 +16,7 @@ const activeItem = ref(null);
 //Liste an Unteritems in Array
 const items = ref([
   {title: "Gemeinschaftsräume", route: "/commonrooms"},
-  {title:"Schwarzes Brett", route: "/blackboard"},
+  {title: "Schwarzes Brett", route: "/blackboard"},
   {title: "Paketfinder", route: "/packagefinder"},
   {title: "Suche - Biete - Tausche", route: "/search&find"}
 ]);
@@ -57,28 +57,9 @@ const setActiveItem = (item) => {
 
     <!-- Inhalte des Navigation Drawers -->
     <v-list>
-      <v-list-item :to="{ path: '/home'}">
-        <v-list-item-title>Startseite</v-list-item-title>
-      </v-list-item>
-
-
-      <v-list-group value="Boards">
-        <template v-slot:activator="{props}">
-        <v-list-item v-bind="props" title="Boards"></v-list-item>
-        </template>
-
-
-        <template v-slot>
-          <v-list-item v-for="item in items"
-          :key="item.title"
-          :title="item.title"
-          :class="{'v-list-item--active': activeItem === item.title}"
-          @click="setActiveItem(item)">
-        </v-list-item>
-          
-        </template>
-      </v-list-group>
-      <v-list-item>Chat</v-list-item>
+      <v-list-item :to="{ path: '/admin/houses'}">
+        <v-list-item-title>Häuser</v-list-item-title>
+      </v-list-item>    
       <v-list-item>Über Uns</v-list-item>
       <v-list-item>Kontakt</v-list-item>
 
