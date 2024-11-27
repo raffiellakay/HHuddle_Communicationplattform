@@ -49,6 +49,9 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     BoardRepository boardRepository;
 
+    @Autowired
+    UserPostRepository userPostRepository;
+
     @Override
     public HouseDto createHouse(HouseDto house) {
         House realHouse = houseMapper.toEntity(house);
@@ -83,8 +86,8 @@ public class AdminServiceImpl implements AdminService {
         houseRepository.deleteById(id);
     }
 
-    @Override
-    public void createBoardsForHouse(Long houseId) {
+  //creating 5 Boards for each house
+   private void createBoardsForHouse(Long houseId) {
         Optional<House> maybeHouse = houseRepository.findById(houseId);
         if (maybeHouse.isPresent()) {
             House realHouse = maybeHouse.get();
@@ -129,6 +132,18 @@ public class AdminServiceImpl implements AdminService {
         newAdminPost.setTimestamp(LocalDateTime.now());
         postRepository.save(newAdminPost);
         post.setId(newAdminPost.getId());
+        Long userId = post.getUser().getId();
+        Long boardId = post.getBoardId();
+        Long postId = post.getId();
+        UserPostKey userPostKey = new UserPostKey(boardId, userId, postId);
+
+        Optional<Board> maybeBoard = boardRepository.findById(boardId);
+        Optional<MyUser> maybeUser = userRepository.findById(userId);
+
+        if(maybeBoard.isPresent() && maybeUser.isPresent()) {
+            UserPost userPost = new UserPost(userPostKey,maybeBoard.get(), maybeUser.get(), newAdminPost);
+            userPostRepository.save(userPost);
+        }
         return post;
     }
 
@@ -159,7 +174,7 @@ public class AdminServiceImpl implements AdminService {
         return facility;
     }
 
-
+//need ID as second parameter??
     @Override
     public FacilityDto updateFacility( FacilityDto facility) {
         facilityRepository.save(facilityMapper.toEntity(facility));
@@ -204,7 +219,7 @@ public class AdminServiceImpl implements AdminService {
         return userDto;
     }
 
-    //Enough?
+
     @Override
     public MyUserDto updateUser(MyUserDto user) {
         userRepository.save(userMapper.toEntity(user));
