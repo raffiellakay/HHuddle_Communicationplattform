@@ -3,15 +3,14 @@ package com.knoettner.hhuddle.models;
 
 import com.knoettner.hhuddle.Category;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 

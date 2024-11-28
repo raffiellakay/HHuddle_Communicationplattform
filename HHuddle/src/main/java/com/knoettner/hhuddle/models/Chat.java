@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.Set;
 
 
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity

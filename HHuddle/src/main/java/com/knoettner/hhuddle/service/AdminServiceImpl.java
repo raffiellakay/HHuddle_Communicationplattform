@@ -10,10 +10,7 @@ import com.knoettner.hhuddle.dto.mapper.HouseMapper;
 import com.knoettner.hhuddle.dto.mapper.MyUserMapper;
 import com.knoettner.hhuddle.dto.mapper.PostMapper;
 import com.knoettner.hhuddle.models.*;
-import com.knoettner.hhuddle.repository.FacilityRepository;
-import com.knoettner.hhuddle.repository.HouseRepository;
-import com.knoettner.hhuddle.repository.PostRepository;
-import com.knoettner.hhuddle.repository.UserRepository;
+import com.knoettner.hhuddle.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,13 +46,27 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    BoardRepository boardRepository;
+
     @Override
     public HouseDto createHouse(HouseDto house) {
         House realHouse = houseMapper.toEntity(house);
-        house.setId(realHouse.getId());
         houseRepository.save(realHouse);
+        house.setId(realHouse.getId());
+        createFacilityForHouse(realHouse);
         createBoardsForHouse(realHouse.getId());
         return house;
+    }
+
+    private void createFacilityForHouse(House house) {
+        Optional<House> maybeHouse = houseRepository.findById(house.getId());
+        if (maybeHouse.isPresent()) {
+            for (Facility facility : house.getFacilities()) {
+                facility.setHouse(maybeHouse.get());
+                facilityRepository.save(facility);
+            }
+        }
     }
 
     //wie bekomme ich admin/userid?
@@ -88,8 +99,7 @@ public class AdminServiceImpl implements AdminService {
             boards.add(Package);
             boards.add(Events);
             boards.add(Exchange);
-            realHouse.setBoards(boards);
-            houseRepository.save(realHouse);
+            boardRepository.saveAll(boards);
         }
 
     }

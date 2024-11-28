@@ -2,11 +2,10 @@ package com.knoettner.hhuddle.models;
 
 import com.knoettner.hhuddle.UserPostKey;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 
