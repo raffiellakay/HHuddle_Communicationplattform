@@ -22,7 +22,7 @@ public interface AdminService {
 
 //Posting for Admins
     PostDto createAdminPost(PostDto post);
-    void deleteAdminPost(UserPostKey id);
+    void deleteAdminPost(Long postId);
     Set<PostDto> getAdminPostsByHouseId(Long houseId);
   //only if needed
     // PostDto updateAdminPost(Long id, PostDto post);

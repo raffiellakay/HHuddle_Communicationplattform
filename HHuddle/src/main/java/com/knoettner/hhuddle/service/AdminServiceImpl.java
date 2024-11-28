@@ -13,6 +13,7 @@ import com.knoettner.hhuddle.models.*;
 import com.knoettner.hhuddle.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -51,6 +52,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     UserPostRepository userPostRepository;
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Override
     public HouseDto createHouse(HouseDto house) {
@@ -72,18 +75,44 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
-    //wie bekomme ich admin/userid?
+
     @Override
     public Set<HouseDto> getAllHouses() {
+        List<House> allHouses = houseRepository.findAll();
+        Set<HouseDto> houseSet = new HashSet<>();
+        for (House currentHouse : allHouses) {
+            HouseDto houseDto = houseMapper.todDto(currentHouse);
+            houseSet.add(houseDto);
+        }
 
-
-        return Set.of();
+        return houseSet;
     }
 
     @Override
+    @Transactional
     public void deleteHouseById(Long id) {
+        Optional<House> maybeHouse = houseRepository.findById(id);
+        if (maybeHouse.isPresent()) {
+            House house = maybeHouse.get();
+            List<Post> allPosts = postRepository.findAll();
+            for (Board currentBoard : house.getBoards()) {
+                Set<UserPost> currentUserPosts = currentBoard.getUserPosts();
+                for (UserPost currentPost : currentUserPosts) {
+                    UserPostKey userPostId = currentPost.getId();
+                    userPostRepository.deleteById(userPostId);
+                    postRepository.deleteById(userPostId.getPostId());
+                }
+                boardRepository.deleteById(currentBoard.getId());
+            }
+            for (Facility facility : house.getFacilities()) {
+               facilityRepository.deleteById(facility.getId());
+            }
+            for (MyUser currentResident : house.getResidents()) {
+                userRepository.deleteById(currentResident.getId());
+            }
 
-        houseRepository.deleteById(id);
+            houseRepository.deleteById(id);
+        }
     }
 
   //creating 5 Boards for each house
@@ -148,8 +177,12 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void deleteAdminPost(UserPostKey id) {
-        postRepository.deleteById(id.getPostId());
+    public void deleteAdminPost(Long postId) {
+        Optional<Post> maybePost = postRepository.findById(postId);
+        if (maybePost.isPresent()) {
+            userPostRepository.deleteById(maybePost.get().getUserPost().getId());
+            postRepository.deleteById(postId);
+        }
     }
 
     @Override
@@ -204,11 +237,11 @@ public class AdminServiceImpl implements AdminService {
         MyUser user = userMapper.toEntity(userDto);
         //Random PW
         user.setPassword(UUID.randomUUID().toString());
-        //Role = Resident
-       // Role resident = new Role(1L, RESIDENT, new HashSet<>());
-        //Set<Role> roleSet = new HashSet<>();
-        //roleSet.add(resident);
-        //user.setRoles(roleSet);
+      //  Role = Resident;
+        Set<Role> roleSet = new HashSet<>();
+        Optional<Role> maybeResident = roleRepository.findById(1L);
+        roleSet.add(maybeResident.get());
+        user.setRoles(roleSet);
         //HashSets for the remaining fields
         user.setUserPosts(new HashSet<>());
         user.setSecond_participantInChat(new HashSet<>());
@@ -222,7 +255,13 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public MyUserDto updateUser(MyUserDto user) {
-        userRepository.save(userMapper.toEntity(user));
+        Optional<MyUser> maybeUser = userRepository.findById(user.getId());
+        if(maybeUser.isPresent()) {
+            MyUser userEntity = maybeUser.get();
+            userEntity.setMail(user.getMail());
+            userEntity.setPassword(UUID.randomUUID().toString());
+            userRepository.save(userEntity);
+        }
         return user;
     }
 }
