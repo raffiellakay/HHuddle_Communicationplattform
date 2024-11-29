@@ -55,7 +55,7 @@ public class PostServiceImpl implements PostService {
         packagePost.setText(post.getText());
         packagePost.setCategory(PACKAGE);
         packagePost.setTimestamp(LocalDateTime.now());
-        packagePost.setPhoto(post.getPhoto());
+        packagePost.setPathToPhoto(post.getPhoto());
         postRepository.save(packagePost);
         packagePost.setId(packagePost.getId());
 
@@ -87,7 +87,7 @@ public class PostServiceImpl implements PostService {
         EventPost.setText(post.getText());
         EventPost.setCategory(EVENTS);
         EventPost.setTimestamp(LocalDateTime.now());
-        EventPost.setPhoto(post.getPhoto());
+        EventPost.setPathToPhoto(post.getPhoto());
         EventPost.setStarttime(post.getStarttime());
         EventPost.setEndtime(post.getEndtime());
         postRepository.save(EventPost);
@@ -96,32 +96,33 @@ public class PostServiceImpl implements PostService {
         return post;
 
     }
-@Override
 
-public PostDto updatePost(Long postId, PostDto updatedPost) {
-    Post existingPost = postRepository.findById(postId)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
+    @Override
+    public PostDto updatePost(Long postId, PostDto updatedPost) {
+        Post existingPost = postRepository.findById(postId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
 
-    existingPost.setTitle(updatedPost.getTitle());
-    existingPost.setText(updatedPost.getText());
-    existingPost.setTimestamp(updatedPost.getTimestamp());
+        existingPost.setTitle(updatedPost.getTitle());
+        existingPost.setText(updatedPost.getText());
+        existingPost.setTimestamp(updatedPost.getTimestamp());
 
-    switch (existingPost.getCategory()) {
-        case EVENTS:
-            existingPost.setPhoto(updatedPost.getPhoto());
-            existingPost.setStarttime(updatedPost.getStarttime());
-            existingPost.setEndtime(updatedPost.getEndtime());
+        switch (existingPost.getCategory()) {
+            case EVENTS:
+                existingPost.setPhoto(updatedPost.getPhoto());
+                existingPost.setStarttime(updatedPost.getStarttime());
+                existingPost.setEndtime(updatedPost.getEndtime());
 
-            break;
-        case EXCHANGE:
-            existingPost.setPhoto(updatedPost.getPhoto());
+                break;
+            case EXCHANGE:
+                existingPost.setPhoto(updatedPost.getPhoto());
 
-            break;
+                break;
 
             case
 
+        }
+        return null;
     }
-
     
 
     
@@ -161,7 +162,7 @@ public PostDto updatePost(Long postId, PostDto updatedPost) {
     }
 
 
-    }
+}
 
 
 

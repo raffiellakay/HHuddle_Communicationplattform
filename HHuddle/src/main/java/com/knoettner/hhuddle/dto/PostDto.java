@@ -29,7 +29,7 @@ public class PostDto {
     //optionale Felder
 
     private boolean isAnonymous;
-    private java.sql.Blob photo;
+    private byte[] photo;
     private LocalDateTime starttime;
     private LocalDateTime endtime;
     private boolean isPrivate;
