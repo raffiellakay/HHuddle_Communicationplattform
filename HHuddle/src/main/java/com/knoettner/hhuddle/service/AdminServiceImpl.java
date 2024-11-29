@@ -89,7 +89,6 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    @Transactional
     public void deleteHouseById(Long id) {
         Optional<House> maybeHouse = houseRepository.findById(id);
         if (maybeHouse.isPresent()) {
@@ -252,12 +251,13 @@ public class AdminServiceImpl implements AdminService {
         return userDto;
     }
 
-
+//whole userDTO bc update is a bttn next to existing user to change mail if necessary
     @Override
     public MyUserDto updateUser(MyUserDto user) {
         Optional<MyUser> maybeUser = userRepository.findById(user.getId());
         if(maybeUser.isPresent()) {
             MyUser userEntity = maybeUser.get();
+            userEntity.setId(user.getId());
             userEntity.setMail(user.getMail());
             userEntity.setPassword(UUID.randomUUID().toString());
             userRepository.save(userEntity);

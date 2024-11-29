@@ -44,24 +44,7 @@ public class HHuddleApplication implements CommandLineRunner  {
             roleRepository.save(pManagement);
         }
 
-//updateFacility überprüfen!!
 
-        //Testing Admin Service
-        // createUser done
-        //createAdminPost done
-        //create new Facility done
-        //UpdateFacility done
-        //deleteFacility done
-        //createHouse done
-        //get AdminBoardIDbyHouseID done
-        //delete Post done - with extra generated USERKEYPOST
-        //getAdminPostsByHouseId done
-        //delteHouseById done
-
-
-
-        //getPosts not working USERKEYPOST"?
-        //getAllFacilityByHouseID - not working, gives empty Set
 
 
 
@@ -75,23 +58,48 @@ public class HHuddleApplication implements CommandLineRunner  {
 
         System.out.println(adminService.getAllFacilitiesByHouseId(1052L));
 */
-        //HouseDto house = new HouseDto(null, "Teststraße 12", new HashSet<>(), new HashSet<>());
-        //adminService.createHouse(house);
+
       // MyUserDto user2 = new MyUserDto(null, "ffff@tttt.at", "Top_30",1L );
        //adminService.createUser(user2);
 
       //BasicUserDto user1 = new BasicUserDto(1L, "Top_30");
-        //PostDto post = new PostDto(null,"Title", "Text", FRONTPAGE.toString(), LocalDateTime.now(), false, null, null, null, false, null, user1, 5L);
-       //adminService.createAdminPost(post);
+
 
 
      // adminService.deleteAdminPost(2L);
 
         //adminService.deleteHouseById(1L);
-        MyUserDto user2 = new MyUserDto(null, "ffff@tttt.at", "Top_30",1L );
-        MyUserDto user = adminService.createUser(user2);
 
-        adminService.updateUser(user);
+       //
 
+        //MyUserDto user2 = new MyUserDto(null, "zug@test.at", "Top_119",1L );
+        //MyUserDto user = adminService.createUser(user2);
+        //user.setMail("zug@budapest.at");
+        //adminService.updateUser(user);
+
+       // HouseDto house = new HouseDto(null, "Nebengasse 202", new HashSet<>(), new HashSet<>());
+       // adminService.createHouse(house);
+
+        //HouseDto house2 = new HouseDto(null, "Wiener Straße 9", new HashSet<>(), new HashSet<>());
+        //adminService.createHouse(house2);
+        //MyUserDto user2 = new MyUserDto(null, "resident122@gmx.at", "Top_99",2L );
+        //MyUserDto user = adminService.createUser(user2);
+
+      //  FacilityDto facility = new FacilityDto(null, "Pool", "3 bahnen a 25m", 2L, new HashSet<>());
+        //adminService.createFacility(facility);
+     //   FacilityDto facilityDto  = new FacilityDto(null, "Gemeinschaftsraum ", "Raum mit Küchenzeile und Toilette",2L, new HashSet<>());
+       //FacilityDto updateFacility = adminService.createFacility(facilityDto);
+        //updateFacility.setType("Gemeinschaftsraum Green");
+        //adminService.updateFacility(updateFacility);
+        //System.out.println(adminService.getAllFacilitiesByHouseId(2L));
+        //System.out.println(adminService.getAllHouses());
+        //adminService.deleteHouseById(102L);
+        //System.out.println(adminService.getAllHouses());
+       // System.out.println(adminService.getAdminBoardIdByHouseId(2L));
+     //   BasicUserDto user = new BasicUserDto(302L, "Top_04");
+       // PostDto post = new PostDto(null,"Test2", "Test2", FRONTPAGE.toString(), LocalDateTime.now(), false, null, null, null, false, null, user , 56L);
+       // adminService.createAdminPost(post);
+//adminService.getAdminPostsByHouseId(2L);
+adminService.deleteAdminPost(302L);
     }
 }
