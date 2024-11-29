@@ -16,13 +16,13 @@ public interface AdminService {
 //only if needed
 //    HouseDto updateHouse(Long id, HouseDto house);
 
-//Boards for Houses - when House created necessary to create all 5 Boards for the house
-    void createBoardsForHouse(Long houseId);
+
+
     Long getAdminBoardIdByHouseId(Long houseId);
 
 //Posting for Admins
     PostDto createAdminPost(PostDto post);
-    void deleteAdminPost(UserPostKey id);
+    void deleteAdminPost(Long postId);
     Set<PostDto> getAdminPostsByHouseId(Long houseId);
   //only if needed
     // PostDto updateAdminPost(Long id, PostDto post);

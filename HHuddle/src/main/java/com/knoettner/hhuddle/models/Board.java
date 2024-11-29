@@ -24,8 +24,6 @@ public class Board {
     @JoinColumn( name = "house_id_FK")
     private House house;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER)
     Set<UserPost> userPosts;
-
-
 }
