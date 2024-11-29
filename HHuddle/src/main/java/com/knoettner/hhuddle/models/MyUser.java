@@ -32,17 +32,17 @@ public class MyUser {
     )
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     Set<ChatMessage> messages;
 
     //unklar ob chatParticipants so stimmt
-    @OneToMany(mappedBy =  "firstParticipant")
+    @OneToMany(mappedBy =  "firstParticipant", fetch = FetchType.EAGER)
     Set<Chat> first_participantInChat;// nach dem User schauen in welchen Chats er ist
 
-    @OneToMany (mappedBy = "secondParticipant")
+    @OneToMany (mappedBy = "secondParticipant", fetch = FetchType.EAGER)
     Set<Chat> second_participantInChat;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     Set<UserPost> userPosts;
 
 

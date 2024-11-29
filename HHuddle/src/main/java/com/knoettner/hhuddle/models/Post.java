@@ -26,7 +26,7 @@ public class Post {
     private Category category;
     @Column(nullable = false)
     private LocalDateTime timestamp;
-    @OneToOne(mappedBy =  "post")
+    @OneToOne(mappedBy =  "post", fetch = FetchType.EAGER)
     private UserPost userPost;
     //optionale Felder
 

@@ -23,7 +23,7 @@ public class Chat {
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
-    @OneToMany(mappedBy = "chat")
+    @OneToMany(mappedBy = "chat", fetch = FetchType.EAGER)
     Set<ChatMessage> messages;
 
    @ManyToOne
