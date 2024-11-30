@@ -5,5 +5,5 @@
 
 
 <template>
-Ich bin die Homeview
+Ich bin die User Homeview
 </template>

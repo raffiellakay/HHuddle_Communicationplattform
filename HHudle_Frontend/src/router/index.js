@@ -2,15 +2,15 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 
-import HomeLayout from '@/layouts/Admin/HomeLayout.vue';
-import HomeLayout from '@/layouts/User/HomeLayout.vue';
-import HomeView from '@/views/User/HomeView.vue';
+import AHomeLayout from '@/layouts/Admin/AHomeLayout.vue';
+import UHomeLayout from '@/layouts/User/UHomeLayout.vue';
+import UHomeView from '@/views/User/UHomeView.vue';
 import BoardLayout from '@/layouts/User/BoardLayout.vue';
 import CommonRoomsView from '@/views/User/CommonRoomsView.vue';
 import BlackBoardView from '@/views/User/BlackBoardView.vue';
 import PackageFinderView from '@/views/User/PackageFinderView.vue';
 import SearchAndFindView from '@/views/User/SearchAndFindView.vue';
-import HomeView from '@/views/Admin/HomeView.vue';
+import AHomeView from '@/views/Admin/AHomeView.vue';
 import LoginLayout from '@/layouts/LoginLayout.vue';
 
 
@@ -19,12 +19,12 @@ const routes = [
   {
     path: '/user',
     name: 'Home',
-    component: HomeLayout,
+    component: UHomeLayout,
     children: [
       {
         path: '/home',
         name: 'UserHome',
-        component: HomeView,
+        component: UHomeView,
       },
       {
         path: '/board',
@@ -51,13 +51,13 @@ const routes = [
     },
   {
     path: '/admin',
-    name: admin,
-    component: HomeLayout,
+    name: 'admin',
+    component: AHomeLayout,
     children: [
       {
         path: '/home',
         name: 'AdminHome',
-        component: HomeView
+        component: AHomeView
       }
     ]
 
