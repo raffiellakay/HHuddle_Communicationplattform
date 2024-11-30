@@ -1,30 +1,32 @@
 // src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
+
+
+import HomeLayout from '@/layouts/Admin/HomeLayout.vue';
 import HomeLayout from '@/layouts/User/HomeLayout.vue';
-import LoginLayout from '../layouts/LoginLayout.vue';
-import HomeView from '../views/User/HomeView.vue';
-import BoardLayout from '../layouts/User/BoardLayout.vue';
-import BlackBoardView from '@/views/User/BlackBoardView.vue';
+import HomeView from '@/views/User/HomeView.vue';
+import BoardLayout from '@/layouts/User/BoardLayout.vue';
 import CommonRoomsView from '@/views/User/CommonRoomsView.vue';
+import BlackBoardView from '@/views/User/BlackBoardView.vue';
 import PackageFinderView from '@/views/User/PackageFinderView.vue';
 import SearchAndFindView from '@/views/User/SearchAndFindView.vue';
+import HomeView from '@/views/Admin/HomeView.vue';
+import LoginLayout from '@/layouts/LoginLayout.vue';
 
 
 const routes = [
   
   {
-    path: '/',
+    path: '/user',
     name: 'Home',
     component: HomeLayout,
     children: [
       {
         path: '/home',
-        name: 'Home',
+        name: 'UserHome',
         component: HomeView,
-      }]
       },
-
-  {
+      {
         path: '/board',
         name: 'Board',
         component: BoardLayout,
@@ -44,12 +46,33 @@ const routes = [
           {
             path:'/search&find',
             component: SearchAndFindView,
-          }
-        ]
-        },
+          }]
+      }]
+    },
+  {
+    path: '/admin',
+    name: admin,
+    component: HomeLayout,
+    children: [
+      {
+        path: '/home',
+        name: 'AdminHome',
+        component: HomeView
+      }
     ]
- 
 
+  },
+
+  {
+    path: '/',
+    name: 'Login',
+    component: LoginLayout,
+  },
+  
+  
+  
+  ]
+      
   
 
 
