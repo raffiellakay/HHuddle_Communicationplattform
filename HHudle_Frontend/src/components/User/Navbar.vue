@@ -1,7 +1,8 @@
 <script setup>
-import { routerKey, useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { computed } from 'vue';
+import PostForm from '@/components/User/PostForm.vue';
 
 
 
@@ -46,11 +47,7 @@ const isBoardPage = computed(() =>{
   return boardRoutes.includes(route.path);
 })
 
-const handlePlusClick = () => {
-  console.log("Plus icon clicked!");
-  // Add your desired functionality here
-};
-
+const showForm = ref(false); 
 
 
 
@@ -68,10 +65,22 @@ const handlePlusClick = () => {
     <v-app-bar-title>Menü</v-app-bar-title>
     
     <template v-if="isBoardPage">
-      <v-btn icon @click="handlePlusClick">
+      <v-btn icon @click="showForm = true">
         <v-icon class="plus-icon"> mdi-plus-circle</v-icon>
       </v-btn>
+<!-- Öffnen der PostForm Komponent in einem Dialog -->
+   
+      <v-dialog v-model="showForm" max-width="500">
+        <template v-slot:default="{close}">
+          <PostForm @close="close"></PostForm>
+        </template>
+      
+    </v-dialog>
+
     </template>
+    
+
+
   </v-app-bar>
   <!--Linkes Seitenmenü ausklappbar-->
   <v-navigation-drawer 

@@ -2,8 +2,15 @@
 <script setup>
 
 //Form erstellt mit Hilfe von https://pablog.42web.io/vuetify-form-builder?i=1
+
+import { ref } from 'vue';
+
+
+
 const form = ref(null)
-const formSubmit = () => { };
+const formSubmit = (close) => { 
+    console.log("Form submitted!");
+    close()};
 const title = ref('')
 const startdate = ref('')
 const description = ref('')
