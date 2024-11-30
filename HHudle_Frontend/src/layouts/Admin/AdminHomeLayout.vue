@@ -7,7 +7,6 @@
 
 
 <template> 
-test test
 
 </template>
 
