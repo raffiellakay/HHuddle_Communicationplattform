@@ -19,7 +19,7 @@ const anonymouscheckbxGroup = ref([{id: '1732962203368', label: 'Anonym', value:
 ;const pictureupload = ref('')
 const eventtag = ref('')
 const eventtagGroup = ref([{id: '1732962385361', label: 'Privat', value: ''},{id: 'radioGroup-1732962390768', label: 'Öffentlich', value: ''}]);
-const postClick = () => { 2+2 };
+const postClick = () => { console.log(2+2)};
 
 </script>
 
