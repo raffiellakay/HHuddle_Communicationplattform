@@ -1,7 +1,8 @@
 package com.knoettner.hhuddle.controller;
 
 import com.knoettner.hhuddle.dto.ChatDto;
-import com.knoettner.hhuddle.dto.ChatMessageDto;
+import com.knoettner.hhuddle.dto.ChatMessageRequestDto;
+import com.knoettner.hhuddle.dto.ChatMessageResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +40,10 @@ public class ChatController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/{chatId}/send-message")
-    public ResponseEntity<ChatMessageDto> sendMessage(
-            @PathVariable Long chatId,
-            @RequestBody ChatMessageDto chatMessageDto) {
-        ChatMessageDto sentMessage = chatService.sendMessage(chatId, chatMessageDto);
+    @PostMapping("/send-message")
+    public ResponseEntity<ChatMessageResponseDto> sendMessage(
+            @RequestBody ChatMessageRequestDto chatMessageRequestDto) {
+        ChatMessageResponseDto sentMessage = chatService.sendMessage(chatMessageRequestDto);
         return ResponseEntity.ok(sentMessage);
     }
 

@@ -32,7 +32,8 @@ public class ChatMapper {
         ChatDto chatDto = new ChatDto();
         chatDto.setId(chat.getId());
         chatDto.setTimestamp(chat.getTimestamp());
-        chatDto.setMessages(chat.getMessages().stream(). map(e ->chatMessageMapper.toDto(e)).collect(Collectors.toSet()));
+        if (chat.getMessages()!= null)
+            chatDto.setMessages(chat.getMessages().stream(). map(e ->chatMessageMapper.toDto(e)).collect(Collectors.toSet()));
         chatDto.setFirst_participant(basicUserMapper.toDto(chat.getFirstParticipant()));
         chatDto.setSecond_participant(basicUserMapper.toDto(chat.getSecondParticipant()));
         return chatDto;

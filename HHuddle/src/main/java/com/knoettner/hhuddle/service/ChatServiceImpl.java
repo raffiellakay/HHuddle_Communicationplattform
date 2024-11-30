@@ -1,10 +1,12 @@
 package com.knoettner.hhuddle.service;
 
 import com.knoettner.hhuddle.dto.ChatDto;
-import com.knoettner.hhuddle.dto.ChatMessageDto;
+import com.knoettner.hhuddle.dto.ChatMessageRequestDto;
+import com.knoettner.hhuddle.dto.ChatMessageResponseDto;
 import com.knoettner.hhuddle.dto.mapper.ChatMapper;
 import com.knoettner.hhuddle.dto.mapper.ChatMessageMapper;
 import com.knoettner.hhuddle.models.*;
+import com.knoettner.hhuddle.repository.ChatMessageRepository;
 import com.knoettner.hhuddle.repository.ChatRepository;
 import com.knoettner.hhuddle.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +26,14 @@ public class ChatServiceImpl implements ChatService {
     private ChatRepository chatRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ChatMessageRepository chatMessageRepository;
 
     @Autowired
     private ChatMapper chatMapper;
     @Autowired
     private ChatMessageMapper chatMessageMapper;
+
 
     @Transactional
     @Override
@@ -64,11 +69,11 @@ public class ChatServiceImpl implements ChatService {
 
     @Transactional
     @Override
-    public ChatMessageDto sendMessage(Long chatId, ChatMessageDto chatMessageDto) {
-        Chat chat = chatRepository.findById(chatId)
+    public ChatMessageResponseDto sendMessage(ChatMessageRequestDto chatMessageRequestDto) {
+        Chat chat = chatRepository.findById(chatMessageRequestDto.getChatId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Chat not found"));
 
-        MyUser sender = userRepository.findById(chatMessageDto.getUser().getId())
+        MyUser sender = userRepository.findById(chatMessageRequestDto.getSenderId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Sender not found"));
 
         // Validate if sender is part of the chat
@@ -81,15 +86,11 @@ public class ChatServiceImpl implements ChatService {
         }
 
         // Create and add a new message
-        ChatMessage chatMessage = chatMessageMapper.toEntity(chatMessageDto);
-        chatMessage.setChat(chat);
-        chatMessage.setUser(sender);
-        chatMessage.setTimestamp(LocalDateTime.now());
+        ChatMessage chatMessage = chatMessageMapper.toEntity(chatMessageRequestDto);
 
-        chat.getMessages().add(chatMessage);
-        chatRepository.save(chat);
+        chatMessageRepository.save(chatMessage);
 
-        return chatMessageMapper.toDto(chatMessage);
+        return chatMessageMapper.toDto(chatMessageRepository.findAllByTimestamp(chatMessage.getTimestamp()).get(0));
     }
 
     @Override
