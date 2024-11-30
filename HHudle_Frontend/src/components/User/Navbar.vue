@@ -16,10 +16,10 @@ const activeItem = ref(null);
 
 //Liste an Unteritems in Array
 const items = ref([
-  {title: "Gemeinschaftsräume", route: "/commonrooms"},
-  {title:"Schwarzes Brett", route: "/blackboard"},
-  {title: "Paketfinder", route: "/packagefinder"},
-  {title: "Suche - Biete - Tausche", route: "/search&find"}
+  {title: "Gemeinschaftsräume", route: "/user/board/commonrooms"},
+  {title:"Schwarzes Brett", route: "/user/board/blackboard"},
+  {title: "Paketfinder", route: "/user/board/packagefinder"},
+  {title: "Suche - Biete - Tausche", route: "/user/board/search&find"}
 ]);
 
 
@@ -63,7 +63,7 @@ const setActiveItem = (item) => {
 
     <!-- Inhalte des Navigation Drawers -->
     <v-list>
-      <v-list-item :to="{ path: '/home'}">
+      <v-list-item :to="{ path: '/user/home'}">
         <v-list-item-title>Startseite</v-list-item-title>
       </v-list-item>
 

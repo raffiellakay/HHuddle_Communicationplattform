@@ -12,6 +12,7 @@ import PackageFinderView from '@/views/User/PackageFinderView.vue';
 import SearchAndFindView from '@/views/User/SearchAndFindView.vue';
 import AHomeView from '@/views/Admin/AHomeView.vue';
 import LoginLayout from '@/layouts/LoginLayout.vue';
+import AllHousesView from '@/views/Admin/AllHousesView.vue';
 
 
 const routes = [
@@ -22,29 +23,29 @@ const routes = [
     component: UHomeLayout,
     children: [
       {
-        path: '/home',
+        path: 'home',
         name: 'UserHome',
         component: UHomeView,
       },
       {
-        path: '/board',
+        path: 'board',
         name: 'Board',
         component: BoardLayout,
         children: [
           {
-            path: '/commonrooms',
+            path: 'commonrooms',
             component: CommonRoomsView, 
           },
           {
-            path: '/blackboard',
+            path: 'blackboard',
             component: BlackBoardView, 
           },
           {
-            path: '/packagefinder',
+            path: 'packagefinder',
             component: PackageFinderView,
           },
           {
-            path:'/search&find',
+            path:'search&find',
             component: SearchAndFindView,
           }]
       }]
@@ -55,9 +56,14 @@ const routes = [
     component: AHomeLayout,
     children: [
       {
-        path: '/home',
+        path: 'home',
         name: 'AdminHome',
         component: AHomeView
+      }, 
+      {
+        path: 'houses',
+        name: 'AllHouses',
+        component: AllHousesView
       }
     ]
 

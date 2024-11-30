@@ -12,15 +12,7 @@ const router = useRouter();
 
 <template> 
 
-<v-layout>
-    <Navbar />
-    <v-main>
-    <div id="app" data-app>
-        <RouterView></RouterView>
-    </div>
-  </v-main>
-
-  </v-layout>
+Dies ist das Boardlayout
 </template>
 
 

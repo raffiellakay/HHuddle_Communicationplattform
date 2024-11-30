@@ -3,6 +3,6 @@
 </script>
 
 <template>
-Dies ist die Seite für ein Haus
+Dies ist die Seite für ein einzelnes Haus
 
 </template>
