@@ -2,6 +2,8 @@ package com.knoettner.hhuddle.controller;
 
 import com.knoettner.hhuddle.dto.ChatDto;
 import com.knoettner.hhuddle.dto.ChatMessageDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +14,20 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/chats")
+@Tag(name = "Demo API", description = "API für Testzwecke")
 
 public class ChatController {
+
 
     @Autowired
     private ChatService chatService;
 
+    @Operation(summary = "Gibt eine Willkommensnachricht zurück")
+    @GetMapping("/welcome")
+    @ResponseStatus(HttpStatus.OK)
+    public String getWelcomeMessage() {
+        return "Willkommen in der Demo-API!";
+    }
     //Create a new Chat
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/create")
