@@ -29,7 +29,7 @@ public class Facility {
     private House house;
 
 
-    @OneToMany (mappedBy = "facility")
+    @OneToMany (mappedBy = "facility", fetch = FetchType.EAGER)
     private Set<Post> posts;
 
 }

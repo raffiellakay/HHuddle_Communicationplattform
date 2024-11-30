@@ -17,7 +17,7 @@ public class Role {
     private Long id;
     @Column( nullable = false)
     private UserRole type;
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     private Set<MyUser> Users;
 
 

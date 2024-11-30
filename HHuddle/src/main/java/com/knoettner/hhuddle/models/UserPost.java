@@ -15,14 +15,17 @@ public class UserPost {
     UserPostKey id;
 
     @ManyToOne
+    @MapsId("boardId")
+    @JoinColumn(name = "board_id_fk")
+    Board board;
+
+    @ManyToOne
     @MapsId("userId")
+    @JoinColumn(name = "user_id_fk")
     MyUser user;
 
     @OneToOne
     @MapsId("postId")
+    @JoinColumn(name = "post_id_fk")
     Post post;
-
-    @ManyToOne
-    @MapsId("boardId")
-    Board board;
 }

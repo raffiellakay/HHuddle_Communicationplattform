@@ -35,8 +35,8 @@ public class UserPostMapper {
         Optional<MyUser> maybeUser = userRepository.findById(userPostDto.getUserId());
         Optional<Board> maybeBoard = boardRepository.findById(userPostDto.getBoardId());
         if (maybeBoard.isPresent() && maybeUser.isPresent() && maybePost.isPresent()) {
-            UserPostKey userPostKey = new UserPostKey(maybeUser.get().getId(), maybePost.get().getId(), maybeBoard.get().getId());
-            UserPost userPost = new UserPost(userPostKey, maybeUser.get(), maybePost.get(), maybeBoard.get());
+            UserPostKey userPostKey = new UserPostKey(maybeBoard.get().getId(), maybeUser.get().getId(), maybePost.get().getId());
+            UserPost userPost = new UserPost(userPostKey, maybeBoard.get(), maybeUser.get(), maybePost.get());
             return userPost;
         } else {
             return null;
