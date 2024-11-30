@@ -1,10 +1,13 @@
 <script setup>
-import { useRouter } from 'vue-router'
+import { routerKey, useRoute, useRouter } from 'vue-router'
 import { ref } from 'vue'
+import { computed } from 'vue';
 
 
 
-const router = useRouter()
+const router = useRouter(); //Gibt Router Instanz zurück
+const route = useRoute(); // Gibt aktuelle Route zurück 
+
 
 
 //showDrawer Konstante ist per default auf false
@@ -36,6 +39,19 @@ const setActiveItem = (item) => {
   showDrawer.value = false;
 }
 
+//Checkt ob die aktuelle Seite eine Board Seite ist indem es mit items im items array abgeglichen wird
+//Ist true wenn auf einer BoardSeite und false wenn nicht
+const isBoardPage = computed(() =>{
+  const boardRoutes = items.value.map(item => item.route);
+  return boardRoutes.includes(route.path);
+})
+
+const handlePlusClick = () => {
+  console.log("Plus icon clicked!");
+  // Add your desired functionality here
+};
+
+
 
 
 
@@ -50,6 +66,12 @@ const setActiveItem = (item) => {
       <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
     </template>
     <v-app-bar-title>Menü</v-app-bar-title>
+    
+    <template v-if="isBoardPage">
+      <v-btn icon @click="handlePlusClick">
+        <v-icon class="plus-icon"> mdi-plus-circle</v-icon>
+      </v-btn>
+    </template>
   </v-app-bar>
   <!--Linkes Seitenmenü ausklappbar-->
   <v-navigation-drawer 
@@ -118,6 +140,11 @@ const setActiveItem = (item) => {
     width: 100%;
     transform: none !important;
   }
+}
+
+.plus-icon {
+  font-size: 40px;
+  padding-right: 20px
 }
 
 </style>

@@ -10,9 +10,17 @@ const router = useRouter();
 
 
 
-<template> 
+<template>
 
-Dies ist das Boardlayout
+  <RouterView></RouterView>
+  <v-app>
+    <b-btn icon>
+
+
+      <v-icon>mdi-plus-circle</v-icon>
+    </b-btn>
+  </v-app>
+
 </template>
 
 
