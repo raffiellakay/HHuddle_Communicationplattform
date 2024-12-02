@@ -1,19 +1,20 @@
 package com.knoettner.hhuddle.controller;
 
 
-import com.knoettner.hhuddle.UserPostKey;
 import com.knoettner.hhuddle.dto.FacilityDto;
 import com.knoettner.hhuddle.dto.HouseDto;
 import com.knoettner.hhuddle.dto.MyUserDto;
 import com.knoettner.hhuddle.dto.PostDto;
 import com.knoettner.hhuddle.models.Facility;
 import com.knoettner.hhuddle.models.House;
+import com.knoettner.hhuddle.models.Post;
 import com.knoettner.hhuddle.repository.FacilityRepository;
 import com.knoettner.hhuddle.repository.HouseRepository;
+import com.knoettner.hhuddle.repository.PostRepository;
 import com.knoettner.hhuddle.service.AdminService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -31,6 +32,7 @@ public class AdminController {
 
     @Autowired
     HouseRepository houseRepository;
+    private PostRepository postRepository;
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/house")
@@ -45,7 +47,7 @@ public class AdminController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/post")
+    @PostMapping("/adminpost")
     PostDto createAdminPost(@RequestBody PostDto post) {
         return adminService.createAdminPost(post);
     }
@@ -59,32 +61,58 @@ public class AdminController {
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/facility/{id}")
     void deleteFacilityById(@PathVariable("id") Long id) {
-        Optional<Facility> maybeFacility = facilityRepository.findById(id);
-        if (maybeFacility.isPresent()) {
-            adminService.deleteFacilityById(id);
-        }
+        adminService.deleteFacilityById(id);
+
 
     }
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/house/{id}")
     void deleteHouseById(@PathVariable("id") Long id ) {
-        Optional<House> maybeHouse = houseRepository.findById(id);
-        if (maybeHouse.isPresent()) {
-            adminService.deleteHouseById(id);
-        }
+        adminService.deleteHouseById(id);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/adminpost/{id}")
+    void deleteAdminPost(@PathVariable("id") Long postId) {
+        adminService.deleteAdminPost(postId);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/house/all")
+    Set<HouseDto> getAllHouses() {
+        return adminService.getAllHouses();
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/house/{id}/adminposts")
+    Set<PostDto> getAdminPostsByHouseId(@PathVariable("id") Long houseId) {
+        return adminService.getAdminPostsByHouseId(houseId);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/house/{id}/adminboard")
+    Long getAdminBoardIdByHouseId(@PathVariable("id") Long houseId) {
+        return adminService.getAdminBoardIdByHouseId(houseId);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("house/{id}/facility")
+    Set<FacilityDto> getAllFacilitiesByHouseId(@PathVariable("id") Long houseId) {
+        return adminService.getAllFacilitiesByHouseId(houseId);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/facility")
+    FacilityDto updateFacility(@RequestBody FacilityDto facility) {
+    return adminService.updateFacility(facility);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/user")
+    MyUserDto updateUser(@RequestBody MyUserDto user) {
+    return adminService.updateUser(user);
     }
 
 
-
-
-    /*
-    Set<HouseDto> getAllHouses();
-    Long getAdminBoardIdByHouseId(Long houseId);
-    void deleteAdminPost(UserPostKey id);
-    Set<PostDto> getAdminPostsByHouseId(Long houseId);
-    FacilityDto updateFacility(FacilityDto facility);
-    Set<FacilityDto> getAllFacilitiesByHouseId(Long houseId);
-    MyUserDto updateUser( MyUserDto user);
-    */
 }

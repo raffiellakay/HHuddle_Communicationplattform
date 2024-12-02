@@ -189,7 +189,7 @@ public class AdminServiceImpl implements AdminService {
         Set<PostDto> allAdminPosts = new HashSet<>();
         List<Post> allPosts = postRepository.findAll();
         for (Post currentPost : allPosts) {
-            if (currentPost.getUserPost().getUser().getHouse().getId() == houseId && currentPost.getCategory() == FRONTPAGE) {
+            if (currentPost.getUserPost().getBoard().getHouse().getId().equals(houseId) && currentPost.getCategory().equals(FRONTPAGE)) {
                 PostDto dto = postMapper.toDto(currentPost);
                 allAdminPosts.add(dto);
             }
@@ -206,16 +206,33 @@ public class AdminServiceImpl implements AdminService {
         return facility;
     }
 
-//need ID as second parameter??
+
     @Override
-    public FacilityDto updateFacility( FacilityDto facility) {
-        facilityRepository.save(facilityMapper.toEntity(facility));
-        return facility;
+    public FacilityDto updateFacility(FacilityDto facility) {
+        Optional<Facility> maybeFacility = facilityRepository.findById(facility.getId());
+        if (maybeFacility.isPresent()) {
+            Facility realFacility = maybeFacility.get();
+            realFacility.setType(facility.getType());
+            realFacility.setDescription(facility.getDescription());
+            facilityRepository.save(realFacility);
+            return facilityMapper.toDto(realFacility);
+        }
+      return null;
     }
 
     @Override
     public void deleteFacilityById(Long id) {
-        facilityRepository.deleteById(id);
+
+        Optional<Facility> maybeFacility = facilityRepository.findById(id);
+        if (maybeFacility.isPresent()) {
+            Facility facility = maybeFacility.get();
+            Set<Post> posts = facility.getPosts();
+            for (Post currentPost : posts) {
+                postRepository.deleteById(currentPost.getId());
+            }
+            facilityRepository.deleteById(id);
+        }
+        
     }
 
     @Override
