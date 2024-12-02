@@ -72,10 +72,7 @@ public class HHuddleApplication implements CommandLineRunner  {
 
        //
 
-        //MyUserDto user2 = new MyUserDto(null, "zug@test.at", "Top_119",1L );
-        //MyUserDto user = adminService.createUser(user2);
-        //user.setMail("zug@budapest.at");
-        //adminService.updateUser(user);
+
 
        // HouseDto house = new HouseDto(null, "Nebengasse 202", new HashSet<>(), new HashSet<>());
        // adminService.createHouse(house);
@@ -97,9 +94,21 @@ public class HHuddleApplication implements CommandLineRunner  {
         //System.out.println(adminService.getAllHouses());
        // System.out.println(adminService.getAdminBoardIdByHouseId(2L));
      //   BasicUserDto user = new BasicUserDto(302L, "Top_04");
-       // PostDto post = new PostDto(null,"Test2", "Test2", FRONTPAGE.toString(), LocalDateTime.now(), false, null, null, null, false, null, user , 56L);
-       // adminService.createAdminPost(post);
-//adminService.getAdminPostsByHouseId(2L);
-adminService.deleteAdminPost(302L);
+        //MyUserDto user2 = new MyUserDto(null, "konstantin@test.at", "Top_31",52L );
+        //MyUserDto user = adminService.createUser(user2);
+     //   BasicUserDto user = new BasicUserDto(302L, "Top_04");
+      // PostDto post = new PostDto(null,"Ankündigung", "Das ist eine Ankündigung", FRONTPAGE.toString(), LocalDateTime.now(), false, null, null, null, false, null, user , 56L);
+       //adminService.createAdminPost(post);
+      //  System.out.println(adminService.getAdminPostsByHouseId(2L));
+//adminService.deleteAdminPost(552L);
+
+       // MyUserDto user2 = new MyUserDto(null, "konstantin@test.at", "Top_31",52L );
+        //MyUserDto user = adminService.createUser(user2);
+        //user.setMail("konsti@lachi.at");
+
+        //adminService.updateUser(user);
+      //  System.out.println(adminService.getAllHouses());
+
+
     }
 }
