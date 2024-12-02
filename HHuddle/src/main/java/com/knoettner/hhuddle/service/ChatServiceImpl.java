@@ -47,7 +47,7 @@ public class ChatServiceImpl implements ChatService {
 
        List list = chatRepository.findAllByFirstParticipantAndSecondParticipant( //suchen die Chats nach dem Participant
                firstUserId>secondUserId?secondUser:firstUser,
-               firstUserId<secondUserId?firstUser:secondUser //User nach der Id ordnen;
+               firstUserId>secondUserId?firstUser:secondUser //User nach der Id ordnen;
        );
 
         if(!list.isEmpty())
