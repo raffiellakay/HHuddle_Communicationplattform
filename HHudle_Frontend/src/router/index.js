@@ -13,6 +13,8 @@ import SearchAndFindView from '@/views/User/SearchAndFindView.vue';
 import AHomeView from '@/views/Admin/AHomeView.vue';
 import LoginLayout from '@/layouts/LoginLayout.vue';
 import AllHousesView from '@/views/Admin/AllHousesView.vue';
+import AboutUsView from '@/views/AboutUsView.vue';
+import ContactView from '@/views/ContactView.vue';
 
 
 const routes = [
@@ -73,7 +75,21 @@ const routes = [
     path: '/',
     name: 'Login',
     component: LoginLayout,
+    children: [
+      {
+        path: 'aboutUs',
+        name: 'AboutUs',
+        component: AboutUsView
+      },
+      {
+        path: 'contact',
+        name: 'Contact',
+        component: ContactView
+      }
+    ]
   },
+
+
   
   
   
