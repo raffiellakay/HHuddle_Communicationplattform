@@ -33,7 +33,7 @@ public class AdminController {
     @Autowired
     HouseRepository houseRepository;
     private PostRepository postRepository;
-
+ //
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/house")
     public HouseDto createHouse(@RequestBody HouseDto house) {
@@ -77,13 +77,13 @@ public class AdminController {
     void deleteAdminPost(@PathVariable("id") Long postId) {
         adminService.deleteAdminPost(postId);
     }
-
+//
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/house/all")
+    @GetMapping("/houses")
     Set<HouseDto> getAllHouses() {
         return adminService.getAllHouses();
     }
-
+//
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/house/{id}/adminposts")
     Set<PostDto> getAdminPostsByHouseId(@PathVariable("id") Long houseId) {
