@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -97,6 +98,10 @@ public class ChatServiceImpl implements ChatService {
     public void deleteChat(Long chatId) {
         Chat chat = chatRepository.findById(chatId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Chat not found"));
+                Set<ChatMessage> messages = chat.getMessages();
+                for (ChatMessage currentMessage : messages) {
+                    chatMessageRepository.deleteById(currentMessage.getId());
+                }
         chatRepository.delete(chat);
     }
 
