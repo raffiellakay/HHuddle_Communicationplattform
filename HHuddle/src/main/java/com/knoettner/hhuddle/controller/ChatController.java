@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/chats")
-@Tag(name = "Demo API", description = "API für Testzwecke")
+
 
 public class ChatController {
 
@@ -23,12 +23,6 @@ public class ChatController {
     @Autowired
     private ChatService chatService;
 
-    @Operation(summary = "Gibt eine Willkommensnachricht zurück")
-    @GetMapping("/welcome")
-    @ResponseStatus(HttpStatus.OK)
-    public String getWelcomeMessage() {
-        return "Willkommen in der Demo-API!";
-    }
     //Create a new Chat
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/create")
