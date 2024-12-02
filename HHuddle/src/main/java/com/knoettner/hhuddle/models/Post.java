@@ -32,7 +32,7 @@ public class Post {
 
     private boolean isAnonymous;
 
-    private java.sql.Blob photo;
+    private String pathToPhoto;
 
     private LocalDateTime starttime;
     private LocalDateTime endtime;

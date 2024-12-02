@@ -19,7 +19,7 @@ import java.util.Optional;
 import static com.knoettner.hhuddle.Category.*;
 
 @Service
-public class PostServiceImpl implements PostService {
+public class PostServiceImpl  implements PostService {
     @Autowired
     private PostRepository postRepository;
     @Autowired
@@ -40,7 +40,7 @@ public class PostServiceImpl implements PostService {
         blackboardPost.setCategory(BLACKBOARD);
         blackboardPost.setTimestamp(LocalDateTime.now());
         blackboardPost.setAnonymous(post.isAnonymous());
-        blackboardPost.setPhoto(post.getPhoto());
+      //  blackboardPost.setPhoto(post.getPhoto());
         postRepository.save(blackboardPost);
         blackboardPost.setId(blackboardPost.getId());
 
@@ -55,7 +55,7 @@ public class PostServiceImpl implements PostService {
         packagePost.setText(post.getText());
         packagePost.setCategory(PACKAGE);
         packagePost.setTimestamp(LocalDateTime.now());
-        packagePost.setPhoto(post.getPhoto());
+       // packagePost.setPathToPhoto(post.getPhoto());
         postRepository.save(packagePost);
         packagePost.setId(packagePost.getId());
 
@@ -71,7 +71,7 @@ public class PostServiceImpl implements PostService {
         exchangePost.setText(post.getText());
         exchangePost.setCategory(EXCHANGE);
         exchangePost.setTimestamp(LocalDateTime.now());
-        exchangePost.setPhoto(post.getPhoto());
+       // exchangePost.setPhoto(post.getPhoto());
         postRepository.save(exchangePost);
         exchangePost.setId(exchangePost.getId());
 
@@ -85,9 +85,9 @@ public class PostServiceImpl implements PostService {
         Post EventPost = new Post();
         EventPost.setTitle(post.getTitle());
         EventPost.setText(post.getText());
-        EventPost.setCategory(EXCHANGE);
+        EventPost.setCategory(EVENTS);
         EventPost.setTimestamp(LocalDateTime.now());
-        EventPost.setPhoto(post.getPhoto());
+       // EventPost.setPathToPhoto(post.getPhoto());
         EventPost.setStarttime(post.getStarttime());
         EventPost.setEndtime(post.getEndtime());
         postRepository.save(EventPost);
@@ -96,6 +96,35 @@ public class PostServiceImpl implements PostService {
         return post;
 
     }
+
+    @Override
+    public PostDto updatePost(Long postId, PostDto updatedPost) {
+        Post existingPost = postRepository.findById(postId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
+
+        existingPost.setTitle(updatedPost.getTitle());
+        existingPost.setText(updatedPost.getText());
+        existingPost.setTimestamp(updatedPost.getTimestamp());
+
+      /*  switch (existingPost.getCategory()) {
+            case EVENTS:
+                //existingPost.setPhoto(updatedPost.getPhoto());
+                existingPost.setStarttime(updatedPost.getStarttime());
+                existingPost.setEndtime(updatedPost.getEndtime());
+
+                break;
+            case EXCHANGE:
+             //   existingPost.setPhoto(updatedPost.getPhoto());
+
+                break;
+
+            case
+
+        }*/
+        return null;
+    }
+
+
     
 
     @Override
@@ -133,7 +162,7 @@ public class PostServiceImpl implements PostService {
     }
 
 
-    }
+}
 
 
 

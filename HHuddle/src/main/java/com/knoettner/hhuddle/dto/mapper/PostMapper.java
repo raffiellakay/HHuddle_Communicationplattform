@@ -12,8 +12,15 @@ import com.knoettner.hhuddle.models.UserPost;
 import com.knoettner.hhuddle.repository.FacilityRepository;
 import com.knoettner.hhuddle.repository.UserPostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
+import javax.imageio.ImageIO;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Component
@@ -44,8 +51,12 @@ public class PostMapper {
         if (post.getEndtime() != null) {
             postDto.setEndtime(post.getEndtime());
         }
-        if (post.getPhoto() != null) {
-            postDto.setPhoto(post.getPhoto());
+        if (post.getPathToPhoto() != null) {
+            try {
+                postDto.setPhoto(Files.readAllBytes(Paths.get(post.getPathToPhoto())));
+            } catch (IOException e) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "photo not found");
+            }
         }
         if (post.getFacility() != null) {
             postDto.setFacilityId(post.getFacility().getId());
@@ -60,7 +71,7 @@ public class PostMapper {
 
         return postDto;
     }
-
+//if post is not saved in the database, delete the image
     public Post toEntity (PostDto postdto) {
         Post post = new Post();
         post.setId(postdto.getId());
@@ -78,7 +89,16 @@ public class PostMapper {
             post.setEndtime(postdto.getEndtime());
         }
         if (postdto.getPhoto() != null) {
-            post.setPhoto(postdto.getPhoto());
+            String fileName= "./images/photo_"+ LocalDateTime.now() +".jpg";
+            try(OutputStream out =  new FileOutputStream(fileName)) {
+
+                out.write(postdto.getPhoto());
+                out.flush();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            post.setPathToPhoto(fileName);
+
         }
         if (postdto.getFacilityId() != null) {
             Optional<Facility> maybeFacility = facilityRepository.findById(postdto.getFacilityId());

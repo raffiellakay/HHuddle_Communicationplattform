@@ -23,6 +23,8 @@ public interface PostService {
 
     PostDto createEventPost(PostDto post);
 
+    PostDto updatePost(Long postId, PostDto updatedPost);
+
     PostDto getPost(Long postId);
 
     void deletePost(Long postId);
