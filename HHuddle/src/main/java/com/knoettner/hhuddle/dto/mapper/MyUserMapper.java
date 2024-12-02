@@ -22,7 +22,14 @@ UserPostMapper userPostMapper;
 @Autowired
     HouseRepository houseRepository;
 
-   //no toDTO necessary?
+   public MyUserDto toDto (MyUser user) {
+       MyUserDto userDto = new MyUserDto();
+       userDto.setId(user.getId());
+       userDto.setMail(user.getMail());
+       userDto.setUsername(user.getUsername());
+       userDto.setHouseId(user.getHouse().getId());
+       return userDto;
+   }
 
     public MyUser toEntity (MyUserDto userDto) {
         MyUser user = new MyUser();
