@@ -40,7 +40,7 @@ public class PostMapper {
     public RequestPostDto toDto (Post post) {
         RequestPostDto requestPostDto = new RequestPostDto();
         requestPostDto.setId(post.getId());
-        requestPostDto.setBord(boardMapper.toDto(post.getBoard()));
+        requestPostDto.setBord(boardMapper.toDto(post.getBoard()));// check once again!
         requestPostDto.setTitle(post.getTitle());
         requestPostDto.setText(post.getText());
 

@@ -24,7 +24,7 @@ public class Post {
     private String title;
     private String text;
     @ManyToOne
-    private Board board;
+    private Board board;//instead of category. Post bezieht sich auf Board. Das Feld Category kommt mit Board
     @OneToOne(mappedBy =  "post", fetch = FetchType.EAGER)
     private UserPost userPost;
     //optionale Felder

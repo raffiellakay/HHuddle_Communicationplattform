@@ -16,6 +16,7 @@ public class BoardMapper {
     }
 
     public Board toEntity(BoardDto boardDto){
-       return null; //TODO toEntity
+       return null; //TODO toEntity Brauchen wir doch??
+
     }
 }

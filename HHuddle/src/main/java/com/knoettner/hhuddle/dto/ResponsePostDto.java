@@ -17,10 +17,11 @@ public class ResponsePostDto {
     private String title;
     private String text;
     private BoardDto board; //category deleted
+    //timestamp deleted. Starttime enough
 
 
     //optionale Felder
-
+// private boolen isAnonymous - braucht man am Frontend nicht sehen
     private byte[] photo;
     private LocalDateTime starttime;
     private LocalDateTime endtime;

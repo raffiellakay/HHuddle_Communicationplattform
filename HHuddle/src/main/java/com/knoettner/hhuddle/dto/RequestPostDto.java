@@ -17,7 +17,7 @@ public class RequestPostDto {
     private String title;
     private String text;
     private BoardDto bord;
-
+//timestamp deleted- starttime should be enough
 
     //optionale Felder
 
