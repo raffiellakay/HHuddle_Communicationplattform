@@ -1,7 +1,7 @@
 package com.knoettner.hhuddle.dto.mapper;
 
 import com.knoettner.hhuddle.dto.FacilityDto;
-import com.knoettner.hhuddle.dto.PostDto;
+import com.knoettner.hhuddle.dto.RequestPostDto;
 import com.knoettner.hhuddle.models.Facility;
 import com.knoettner.hhuddle.models.House;
 import com.knoettner.hhuddle.models.Post;
@@ -30,12 +30,12 @@ public class FacilityMapper {
         newFacilityDto.setType(facility.getType());
         newFacilityDto.setHouseId(facility.getHouse().getId());
         if (facility.getPosts() != null) {
-            Set<PostDto> postDtos = new HashSet<>();
+            Set<RequestPostDto> requestPostDtos = new HashSet<>();
             for (Post currentPost : facility.getPosts()) {
-                PostDto postDto = postMapper.toDto(currentPost);
-                postDtos.add(postDto);
+                RequestPostDto requestPostDto = postMapper.toDto(currentPost);
+                requestPostDtos.add(requestPostDto);
             }
-            newFacilityDto.setPostDtos(postDtos);
+            newFacilityDto.setRequestPostDtos(requestPostDtos);
             }
 
         return newFacilityDto;
@@ -52,10 +52,10 @@ public class FacilityMapper {
                 newFacility.setHouse(optionalHouse.get());
             }
         }
-        if(facilityDto.getPostDtos() != null) {
+        if(facilityDto.getRequestPostDtos() != null) {
             Set<Post> posts = new HashSet<>();
-            for (PostDto postDto : facilityDto.getPostDtos()) {
-                Post post = postMapper.toEntity(postDto);
+            for (RequestPostDto requestPostDto : facilityDto.getRequestPostDtos()) {
+                Post post = postMapper.toEntity(requestPostDto);
                 posts.add(post);
             }
             newFacility.setPosts(posts);

@@ -4,7 +4,7 @@ package com.knoettner.hhuddle.dto.mapper;
 import com.knoettner.hhuddle.Category;
 import com.knoettner.hhuddle.UserPostKey;
 import com.knoettner.hhuddle.dto.BasicUserDto;
-import com.knoettner.hhuddle.dto.PostDto;
+import com.knoettner.hhuddle.dto.RequestPostDto;
 import com.knoettner.hhuddle.models.Facility;
 import com.knoettner.hhuddle.models.MyUser;
 import com.knoettner.hhuddle.models.Post;
@@ -16,11 +16,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.imageio.ImageIO;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.time.temporal.TemporalAmount;
 import java.util.Optional;
 
 @Component
@@ -34,59 +34,60 @@ public class PostMapper {
     @Autowired
     BasicUserMapper basicUserMapper;
 
-    public PostDto toDto (Post post) {
-        PostDto postDto = new PostDto();
-        postDto.setId(post.getId());
-        postDto.setCategory(post.getCategory().toString());
-        postDto.setTimestamp(post.getTimestamp());
-        postDto.setTitle(post.getTitle());
-        postDto.setText(post.getText());
+    @Autowired
+    BoardMapper boardMapper;
 
-        postDto.setAnonymous(post.isAnonymous());
-        postDto.setPrivate(post.isPrivate());
+    public RequestPostDto toDto (Post post) {
+        RequestPostDto requestPostDto = new RequestPostDto();
+        requestPostDto.setId(post.getId());
+        requestPostDto.setBord(boardMapper.toDto(post.getBoard()));
+        requestPostDto.setTitle(post.getTitle());
+        requestPostDto.setText(post.getText());
+
+        requestPostDto.setAnonymous(post.isAnonymous());
+        requestPostDto.setPrivate(post.isPrivate());
 
         if (post.getStarttime() != null) {
-            postDto.setStarttime(post.getStarttime());
+            requestPostDto.setStarttime(post.getStarttime());
         }
         if (post.getEndtime() != null) {
-            postDto.setEndtime(post.getEndtime());
+            requestPostDto.setEndtime(post.getEndtime());
         }
         if (post.getPathToPhoto() != null) {
             try {
-                postDto.setPhoto(Files.readAllBytes(Paths.get(post.getPathToPhoto())));
+                requestPostDto.setPhoto(Files.readAllBytes(Paths.get(post.getPathToPhoto())));
             } catch (IOException e) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "photo not found");
             }
         }
         if (post.getFacility() != null) {
-            postDto.setFacilityId(post.getFacility().getId());
+            requestPostDto.setFacilityId(post.getFacility().getId());
         }
 
         if (post.getUserPost() != null) {
-            postDto.setBoardId(post.getUserPost().getBoard().getId());
+            requestPostDto.setBoardId(post.getUserPost().getBoard().getId());
             MyUser user = post.getUserPost().getUser();
             BasicUserDto basicUserDto = basicUserMapper.toDto(user);
-            postDto.setUser(basicUserDto);
+            requestPostDto.setUser(basicUserDto);
         }
 
-        return postDto;
+        return requestPostDto;
     }
 //if post is not saved in the database, delete the image
-    public Post toEntity (PostDto postdto) {
+    public Post toEntity (RequestPostDto postdto) {
         Post post = new Post();
         post.setId(postdto.getId());
-        post.setCategory(Category.valueOf(postdto.getCategory().toUpperCase()));
-        post.setTimestamp(postdto.getTimestamp());
+        post.setBoard(boardMapper.toEntity(postdto.getBord()));
         post.setTitle(postdto.getTitle());
         post.setText(postdto.getText());
         post.setAnonymous(postdto.isAnonymous());
         post.setPrivate(postdto.isPrivate());
 
         if (postdto.getStarttime() != null) {
-            post.setStarttime(postdto.getStarttime());
+            post.setStarttime(LocalDateTime.now());
         }
         if (postdto.getEndtime() != null) {
-            post.setEndtime(postdto.getEndtime());
+            post.setEndtime(LocalDateTime.now().plusDays(14));
         }
         if (postdto.getPhoto() != null) {
             String fileName= "./images/photo_"+ LocalDateTime.now() +".jpg";

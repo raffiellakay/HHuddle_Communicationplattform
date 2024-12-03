@@ -15,5 +15,7 @@ public class BoardMapper {
         return boardDto;
     }
 
-    //toEntity not necessary
+    public Board toEntity(BoardDto boardDto){
+       return null; //TODO toEntity
+    }
 }
