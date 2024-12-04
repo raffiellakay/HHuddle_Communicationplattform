@@ -1,5 +1,8 @@
 package com.knoettner.hhuddle.security;
 
+import com.knoettner.hhuddle.security.jwt.AuthEntryPointJwt;
+import com.knoettner.hhuddle.security.jwt.AuthTokenFilter;
+import com.knoettner.hhuddle.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +24,7 @@ import java.beans.JavaBean;
 @EnableWebSecurity
 public class SecurityConfig {
     @Autowired
-    UserDetailsServiceImpl  userDetailsService;
+    UserDetailsServiceImpl userDetailsService;
 
     @Autowired
     AuthEntryPointJwt unauthorizedHandler;
@@ -53,12 +56,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.csrf(csrf -> csrf.disable())
+        http.csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/api/test/**").permitAll()
                                 .anyRequest().authenticated()
                 );
 

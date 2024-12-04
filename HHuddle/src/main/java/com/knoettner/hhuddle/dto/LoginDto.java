@@ -1,12 +1,11 @@
 package com.knoettner.hhuddle.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 //No Mapper necessary, search for right user in service implemented
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginDto {
