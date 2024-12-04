@@ -1,2 +1,3 @@
-//Store für ein einzelnes Haus
-//actions: addHouse(house), getHouses(), getHouse(houseId), changeHouse(houseId, house), deleteHouse(houseId)
+//Store für ein einzelnes Haus, alle Aktionen die auf HouseView ausgeführt werden können
+//actions: createHouse(house), getAllHouses(), getHouse(houseId), deleteHouseById(houseId)
+//createFacility(facility), getAllFacilitiesByHouseId(houseId), deleteFacilityById(facilityId), updateFacility(facility)
