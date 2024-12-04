@@ -1,0 +1,1 @@
+//createFacility(facility), getAllFacilitiesByHouseId(houseId), deleteFacilityById(facilityId), updateFacility(facility)
