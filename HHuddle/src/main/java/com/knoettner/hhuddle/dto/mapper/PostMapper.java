@@ -49,7 +49,7 @@ public class PostMapper {
             postDto.setStarttime(post.getStarttime());
         }
         if (post.getEndtime() != null) {
-            postDto.setEndtime(post.getEndtime());
+            postDto.setEndtime(LocalDateTime.now().plusDays(14));
         }
         if (post.getPathToPhoto() != null) {
             try {

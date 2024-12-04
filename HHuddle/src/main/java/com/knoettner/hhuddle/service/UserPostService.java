@@ -1,12 +1,11 @@
 package com.knoettner.hhuddle.service;
 
-import com.knoettner.hhuddle.Category;
 import com.knoettner.hhuddle.dto.PostDto;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface PostService {
+public interface UserPostService {
 
     @Transactional
     List<PostDto> getAllPosts();
@@ -16,16 +15,16 @@ public interface PostService {
 
 
 
-    PostDto createPost(PostDto postDto, Category category);
 
 
-    PostDto createBlackboardPost(PostDto postDto);
 
-    PostDto createPackagePost(PostDto postDto);
 
-    PostDto createEventsPost(PostDto postDto);
 
-    PostDto createExchangePost(PostDto postDto);
+    PostDto createPost(PostDto postDto);
+
+    PostDto createUserPost(PostDto postDto);
+
+
 
 
 
