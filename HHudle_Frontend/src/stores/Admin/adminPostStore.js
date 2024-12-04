@@ -14,7 +14,7 @@ export const useHouseStore = defineStore('adminPost', {
     actions: {
         async createAdminPost(adminPost) {
             const response = await axios.post(API_URL + 'admin/adminpost', adminPost);
-            this.adminPost.push(adminPost);
+            this.adminPost.push(response.data);
         },
 
 
