@@ -83,7 +83,13 @@ public class AdminController {
     Set<HouseDto> getAllHouses() {
         return adminService.getAllHouses();
     }
-//
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/house/{id}")
+    HouseDto getHouseById (@PathVariable("id")  Long houseId) {
+       return adminService.getHouseById(houseId);
+    }
+    //
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/house/{id}/adminposts")
     Set<PostDto> getAdminPostsByHouseId(@PathVariable("id") Long houseId) {

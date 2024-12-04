@@ -12,6 +12,7 @@ public interface AdminService {
 //Houses
     HouseDto createHouse(HouseDto house);
     Set<HouseDto> getAllHouses();
+    HouseDto getHouseById (Long houseId);
     void deleteHouseById(Long id);
 //only if needed
 //    HouseDto updateHouse(Long id, HouseDto house);

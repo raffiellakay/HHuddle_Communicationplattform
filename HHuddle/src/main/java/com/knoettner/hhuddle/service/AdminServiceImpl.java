@@ -11,6 +11,7 @@ import com.knoettner.hhuddle.dto.mapper.MyUserMapper;
 import com.knoettner.hhuddle.dto.mapper.PostMapper;
 import com.knoettner.hhuddle.models.*;
 import com.knoettner.hhuddle.repository.*;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -87,7 +88,17 @@ public class AdminServiceImpl implements AdminService {
 
         return houseSet;
     }
+    @Override
+    public HouseDto getHouseById (Long houseId)  {
+        Optional<House> maybeHouse = houseRepository.findById(houseId);
+        if (maybeHouse.isPresent()) {
+            return houseMapper.todDto(maybeHouse.get());
+        } else {
+            return null;
 
+        }
+
+    }
     @Override
     public void deleteHouseById(Long id) {
         Optional<House> maybeHouse = houseRepository.findById(id);
