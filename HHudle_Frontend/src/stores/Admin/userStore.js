@@ -8,7 +8,7 @@ import { API_URL } from "@/api";
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
-export const useHouseStore = defineStore('facility', {
+export const useHouseStore = defineStore('user', {
     state: () => ({
         users: [], //Array for all users living in a house
     }),
