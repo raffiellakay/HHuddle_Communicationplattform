@@ -30,77 +30,79 @@ const saveHouse = () => {
   dialog.value = false; //nach speichern Fenster schließen
   newHouse.value = { title: '', image: '' };  //hier setze ich das newHouse-Objekt zurück, sodass die Eingabefelder für die nächste Benutzung leer sind. So kann der Admin bei der nächsten Erstellung eines Hauses mit leeren Feldern beginnt usw.
 };
-
+/*
+{
+    "id": null,
+    "adress": "Testhausengasse 32",
+    "residents": [],
+    "facilities": []
+}
+*/
 </script>
 
-
-
-
 <template>
+ 
+<v-layout>
+      <Navbar />
+      <v-main>
+      <div id="app" data-app>
+          <RouterView></RouterView>
+      </div>
+    </v-main>
+    </v-layout>
+  
 
-  <v-layout>
-    <Navbar />
-    <v-main>
-    <div id="app" data-app>
-        <RouterView></RouterView>
-    </div>
-  </v-main>
-  </v-layout>
-
-
-
-    <v-container>
-      <!-- Kachel-Layout (v-card für Kachel, v-for- basierend auf den Daten wird die Kachel auto gerendert)-->
-      <v-row>
-        <v-col
-          v-for="house in houses"          
-
-          :key="house.id"
-          cols="12"
-          sm="6"
-          md="4"
-        >
-          <v-card  
-            class="d-flex flex-column align-center"
-            :to="house.route"
-            outlined
+      <v-container>
+        <!-- Kachel-Layout (v-card für Kachel, v-for- basierend auf den Daten wird die Kachel auto gerendert)-->
+        <v-row>
+          <v-col
+            v-for="house in houses"          
+  
+            :key="house.id"
+            cols="12"
+            sm="6"
+            md="4"
           >
-            <v-img :src="house.image" height="200px" />
-            <v-card-title>{{ house.title }}</v-card-title>
+            <v-card  
+              class="d-flex flex-column align-center"
+              :to="house.route"
+              outlined
+            >
+              <v-img :src="house.image" height="200px" />
+              <v-card-title>{{ house.title }}</v-card-title>
+            </v-card>
+          </v-col>
+        </v-row>    
+  
+        <!-- + Button- Wenn Btn geklickt wird, setzt er die Variable dialog auf true. Dialog öffnet sich-->
+        <v-btn @click="dialog = true" class="mt-4" color="primary">+</v-btn>
+    
+        <!-- Dialog für das Hinzufügen eines neuen Hauses -->
+        <v-dialog v-model="dialog" max-width="500px">
+          <v-card>
+            <v-card-title>Neues Haus hinzufügen</v-card-title>
+            <v-card-text>
+              <!-- Eingabe für den Titel -->
+              <v-text-field
+                v-model="newHouse.title"
+                label="Titel"
+              ></v-text-field>
+    
+              <!-- Bild-Upload -->
+              <v-file-input
+                v-model="newHouse.image"
+                label="Hintergrundbild hochladen"
+                accept="image/*"
+              ></v-file-input>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn text @click="dialog = false">Abbrechen</v-btn>
+              <v-btn text color="primary" @click="saveHouse">Speichern</v-btn>
+            </v-card-actions>
           </v-card>
-        </v-col>
-      </v-row>    
-
-      <!-- + Button- Wenn Btn geklickt wird, setzt er die Variable dialog auf true. Dialog öffnet sich-->
-      <v-btn @click="dialog = true" class="mt-4" color="primary">+</v-btn>
-  
-      <!-- Dialog für das Hinzufügen eines neuen Hauses -->
-      <v-dialog v-model="dialog" max-width="500px">
-        <v-card>
-          <v-card-title>Neues Haus hinzufügen</v-card-title>
-          <v-card-text>
-            <!-- Eingabe für den Titel -->
-            <v-text-field
-              v-model="newHouse.title"
-              label="Titel"
-            ></v-text-field>
-  
-            <!-- Bild-Upload -->
-            <v-file-input
-              v-model="newHouse.image"
-              label="Hintergrundbild hochladen"
-              accept="image/*"
-            ></v-file-input>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn text @click="dialog = false">Abbrechen</v-btn>
-            <v-btn text color="primary" @click="saveHouse">Speichern</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-container>
-  </template>
+        </v-dialog>
+      </v-container>
+</template>
 
 <style scoped>
-/*hier Container stylen*/ 
 </style>
