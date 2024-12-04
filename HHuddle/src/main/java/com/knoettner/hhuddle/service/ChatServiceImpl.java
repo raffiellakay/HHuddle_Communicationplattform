@@ -60,7 +60,7 @@ public class ChatServiceImpl implements ChatService {
 
 
         chat.setFirstParticipant(firstUserId>secondUserId?secondUser:firstUser);
-        chat.setSecondParticipant(firstUserId>secondUserId?firstUser:secondUser);
+        chat.setSecondParticipant(firstUserId<secondUserId?firstUser:secondUser);
 
 
         // Save the chat

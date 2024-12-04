@@ -1,6 +1,9 @@
 package com.knoettner.hhuddle.service;
 
+import com.knoettner.hhuddle.UserPostKey;
 import com.knoettner.hhuddle.dto.*;
+import com.knoettner.hhuddle.models.Board;
+import com.knoettner.hhuddle.models.MyUser;
 
 import java.util.Set;
 //all methods necessary for the admin view/interactions
@@ -18,9 +21,9 @@ public interface AdminService {
     Long getAdminBoardIdByHouseId(Long houseId);
 
 //Posting for Admins
-    RequestPostDto createAdminPost(RequestPostDto post);
+    PostDto createAdminPost(PostDto post);
     void deleteAdminPost(Long postId);
-    Set<RequestPostDto> getAdminPostsByHouseId(Long houseId);
+    Set<PostDto> getAdminPostsByHouseId(Long houseId);
   //only if needed
     // PostDto updateAdminPost(Long id, PostDto post);
 

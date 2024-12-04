@@ -4,15 +4,20 @@ package com.knoettner.hhuddle.controller;
 import com.knoettner.hhuddle.dto.FacilityDto;
 import com.knoettner.hhuddle.dto.HouseDto;
 import com.knoettner.hhuddle.dto.MyUserDto;
-import com.knoettner.hhuddle.dto.RequestPostDto;
+import com.knoettner.hhuddle.dto.PostDto;
+import com.knoettner.hhuddle.models.Facility;
+import com.knoettner.hhuddle.models.House;
+import com.knoettner.hhuddle.models.Post;
 import com.knoettner.hhuddle.repository.FacilityRepository;
 import com.knoettner.hhuddle.repository.HouseRepository;
 import com.knoettner.hhuddle.repository.PostRepository;
 import com.knoettner.hhuddle.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 import java.util.Set;
 
 @RequestMapping("/api/admin")
@@ -43,7 +48,7 @@ public class AdminController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/adminpost")
-    RequestPostDto createAdminPost(@RequestBody RequestPostDto post) {
+    PostDto createAdminPost(@RequestBody PostDto post) {
         return adminService.createAdminPost(post);
     }
 
@@ -81,7 +86,7 @@ public class AdminController {
 //
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/house/{id}/adminposts")
-    Set<RequestPostDto> getAdminPostsByHouseId(@PathVariable("id") Long houseId) {
+    Set<PostDto> getAdminPostsByHouseId(@PathVariable("id") Long houseId) {
         return adminService.getAdminPostsByHouseId(houseId);
     }
 

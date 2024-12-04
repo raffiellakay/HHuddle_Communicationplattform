@@ -23,8 +23,9 @@ public class Post {
     @Column(name = "post_title",nullable = false)
     private String title;
     private String text;
-    @ManyToOne
-    private Board board;
+    private Category category;
+    @Column(nullable = false)
+    private LocalDateTime timestamp;
     @OneToOne(mappedBy =  "post", fetch = FetchType.EAGER)
     private UserPost userPost;
     //optionale Felder

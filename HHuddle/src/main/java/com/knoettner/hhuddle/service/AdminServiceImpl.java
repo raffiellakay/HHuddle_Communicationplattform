@@ -4,7 +4,7 @@ import com.knoettner.hhuddle.UserPostKey;
 import com.knoettner.hhuddle.dto.FacilityDto;
 import com.knoettner.hhuddle.dto.HouseDto;
 import com.knoettner.hhuddle.dto.MyUserDto;
-import com.knoettner.hhuddle.dto.RequestPostDto;
+import com.knoettner.hhuddle.dto.PostDto;
 import com.knoettner.hhuddle.dto.mapper.FacilityMapper;
 import com.knoettner.hhuddle.dto.mapper.HouseMapper;
 import com.knoettner.hhuddle.dto.mapper.MyUserMapper;
@@ -13,11 +13,13 @@ import com.knoettner.hhuddle.models.*;
 import com.knoettner.hhuddle.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
 import static com.knoettner.hhuddle.Category.*;
+import static com.knoettner.hhuddle.UserRole.RESIDENT;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -150,7 +152,7 @@ public class AdminServiceImpl implements AdminService {
 
 
     @Override
-    public RequestPostDto createAdminPost(RequestPostDto post) {
+    public PostDto createAdminPost(PostDto post) {
         Post newAdminPost = new Post();
         newAdminPost.setText(post.getText());
         newAdminPost.setCategory(FRONTPAGE);
@@ -183,12 +185,12 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Set<RequestPostDto> getAdminPostsByHouseId(Long houseId) {
-        Set<RequestPostDto> allAdminPosts = new HashSet<>();
+    public Set<PostDto> getAdminPostsByHouseId(Long houseId) {
+        Set<PostDto> allAdminPosts = new HashSet<>();
         List<Post> allPosts = postRepository.findAll();
         for (Post currentPost : allPosts) {
             if (currentPost.getUserPost().getBoard().getHouse().getId().equals(houseId) && currentPost.getCategory().equals(FRONTPAGE)) {
-                RequestPostDto dto = postMapper.toDto(currentPost);
+                PostDto dto = postMapper.toDto(currentPost);
                 allAdminPosts.add(dto);
             }
 
