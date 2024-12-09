@@ -1,10 +1,7 @@
 package com.knoettner.hhuddle.service;
 
 import com.knoettner.hhuddle.UserPostKey;
-import com.knoettner.hhuddle.dto.FacilityDto;
-import com.knoettner.hhuddle.dto.HouseDto;
-import com.knoettner.hhuddle.dto.MyUserDto;
-import com.knoettner.hhuddle.dto.PostDto;
+import com.knoettner.hhuddle.dto.*;
 import com.knoettner.hhuddle.dto.mapper.FacilityMapper;
 import com.knoettner.hhuddle.dto.mapper.HouseMapper;
 import com.knoettner.hhuddle.dto.mapper.MyUserMapper;
@@ -13,6 +10,7 @@ import com.knoettner.hhuddle.models.*;
 import com.knoettner.hhuddle.repository.*;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import static com.knoettner.hhuddle.Category.*;
+import static com.knoettner.hhuddle.UserRole.P_MANAGEMENT;
 import static com.knoettner.hhuddle.UserRole.RESIDENT;
 
 @Service
@@ -55,6 +54,9 @@ public class AdminServiceImpl implements AdminService {
     UserPostRepository userPostRepository;
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    PasswordEncoder encoder;
 
     @Override
     public HouseDto createHouse(HouseDto house) {
@@ -262,8 +264,8 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public MyUserDto createUser(MyUserDto userDto) {
         MyUser user = userMapper.toEntity(userDto);
-        //Random PW
-        user.setPassword(UUID.randomUUID().toString());
+        //Random PW hashed/encoded
+        user.setPassword(encoder.encode(UUID.randomUUID().toString()));
       //  Role = Resident;
         Set<Role> roleSet = new HashSet<>();
         Optional<Role> maybeResident = roleRepository.findById(1L);
@@ -291,5 +293,47 @@ public class AdminServiceImpl implements AdminService {
             userRepository.save(userEntity);
         }
         return user;
+    }
+
+    @Override
+    public CreateUpdateUserDto createAdminUser(CreateUpdateUserDto adminUser) throws Exception {
+       if(adminUser.getId() != null){
+           Optional<MyUser> maybeUser = userRepository.findById(adminUser.getId());
+           if (maybeUser.isPresent()) {
+              throw new Exception("User already exists.");
+
+           }
+       }
+        Optional<MyUser> maybeUser = userRepository.findByUsername(adminUser.getUsername());
+        if (maybeUser.isPresent()) {
+            throw new Exception("User already exists.");
+        }
+
+        MyUser newUser = new MyUser();
+        newUser.setMail(adminUser.getMail());
+        newUser.setUsername(adminUser.getUsername());
+        HashSet<Role> roles = new HashSet<>();
+        Role role = new Role(2L, P_MANAGEMENT,null);
+        roles.add(role);
+        newUser.setRoles(roles);
+        newUser.setPassword(encoder.encode(adminUser.getPassword()));
+        if (adminUser.getHouseId() != null) {
+            Optional<House> maybeHouse = houseRepository.findById(adminUser.getHouseId());
+            if (maybeHouse.isPresent()) {
+                newUser.setHouse(maybeHouse.get());
+            } else {
+                newUser.setHouse(null);
+            }
+        } else {
+            newUser.setHouse(null);
+        }
+        newUser.setUserPosts(new HashSet<>());
+        newUser.setMessages(new HashSet<>());
+        newUser.setFirst_participantInChat(new HashSet<>());
+        newUser.setSecond_participantInChat(new HashSet<>());
+
+        userRepository.save(newUser);
+        adminUser.setId(newUser.getId());
+        return adminUser;
     }
 }
