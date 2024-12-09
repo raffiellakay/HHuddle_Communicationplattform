@@ -40,6 +40,7 @@ public interface AdminService {
 //Residents for House when created
 
     MyUserDto createUser (MyUserDto userDto);
+    CreateUpdateUserDto createAdminUser (CreateUpdateUserDto adminUser) throws Exception;
     MyUserDto updateUser( MyUserDto user);
     //no delete necessary
     //no addFunction necessary bc HouseId is in MyUserDTO
