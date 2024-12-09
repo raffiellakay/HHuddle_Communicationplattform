@@ -1,31 +1,33 @@
 package com.knoettner.hhuddle;
 
-import com.knoettner.hhuddle.dto.*;
+import com.knoettner.hhuddle.dto.CreateUpdateUserDto;
+import com.knoettner.hhuddle.dto.MyUserDto;
 import com.knoettner.hhuddle.models.*;
 import com.knoettner.hhuddle.repository.RoleRepository;
+import com.knoettner.hhuddle.repository.UserRepository;
 import com.knoettner.hhuddle.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
-import static com.knoettner.hhuddle.Category.FRONTPAGE;
-import static com.knoettner.hhuddle.UserRole.PManagement;
+import static com.knoettner.hhuddle.UserRole.P_MANAGEMENT;
 import static com.knoettner.hhuddle.UserRole.RESIDENT;
 
 @SpringBootApplication
+@EnableMethodSecurity
 public class HHuddleApplication implements CommandLineRunner  {
 @Autowired
     AdminService adminService;
 
 @Autowired
     RoleRepository roleRepository;
-
+    @Autowired
+    private UserRepository userRepository;
 
 
     public static void main(String[] args) {
@@ -33,6 +35,8 @@ public class HHuddleApplication implements CommandLineRunner  {
     }
     @Override
     public void run(String... args) throws Exception {
+
+        //Hardcoded Roles: 1 for RESIDENT, 2 for ADMIN/P_MANAGEMENT
         Optional<Role> maybeRole = roleRepository.findById(1L);
         if (maybeRole.isEmpty()) {
             Role resident = new Role(1L, RESIDENT, new HashSet<>());
@@ -40,12 +44,20 @@ public class HHuddleApplication implements CommandLineRunner  {
         }
         Optional<Role> maybeRole2 = roleRepository.findById(2L);
         if (maybeRole2.isEmpty()) {
-            Role pManagement = new Role(2L, PManagement, new HashSet<>());
+            Role pManagement = new Role(2L, P_MANAGEMENT, new HashSet<>());
             roleRepository.save(pManagement);
         }
 
-
-
+        //Hardcoded Test Admin: Hausverwaltung_Mayer
+        Optional<MyUser> maybeAdmin = userRepository.findByUsername("Hausverwaltung_Mayer");
+        if (maybeAdmin.isEmpty()) {
+            CreateUpdateUserDto createUpdateUserDto = new CreateUpdateUserDto(null, "admin", "test@hausverwaltungstest.at", "Hausverwaltung_Mayer", null, null);
+            try {
+                adminService.createAdminUser(createUpdateUserDto);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
 
 
 
