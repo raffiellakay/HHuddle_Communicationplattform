@@ -2,5 +2,5 @@ package com.knoettner.hhuddle;
 
 public enum UserRole {
     RESIDENT,
-    PManagement;
+    P_MANAGEMENT;
 }
