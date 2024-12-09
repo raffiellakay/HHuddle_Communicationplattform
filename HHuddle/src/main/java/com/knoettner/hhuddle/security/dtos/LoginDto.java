@@ -1,8 +1,7 @@
-package com.knoettner.hhuddle.dto;
+package com.knoettner.hhuddle.security.dtos;
 
 import lombok.*;
 
-import java.util.Set;
 //No Mapper necessary, search for right user in service implemented
 @Setter
 @Getter

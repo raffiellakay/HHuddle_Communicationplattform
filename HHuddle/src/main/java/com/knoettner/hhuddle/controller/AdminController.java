@@ -37,6 +37,7 @@ public class AdminController {
  //
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/house")
+    // Use hasRole for role-based access control
     @PreAuthorize("hasRole('P_MANAGEMENT')")
     public HouseDto createHouse(@RequestBody HouseDto house) {
         return adminService.createHouse(house);
@@ -44,12 +45,15 @@ public class AdminController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/user")
+    // Use hasRole for role-based access control
+    @PreAuthorize("hasRole('P_MANAGEMENT')")
     public MyUserDto createUser(@RequestBody MyUserDto userDto) {
         return adminService.createUser(userDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/adminpost")
+    // Use hasRole for role-based access control
     @PreAuthorize("hasRole('P_MANAGEMENT')")
     PostDto createAdminPost(@RequestBody PostDto post) {
         return adminService.createAdminPost(post);
@@ -57,6 +61,7 @@ public class AdminController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/facility")
+    // Use hasRole for role-based access control
     @PreAuthorize("hasRole('P_MANAGEMENT')")
     FacilityDto createFacility(@RequestBody FacilityDto facility) {
         return adminService.createFacility(facility);
@@ -64,6 +69,7 @@ public class AdminController {
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/facility/{id}")
+    // Use hasRole for role-based access control
     @PreAuthorize("hasRole('P_MANAGEMENT')")
     void deleteFacilityById(@PathVariable("id") Long id) {
         adminService.deleteFacilityById(id);
@@ -71,6 +77,7 @@ public class AdminController {
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/house/{id}")
+    // Use hasRole for role-based access control
     @PreAuthorize("hasRole('P_MANAGEMENT')")
     void deleteHouseById(@PathVariable("id") Long id ) {
         adminService.deleteHouseById(id);
@@ -78,6 +85,7 @@ public class AdminController {
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/adminpost/{id}")
+    // Use hasRole for role-based access control
     @PreAuthorize("hasRole('P_MANAGEMENT')")
     void deleteAdminPost(@PathVariable("id") Long postId) {
         adminService.deleteAdminPost(postId);
@@ -85,6 +93,7 @@ public class AdminController {
 //
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/houses")
+    // Use hasRole for role-based access control
   //  @PreAuthorize("hasRole('P_MANAGEMENT')")
     Set<HouseDto> getAllHouses() {
         return adminService.getAllHouses();
@@ -92,6 +101,7 @@ public class AdminController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/house/{id}")
+    // Use hasRole for role-based access control
     @PreAuthorize("hasRole('P_MANAGEMENT')")
     HouseDto getHouseById (@PathVariable("id")  Long houseId) {
        return adminService.getHouseById(houseId);
@@ -99,6 +109,7 @@ public class AdminController {
     //
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/house/{id}/adminposts")
+    // Use hasRole for role-based access control
     @PreAuthorize("hasRole('P_MANAGEMENT')")
     Set<PostDto> getAdminPostsByHouseId(@PathVariable("id") Long houseId) {
         return adminService.getAdminPostsByHouseId(houseId);
@@ -106,6 +117,7 @@ public class AdminController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/house/{id}/adminboard")
+    // Use hasRole for role-based access control
     @PreAuthorize("hasRole('P_MANAGEMENT')")
     Long getAdminBoardIdByHouseId(@PathVariable("id") Long houseId) {
         return adminService.getAdminBoardIdByHouseId(houseId);
@@ -113,6 +125,7 @@ public class AdminController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("house/{id}/facility")
+    // Use hasRole for role-based access control
     @PreAuthorize("hasRole('P_MANAGEMENT')")
     Set<FacilityDto> getAllFacilitiesByHouseId(@PathVariable("id") Long houseId) {
         return adminService.getAllFacilitiesByHouseId(houseId);
@@ -120,6 +133,7 @@ public class AdminController {
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/facility")
+    // Use hasRole for role-based access control
     @PreAuthorize("hasRole('P_MANAGEMENT')")
     FacilityDto updateFacility(@RequestBody FacilityDto facility) {
     return adminService.updateFacility(facility);
@@ -127,6 +141,7 @@ public class AdminController {
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/user")
+    // Use hasRole for role-based access control
     @PreAuthorize("hasRole('P_MANAGEMENT')")
     MyUserDto updateUser(@RequestBody MyUserDto user) {
     return adminService.updateUser(user);

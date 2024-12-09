@@ -1,4 +1,4 @@
-package com.knoettner.hhuddle.dto;
+package com.knoettner.hhuddle.security.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter

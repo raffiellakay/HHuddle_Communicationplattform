@@ -1,6 +1,7 @@
 package com.knoettner.hhuddle;
 
 import com.knoettner.hhuddle.dto.CreateUpdateUserDto;
+import com.knoettner.hhuddle.dto.HouseDto;
 import com.knoettner.hhuddle.dto.MyUserDto;
 import com.knoettner.hhuddle.models.*;
 import com.knoettner.hhuddle.repository.RoleRepository;
@@ -86,8 +87,8 @@ public class HHuddleApplication implements CommandLineRunner  {
 
 
 
-       // HouseDto house = new HouseDto(null, "Nebengasse 202", new HashSet<>(), new HashSet<>());
-       // adminService.createHouse(house);
+     //  HouseDto house = new HouseDto(null, "An der Baustelle 116", new HashSet<>(), new HashSet<>());
+//       adminService.createHouse(house);
 
         //HouseDto house2 = new HouseDto(null, "Wiener Straße 9", new HashSet<>(), new HashSet<>());
         //adminService.createHouse(house2);
