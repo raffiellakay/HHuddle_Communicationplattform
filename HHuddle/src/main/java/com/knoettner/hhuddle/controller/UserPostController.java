@@ -17,7 +17,7 @@ public class UserPostController {
     private UserPostService userPostService;
 
     @PostMapping("/userpost")
-    public ResponseEntity<PostDto> createBlackboardPost(@RequestBody PostDto postDto) {
+    public ResponseEntity<PostDto> createUserPost(@RequestBody PostDto postDto) {
         PostDto createdPost = userPostService.createUserPost(postDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
     }
