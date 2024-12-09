@@ -20,7 +20,7 @@ public class HouseMapper {
     public House toEntity(HouseDto houseDto) {
         House house = new House();
         house.setId(houseDto.getId());
-        house.setAdress(houseDto.getAdress());
+        house.setAddress(houseDto.getAddress());
         if (houseDto.getResidents() != null && !houseDto.getResidents().isEmpty()){
         house.setResidents(houseDto.getResidents().stream().map(e -> myUserMapper.toEntity(e)).collect(Collectors.toSet()));
         }else {
@@ -34,7 +34,7 @@ public class HouseMapper {
     public HouseDto todDto(House house) {
         HouseDto houseDto = new HouseDto();
         houseDto.setId(house.getId());
-        houseDto.setAdress(house.getAdress());
+        houseDto.setAddress(house.getAddress());
         if (house.getResidents() != null && !house.getResidents().isEmpty()){
         houseDto.setResidents(house.getResidents().stream().map(e -> myUserMapper.toDto(e)).collect(Collectors.toSet()));
         }else {
