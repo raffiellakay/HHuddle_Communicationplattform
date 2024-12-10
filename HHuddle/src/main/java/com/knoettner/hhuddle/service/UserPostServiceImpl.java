@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 @Service
 public class UserPostServiceImpl implements UserPostService {
     @Autowired
@@ -60,8 +62,18 @@ public class UserPostServiceImpl implements UserPostService {
             postDto.setPhoto(null); // Kein Foto für EVENTS und PACKAGE erlaubt
         }
 
-        if (category == Category.FRONTPAGE) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "FRONTPAGE category is not allowed for posts");
+
+
+        if (category != Category.EVENTS) { //exclude the fields from all categories except EVENTS
+            postDto.setStarttime(null);
+            postDto.setEndtime(null);
+            postDto.setPrivate(false);
+            postDto.setFacilityId(null);
+        } else {
+            if(postDto.getStarttime()==null || postDto.getEndtime() == null) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Starttime and Endtime are required for EVENTS");
+            }
+
         }
 
         // Neues Post-Objekt erstellen
@@ -114,7 +126,8 @@ public class UserPostServiceImpl implements UserPostService {
 
     @Override
     public PostDto getAllPost(Post post) {
-        List<Post> list = postRepository.findTopByTimestampAfter(LocalDateTime.now().minusDays(14));
+        List<Post> list = postRepository.findTopByTimestampAfter(LocalDateTime.now().minusDays(14))
+                ;
         // anonymous posts behandeln
 
         return null;
