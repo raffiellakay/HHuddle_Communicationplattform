@@ -1,6 +1,7 @@
 package com.knoettner.hhuddle.service;
 
 import com.knoettner.hhuddle.dto.PostDto;
+import com.knoettner.hhuddle.models.Post;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -14,23 +15,17 @@ public interface UserPostService {
 
 
 
-
-
-
-
-
-
-    PostDto createPost(PostDto postDto);
-
     PostDto createUserPost(PostDto postDto);
 
 
 
 
 
-    PostDto updatePost(Long postId, PostDto updatedPost);
+    PostDto updateUserPost( PostDto updatedPost);
 
     PostDto getPost(Long postId);
+
+    PostDto getAllPost(Post post);
 
     void deletePost(Long postId);
 }

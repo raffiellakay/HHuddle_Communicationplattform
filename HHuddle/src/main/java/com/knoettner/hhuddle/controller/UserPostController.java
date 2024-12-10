@@ -5,10 +5,7 @@ import com.knoettner.hhuddle.service.UserPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/posts")
@@ -21,6 +18,21 @@ public class UserPostController {
         PostDto createdPost = userPostService.createUserPost(postDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<PostDto> updateUserPost(@RequestBody PostDto postDto) {
+        PostDto updatedPost = userPostService.updateUserPost(postDto);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedPost);
+    }
+
+    @GetMapping("/get")
+    public ResponseEntity<PostDto> getPost(@RequestBody Long postId){
+        return ResponseEntity.status(HttpStatus.OK).body(userPostService.getPost(postId));
+
+
+
+    }
+
 
     /*@PostMapping("/package")
     public ResponseEntity<PostDto> createPackagePost(@RequestBody PostDto postDto) {

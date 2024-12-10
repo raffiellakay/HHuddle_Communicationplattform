@@ -17,9 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -43,10 +40,6 @@ public class UserPostServiceImpl implements UserPostService {
         return List.of();
     }
 
-    @Override
-    public PostDto createPost(PostDto postDto) {
-        return null;
-    }
 
     @Override
     public PostDto createUserPost(PostDto postDto) {
@@ -73,11 +66,9 @@ public class UserPostServiceImpl implements UserPostService {
         }
 
         // Neues Post-Objekt erstellen
-        Post newPost = new Post();
-        newPost.setText(postDto.getText());
-        newPost.setCategory(category);
-        newPost.setTitle(postDto.getTitle());
+        Post newPost = postMapper.toEntity(postDto);
         newPost.setTimestamp(LocalDateTime.now());
+        newPost.setId(null);//Autoincrement ID
 
         // Post speichern
         Post savedPost = postRepository.save(newPost);
@@ -96,20 +87,50 @@ public class UserPostServiceImpl implements UserPostService {
             userPostRepository.save(userPost);
         }
 
-        // Wenn das Bild nicht benötigt wurde und es existiert, löschen
-        if (newPost.getPathToPhoto() != null && savedPost == null) {
-            try {
-                Files.deleteIfExists(Paths.get(newPost.getPathToPhoto()));
-            } catch (IOException e) {
-                throw new RuntimeException("Failed to delete image after save failure", e);
-            }
-        }
 
         // DTO zurückgeben
         postDto.setId(savedPost.getId());
         return postDto;
     }
+    @Override
+    public PostDto updateUserPost( PostDto updatedPost) {
+        Post post = postMapper.toEntity(updatedPost);
+        Long id = post.getId();
+        Optional <Post> dbpost = postRepository.findById(id);
+        if (!dbpost.isPresent())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "post with this id not exist");
+        postRepository.deleteById(id);
+        postRepository.save(post);
+        return updatedPost;
+    }
 
+    @Override
+    public PostDto getPost(Long postId) {
+        Optional <Post> dbpost = postRepository.findById(postId);
+        if (!dbpost.isPresent())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "post with this id not exist");
+
+        return postMapper.toDto(dbpost.get());
+    }
+
+    @Override
+    public PostDto getAllPost(Post post) {
+        List<Post> list = postRepository.findTopByTimestampAfter(LocalDateTime.now().minusDays(14));
+        // anonymous posts behandeln
+
+        return null;
+
+    }
+
+    @Override
+    public void deletePost(Long postId) {
+        Optional <Post> dbpost = postRepository.findById(postId);
+        if (!dbpost.isPresent())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "post with this id not exist");
+        postRepository.deleteById(postId);
+
+
+    }
 
    /* public PostDto createUserPost(PostDto postDto) {
         // Feldkondition
@@ -157,20 +178,7 @@ public class UserPostServiceImpl implements UserPostService {
         return postMapper.toDto(savedPost);
     }
 */
-    @Override
-    public PostDto updatePost(Long postId, PostDto updatedPost) {
-        return null;
-    }
 
-    @Override
-    public PostDto getPost(Long postId) {
-        return null;
-    }
-
-    @Override
-    public void deletePost(Long postId) {
-
-    }
 
 
 
