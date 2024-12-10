@@ -7,13 +7,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
+
 @RestController
 @RequestMapping("/posts")
 public class UserPostController {
     @Autowired
     private UserPostService userPostService;
 
-    @PostMapping("/userpost")
+    @PostMapping("/post")
     public ResponseEntity<PostDto> createUserPost(@RequestBody PostDto postDto) {
         PostDto createdPost = userPostService.createUserPost(postDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
@@ -24,13 +26,29 @@ public class UserPostController {
         PostDto updatedPost = userPostService.updateUserPost(postDto);
         return ResponseEntity.status(HttpStatus.OK).body(updatedPost);
     }
-
+/*
     @GetMapping("/get")
     public ResponseEntity<PostDto> getPost(@RequestBody Long postId){
         return ResponseEntity.status(HttpStatus.OK).body(userPostService.getPost(postId));
 
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePost(@RequestBody Long postId) {
+        userPostService.deletePost(postId);
+        return ResponseEntity.noContent().build();
+    }*/
 
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/post/{id}")
+    public ResponseEntity<PostDto>  getPost(@PathVariable("id") Long postId) {
+        return ResponseEntity.status(HttpStatus.OK).body(userPostService.getPost(postId));
+    }
+
+
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/post/{id}")
+    void deletePost(@PathVariable("id") Long postId) {
+        userPostService.deletePost(postId);
     }
 
 

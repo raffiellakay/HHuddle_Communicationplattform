@@ -4,10 +4,7 @@ import com.knoettner.hhuddle.Category;
 import com.knoettner.hhuddle.UserPostKey;
 import com.knoettner.hhuddle.dto.PostDto;
 import com.knoettner.hhuddle.dto.mapper.PostMapper;
-import com.knoettner.hhuddle.models.Board;
-import com.knoettner.hhuddle.models.MyUser;
-import com.knoettner.hhuddle.models.Post;
-import com.knoettner.hhuddle.models.UserPost;
+import com.knoettner.hhuddle.models.*;
 import com.knoettner.hhuddle.repository.BoardRepository;
 import com.knoettner.hhuddle.repository.PostRepository;
 import com.knoettner.hhuddle.repository.UserPostRepository;
@@ -15,11 +12,13 @@ import com.knoettner.hhuddle.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserPostServiceImpl implements UserPostService {
@@ -122,14 +121,22 @@ public class UserPostServiceImpl implements UserPostService {
 
     }
 
-    @Override
-    public void deletePost(Long postId) {
+    /*@Override
+    public void deletePost( Long postId) {
         Optional <Post> dbpost = postRepository.findById(postId);
         if (!dbpost.isPresent())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "post with this id not exist");
         postRepository.deleteById(postId);
+    }*/
 
 
+    @Override
+    public void deletePost(Long postId) {
+        Optional<Post> maybePost = postRepository.findById(postId);
+        if (maybePost.isPresent()) {
+            userPostRepository.deleteById(maybePost.get().getUserPost().getId());
+            postRepository.deleteById(postId);
+        }
     }
 
    /* public PostDto createUserPost(PostDto postDto) {
