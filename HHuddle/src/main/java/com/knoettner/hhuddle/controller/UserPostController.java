@@ -5,6 +5,7 @@ import com.knoettner.hhuddle.service.UserPostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -42,6 +43,21 @@ public class UserPostController {
     @GetMapping("/post/{id}")
     public ResponseEntity<PostDto>  getPost(@PathVariable("id") Long postId) {
         return ResponseEntity.status(HttpStatus.OK).body(userPostService.getPost(postId));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/allposts")
+    public ResponseEntity  <Set<PostDto>> getAllPosts(){
+        Set<PostDto> allPosts = userPostService.getAllPosts();
+        return ResponseEntity.status(HttpStatus.OK).body(allPosts);
+
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/posts/user{id}")
+    public ResponseEntity<Set<PostDto>> getPostsByUserId(@PathVariable("id") Long userId){
+        Set<PostDto>userPosts = userPostService.getPostsByUserId(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(userPosts);
     }
 
 

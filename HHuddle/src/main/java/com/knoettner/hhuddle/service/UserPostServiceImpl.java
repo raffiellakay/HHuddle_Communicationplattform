@@ -12,15 +12,10 @@ import com.knoettner.hhuddle.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+import java.util.*;
 
 @Service
 public class UserPostServiceImpl implements UserPostService {
@@ -36,10 +31,6 @@ public class UserPostServiceImpl implements UserPostService {
     private UserPostRepository userPostRepository;
 
 
-    @Override
-    public List<PostDto> getAllPosts() {
-        return List.of();
-    }
 
 
     @Override
@@ -124,15 +115,44 @@ public class UserPostServiceImpl implements UserPostService {
         return postMapper.toDto(dbpost.get());
     }
 
+
+
+
+   /* @Override
+    public Set<HouseDto> getAllHouses() {
+        List<House> allHouses = houseRepository.findAll();
+        Set<HouseDto> houseSet = new HashSet<>();
+        for (House currentHouse : allHouses) {
+            HouseDto houseDto = houseMapper.todDto(currentHouse);
+            houseSet.add(houseDto);
+        }
+
+        return houseSet;*/
+
     @Override
-    public PostDto getAllPost(Post post) {
-        List<Post> list = postRepository.findTopByTimestampAfter(LocalDateTime.now().minusDays(14))
-                ;
-        // anonymous posts behandeln
-
-        return null;
-
+    public Set<PostDto> getAllPosts() {
+        List<Post> listOfPosts = postRepository.findByTimestampAfter(LocalDateTime.now().minusDays(14)); // show posts of previous 2 weeks
+        Set<PostDto> postSet = new HashSet<>();// for unique Objects
+        for (Post currentPost : listOfPosts){
+            PostDto postDto = postMapper.toDto(currentPost);
+            postSet.add(postDto);
+        }
+        return postSet;
     }
+
+    @Override
+    public Set<PostDto> getPostsByUserId(Long userId){
+        List<Post>userPosts = userPostRepository.findById(userId);
+        Set<PostDto> postSet = new HashSet<>();
+        for (Post post: userPosts) {
+            PostDto postDto = postMapper.toDto(post);
+            postSet.add(postDto);
+        }
+
+
+        return postSet;
+    }
+
 
     /*@Override
     public void deletePost( Long postId) {

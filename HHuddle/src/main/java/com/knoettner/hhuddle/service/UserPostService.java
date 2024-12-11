@@ -5,27 +5,29 @@ import com.knoettner.hhuddle.models.Post;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserPostService {
 
     @Transactional
-    List<PostDto> getAllPosts();
+    Set<PostDto> getAllPosts();
 
     @Transactional
-
 
 
     PostDto createUserPost(PostDto postDto);
 
 
-
-
-
-    PostDto updateUserPost( PostDto updatedPost);
+    PostDto updateUserPost(PostDto updatedPost);
 
     PostDto getPost(Long postId);
 
-    PostDto getAllPost(Post post);
+
+
+   ;
+
+
+    Set<PostDto> getPostsByUserId(Long userId);
 
     void deletePost(Long postId);
 }

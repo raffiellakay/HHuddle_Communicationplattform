@@ -7,5 +7,5 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-    List<Post> findTopByTimestampAfter(LocalDateTime timestamp);//return the latest posts after a definate date
+    List<Post> findByTimestampAfter(LocalDateTime timestamp);//return the latest posts after a definate date
 }
