@@ -265,7 +265,8 @@ public class AdminServiceImpl implements AdminService {
     public MyUserDto createUser(MyUserDto userDto) {
         MyUser user = userMapper.toEntity(userDto);
         //Random PW hashed/encoded
-        user.setPassword(encoder.encode(UUID.randomUUID().toString()));
+        //user.setPassword(encoder.encode(UUID.randomUUID().toString()));
+        user.setPassword(encoder.encode("test"));
       //  Role = Resident;
         Set<Role> roleSet = new HashSet<>();
         Optional<Role> maybeResident = roleRepository.findById(1L);
