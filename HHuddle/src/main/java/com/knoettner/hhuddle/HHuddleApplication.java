@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import static com.knoettner.hhuddle.UserRole.P_MANAGEMENT;
 import static com.knoettner.hhuddle.UserRole.RESIDENT;
@@ -56,6 +57,21 @@ public class HHuddleApplication implements CommandLineRunner  {
             try {
                 adminService.createAdminUser(createUpdateUserDto);
             } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+
+        //Temporary Hardcoded Resident:
+        Optional<MyUser> maybeResident = userRepository.findByMail("residenttest@gmx.at");
+        if (maybeResident.isEmpty()) {
+            Role residentRole = roleRepository.findById(1L).get();
+            Set<Role> roleSet = new HashSet<>();
+            roleSet.add(residentRole);
+           MyUserDto dto = new MyUserDto(null,  "residenttest@gmx.at", "Top_12",  2L);
+            try {
+                adminService.createUser(dto);
+            }
+            catch (Exception e){
                 System.out.println(e);
             }
         }
