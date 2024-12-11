@@ -50,9 +50,9 @@ public class UserDetailsImpl implements UserDetails {
                     authorities);
         }
 
-        @Override
-        public Collection<? extends GrantedAuthority> getAuthorities() {
-            return authorities;
+       @Override
+       public Collection<? extends GrantedAuthority> getAuthorities() {
+         return authorities;
         }
 
         public Long getId() {

@@ -31,7 +31,9 @@ public class JwtUtils {
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
+                //Expiration in MS is in appl.prop
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                //key - needed, with KeySecurity which is set in appl.prop (hardcoded)
                 .signWith(key(), SignatureAlgorithm.HS256)
                 .compact();
     }
