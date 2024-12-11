@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+//to get UserDetails for Authentification - used by DaoAuthenticationProvider, automatically used by SpringSec
+
 public class UserDetailsImpl implements UserDetails {
         private static final long serialVersionUID = 1L;
 
