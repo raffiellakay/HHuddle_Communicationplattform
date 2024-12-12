@@ -116,19 +116,6 @@ public class UserPostServiceImpl implements UserPostService {
     }
 
 
-
-
-   /* @Override
-    public Set<HouseDto> getAllHouses() {
-        List<House> allHouses = houseRepository.findAll();
-        Set<HouseDto> houseSet = new HashSet<>();
-        for (House currentHouse : allHouses) {
-            HouseDto houseDto = houseMapper.todDto(currentHouse);
-            houseSet.add(houseDto);
-        }
-
-        return houseSet;*/
-
     @Override
     public Set<PostDto> getAllPosts() {
         List<Post> listOfPosts = postRepository.findByTimestampAfter(LocalDateTime.now().minusDays(14)); // show posts of previous 2 weeks
@@ -142,28 +129,20 @@ public class UserPostServiceImpl implements UserPostService {
 
     @Override
     public Set<PostDto> getPostsByUserId(Long userId){
-        List<Post>userPosts = userPostRepository.findById(userId);
-        Set<PostDto> postSet = new HashSet<>();
-        for (Post post: userPosts) {
-            PostDto postDto = postMapper.toDto(post);
-            postSet.add(postDto);
+
+            List<UserPost> userPosts = userPostRepository.findByUserId(userId);
+            Set<PostDto> postSet = new HashSet<>();
+            for (UserPost userPost : userPosts) {
+                PostDto postDto = postMapper.toDto(userPost.getPost());
+                postSet.add(postDto);
+            }
+
+            return postSet;
         }
 
 
-        return postSet;
-    }
 
-
-    /*@Override
-    public void deletePost( Long postId) {
-        Optional <Post> dbpost = postRepository.findById(postId);
-        if (!dbpost.isPresent())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "post with this id not exist");
-        postRepository.deleteById(postId);
-    }*/
-
-
-    @Override
+        @Override
     public void deletePost(Long postId) {
         Optional<Post> maybePost = postRepository.findById(postId);
         if (maybePost.isPresent()) {
