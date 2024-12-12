@@ -151,6 +151,26 @@ public class UserPostServiceImpl implements UserPostService {
         }
     }
 
+
+     @Override
+
+    public void deletePostsByUserId(Long userId) {
+        List<UserPost> userPosts = userPostRepository.findByUserId(userId);
+        for(UserPost userPost : userPosts) {
+            Post post = userPost.getPost();
+            if (post != null) {
+                post.setUserPost(null); // Break the association
+                postRepository.save(post); // Persist the change
+                postRepository.delete(post); // Delete the Post
+            }
+
+            // Delete the UserPost itself
+            userPostRepository.delete(userPost);
+        }
+
+
+      }
+
    /* public PostDto createUserPost(PostDto postDto) {
         // Feldkondition
         if (postDto.getCategory() == null || postDto.getTitle() == null || postDto.getText() == null) {

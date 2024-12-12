@@ -9,5 +9,7 @@ import java.util.List;
 
 public interface UserPostRepository extends JpaRepository<UserPost, UserPostKey> {
     List<UserPost> findByUserId(Long userId);
-    //  List<Post> findById(Long userId);
+
+    List<UserPost> findByUser_Id(Long userId);
+
 }

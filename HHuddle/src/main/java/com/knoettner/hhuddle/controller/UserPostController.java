@@ -27,17 +27,7 @@ public class UserPostController {
         PostDto updatedPost = userPostService.updateUserPost(postDto);
         return ResponseEntity.status(HttpStatus.OK).body(updatedPost);
     }
-/*
-    @GetMapping("/get")
-    public ResponseEntity<PostDto> getPost(@RequestBody Long postId){
-        return ResponseEntity.status(HttpStatus.OK).body(userPostService.getPost(postId));
 
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePost(@RequestBody Long postId) {
-        userPostService.deletePost(postId);
-        return ResponseEntity.noContent().build();
-    }*/
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/post/{id}")
@@ -54,7 +44,7 @@ public class UserPostController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/posts/user{id}")
+    @GetMapping("/user{id}")
     public ResponseEntity<Set<PostDto>> getPostsByUserId(@PathVariable("id") Long userId){
         Set<PostDto>userPosts = userPostService.getPostsByUserId(userId);
         return ResponseEntity.status(HttpStatus.OK).body(userPosts);
@@ -67,22 +57,12 @@ public class UserPostController {
         userPostService.deletePost(postId);
     }
 
-
-    /*@PostMapping("/package")
-    public ResponseEntity<PostDto> createPackagePost(@RequestBody PostDto postDto) {
-        PostDto createdPost = postService.createPackagePost(postDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
+     @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deletePostsByUserId(@PathVariable("userId") Long userId) {
+        userPostService.deletePostsByUserId(userId);
+        return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/events")
-    public ResponseEntity<PostDto> createEventsPost(@RequestBody PostDto postDto) {
-        PostDto createdPost = postService.createEventsPost(postDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
-    }
-
-    @PostMapping("/exchange")
-    public ResponseEntity<PostDto> createExchangePost(@RequestBody PostDto postDto) {
-        PostDto createdPost = postService.createExchangePost(postDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
-    }*/
 }
+

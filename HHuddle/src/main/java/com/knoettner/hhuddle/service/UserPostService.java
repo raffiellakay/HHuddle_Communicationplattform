@@ -30,4 +30,6 @@ public interface UserPostService {
     Set<PostDto> getPostsByUserId(Long userId);
 
     void deletePost(Long postId);
+
+    void deletePostsByUserId(Long userId);
 }
