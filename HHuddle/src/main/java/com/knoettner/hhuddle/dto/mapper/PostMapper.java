@@ -89,17 +89,32 @@ public class PostMapper {
             post.setEndtime(postdto.getEndtime());
         }
         if (postdto.getPhoto() != null) {
-            String fileName= "./images/photo_"+ LocalDateTime.now() +".jpg";
-            try(OutputStream out =  new FileOutputStream(fileName)) {
 
+
+            // Hole den Benutzer-Home-Ordner
+            String folderPath = System.getProperty("user.home") + File.separator + "images";
+
+
+            // Ordner prüfen und erstellen, falls er nicht existiert
+            File folder = new File(folderPath);
+            if (!folder.exists()) {
+                folder.mkdirs(); // Erstelle den Ordner, falls er nicht existiert
+            }
+
+            // Erstelle den Dateinamen
+            String fileName = folderPath + File.separator + "photo_" + LocalDateTime.now().toString().replace(":", "-") + ".jpg";
+            try (OutputStream out = new FileOutputStream(fileName)) {
+                // Schreibe das Bild in den Ordner
                 out.write(postdto.getPhoto());
                 out.flush();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Fehler beim Speichern des Bildes: " + e.getMessage());
             }
+            // Setze den Pfad in der Datenbank
             post.setPathToPhoto(fileName);
 
-        }
+
+    }
         if (postdto.getFacilityId() != null) {
             Optional<Facility> maybeFacility = facilityRepository.findById(postdto.getFacilityId());
             if (maybeFacility.isPresent()) {
