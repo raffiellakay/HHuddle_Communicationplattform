@@ -46,7 +46,8 @@ const postClick = () => { console.log(2 + 2) };
 
             <v-row>
               <v-col>
-               
+               <!--v-date-input ist ein experimentelles Feature. Es ist wohl besser, es über ein menu mit text field und date picker zu lösen wie hier
+               https://stackoverflow.com/questions/57696615/vuetify-how-to-fix-v-date-picker-not-showing-the-chosen-date-in-the-text-field-->
                   <v-date-input label="Startdatum" variant="outlined" prepend-inner-icon="">
                   </v-date-input>
                 
