@@ -1,7 +1,7 @@
 <script setup>
 //Form erstellt mit Hilfe von https://pablog.42web.io/vuetify-form-builder?i=1
 
-import { ref,computed } from "vue";
+import { ref, computed } from "vue";
 
 const form = ref(null);
 const formSubmit = (close) => {
@@ -11,55 +11,68 @@ const formSubmit = (close) => {
 const title = ref("");
 const startdate = ref("");
 const description = ref("");
-const anonymouscheckbx = ref("");
-const anonymouscheckbxGroup = ref([
-  { id: "1732962203368", label: "Anonym", value: "" },
-]);
+
+
 const pictureupload = ref([]);
 const eventtag = ref("");
 const eventtagGroup = ref([
   { id: "1732962385361", label: "Privat", value: "" },
   { id: "radioGroup-1732962390768", label: "Öffentlich", value: "" },
 ]);
+
+
+
 const postClick = () => {
   console.log(2 + 2);
 };
 
-const showPicker = ref(false);
+
+const anonymousCheckbox = ref(false);
+
+
+//Datumsfelder
+const showStartDatePicker = ref(false);
 const selectedStartDate = ref(new Date());
 
+const showEndDatePicker = ref(false);
+const selectedEndDate = ref(new Date());
 
 //Formatiert Datum auf DD.MM.YYYY
-const formattedDate = computed(()=> {
-  if (!selectedStartDate.value) return "";
-  const date = new Date (selectedStartDate.value);
-  return date.toLocaleDateString("de-DE", {
+const formatToGermanDate = (date) => {
+  if (!date) return ""; // Rückgabe eines leeren Strings, wenn kein Datum vorhanden ist
+  const d = new Date(date);
+  return d.toLocaleDateString("de-DE", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
-  })
-})
+  });
+};
+
+//Formatierte Datumsvariablen
+const formattedStartDate = computed(() =>
+  formatToGermanDate(selectedStartDate.value)
+);
+const formattedEndDate = computed(() =>
+  formatToGermanDate(selectedEndDate.value)
+);
 </script>
 
 <template>
   <v-card>
     <v-layout>
       <v-main>
-        <v-container>
+        <v-container scrollable>
           <v-form ref="form" @submit.prevent="formSubmit">
             <v-row>
               <v-col>
-                <div style="height: 250px">
+                <div>
                   <v-text-field
                     variant="outlined"
                     label="Titel"
                     density="default"
                     v-model="title"
-                    placeholder=""
                     type="text"
-                    hint=""
                     :persistent-hint="false"
-                    class=""
                     name="title"
                   >
                   </v-text-field>
@@ -69,48 +82,72 @@ const formattedDate = computed(()=> {
 
             <v-row>
               <v-col>
-                <!--v-date-input ist ein experimentelles Feature. Es ist wohl besser, es über ein menu mit text field und date picker zu lösen wie hier
-               https://stackoverflow.com/questions/57696615/vuetify-how-to-fix-v-date-picker-not-showing-the-chosen-date-in-the-text-field-->
-            
-                  <v-menu
-                    v-model="showPicker"
-                    :close-on-content-click="false"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="290px"
-                    :max-width="290"
-                  >
-                    <!-- Slot für den Activator -->
-                    <template v-slot:activator="{ attrs }">
-                      <v-text-field
-                        :model-value="formattedDate"
-                        label="Startdatum"
-                        readonly
-                        @click="showPicker = true"
-                        v-bind="attrs"
-                      ></v-text-field>
-                    </template>
+                <!--Implementierung Startdatum Feld + Date Picker -->
+                <v-menu
+                  v-model="showStartDatePicker"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  absolute
+                  attach
+                >
+                  <!-- Slot für den Activator -->
+                  <template v-slot:activator="{ attrs }">
+                    <v-text-field
+                      :model-value="formattedStartDate"
+                      label="Startdatum"
+                      variant="outlined"
+                      prepend-inner-icon="mdi-calendar-blank"
+                      readonly
+                      @click="showStartDatePicker = true"
+                      v-bind="attrs"
+                    ></v-text-field>
+                  </template>
 
-                    <!-- Date Picker -->
-                    <v-date-picker
-                      v-model="selectedStartDate"
-                      no-title
-                      @input="showPicker = false"
-                      locale="de"
-                    ></v-date-picker>
-                  </v-menu>
-                
-                
+                  <!-- Date Picker -->
+                  <v-date-picker
+                    v-model="selectedStartDate"
+                    @input="showStartDatePicker = false"
+                    locale="de"
+                  ></v-date-picker>
+                </v-menu>
               </v-col>
             </v-row>
 
             <v-row>
               <v-col>
-                <div style="">
-                  
-                </div>
+                <!--Implementierung Enddatum Feld + Date Picker -->
+                <v-menu
+                  v-model="showEndDatePicker"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  absolute
+                  attach
+                >
+                  <!-- Slot für den Activator -->
+                  <template v-slot:activator="{ attrs }">
+                    <v-text-field
+                      :model-value="formattedEndDate"
+                      label="Enddatum"
+                      variant="outlined"
+                      prepend-inner-icon="mdi-calendar-blank"
+                      readonly
+                      @click="showEndDatePicker = true"
+                      v-bind="attrs"
+                    ></v-text-field>
+                  </template>
+
+                  <!-- Date Picker -->
+                  <v-date-picker
+                    v-model="selectedEndDate"
+                    @input="showEndDatePicker = false"
+                    locale="de"
+                  ></v-date-picker>
+                </v-menu>
               </v-col>
             </v-row>
+
             <v-row>
               <v-col>
                 <div style="">
@@ -119,54 +156,30 @@ const formattedDate = computed(()=> {
                     label="Beschreibung"
                     density="default"
                     v-model="description"
-                    placeholder=""
-                    hint=""
-                    :persistent-hint="false"
-                    class=""
                     name="description"
                   >
                   </v-textarea>
                 </div>
               </v-col>
             </v-row>
+
+            <!--Buttons zum auswählen ob die Veranstaltung öffentlich oder privat ist-->
             <v-row>
               <v-col>
-                <div style="">
-                  <div class="d-flex flex-wrap">
-                    <v-checkbox
-                      v-for="checkbox in anonymouscheckbxGroup"
-                      v-model="anonymouscheckbx"
-                      label="checkbox.label"
-                      :value="checkbox.value"
-                      :key="checkbox.id"
-                      class="me-6"
-                      hint=""
-                      :persistent-hint="false"
-                      name="anonymouscheckbx"
-                      :multiple="false"
-                      color="undefined"
-                    >
-                    </v-checkbox>
-                  </div>
-                </div>
-              </v-col>
-              <v-col>
-                <div style="">
-                  <v-text-field
-                    variant="outlined"
-                    label=""
-                    density="default"
-                    placeholder=""
-                    type="text"
-                    hint=""
-                    :persistent-hint="false"
-                    class=""
-                    name=""
-                  >
-                  </v-text-field>
-                </div>
+                <v-radio-group
+                  inline
+                  label="Ist deine Veranstaltung öffentlich oder privat?"
+                  name="eventtag"
+                  color="primary"
+                >
+                  <v-radio label="Öffentlich" value="publicEvent"></v-radio>
+                  <v-radio label="Privat" value="privateEvent"></v-radio>
+                </v-radio-group>
               </v-col>
             </v-row>
+
+            <!--Foto Upload-->
+
             <v-row>
               <v-col>
                 <div style="">
@@ -185,47 +198,35 @@ const formattedDate = computed(()=> {
                   </v-file-input>
                 </div>
               </v-col>
-              <v-col>
-                <div style="">
-                  <v-text-field
-                    variant="outlined"
-                    label=""
-                    density="default"
-                    placeholder=""
-                    type="text"
-                    hint=""
-                    :persistent-hint="false"
-                    class=""
-                    name=""
-                  >
-                  </v-text-field>
-                </div>
-              </v-col>
+            
             </v-row>
+
+
+            <!--Checkbox für anonymes Posten-->
             <v-row>
               <v-col>
-                <div style="">
-                  <v-radio-group
-                    v-model="eventtag"
-                    label=""
-                    class=""
-                    name="eventtag"
-                  >
-                    <v-radio
-                      v-for="radio in eventtagGroup"
-                      :key="radio.id"
-                      :label="radio.label"
-                      :value="radio.value"
-                      color="undefined"
+                <div>
+                  <div>
+                    <v-checkbox
+                      v-model="anonymousCheckbox"
+                      label="Anonym Posten"
+                      color="primary"
+            
                     >
-                    </v-radio>
-                  </v-radio-group>
+                    </v-checkbox>
+                  </div>
                 </div>
+              </v-col>
+            </v-row>
+      
+            <v-row>
+              <v-col>
+                <div></div>
               </v-col>
             </v-row>
             <v-row>
               <v-col>
-                <div style="">
+               
                   <v-btn
                     @click="postClick"
                     color="primary"
@@ -243,7 +244,7 @@ const formattedDate = computed(()=> {
                       {{ "Post" }}
                     </span>
                   </v-btn>
-                </div>
+             
               </v-col>
             </v-row>
           </v-form>
@@ -253,14 +254,4 @@ const formattedDate = computed(()=> {
   </v-card>
 </template>
 
-
-<style scoped>
-
-.v-overlay-container {
-  z-index: 2000 !important;
-}
-
-
-
-
-</style>
+<style scoped></style>
