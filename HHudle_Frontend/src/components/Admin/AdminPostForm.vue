@@ -94,7 +94,7 @@ const handleSubmit = () => {
 
 const formSubmit = (close) => {
   console.log("Form submitted!");
-  close();
+  closeForm();
 };
 
 
