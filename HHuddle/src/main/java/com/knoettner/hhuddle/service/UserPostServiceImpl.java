@@ -31,8 +31,6 @@ public class UserPostServiceImpl implements UserPostService {
     private UserPostRepository userPostRepository;
 
 
-
-
     @Override
     public PostDto createUserPost(PostDto postDto) {
         // Feldvalidierung
