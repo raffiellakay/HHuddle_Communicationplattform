@@ -21,6 +21,9 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -49,11 +52,13 @@ public class PostMapper {
             postDto.setStarttime(post.getStarttime());
         }
         if (post.getEndtime() != null) {
-            postDto.setEndtime(LocalDateTime.now().plusDays(14));
+            postDto.setEndtime(post.getEndtime());
         }
+
         if (post.getPathToPhoto() != null) {
             try {
-                postDto.setPhoto(Files.readAllBytes(Paths.get(post.getPathToPhoto())));
+
+                postDto.setPhoto(Files.readAllBytes(Paths.get(post.getPathToPhoto()))); // liest die Datei in ein Byte-Array und holt den Pfad
             } catch (IOException e) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "photo not found");
             }
@@ -91,9 +96,8 @@ public class PostMapper {
         if (postdto.getPhoto() != null) {
 
 
-            // Hole den Benutzer-Home-Ordner
-            String folderPath = System.getProperty("user.home") + File.separator + "images";
-
+            // Holt den Benutzer-Home-Ordner
+            String folderPath = ".\\files"; //saves in directory of the project
 
             // Ordner prüfen und erstellen, falls er nicht existiert
             File folder = new File(folderPath);
@@ -101,16 +105,16 @@ public class PostMapper {
                 folder.mkdirs(); // Erstelle den Ordner, falls er nicht existiert
             }
 
-            // Erstelle den Dateinamen
-            String fileName = folderPath + File.separator + "photo_" + LocalDateTime.now().toString().replace(":", "-") + ".jpg";
-            try (OutputStream out = new FileOutputStream(fileName)) {
+            // Erstellt den Dateinamen
+            String fileName = folderPath + File.separator + "photo_" + LocalDateTime.now().toString().replace(":", "-") + ".jpg"; // Doppelpunkt kein gültiges Zeichen in vielen Betriebssystemen
+            try (OutputStream out = new FileOutputStream(fileName)) { // Stream, das Bytes in eine Datei schreiben kann.
                 // Schreibe das Bild in den Ordner
                 out.write(postdto.getPhoto());
-                out.flush();
+                out.flush();// leert den Stream  und stellt sicher dass alle Dateien geschreiben werden.
             } catch (IOException e) {
                 throw new RuntimeException("Fehler beim Speichern des Bildes: " + e.getMessage());
             }
-            // Setze den Pfad in der Datenbank
+            // Setzt den Pfad in der Datenbank
             post.setPathToPhoto(fileName);
 
 
