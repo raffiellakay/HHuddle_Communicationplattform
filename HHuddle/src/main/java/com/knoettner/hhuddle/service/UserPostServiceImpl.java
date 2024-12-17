@@ -31,8 +31,6 @@ public class UserPostServiceImpl implements UserPostService {
     private UserPostRepository userPostRepository;
 
 
-
-
     @Override
     public PostDto createUserPost(PostDto postDto) {
         // Feldvalidierung
@@ -70,13 +68,13 @@ public class UserPostServiceImpl implements UserPostService {
         // Neues Post-Objekt erstellen
         Post newPost = postMapper.toEntity(postDto);
         newPost.setTimestamp(LocalDateTime.now());
-        newPost.setId(null);//Autoincrement ID
+        newPost.setId(null);//Autoincrement ID. Damit das Risiko dass schon bestehndes Post upgedatet wird, falls Id manuell eingegeben wird und bereits existiert.
 
         // Post speichern
         Post savedPost = postRepository.save(newPost);
 
         // UserPostKey erstellen
-        Long userId = postDto.getUser().getId();
+        Long userId = postDto.getUser().getId();   // ????
         Long boardId = postDto.getBoardId();
         Long postId = savedPost.getId();
         UserPostKey userPostKey = new UserPostKey(boardId, userId, postId);
@@ -98,11 +96,11 @@ public class UserPostServiceImpl implements UserPostService {
     public PostDto updateUserPost( PostDto updatedPost) {
         Post post = postMapper.toEntity(updatedPost);
         Long id = post.getId();
-        Optional <Post> dbpost = postRepository.findById(id);
+        Optional <Post> dbpost = postRepository.findById(id);// sucht nach einem post in db
         if (!dbpost.isPresent())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "post with this id not exist");
-        postRepository.deleteById(id);
-        postRepository.save(post);
+        postRepository.deleteById(id); //löscht bestehdes Post in DB
+        postRepository.save(post);// speichert das upgedated Post neu
         return updatedPost;
     }
 
@@ -122,7 +120,7 @@ public class UserPostServiceImpl implements UserPostService {
         Set<PostDto> postSet = new HashSet<>();// for unique Objects
         for (Post currentPost : listOfPosts){
             PostDto postDto = postMapper.toDto(currentPost);
-            postSet.add(postDto);
+            postSet.add(postDto);// fügt das Element zur Sammlung hinzu
         }
         return postSet;
     }
@@ -155,119 +153,22 @@ public class UserPostServiceImpl implements UserPostService {
      @Override
 
     public void deletePostsByUserId(Long userId) {
-        List<UserPost> userPosts = userPostRepository.findByUserId(userId);
-        for(UserPost userPost : userPosts) {
-            Post post = userPost.getPost();
-            if (post != null) {
-                post.setUserPost(null); // Break the association
-                postRepository.save(post); // Persist the change
-                postRepository.delete(post); // Delete the Post
-            }
+         List<UserPost> userPosts = userPostRepository.findByUserId(userId);
+         for (UserPost userPost : userPosts) {
+             Post post = userPost.getPost();
+             if (post != null) {
+                 post.setUserPost(null); // Bricht die Beziehung zwischen Post und UserPost
+                 postRepository.save(post); // speichert Post mit UserPost(null)
+                 postRepository.delete(post); // löscht das post
+             }
 
-            // Delete the UserPost itself
-            userPostRepository.delete(userPost);
-        }
-
-
-      }
-
-   /* public PostDto createUserPost(PostDto postDto) {
-        // Feldkondition
-        if (postDto.getCategory() == null || postDto.getTitle() == null || postDto.getText() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing required fields");
-        }
+             // löscht userpost
+             userPostRepository.delete(userPost);
+         }
 
 
-        // Kategorie behandeln
-        Category category;
-        try {
-            category = Category.valueOf(postDto.getCategory().toUpperCase());
-        } catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid category");
-        }
-        if ((category == Category.EVENTS || category == Category.PACKAGE) && postDto.getPhoto() != null) {
-            postDto.setPhoto(null); // kein foto für events and package post
-        }
-
-        // Exclude Frontpage category
-        if (category == Category.FRONTPAGE) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "FRONTPAGE category is not allowed for posts");
-        }
-
-        // Map DTO to entity
-        Post post = postMapper.toEntity(postDto);
-        post.setCategory(category);
-
-        // Save the post in the repository
-        Post savedPost = postRepository.save(post);
-
-        // If photo was saved but post was not successfully saved, delete the image
-        if (post.getPathToPhoto() != null && savedPost == null) {
-            try {
-                Files.deleteIfExists(Paths.get(post.getPathToPhoto()));
-            } catch (IOException e) {
-                throw new RuntimeException("Failed to delete image after save failure", e);
-            }
-        }
-
-
-
-
-        // Map saved entity back to DTO
-        return postMapper.toDto(savedPost);
-    }
-*/
-
-
-
-
-
-   /* @Override
-    public PostDto createBlackBoardPost(PostDto post) {
-        Post newBlackboardPost = new Post();
-        newBlackboardPost.setText(post.getText());
-        newBlackboardPost.setTitle(post.getTitle());
-        newBlackboardPost.setStarttime(LocalDateTime.now());
-        newBlackboardPost.setEndtime(LocalDateTime.now().plusDays(14));
-        newBlackboardPost.setCategory(Category.BLACKBOARD);
-        newBlackboardPost.setPathToPhoto(post.getPhoto());
-
-    }*/
-
-
-
-
-
-
-
+     }
 }
-
-   /* @Override
-    public PostDto updatePost(Long postId, PostDto updatedPost) {
-        Post existingPost = postRepository.findById(postId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
-
-        existingPost.setTitle(updatedPost.getTitle());
-        existingPost.setText(updatedPost.getText());
-        existingPost.setTimestamp(updatedPost.getTimestamp());
-
-      /*  switch (existingPost.getCategory()) {
-            case EVENTS:
-                //existingPost.setPhoto(updatedPost.getPhoto());
-                existingPost.setStarttime(updatedPost.getStarttime());
-                existingPost.setEndtime(updatedPost.getEndtime());
-
-                break;
-            case EXCHANGE:
-             //   existingPost.setPhoto(updatedPost.getPhoto());
-
-                break;
-
-            case
-
-        }*/
-
-
 
 
 

@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Component
 
-public class ChatMessageMapper {
+public class  ChatMessageMapper {
     @Autowired
     BasicUserMapper basicUserMapper;
 
