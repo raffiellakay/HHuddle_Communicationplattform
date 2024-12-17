@@ -17,8 +17,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.knoettner.hhuddle.UserRole.P_MANAGEMENT;
-import static com.knoettner.hhuddle.UserRole.RESIDENT;
+import static com.knoettner.hhuddle.UserRole.*;
 
 @SpringBootApplication
 @EnableMethodSecurity
@@ -41,12 +40,12 @@ public class HHuddleApplication implements CommandLineRunner  {
         //Hardcoded Roles: 1 for RESIDENT, 2 for ADMIN/P_MANAGEMENT
         Optional<Role> maybeRole = roleRepository.findById(1L);
         if (maybeRole.isEmpty()) {
-            Role resident = new Role(1L, RESIDENT, new HashSet<>());
+            Role resident = new Role(1L, ROLE_RESIDENT, new HashSet<>());
             roleRepository.save(resident);
         }
         Optional<Role> maybeRole2 = roleRepository.findById(2L);
         if (maybeRole2.isEmpty()) {
-            Role pManagement = new Role(2L, P_MANAGEMENT, new HashSet<>());
+            Role pManagement = new Role(2L, ROLE_PMANAGEMENT, new HashSet<>());
             roleRepository.save(pManagement);
         }
 

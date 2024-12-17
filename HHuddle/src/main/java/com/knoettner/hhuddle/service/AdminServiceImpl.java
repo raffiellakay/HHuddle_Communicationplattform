@@ -18,8 +18,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import static com.knoettner.hhuddle.Category.*;
-import static com.knoettner.hhuddle.UserRole.P_MANAGEMENT;
-import static com.knoettner.hhuddle.UserRole.RESIDENT;
+import static com.knoettner.hhuddle.UserRole.ROLE_PMANAGEMENT;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -314,7 +313,7 @@ public class AdminServiceImpl implements AdminService {
         newUser.setMail(adminUser.getMail());
         newUser.setUsername(adminUser.getUsername());
         HashSet<Role> roles = new HashSet<>();
-        Role role = new Role(2L, P_MANAGEMENT,null);
+        Role role = new Role(2L, ROLE_PMANAGEMENT,null);
         roles.add(role);
         newUser.setRoles(roles);
         newUser.setPassword(encoder.encode(adminUser.getPassword()));
