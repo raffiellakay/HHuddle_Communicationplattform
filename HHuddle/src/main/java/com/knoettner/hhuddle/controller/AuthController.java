@@ -46,7 +46,7 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginDto loginDto) {
-
+    //throws exception if authentication didnt work out
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDto.getMail(), loginDto.getPassword()));
 
@@ -54,6 +54,7 @@ public class AuthController {
         String jwt = jwtUtils.generateJwtToken(authentication);
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        //necessary to interate over a Collection of Authorities (with each Authorities has a field String role)(== roles) to make them a list of Strings
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());

@@ -7,6 +7,7 @@ import lombok.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+//what backend needs from frontend to login user
 public class LoginDto {
     private String mail;
     private String password;

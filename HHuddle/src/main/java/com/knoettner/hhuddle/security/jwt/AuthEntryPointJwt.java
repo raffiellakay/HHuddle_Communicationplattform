@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-
+//if there is a not working authentication tehre is a special logger for it
 @Component
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
 

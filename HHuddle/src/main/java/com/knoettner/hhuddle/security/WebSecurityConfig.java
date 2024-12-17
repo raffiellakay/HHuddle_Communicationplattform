@@ -55,7 +55,7 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
+//Chain of filters that are used one after another
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 //Cross-Site Request Forgery automatically with SpringSecurity - disabled! (HTTPRequests from not good websites)
@@ -68,9 +68,9 @@ public class WebSecurityConfig {
                 );
 
         http.authenticationProvider(authenticationProvider());
-
+//authenticationJwtTokenFilter is used first
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-
+//Spring Security function that builds the chain of filters
         return http.build();
     }
 
