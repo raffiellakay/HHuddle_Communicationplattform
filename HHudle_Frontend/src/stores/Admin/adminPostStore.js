@@ -5,7 +5,7 @@ import { API_URL } from "@/api";
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
-export const useHouseStore = defineStore('adminPost', {
+export const useAdminPostStore = defineStore('adminPost', {
     state: () => ({
         adminPosts: [], //Array for all admin Posts 
         boards: [], //Array for the boards which stores the adminBoard
