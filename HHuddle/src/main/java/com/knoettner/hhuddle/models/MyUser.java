@@ -17,7 +17,6 @@ public class MyUser {
     @GeneratedValue (strategy = GenerationType.AUTO)
     private Long id;
 
-    //wie encodieren?
     @Column(nullable = false)
     private String password;
     @Column(nullable = false)

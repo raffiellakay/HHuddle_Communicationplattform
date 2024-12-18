@@ -69,7 +69,8 @@ public class UserPostController {
      @PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity<Void> deletePostsByUserId(@PathVariable("userId") Long userId) {
         userPostService.deletePostsByUserId(userId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent().build();//TODO noContent überprüfen
+        // return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }
