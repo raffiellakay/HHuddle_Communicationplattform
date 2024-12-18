@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 import java.util.Set;
 
 
-@Entity
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Entity
 public class Board {
     @Id
     @GeneratedValue (strategy = GenerationType.AUTO)

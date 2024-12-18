@@ -1,4 +1,4 @@
-package controller;
+package com.knoettner.hhuddle.controller;
 
 import com.knoettner.hhuddle.dto.ChatDto;
 import com.knoettner.hhuddle.dto.ChatMessageDto;
@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import service.ChatService;
+import com.knoettner.hhuddle.service.ChatService;
 
 import java.util.List;
 

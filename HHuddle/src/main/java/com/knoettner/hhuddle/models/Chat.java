@@ -7,18 +7,16 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@Entity
-@ToString
-@Getter
-@Setter
+
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Entity
 public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name ="chat_id")
-    private int id;
+    private Long id;
 
     @Column(nullable = false)
     private LocalDateTime timestamp;
@@ -26,6 +24,6 @@ public class Chat {
     @OneToMany(mappedBy = "chat")
     Set<ChatMessage> messages;
 
-    @OneToMany(mappedBy = "chat")
-    Set<ChatParticipants> participants;
+    @OneToOne(mappedBy = "chat")
+    private ChatParticipants participants;
 }

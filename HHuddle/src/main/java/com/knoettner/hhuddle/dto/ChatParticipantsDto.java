@@ -1,5 +1,6 @@
 package com.knoettner.hhuddle.dto;
 
+import com.knoettner.hhuddle.models.Chat;
 import com.knoettner.hhuddle.models.MyUser;
 import lombok.*;
 
@@ -8,16 +9,15 @@ import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 @Data
 
 public class ChatParticipantsDto {
 
-    private int id;
-    private LocalDateTime timestamp;
-    private Set<ChatMessageDto> messages;
-    private Set<ChatParticipantsDto> participants;
+
+        private Long firstUserId;  // Korrespondiert mit ChatParticipantKey.firstUserId
+        private Long secondUserId; // Korrespondiert mit ChatParticipantKey.secondUserId
+        private Long chatId;       // Korrespondiert mit Chat.chat.id
 
 
 }
+

@@ -2,7 +2,6 @@ package com.knoettner.hhuddle.models;
 
 
 import com.knoettner.hhuddle.ChatParticipantKey;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +24,7 @@ public class ChatParticipants {
     @MapsId("secondUserId")
     MyUser secondUser;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn (name = "chat_id_FK")
     Chat chat;
 

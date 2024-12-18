@@ -1,30 +1,24 @@
 package com.knoettner.hhuddle.dto;
 
+import com.knoettner.hhuddle.Category;
 import com.knoettner.hhuddle.models.House;
-import com.knoettner.hhuddle.models.Post;
+import com.knoettner.hhuddle.models.UserPost;
 import jakarta.persistence.Column;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Set;
-
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
-
-public class FacilityDto {
+public class BoardDto {
     private Long id;
-    private String type;
-    private String description;
-
+    private String category;
     private Long houseId;
-    private Set<PostDto> postDtos;
 }

@@ -11,6 +11,7 @@ import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
@@ -18,9 +19,10 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 
+
 public class HouseDto {
-    private int id;
+    private Long id;
     private String adress;
-    private Set<MyUser> residents;
-    private Set<Facility> facilities;
+    private Set<BasicUserDto> residents;
+    private Set<FacilityDto> facilities;
 }
