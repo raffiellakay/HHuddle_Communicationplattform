@@ -15,7 +15,6 @@ import LoginLayout from '@/layouts/LoginLayout.vue';
 import AllHousesView from '@/views/Admin/AllHousesView.vue';
 import AboutUsView from '@/views/AboutUsView.vue';
 import ContactView from '@/views/ContactView.vue';
-import HouseView from '@/views/Admin/HouseView.vue';
 import AHouseLayout from '@/layouts/Admin/AHouseLayout.vue';
 import HouseView from '@/views/Admin/HouseView.vue';
 

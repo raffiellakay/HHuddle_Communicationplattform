@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from 'vue';
-import {useRouter } from 'vue-router'
+import { useAuthStore } from '@/store/authStore'
+import { useRouter } from 'vue-router'
+import { isAxiosError } from 'axios'
 
 const username = ref('');
 const password = ref('');
@@ -10,6 +12,34 @@ const router = useRouter();
 const handleLogin = () => {
   router.push('/user/home');
 }
+
+
+//Authentification
+const authStore = useAuthStore()
+const showInvalidCredentialsWarning = ref(false)
+const showUnknownError = ref(false)
+
+const credentials = ref({
+  email: '',
+  password: ''
+})
+
+//Funktion noch nicht eingebunden
+async function login() { 
+  try {
+    await authStore.login(credentials.value)
+    await router.push('/dashboard')
+  } catch (err) {
+    if (isAxiosError(err) && err.response?.status === 401) {
+      return showInvalidCredentialsWarning.value = true
+    }
+    console.error(err)
+    showUnknownError.value = true
+  }
+}
+
+
+
 
 
 </script>
