@@ -15,6 +15,12 @@ import LoginLayout from '@/layouts/LoginLayout.vue';
 import AllHousesView from '@/views/Admin/AllHousesView.vue';
 import AboutUsView from '@/views/AboutUsView.vue';
 import ContactView from '@/views/ContactView.vue';
+import HouseView from '@/views/Admin/HouseView.vue';
+import AHouseLayout from '@/layouts/Admin/AHouseLayout.vue';
+import HouseView from '@/views/Admin/HouseView.vue';
+
+
+import { useAuthStore } from '@/stores/authStore';
 
 
 const routes = [
@@ -23,32 +29,39 @@ const routes = [
     path: '/user',
     name: 'Home',
     component: UHomeLayout,
+    //meta: { requiresAuth: true },
     children: [
       {
         path: 'home',
         name: 'UserHome',  //Achtung! Name muss unique sein
         component: UHomeView,
+        //meta: { requiresAuth: true },
       },
       {
         path: 'board',
         name: 'Board',
         component: BoardLayout,
+        //meta: { requiresAuth: true },
         children: [
           {
             path: 'commonrooms',
-            component: CommonRoomsView, 
+            component: CommonRoomsView,
+            //meta: { requiresAuth: true }, 
           },
           {
             path: 'blackboard',
-            component: BlackBoardView, 
+            component: BlackBoardView,
+            //meta: { requiresAuth: true },
           },
           {
             path: 'packagefinder',
             component: PackageFinderView,
+            //meta: { requiresAuth: true },
           },
           {
             path:'search&find',
             component: SearchAndFindView,
+            //meta: { requiresAuth: true },
           }]
       }]
     },
@@ -66,9 +79,13 @@ const routes = [
         path: 'houses',
         name: 'AllHouses',
         component: AllHousesView
+      }, 
+      {
+        path: 'house',
+        name: 'House',
+        component: AHouseLayout
       }
     ]
-
   },
 
   {
@@ -90,9 +107,6 @@ const routes = [
   },
 
 
-  
-  
-  
   ]
       
   
@@ -106,5 +120,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
+//router.beforeEach(() => useAuthStore().initialize())
 
 export default router;
