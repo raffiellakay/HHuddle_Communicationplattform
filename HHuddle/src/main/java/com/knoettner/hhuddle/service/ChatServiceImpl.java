@@ -91,19 +91,19 @@ public class ChatServiceImpl implements ChatService {
 
         chatMessageRepository.save(chatMessage);
 
-        return chatMessageMapper.toDto(chatMessageRepository.findAllByTimestamp(chatMessage.getTimestamp()).get(0));
+        return chatMessageMapper.toDto(chatMessageRepository.findAllByTimestamp(chatMessage.getTimestamp()).get(0));//TODO übeprüfen 0
     }
 
-    @Override
+   /* @Override
     public void deleteChat(Long chatId) {
         Chat chat = chatRepository.findById(chatId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Chat not found"));
                 Set<ChatMessage> messages = chat.getMessages();
                 for (ChatMessage currentMessage : messages) {
-                    chatMessageRepository.deleteById(currentMessage.getId());
+                    chatMessageRepository.deleteById(currentMessage.getId()); //TODO einseitig chat nicht sichtbar macht
                 }
         chatRepository.delete(chat);
-    }
+    }*/
 
     @Override
     public ChatDto getChatById(Long chatId) {
