@@ -8,21 +8,10 @@ export const useAuthStore = defineStore('auth', {
     state: () => ({
         isInitialized: false, // dient dazu, um festzuhalten, ob initial nach dem Seitenreload die Benutzerdaten bereits geladen wurden
         user: null
+        //Types müssen hier noch initalisiert werden 
+
     }),
-    getters: {
-        // Kann genutzt werden, um allgemein abzuprüfen, ob der Seitenbesucher eingeloggt ist
-        isLoggedIn() {
-            return !!this.user
-        },
-        // Überprüft, ob der eingeloggte Seitenbesucher ein Admin ist
-        isAdmin() {
-            return this.user?.role === 'admin'
-        },
-        // Überprüft, ob der eingeloggte Seitenbesucher ein Kunde ist
-        isUser() {
-            return this.user?.role === 'user'
-        }
-    },
+ 
     actions: {
         /**
          * Diese Funktion dient dazu, nach einem Seitenreload die Benutzerdaten einmal zu laden.
@@ -56,17 +45,14 @@ export const useAuthStore = defineStore('auth', {
             const {data} = await axios.post(API_URL + 'auth/login', credentials)
             this.applyAuthentication(data)
         },
-        async register(registration) {
-            const {data} = await axios.post(API_URL + 'auth/register', registration)
-            this.applyAuthentication(data)
-        },
+        
         logout() {
             this.user = null
             localStorage.removeItem('jwt') // Zum Logout reicht es, wenn das Frontend den JWT "vergisst"
         },
-        applyAuthentication({user, accessToken}) {
-            this.user = user
-            localStorage.setItem('jwt', 'Bearer ' + accessToken) // Hier wird der JWT dauerhaft unter dem Namen "jwt" (erster Parameter) gespeichert.
+        applyAuthentication({token, type, id, username, mail, roles}) { // Muss mit properties im Backend übereinstimmen
+            
+            localStorage.setItem('jwt', 'Bearer ' + token) // Hier wird der JWT dauerhaft unter dem Namen "jwt" (erster Parameter) gespeichert.
         }
     }
 })

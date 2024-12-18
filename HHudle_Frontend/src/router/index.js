@@ -28,39 +28,39 @@ const routes = [
     path: '/user',
     name: 'Home',
     component: UHomeLayout,
-    //meta: { requiresAuth: true },
+    meta: { requiresAuth: true },
     children: [
       {
         path: 'home',
         name: 'UserHome',  //Achtung! Name muss unique sein
         component: UHomeView,
-        //meta: { requiresAuth: true },
+        meta: { requiresAuth: true },
       },
       {
         path: 'board',
         name: 'Board',
         component: BoardLayout,
-        //meta: { requiresAuth: true },
+        meta: { requiresAuth: true },
         children: [
           {
             path: 'commonrooms',
             component: CommonRoomsView,
-            //meta: { requiresAuth: true }, 
+            meta: { requiresAuth: true }, 
           },
           {
             path: 'blackboard',
             component: BlackBoardView,
-            //meta: { requiresAuth: true },
+            meta: { requiresAuth: true },
           },
           {
             path: 'packagefinder',
             component: PackageFinderView,
-            //meta: { requiresAuth: true },
+            meta: { requiresAuth: true },
           },
           {
             path:'search&find',
             component: SearchAndFindView,
-            //meta: { requiresAuth: true },
+            meta: { requiresAuth: true },
           }]
       }]
     },
@@ -68,21 +68,25 @@ const routes = [
     path: '/admin',
     name: 'admin',
     component: AHomeLayout,
+    meta: { requiresAuth: true },
     children: [
       {
         path: 'home',
         name: 'AdminHome',
-        component: AHomeView
+        component: AHomeView,
+        meta: { requiresAuth: true },
       }, 
       {
         path: 'houses',
         name: 'AllHouses',
-        component: AllHousesView
+        component: AllHousesView,
+        meta: { requiresAuth: true },
       }, 
       {
         path: 'house',
         name: 'House',
-        component: AHouseLayout
+        component: AHouseLayout,
+        meta: { requiresAuth: true },
       }
     ]
   },
@@ -120,6 +124,7 @@ const router = createRouter({
   routes,
 });
 
-//router.beforeEach(() => useAuthStore().initialize())
+//Aufrufen des States von Role in authStore (1 oder 2)
+router.beforeEach(() => useAuthStore().initialize())
 
 export default router;
