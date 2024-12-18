@@ -1,18 +1,22 @@
 package com.knoettner.hhuddle.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+import java.util.Set;
+
+
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class UserDto {
-
+@Data
+//UserDto withouth Password!
+public class MyUserDto {
     private Long id;
-    private String password;
     private String mail;
     private String username;
     private Long houseId;
+
+
 }

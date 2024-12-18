@@ -5,27 +5,35 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Set;
 
-@Entity
-@ToString
-@Getter
+
 @Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Entity
 public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name ="chat_id")
-    private int id;
+    private Long id;
 
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
-    @OneToMany(mappedBy = "chat")
+    @OneToMany(mappedBy = "chat", fetch = FetchType.EAGER)
     Set<ChatMessage> messages;
 
-    @OneToMany(mappedBy = "chat")
-    Set<ChatParticipants> participants;
+   @ManyToOne
+   @JoinColumn( name = "first_participant_id")
+    private MyUser firstParticipant;
+
+    @ManyToOne
+    @JoinColumn( name = "second_participant_id")
+    private MyUser secondParticipant;
+
+
+
 }

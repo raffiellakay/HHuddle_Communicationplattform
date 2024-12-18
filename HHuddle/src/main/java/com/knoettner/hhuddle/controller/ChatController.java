@@ -1,19 +1,23 @@
-package controller;
+package com.knoettner.hhuddle.controller;
 
 import com.knoettner.hhuddle.dto.ChatDto;
-import com.knoettner.hhuddle.dto.ChatMessageDto;
+import com.knoettner.hhuddle.dto.ChatMessageRequestDto;
+import com.knoettner.hhuddle.dto.ChatMessageResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import service.ChatService;
+import com.knoettner.hhuddle.service.ChatService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/chats")
+@RequestMapping("/api/chats")
+
 
 public class ChatController {
+
 
     @Autowired
     private ChatService chatService;
@@ -21,6 +25,8 @@ public class ChatController {
     //Create a new Chat
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/create")
+    // Use hasRole for role-based access control
+    @PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity<ChatDto> createChat(
             @RequestParam Long firstUserId,
             @RequestParam Long secondUserId) {
@@ -29,16 +35,19 @@ public class ChatController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/{chatId}/send-message")
-    public ResponseEntity<ChatMessageDto> sendMessage(
-            @PathVariable Long chatId,
-            @RequestBody ChatMessageDto chatMessageDto) {
-        ChatMessageDto sentMessage = chatService.sendMessage(chatId, chatMessageDto);
+    @PostMapping("/send-message")
+    // Use hasRole for role-based access control
+    @PreAuthorize("hasRole('RESIDENT')")
+    public ResponseEntity<ChatMessageResponseDto> sendMessage(
+            @RequestBody ChatMessageRequestDto chatMessageRequestDto) {
+        ChatMessageResponseDto sentMessage = chatService.sendMessage(chatMessageRequestDto);
         return ResponseEntity.ok(sentMessage);
     }
 
     // Einzelnen Chat abrufen
     @GetMapping("/{chatId}")
+    // Use hasRole for role-based access control
+    @PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity<ChatDto> getChat(@PathVariable Long chatId) {
         ChatDto chatDto = chatService.getChatById(chatId);
         return ResponseEntity.ok(chatDto);
@@ -46,12 +55,16 @@ public class ChatController {
 
     // 5. Chat löschen
     @DeleteMapping("/{chatId}")
+    // Use hasRole for role-based access control
+    @PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity<Void> deleteChat(@PathVariable Long chatId) {
         chatService.deleteChat(chatId);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/user/{userId}")
+    // Use hasRole for role-based access control
+    @PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity<List<ChatDto>> getUserChats(@PathVariable Long userId) {
         List<ChatDto> chats = chatService.getChatsByUserId(userId);
         return ResponseEntity.ok(chats);

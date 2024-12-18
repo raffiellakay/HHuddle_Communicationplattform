@@ -14,10 +14,11 @@ import java.util.Set;
 public class ChatDto {
 
 
-    private int id;
+    private Long id;
     private LocalDateTime timestamp;
-    private Set<ChatMessageDto> messages;
-    private Set<ChatParticipantsDto> participants;
+    private BasicUserDto first_participant;
+    private BasicUserDto second_participant;
+    private Set<ChatMessageResponseDto> messages;
 
 
 }

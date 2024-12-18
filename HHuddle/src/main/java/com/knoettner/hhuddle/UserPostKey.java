@@ -16,12 +16,12 @@ import java.io.Serializable;
 
 @Embeddable
 public class UserPostKey implements Serializable {
-    @Column(name = "user_Id_FK")
+    @Column (name = "board_id_fk")
+    Long boardId;
+
+    @Column(name = "user_id_fk")
     Long userId;
 
-    @Column (name = "post_Id_FK")
+    @Column (name = "post_id_fk")
     Long postId;
-
-    @Column (name = "board_Id_FK")
-    Long boardId;
 }

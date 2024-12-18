@@ -9,29 +9,33 @@ import java.util.stream.Collectors;
 
 @Component
 
-public class ChatMapper implements Mapper <ChatDto, Chat>{
+public class ChatMapper {
     @Autowired
     ChatMessageMapper chatMessageMapper;
+
     @Autowired
-    ChatParticipantsMapper chatParticipantsMapper;
+    BasicUserMapper basicUserMapper;
 
 
+/* necesssary?
     public Chat toEntity(ChatDto chatDto) {
         Chat chat = new Chat();
         chat.setId(chatDto.getId());
         chat.setTimestamp(chatDto.getTimestamp());
         chat.setMessages(chatDto.getMessages().stream(). map(e ->chatMessageMapper.toEntity(e)).collect(Collectors.toSet()));
-        chat.setParticipants(chatDto.getParticipants().stream().map(e ->chatParticipantsMapper.toEntity(e)).collect(Collectors.toSet()));
+    //    chat.setParticipants(chatDto.getParticipants().stream().map(e ->chatParticipantsMapper.toEntity(e)).collect(Collectors.toSet()));
         return chat;
     }
-
+*/
 
     public ChatDto toDto(Chat chat) {
         ChatDto chatDto = new ChatDto();
         chatDto.setId(chat.getId());
         chatDto.setTimestamp(chat.getTimestamp());
-        chatDto.setMessages(chat.getMessages().stream(). map(e ->chatMessageMapper.toDto(e)).collect(Collectors.toSet()));
-        chatDto.setParticipants(chat.getParticipants().stream().map(e ->chatParticipantsMapper.toDto(e)).collect(Collectors.toSet()));
+        if (chat.getMessages()!= null)
+            chatDto.setMessages(chat.getMessages().stream(). map(e ->chatMessageMapper.toDto(e)).collect(Collectors.toSet()));
+        chatDto.setFirst_participant(basicUserMapper.toDto(chat.getFirstParticipant()));
+        chatDto.setSecond_participant(basicUserMapper.toDto(chat.getSecondParticipant()));
         return chatDto;
     }
 
