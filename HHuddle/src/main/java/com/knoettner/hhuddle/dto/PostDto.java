@@ -26,10 +26,11 @@ public class PostDto {
     private String category;
     private LocalDateTime timestamp;
 
+
     //optionale Felder
 
     private boolean isAnonymous;
-    private java.sql.Blob photo;
+    private byte[] photo;
     private LocalDateTime starttime;
     private LocalDateTime endtime;
     private boolean isPrivate;
@@ -37,7 +38,7 @@ public class PostDto {
     private Long facilityId;
 
 
-    // combined Primary Key
+
     //BasicUserDto --> only necessary Info to Frontend!
     private BasicUserDto user;
     private Long boardId;

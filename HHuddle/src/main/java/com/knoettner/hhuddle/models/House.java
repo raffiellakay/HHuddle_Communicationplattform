@@ -1,25 +1,27 @@
 package com.knoettner.hhuddle.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
 
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
+
 @Entity
 public class House {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String adress;
-    @OneToMany(mappedBy =  "house")
+    private String address;
+    @OneToMany(mappedBy =  "house", fetch = FetchType.EAGER)
     private Set<Board> boards;
 
-    @OneToMany(mappedBy = "house")
+    @OneToMany(mappedBy = "house", fetch = FetchType.EAGER)
     private Set<MyUser> residents;
 
     @OneToMany (mappedBy = "house",fetch = FetchType.EAGER)

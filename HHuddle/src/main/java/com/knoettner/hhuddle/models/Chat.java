@@ -5,10 +5,12 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Set;
 
 
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -21,9 +23,17 @@ public class Chat {
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
-    @OneToMany(mappedBy = "chat")
+    @OneToMany(mappedBy = "chat", fetch = FetchType.EAGER)
     Set<ChatMessage> messages;
 
-    @OneToOne(mappedBy = "chat")
-    private ChatParticipants participants;
+   @ManyToOne
+   @JoinColumn( name = "first_participant_id")
+    private MyUser firstParticipant;
+
+    @ManyToOne
+    @JoinColumn( name = "second_participant_id")
+    private MyUser secondParticipant;
+
+
+
 }

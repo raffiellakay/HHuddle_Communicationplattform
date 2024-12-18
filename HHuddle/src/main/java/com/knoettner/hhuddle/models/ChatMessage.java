@@ -1,12 +1,11 @@
 package com.knoettner.hhuddle.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -14,6 +13,8 @@ public class ChatMessage {
 
 
    @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   //generated ID is necessary in almost all models with DTOs
    private Long id;
 
     @ManyToOne

@@ -1,14 +1,15 @@
 package com.knoettner.hhuddle.models;
 
+import com.knoettner.hhuddle.security.models.PasswordResetToken;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 @Entity
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class MyUser {
@@ -16,7 +17,6 @@ public class MyUser {
     @GeneratedValue (strategy = GenerationType.AUTO)
     private Long id;
 
-    //wie encodieren?
     @Column(nullable = false)
     private String password;
     @Column(nullable = false)
@@ -32,21 +32,24 @@ public class MyUser {
     )
     private Set<Role> roles;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     Set<ChatMessage> messages;
 
     //unklar ob chatParticipants so stimmt
-    @OneToMany(mappedBy =  "firstUser")
-    Set<ChatParticipants> first_participantInChat;
+    @OneToMany(mappedBy =  "firstParticipant", fetch = FetchType.EAGER)
+    Set<Chat> first_participantInChat;// nach dem User schauen in welchen Chats er ist
 
-    @OneToMany (mappedBy = "secondUser")
-    Set<ChatParticipants> second_participantInChat;
+    @OneToMany (mappedBy = "secondParticipant", fetch = FetchType.EAGER)
+    Set<Chat> second_participantInChat;
 
-    @OneToMany(mappedBy =  "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     Set<UserPost> userPosts;
 
 
     @ManyToOne
     @JoinColumn( name = "house_id_FK")
     private House house;
+
+    @OneToOne
+    private PasswordResetToken token;
 }
