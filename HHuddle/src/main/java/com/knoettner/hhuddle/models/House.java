@@ -17,7 +17,7 @@ public class House {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String adress;
+    private String address;
     @OneToMany(mappedBy =  "house", fetch = FetchType.EAGER)
     private Set<Board> boards;
 

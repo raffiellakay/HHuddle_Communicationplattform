@@ -11,12 +11,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class ChatTest {
     @Autowired
     private ChatService chatService;
-        @Test
 
-        public void testCreateChat() {
-
-
-
+    @Test
+    public void testCreateChat() {
 
     }
 }

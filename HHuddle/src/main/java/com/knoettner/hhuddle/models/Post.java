@@ -26,7 +26,7 @@ public class Post {
     private Category category;
     @Column(nullable = false)
     private LocalDateTime timestamp;
-    @OneToOne(mappedBy =  "post", fetch = FetchType.EAGER)
+    @OneToOne(mappedBy =  "post", fetch = FetchType.EAGER,  cascade = CascadeType.ALL, orphanRemoval = true)// cascade to delete from both tables
     private UserPost userPost;
     //optionale Felder
 

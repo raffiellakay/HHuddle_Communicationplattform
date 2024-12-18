@@ -26,6 +26,7 @@ public class PostDto {
     private String category;
     private LocalDateTime timestamp;
 
+
     //optionale Felder
 
     private boolean isAnonymous;
