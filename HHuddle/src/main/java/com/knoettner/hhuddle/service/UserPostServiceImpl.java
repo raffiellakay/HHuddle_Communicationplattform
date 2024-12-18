@@ -92,6 +92,7 @@ public class UserPostServiceImpl implements UserPostService {
         postDto.setId(savedPost.getId());
         return postDto;
     }
+    //funktioniert nicht? löscht nur alten Post erstellt keinen neuen
     @Override
     public PostDto updateUserPost( PostDto updatedPost) {
         Post post = postMapper.toEntity(updatedPost);
