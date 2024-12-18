@@ -2,15 +2,14 @@ package com.knoettner.hhuddle.models;
 
 import com.knoettner.hhuddle.Category;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
 
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -25,8 +24,6 @@ public class Board {
     @JoinColumn( name = "house_id_FK")
     private House house;
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER)
     Set<UserPost> userPosts;
-
-
 }

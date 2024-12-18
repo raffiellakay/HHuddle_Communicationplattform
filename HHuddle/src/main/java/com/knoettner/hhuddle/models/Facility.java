@@ -2,9 +2,7 @@ package com.knoettner.hhuddle.models;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 import java.util.Set;
@@ -12,7 +10,8 @@ import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 
 @Entity
 public class Facility {
@@ -30,7 +29,7 @@ public class Facility {
     private House house;
 
 
-    @OneToMany (mappedBy = "facility")
+    @OneToMany (mappedBy = "facility", fetch = FetchType.EAGER)
     private Set<Post> posts;
 
 }

@@ -2,7 +2,6 @@ package com.knoettner.hhuddle.dto.mapper;
 
 import com.knoettner.hhuddle.dto.ChatDto;
 import com.knoettner.hhuddle.models.Chat;
-import com.knoettner.hhuddle.models.ChatParticipants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,9 +32,10 @@ public class ChatMapper {
         ChatDto chatDto = new ChatDto();
         chatDto.setId(chat.getId());
         chatDto.setTimestamp(chat.getTimestamp());
-        chatDto.setMessages(chat.getMessages().stream(). map(e ->chatMessageMapper.toDto(e)).collect(Collectors.toSet()));
-        chatDto.setFirst_participant(basicUserMapper.toDto(chat.getParticipants().getFirstUser()));
-        chatDto.setSecond_participant(basicUserMapper.toDto(chat.getParticipants().getSecondUser()));
+        if (chat.getMessages()!= null)
+            chatDto.setMessages(chat.getMessages().stream(). map(e ->chatMessageMapper.toDto(e)).collect(Collectors.toSet()));
+        chatDto.setFirst_participant(basicUserMapper.toDto(chat.getFirstParticipant()));
+        chatDto.setSecond_participant(basicUserMapper.toDto(chat.getSecondParticipant()));
         return chatDto;
     }
 

@@ -11,16 +11,18 @@ import java.util.stream.Collectors;
 
 @Component
 public class HouseMapper {
+
     @Autowired
-    BasicUserMapper basicUserMapper;
     FacilityMapper facilityMapper;
+    @Autowired
+    private MyUserMapper myUserMapper;
 
     public House toEntity(HouseDto houseDto) {
         House house = new House();
         house.setId(houseDto.getId());
-        house.setAdress(houseDto.getAdress());
+        house.setAddress(houseDto.getAddress());
         if (houseDto.getResidents() != null && !houseDto.getResidents().isEmpty()){
-        house.setResidents(houseDto.getResidents().stream().map(e -> basicUserMapper.toEntity(e)).collect(Collectors.toSet()));
+        house.setResidents(houseDto.getResidents().stream().map(e -> myUserMapper.toEntity(e)).collect(Collectors.toSet()));
         }else {
             house.setResidents(Collections.emptySet());
         }
@@ -32,9 +34,9 @@ public class HouseMapper {
     public HouseDto todDto(House house) {
         HouseDto houseDto = new HouseDto();
         houseDto.setId(house.getId());
-        houseDto.setAdress(house.getAdress());
+        houseDto.setAddress(house.getAddress());
         if (house.getResidents() != null && !house.getResidents().isEmpty()){
-        houseDto.setResidents(house.getResidents().stream().map(e -> basicUserMapper.toDto(e)).collect(Collectors.toSet()));
+        houseDto.setResidents(house.getResidents().stream().map(e -> myUserMapper.toDto(e)).collect(Collectors.toSet()));
         }else {
             houseDto.setResidents(Collections.emptySet());
         }

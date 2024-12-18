@@ -1,17 +1,12 @@
 package com.knoettner.hhuddle.dto.mapper;
 
-import com.knoettner.hhuddle.dto.ChatMessageDto;
 import com.knoettner.hhuddle.dto.MyUserDto;
-import com.knoettner.hhuddle.dto.RoleDto;
-import com.knoettner.hhuddle.dto.UserPostDto;
 import com.knoettner.hhuddle.models.*;
 import com.knoettner.hhuddle.repository.HouseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 @Component
 public class MyUserMapper {
@@ -27,7 +22,14 @@ UserPostMapper userPostMapper;
 @Autowired
     HouseRepository houseRepository;
 
-   //no toDTO necessary?
+   public MyUserDto toDto (MyUser user) {
+       MyUserDto userDto = new MyUserDto();
+       userDto.setId(user.getId());
+       userDto.setMail(user.getMail());
+       userDto.setUsername(user.getUsername());
+       userDto.setHouseId(user.getHouse().getId());
+       return userDto;
+   }
 
     public MyUser toEntity (MyUserDto userDto) {
         MyUser user = new MyUser();
