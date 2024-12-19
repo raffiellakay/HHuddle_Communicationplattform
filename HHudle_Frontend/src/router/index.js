@@ -22,6 +22,7 @@ import HouseView from '@/views/Admin/HouseView.vue';
 import { useAuthStore } from '@/stores/authStore';
 
 
+
 const routes = [
   
   {
@@ -85,7 +86,7 @@ const routes = [
       {
         path: 'house',
         name: 'House',
-        component: AHouseLayout,
+        component: HouseView,
         meta: { requiresAuth: true },
       }
     ]
