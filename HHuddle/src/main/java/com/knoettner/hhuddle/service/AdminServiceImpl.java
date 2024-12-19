@@ -1,17 +1,16 @@
 package com.knoettner.hhuddle.service;
 
 import com.knoettner.hhuddle.UserPostKey;
-import com.knoettner.hhuddle.dto.FacilityDto;
-import com.knoettner.hhuddle.dto.HouseDto;
-import com.knoettner.hhuddle.dto.MyUserDto;
-import com.knoettner.hhuddle.dto.PostDto;
+import com.knoettner.hhuddle.dto.*;
 import com.knoettner.hhuddle.dto.mapper.FacilityMapper;
 import com.knoettner.hhuddle.dto.mapper.HouseMapper;
 import com.knoettner.hhuddle.dto.mapper.MyUserMapper;
 import com.knoettner.hhuddle.dto.mapper.PostMapper;
 import com.knoettner.hhuddle.models.*;
 import com.knoettner.hhuddle.repository.*;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +18,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import static com.knoettner.hhuddle.Category.*;
-import static com.knoettner.hhuddle.UserRole.RESIDENT;
+import static com.knoettner.hhuddle.UserRole.ROLE_PMANAGEMENT;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -55,12 +54,19 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    PasswordEncoder encoder;
+
+
     @Override
     public HouseDto createHouse(HouseDto house) {
         House realHouse = houseMapper.toEntity(house);
         houseRepository.save(realHouse);
+       //houseDTO gets same ID as real house
         house.setId(realHouse.getId());
+        //calls method:
         createFacilityForHouse(realHouse);
+        //creates Boards for House
         createBoardsForHouse(realHouse.getId());
         return house;
     }
@@ -75,25 +81,38 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
-
+//thats why we can only have one Admin with diff. houses - gets all houses that are in DB
+    //necessary for e.g. Hausverwaltungsstartseite
     @Override
     public Set<HouseDto> getAllHouses() {
         List<House> allHouses = houseRepository.findAll();
         Set<HouseDto> houseSet = new HashSet<>();
+        //iterates over all Houses, maps to DTO and adds to houseDtoSet
         for (House currentHouse : allHouses) {
             HouseDto houseDto = houseMapper.todDto(currentHouse);
             houseSet.add(houseDto);
         }
-
         return houseSet;
     }
+    @Override
+    public HouseDto getHouseById (Long houseId)  {
+        Optional<House> maybeHouse = houseRepository.findById(houseId);
+        if (maybeHouse.isPresent()) {
+            return houseMapper.todDto(maybeHouse.get());
+        } else {
+            return null;
 
+        }
+
+    }
     @Override
     public void deleteHouseById(Long id) {
         Optional<House> maybeHouse = houseRepository.findById(id);
         if (maybeHouse.isPresent()) {
             House house = maybeHouse.get();
             List<Post> allPosts = postRepository.findAll();
+            //deletes everything that a house contains so there is no problem
+            //iteriere über alle Boards, hol dir alle Posts vom 1. Board und lösche sie, hol dir alle Posts vom 2. Board...
             for (Board currentBoard : house.getBoards()) {
                 Set<UserPost> currentUserPosts = currentBoard.getUserPosts();
                 for (UserPost currentPost : currentUserPosts) {
@@ -103,9 +122,11 @@ public class AdminServiceImpl implements AdminService {
                 }
                 boardRepository.deleteById(currentBoard.getId());
             }
+            //hol dir alle facilities vom House und lösche jedes einzelne
             for (Facility facility : house.getFacilities()) {
                facilityRepository.deleteById(facility.getId());
             }
+            //hol dir alle residents vom house und lösche sie
             for (MyUser currentResident : house.getResidents()) {
                 userRepository.deleteById(currentResident.getId());
             }
@@ -114,7 +135,7 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
-  //creating 5 Boards for each house
+  //creating 5 Boards for each house if methode createHouse is used
    private void createBoardsForHouse(Long houseId) {
         Optional<House> maybeHouse = houseRepository.findById(houseId);
         if (maybeHouse.isPresent()) {
@@ -159,15 +180,18 @@ public class AdminServiceImpl implements AdminService {
         newAdminPost.setTitle(post.getTitle());
         newAdminPost.setTimestamp(LocalDateTime.now());
         postRepository.save(newAdminPost);
+        //set id in dto so its same as real post
         post.setId(newAdminPost.getId());
+        //save post in userpost as well
+        //create userPostKey as ID for userpost
         Long userId = post.getUser().getId();
         Long boardId = post.getBoardId();
         Long postId = post.getId();
         UserPostKey userPostKey = new UserPostKey(boardId, userId, postId);
 
+        //does board and user really exist? if yes save to userPostRepo
         Optional<Board> maybeBoard = boardRepository.findById(boardId);
         Optional<MyUser> maybeUser = userRepository.findById(userId);
-
         if(maybeBoard.isPresent() && maybeUser.isPresent()) {
             UserPost userPost = new UserPost(userPostKey,maybeBoard.get(), maybeUser.get(), newAdminPost);
             userPostRepository.save(userPost);
@@ -212,6 +236,7 @@ public class AdminServiceImpl implements AdminService {
         Optional<Facility> maybeFacility = facilityRepository.findById(facility.getId());
         if (maybeFacility.isPresent()) {
             Facility realFacility = maybeFacility.get();
+        //update - only updates what needs to be updated
             realFacility.setType(facility.getType());
             realFacility.setDescription(facility.getDescription());
             facilityRepository.save(realFacility);
@@ -247,12 +272,13 @@ public class AdminServiceImpl implements AdminService {
         return allFacilites;
     }
 
-    //RandomPW?
+    //produces random encoded PW
     @Override
     public MyUserDto createUser(MyUserDto userDto) {
         MyUser user = userMapper.toEntity(userDto);
-        //Random PW
-        user.setPassword(UUID.randomUUID().toString());
+        //Random PW hashed/encoded
+        //user.setPassword(encoder.encode(UUID.randomUUID().toString()));
+        user.setPassword(encoder.encode("test"));
       //  Role = Resident;
         Set<Role> roleSet = new HashSet<>();
         Optional<Role> maybeResident = roleRepository.findById(1L);
@@ -276,9 +302,51 @@ public class AdminServiceImpl implements AdminService {
             MyUser userEntity = maybeUser.get();
             userEntity.setId(user.getId());
             userEntity.setMail(user.getMail());
-            userEntity.setPassword(UUID.randomUUID().toString());
+            userEntity.setPassword(encoder.encode(UUID.randomUUID().toString()));
             userRepository.save(userEntity);
         }
         return user;
+    }
+//necessary to hardcode an AdminUser in HHuddleApplication
+    @Override
+    public CreateUpdateUserDto createAdminUser(CreateUpdateUserDto adminUser) throws Exception {
+       if(adminUser.getId() != null){
+           Optional<MyUser> maybeUser = userRepository.findById(adminUser.getId());
+           if (maybeUser.isPresent()) {
+              throw new Exception("User already exists.");
+
+           }
+       }
+        Optional<MyUser> maybeUser = userRepository.findByUsername(adminUser.getUsername());
+        if (maybeUser.isPresent()) {
+            throw new Exception("User already exists.");
+        }
+
+        MyUser newUser = new MyUser();
+        newUser.setMail(adminUser.getMail());
+        newUser.setUsername(adminUser.getUsername());
+        HashSet<Role> roles = new HashSet<>();
+        Role role = new Role(2L, ROLE_PMANAGEMENT,null);
+        roles.add(role);
+        newUser.setRoles(roles);
+        newUser.setPassword(encoder.encode(adminUser.getPassword()));
+        if (adminUser.getHouseId() != null) {
+            Optional<House> maybeHouse = houseRepository.findById(adminUser.getHouseId());
+            if (maybeHouse.isPresent()) {
+                newUser.setHouse(maybeHouse.get());
+            } else {
+                newUser.setHouse(null);
+            }
+        } else {
+            newUser.setHouse(null);
+        }
+        newUser.setUserPosts(new HashSet<>());
+        newUser.setMessages(new HashSet<>());
+        newUser.setFirst_participantInChat(new HashSet<>());
+        newUser.setSecond_participantInChat(new HashSet<>());
+
+        userRepository.save(newUser);
+        adminUser.setId(newUser.getId());
+        return adminUser;
     }
 }

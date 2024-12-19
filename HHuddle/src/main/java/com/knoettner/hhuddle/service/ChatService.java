@@ -13,7 +13,7 @@ public interface ChatService {
 
     ChatMessageResponseDto sendMessage(ChatMessageRequestDto chatMessageRequestDto);
 
-    void deleteChat(Long id);
+   // void deleteChat(Long id);
 
     ChatDto getChatById(Long chatId);
 

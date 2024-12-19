@@ -1,5 +1,6 @@
 package com.knoettner.hhuddle.models;
 
+import com.knoettner.hhuddle.security.models.PasswordResetToken;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,7 +17,6 @@ public class MyUser {
     @GeneratedValue (strategy = GenerationType.AUTO)
     private Long id;
 
-    //wie encodieren?
     @Column(nullable = false)
     private String password;
     @Column(nullable = false)
@@ -49,4 +49,7 @@ public class MyUser {
     @ManyToOne
     @JoinColumn( name = "house_id_FK")
     private House house;
+
+    @OneToOne
+    private PasswordResetToken token;
 }

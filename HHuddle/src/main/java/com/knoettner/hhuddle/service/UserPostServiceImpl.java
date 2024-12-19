@@ -92,8 +92,9 @@ public class UserPostServiceImpl implements UserPostService {
         postDto.setId(savedPost.getId());
         return postDto;
     }
+    //funktioniert nicht? löscht nur alten Post erstellt keinen neuen
     @Override
-    public PostDto updateUserPost( PostDto updatedPost) {
+    public PostDto updateUserPost( PostDto updatedPost) {//TODO einzelne Felder updaten
         Post post = postMapper.toEntity(updatedPost);
         Long id = post.getId();
         Optional <Post> dbpost = postRepository.findById(id);// sucht nach einem post in db
@@ -115,7 +116,7 @@ public class UserPostServiceImpl implements UserPostService {
 
 
     @Override
-    public Set<PostDto> getAllPosts() {
+    public Set<PostDto> getAllPosts() {//TODO ? Nach Kategorien differenzieren
         List<Post> listOfPosts = postRepository.findByTimestampAfter(LocalDateTime.now().minusDays(14)); // show posts of previous 2 weeks
         Set<PostDto> postSet = new HashSet<>();// for unique Objects
         for (Post currentPost : listOfPosts){
