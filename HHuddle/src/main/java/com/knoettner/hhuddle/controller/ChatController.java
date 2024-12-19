@@ -53,7 +53,7 @@ public class ChatController {
         return ResponseEntity.ok(chatDto);
     }
 
-    // 5. Chat löschen
+    /*// 5. Chat löschen
     @DeleteMapping("/{chatId}")
     // Use hasRole for role-based access control
     @PreAuthorize("hasRole('RESIDENT')")
@@ -61,7 +61,7 @@ public class ChatController {
         chatService.deleteChat(chatId);
         return ResponseEntity.noContent().build();
     }
-
+*/
     @GetMapping("/user/{userId}")
     // Use hasRole for role-based access control
     @PreAuthorize("hasRole('RESIDENT')")
