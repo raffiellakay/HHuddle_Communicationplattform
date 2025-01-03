@@ -12,7 +12,7 @@ export const useFacilityStore = defineStore('facility', {
     actions: {
         async createFacility(facility) {
             const response = await axios.post(API_URL + 'admin/facility', facility);
-            this.facilities.push(facility);
+            this.facilities.push(response.facility);
         },
 
         async getAllFacilitiesByHouseId(houseId) {
@@ -32,6 +32,4 @@ export const useFacilityStore = defineStore('facility', {
             this.facilities.splice(index, 1);
         }
     }
-
-
 })

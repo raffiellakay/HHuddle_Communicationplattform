@@ -1,15 +1,46 @@
 <script setup>
 import { ref } from 'vue';
-import {useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/authStore';
+import { useRouter } from 'vue-router';
+import { isAxiosError } from 'axios';
 
-const username = ref('');
-const password = ref('');
+
 const errorMessage = ref('');
 
 const router = useRouter();
 const handleLogin = () => {
   router.push('/user/home');
 }
+
+
+//Authentification
+const authStore = useAuthStore()
+const showInvalidCredentialsWarning = ref(false)
+const showUnknownError = ref(false)
+
+const credentials = ref({
+  mail: '',
+  password: ''
+})
+
+//Funktion noch nicht eingebunden
+async function login() { 
+  try {
+    await authStore.login(credentials.value)
+
+    await router.push('/admin/home')
+
+  } catch (err) {
+    if (isAxiosError(err) && err.response?.status === 401) {
+      return showInvalidCredentialsWarning.value = true
+    }
+    console.error(err)
+    showUnknownError.value = true
+  }
+}
+
+
+
 
 
 </script>
@@ -37,8 +68,8 @@ const handleLogin = () => {
               <v-card-text>
                 <!-- Benutzername -->
                 <v-text-field
-                  v-model="username"
-                  label="Benutzername"
+                  v-model="credentials.mail"
+                  label="E-Mail"
                   outlined
                   clearable
                   required
@@ -46,7 +77,7 @@ const handleLogin = () => {
 
                 <!-- Passwort -->
                 <v-text-field
-                  v-model="password"
+                  v-model="credentials.password"
                   label="Passwort"
                   type="password"
                   outlined
@@ -75,7 +106,7 @@ const handleLogin = () => {
                 <v-btn
                   block
                   color="primary"
-                  @click="handleLogin"
+                  @click="login"
                   :loading="loading"
                 >
                   Anmelden

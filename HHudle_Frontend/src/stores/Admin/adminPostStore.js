@@ -19,7 +19,7 @@ export const useAdminPostStore = defineStore('adminPost', {
 
 
         async getAdminPostsByHouseId(houseId) {
-            const adminPost = this.adminPosts.find(p =>houseId === houseId)
+            const adminPost = this.adminPosts.find(p => p.houseId === houseId)
 
             if(adminPost !== undefined) {
                 return adminPost;
