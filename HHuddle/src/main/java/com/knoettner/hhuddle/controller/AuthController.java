@@ -22,7 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -40,9 +40,16 @@ public class AuthController {
 
     @Autowired
     JwtUtils jwtUtils;
-/*
+
     @GetMapping()
-    public ResponseEntity<?> loadUser(String token) {
+    public ResponseEntity<?> loadUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String jwt = jwtUtils.generateJwtToken(authentication);
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        //necessary to interate over a Collection of Authorities (with each Authorities has a field String role)(== roles) to make them a list of Strings
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(item -> item.getAuthority())
+                .collect(Collectors.toList());
 
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
@@ -50,8 +57,8 @@ public class AuthController {
                 userDetails.getMail(),
                 roles));
     }
-        //holt über token
-*/
+
+
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginDto loginDto) {
     //throws exception if authentication didnt work out

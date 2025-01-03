@@ -65,18 +65,18 @@ public class AdminServiceImpl implements AdminService {
        //houseDTO gets same ID as real house
         house.setId(realHouse.getId());
         //calls method:
-        createFacilityForHouse(realHouse);
+        createFacilityForHouse(house);
         //creates Boards for House
         createBoardsForHouse(realHouse.getId());
         return house;
     }
 
-    private void createFacilityForHouse(House house) {
+    private void createFacilityForHouse(HouseDto house) {
         Optional<House> maybeHouse = houseRepository.findById(house.getId());
         if (maybeHouse.isPresent()) {
-            for (Facility facility : house.getFacilities()) {
-                facility.setHouse(maybeHouse.get());
-                facilityRepository.save(facility);
+            for (FacilityDto facility : house.getFacilities()) {
+                facility.setHouseId(house.getId());
+                createFacility(facility);
             }
         }
     }
@@ -289,6 +289,12 @@ public class AdminServiceImpl implements AdminService {
         user.setSecond_participantInChat(new HashSet<>());
         user.setFirst_participantInChat(new HashSet<>());
         user.setMessages(new HashSet<>());
+        if (userDto.getHouseId() != null) {
+            Optional<House> maybeHouse = houseRepository.findById(userDto.getHouseId());
+            if (maybeHouse.isPresent()) {
+                user.setHouse(maybeHouse.get());
+            }
+        }
         userRepository.save(user);
         userDto.setId(user.getId());
         return userDto;
