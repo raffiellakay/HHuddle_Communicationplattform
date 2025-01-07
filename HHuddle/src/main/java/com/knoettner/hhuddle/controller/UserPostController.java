@@ -70,7 +70,7 @@ public class UserPostController {
      @PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity<Void> deletePostsByUserId(@PathVariable("userId") Long userId) {
         userPostService.deletePostsByUserId(userId);
-        return ResponseEntity.noContent().build();//TODO noContent überprüfen
+        return ResponseEntity.noContent().build();// "No content" nur am Backend. der Server schickt keinen Body   zurück!
         // return ResponseEntity.status(HttpStatus.OK).build();
     }
 
