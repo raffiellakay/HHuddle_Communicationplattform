@@ -29,6 +29,7 @@ public class UserPostController {
     public ResponseEntity<PostDto> updateUserPost(@RequestBody PostDto postDto) {
         PostDto updatedPost = userPostService.updateUserPost(postDto);
         return ResponseEntity.status(HttpStatus.OK).body(updatedPost);
+
     }
 
 
