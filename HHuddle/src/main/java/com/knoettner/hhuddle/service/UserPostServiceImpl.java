@@ -61,7 +61,7 @@ public class UserPostServiceImpl implements UserPostService {
             postDto.setFacilityId(null);
         } else {
             if(postDto.getStarttime()==null || postDto.getEndtime() == null) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Starttime and Endtime are required for EVENTS");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Starttime  and Endtime are required for EVENTS");
             }
 
         }
