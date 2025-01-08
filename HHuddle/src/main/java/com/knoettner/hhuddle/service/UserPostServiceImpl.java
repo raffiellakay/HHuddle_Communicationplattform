@@ -32,7 +32,8 @@ public class UserPostServiceImpl implements UserPostService {
 
 
     @Override
-    public PostDto createUserPost(PostDto postDto) {
+    public PostDto createUserPost(PostDto postDto) { //TODO  teilen Verschiedenen Funktionen, leichter mit FE verbinden
+
         // Feldvalidierung
         if (postDto.getCategory() == null || postDto.getTitle() == null || postDto.getText() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing required fields");
@@ -116,7 +117,7 @@ public class UserPostServiceImpl implements UserPostService {
 
 
     @Override
-    public Set<PostDto> getAllPosts() {//TODO ? Nach Kategorien differenzieren
+    public Set<PostDto> getAllPosts() {//TODO ? Nach Kategorien differenzieren, weil???
         List<Post> listOfPosts = postRepository.findByTimestampAfter(LocalDateTime.now().minusDays(14)); // show posts of previous 2 weeks
         Set<PostDto> postSet = new HashSet<>();// for unique Objects
         for (Post currentPost : listOfPosts){
