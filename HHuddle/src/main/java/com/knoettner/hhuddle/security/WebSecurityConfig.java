@@ -29,6 +29,9 @@ public class WebSecurityConfig {
     @Autowired
     AuthEntryPointJwt unauthorizedHandler;
 
+    @Autowired
+    CustomCorsConfiguration customCorsConfiguration;
+
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
         return new AuthTokenFilter();
@@ -54,7 +57,7 @@ public class WebSecurityConfig {
         //Returns PW Encoder
         return new BCryptPasswordEncoder();
     }
-
+ 
 //Chain of filters that are used one after another
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -64,8 +67,10 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/swagger-ui/**").permitAll()
+                                .requestMatchers("/v3/**").permitAll()
                                 .anyRequest().authenticated()
-                );
+                ).cors(c -> c.configurationSource(customCorsConfiguration));;
 
         http.authenticationProvider(authenticationProvider());
 //authenticationJwtTokenFilter is used first
