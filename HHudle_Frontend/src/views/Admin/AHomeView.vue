@@ -2,23 +2,38 @@
 
 import { ref, onMounted } from 'vue';
 import { useHouseStore } from '@/stores/Admin/houseStore';
+import { useFacilityStore } from '@/stores/Admin/facilityStore';
+import { useUserStore } from '@/stores/Admin/userStore';
+
+
 
 //Zugriffe auf ...
 const houseStore = useHouseStore();
+const facilityStore = useFacilityStore();
+const userStore = useUserStore();
 
 const dialog = ref(false); // (dialog is a reaktiver Boolean, also ob´s fürs hinzufügen eines neuen Hauses geöffnet oder geschlossen is). //Dialogfensterung mit v-dialog aus Vuetify. Is auf true gesetzt, Dialogfenster wird angezeigt, is false, bleibts geschlossen. Also, wirds eben angeklickt oder nicht
 //reaktive Variablen, sind Variablen die automatisch aktualisiert werden, wenn sich etwas an ihnen ändert (Ansict wird auto aktualisiert)
-
-const houses = ref([]); // Liste aller Häuser
+const facilities = ref([]);
+const users = ref([]);
+const houses = ref([]);
 const newHouse = ref({
   adress: '',
   residents: [],
   facilities: []
 });
+
+
 //beim Seitenstart werden alle Häuser geladen
 onMounted(async () => {
   await houseStore.getAllHouses();
   houses.value = houseStore.houses;
+
+  await facilityStore.getAllFacilitiesByHouseId();
+  facilities.value = facilityStore.facilities;
+
+  await userStore.getAllUsers();
+  users.value = userStore.users;
 });
 
 //neues Haus anlegen
