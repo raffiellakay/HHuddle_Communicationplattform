@@ -1,12 +1,12 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router'
 import { ref,computed } from 'vue'
-import AdminPostForm from './AdminPostForm.vue';
+import AdminPostForm from '@/components/Admin/AdminPostForm.vue';
 
 
 
-const router = useRouter();
-const route = useRoute();
+const router = useRouter(); //Gibt Router Instanz zurück
+const route = useRoute(); //Gibt aktuelle Route zurück 
 
 
 //showDrawer Konstante ist per default auf false
@@ -17,15 +17,18 @@ const toggleDrawer = () => {
   showDrawer.value = !showDrawer.value;
 }
 
-//Checkt ob die aktuelle Seite eine Board Seite ist indem es mit items im items array abgeglichen wird
-//Ist true wenn auf einer BoardSeite und false wenn nicht
-/*const isHousePage = computed(() =>{
-  const houseRoutes = items.value.map(item => item.route);
-  return houseRoutes.includes(route.path);
-})*/
+//Checkt ob die aktuelle Seite Haus Seite ist indem es mit items im items array abgeglichen wird
+//Ist true wenn auf einer HausSeite und false wenn nicht
+const isHousePage = computed(() =>{
+  return route.path.includes('/admin/house');
+})
 
 
 const showForm = ref(false); 
+
+//Debugging
+console.log(route.path);
+console.log(showForm.value);
 
 
 </script>

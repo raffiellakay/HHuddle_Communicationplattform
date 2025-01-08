@@ -2,7 +2,7 @@
 //Form erstellt mit Hilfe von https://pablog.42web.io/vuetify-form-builder?i=1
 //Diese Form dient dem hinzufügen und bearbeiten von AdminPosts 
 
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 
 
 //Definition des adminPost props welches alle Details beinhaltet
