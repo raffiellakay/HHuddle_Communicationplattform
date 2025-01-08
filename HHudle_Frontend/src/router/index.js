@@ -77,12 +77,7 @@ const routes = [
         component: AHomeView,
         meta: { requiresAuth: true  },
       }, 
-      {
-        path: 'houses',
-        name: 'AllHouses',
-        component: AllHousesView,
-        meta: { requiresAuth: true },
-      }, 
+    
       {
         path: 'house',
         name: 'House',
@@ -144,10 +139,5 @@ router.beforeEach(async (to, from, next) => {
   // secures paths from ppl with wrong role
   // hier fehlt noch was 
     })
-
-
-
-
- 
 
 export default router;
