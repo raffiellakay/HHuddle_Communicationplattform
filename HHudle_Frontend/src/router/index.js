@@ -129,36 +129,25 @@ const router = createRouter({
 });
 
 
-router.beforeEach(async (to, from) => {
-  useAuthStore().initialize()})
-  /*
-  if (
-    // make sure the user is authenticated
-    !isAuthenticated &&
-    to.name !== 'Login'
-  ) {
-    // redirect the user to the login page
-    return { name: 'Login' }
-  }
-})
-/*
-// Global route guard will check the authentication and authorization
-router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('token');
-  
-  if (to.matched.some((route) => route.meta.requiresAuth)) {
-    if (token) {
-      const decodedToken = jwt.decode(token);
-      if (to.meta.allowedRoles && to.meta.allowedRoles.includes(decodedToken.role)) {
-        next(); // User has the required role
-      
-    }}
-     else {
-      next('/'); // User is not authenticated; redirect to login
-    }
-  } else {
-    next(); // Allow access to non-protected routes
-  }
-});
-*/
+
+router.beforeEach(async (to, from, next) => {
+  await useAuthStore().initialize();
+  //secures Websites from not logged in ppl
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+  const loggedIn = useAuthStore().user;
+    if (requiresAuth && !loggedIn) {
+       next('/');
+      } 
+      else {
+        next();
+      }
+  // secures paths from ppl with wrong role
+  // hier fehlt noch was 
+    })
+
+
+
+
+ 
+
 export default router;

@@ -8,6 +8,9 @@ import { isAxiosError } from 'axios';
 const errorMessage = ref('');
 
 const router = useRouter();
+//Varibale that is an method
+//Wofür ist die Zeile?
+//stattdessen handleLogin function?
 const handleLogin = () => {
   router.push('/user/home');
 }
@@ -23,11 +26,11 @@ const credentials = ref({
   password: ''
 })
 
-//Funktion noch nicht eingebunden
+
 async function login() { 
   try {
     await authStore.login(credentials.value)
-
+// diese Zeile gehört noch geändert
     await router.push('/admin/home')
 
   } catch (err) {
