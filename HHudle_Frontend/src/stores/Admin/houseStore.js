@@ -12,7 +12,7 @@ export const useHouseStore = defineStore('house', {
 
     actions: {
         async createHouse(house) {
-            const response = await axios.post(API_URL + 'house', house);
+            const response = await axios.post(API_URL + 'admin/house', house);
             this.houses.push(response.data);
         },
 
