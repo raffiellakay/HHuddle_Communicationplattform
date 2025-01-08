@@ -50,9 +50,10 @@ export const useAuthStore = defineStore('auth', {
             this.user = null
             localStorage.removeItem('jwt') // Zum Logout reicht es, wenn das Frontend den JWT "vergisst"
         },
-        applyAuthentication({token, type, id, username, mail, roles}) { // Muss mit properties im Backend übereinstimmen
-            
+        applyAuthentication({token, id, username, mail, roles}) { 
             localStorage.setItem('jwt', 'Bearer ' + token) // Hier wird der JWT dauerhaft unter dem Namen "jwt" (erster Parameter) gespeichert.
+            this.user = {id, username, mail, roles}
+            console.log(this.user)
         }
     }
 })

@@ -11,7 +11,7 @@ import '@mdi/font/css/materialdesignicons.css'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
-
+import axios from 'axios'
 
 
 const vuetify = createVuetify({
@@ -23,7 +23,13 @@ const vuetify = createVuetify({
     }
   })
 
-
+  axios.interceptors.request.use(request => {
+    const jwt = localStorage.getItem('jwt')
+    if(!request.headers.hasAuthorization() && jwt) {
+        request.headers.setAuthorization(jwt)
+    }
+    return request
+})
 const app = createApp(App)
 
 

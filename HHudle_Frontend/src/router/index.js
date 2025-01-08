@@ -41,7 +41,7 @@ const routes = [
         path: 'board',
         name: 'Board',
         component: BoardLayout,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true  },
         children: [
           {
             path: 'commonrooms',
@@ -51,7 +51,7 @@ const routes = [
           {
             path: 'blackboard',
             component: BlackBoardView,
-            meta: { requiresAuth: true },
+            meta: { requiresAuth: true  },
           },
           {
             path: 'packagefinder',
@@ -75,7 +75,7 @@ const routes = [
         path: 'home',
         name: 'AdminHome',
         component: AHomeView,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true  },
       }, 
       {
         path: 'houses',
@@ -87,7 +87,7 @@ const routes = [
         path: 'house',
         name: 'House',
         component: HouseView,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true  },
       }
     ]
   },
@@ -96,16 +96,19 @@ const routes = [
     path: '/',
     name: 'Login',
     component: LoginLayout,
+    meta: { requiresAuth: false },
     children: [
       {
         path: 'aboutUs',
         name: 'AboutUs',
-        component: AboutUsView
+        component: AboutUsView,
+        meta: { requiresAuth: false },
       },
       {
         path: 'contact',
         name: 'Contact',
-        component: ContactView
+        component: ContactView,
+        meta: { requiresAuth: false },
       }
     ]
   },
@@ -125,7 +128,37 @@ const router = createRouter({
   routes,
 });
 
-//Aufrufen des States von Role in authStore (1 oder 2)
-router.beforeEach(() => useAuthStore().initialize())
 
+router.beforeEach(async (to, from) => {
+  useAuthStore().initialize()})
+  /*
+  if (
+    // make sure the user is authenticated
+    !isAuthenticated &&
+    to.name !== 'Login'
+  ) {
+    // redirect the user to the login page
+    return { name: 'Login' }
+  }
+})
+/*
+// Global route guard will check the authentication and authorization
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('token');
+  
+  if (to.matched.some((route) => route.meta.requiresAuth)) {
+    if (token) {
+      const decodedToken = jwt.decode(token);
+      if (to.meta.allowedRoles && to.meta.allowedRoles.includes(decodedToken.role)) {
+        next(); // User has the required role
+      
+    }}
+     else {
+      next('/'); // User is not authenticated; redirect to login
+    }
+  } else {
+    next(); // Allow access to non-protected routes
+  }
+});
+*/
 export default router;
