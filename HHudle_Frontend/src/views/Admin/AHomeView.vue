@@ -9,33 +9,31 @@ const houseStore = useHouseStore();
 const dialog = ref(false); // (dialog is a reaktiver Boolean, also ob´s fürs hinzufügen eines neuen Hauses geöffnet oder geschlossen is). //Dialogfensterung mit v-dialog aus Vuetify. Is auf true gesetzt, Dialogfenster wird angezeigt, is false, bleibts geschlossen. Also, wirds eben angeklickt oder nicht
                           //reaktive Variablen, sind Variablen die automatisch aktualisiert werden, wenn sich etwas an ihnen ändert (Ansict wird auto aktualisiert)
  
- const houses = ref([]); // Liste aller Häuser
+
  const newHouse = ref({
-  adress: '', 
+  address: '', 
   residents: [],
   facilities: []
 });
 //beim Seitenstart werden alle Häuser geladen
 onMounted(async () => {
   await houseStore.getAllHouses();
-  houses.value = houseStore.houses;
 });
 
 //neues Haus anlegen
 async function saveHouse() {
   try {
     const houseData = {
-      adress: newHouse.value.adress,
+      address: newHouse.value.address,
       residents: newHouse.value.residents,
       facilities: newHouse.value.facilities
     };
 
     await houseStore.createHouse(houseData);
-    houses.value.push(houseData); // Neues Haus zur Liste hinzufügen
     dialog.value = false; // Dialog schließen
 
-    // Felder zurücksetzen
-    newHouse.value = { adress: '', residents: '', facilities: '' };
+    // Felder zurücksetzen - wichtig, dass Felder genauso aussehen wie oben --> leeres Array wenn Backend ein Set erwartet!
+    newHouse.value = { address: '', residents: [], facilities: [] };
   } catch (error) {
     console.error('Fehler beim Speichern des Hauses:', error);
   }
@@ -59,7 +57,7 @@ Ich bin die Admin Homeview
           >
             <v-card class="d-flex flex-column align-center" outlined>
               <!-- Anzeige der Adresse des Hauses -->
-              <v-card-title>{{ house.adress }}</v-card-title>
+              <v-card-title>{{ house.address }}</v-card-title>
             </v-card>
           </v-col>
         </v-row>
@@ -76,7 +74,7 @@ Ich bin die Admin Homeview
           <v-card-text>
             <!-- Feld 1: Adresse -->
             <v-text-field
-              v-model="newHouse.adress"
+              v-model="newHouse.address"
               label="Adresse des Hauses"
               required
             ></v-text-field>
