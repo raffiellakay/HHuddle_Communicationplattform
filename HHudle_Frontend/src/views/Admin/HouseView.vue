@@ -1,38 +1,50 @@
 <script setup>
 
 import AdminPostCard from '@/components/Admin/AdminPostCard.vue';
+import { useAdminPostStore } from '@/stores/Admin/adminPostStore';
 import { computed, onMounted, ref, watch } from "vue";
+import { useRoute } from "vue-router";
 
+
+
+
+const adminPostStore = useAdminPostStore();
+const route = useRoute();
 const show = ref(false);
 
-const adminPosts = ref([
-  {
-    id: 1,
-    title: "Ankündigung 1",
-    startTime: "08:00",
-    endTime: "10:00",
-    data: "Details zur Ankündigung 1",
-    image: "https://cdn.vuetifyjs.com/images/cards/sunshine.jpg",
-    description: "Hier steht der Text für die Ankündigung 1.",
-  },
-  {
-    id: 2,
-    title: "Ankündigung 2",
-    startTime: "10:00",
-    endTime: "12:00",
-    data: "Details zur Ankündigung 2",
-    image: "https://cdn.vuetifyjs.com/images/cards/road.jpg",
-    description: "Hier steht der Text für die Ankündigung 2.",
-  },
-])
+const props = defineProps({
+  houseId: Number // Falls es als String übergeben wird, sonst Number
+});
 
+//Holt AdminPosts aus Store
+const adminPosts = computed(() => adminPostStore.adminPosts);
 
+// HouseId aus Route holen
+const houseId = computed(() => route.params.houseId);
+
+onMounted(async () => {
+  if (houseId.value) {
+    await adminPostStore.getAdminPostsByHouseId(houseId.value);
+  }
+});
 
 </script>
 
 <template>
 
-    Seite für ein einzelnes Haus
+
+  <v-container>
+    <h1>Admin Posts für Haus {{ houseId }}</h1>
+
+    <v-row>
+      <v-col v-for="adminPost in adminPosts" :key="adminPost.id" cols="12" md="6">
+        <!-- Jede AdminPostCard bekommt die postId -->
+        <AdminPostCard :postId="adminPost.id" />
+      </v-col>
+    </v-row>
+  </v-container>
+
+
     <v-container>
       <v-row>
         <v-col v-for="adminPost in adminPosts" :key="adminPost.id" cols="12" md="4" lg="3">

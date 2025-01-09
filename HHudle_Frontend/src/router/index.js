@@ -12,7 +12,7 @@ import PackageFinderView from '@/views/User/PackageFinderView.vue';
 import SearchAndFindView from '@/views/User/SearchAndFindView.vue';
 import AHomeView from '@/views/Admin/AHomeView.vue';
 import LoginLayout from '@/layouts/LoginLayout.vue';
-import AllHousesView from '@/views/Admin/AllHousesView.vue';
+
 import AboutUsView from '@/views/AboutUsView.vue';
 import ContactView from '@/views/ContactView.vue';
 import AHouseLayout from '@/layouts/Admin/AHouseLayout.vue';
@@ -79,9 +79,10 @@ const routes = [
       }, 
     
       {
-        path: 'house',
+        path: 'house/:houseId/adminposts',
         name: 'House',
         component: HouseView,
+        props: true,
         meta: { requiresAuth: true  },
       }
     ]

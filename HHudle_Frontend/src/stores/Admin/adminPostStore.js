@@ -19,16 +19,27 @@ export const useAdminPostStore = defineStore('adminPost', {
 
 
         async getAdminPostsByHouseId(houseId) {
-            const adminPost = this.adminPosts.find(p => p.houseId === houseId)
+            
+                try {
+                  console.log("Fetching AdminPosts for houseId:", houseId); // 🟢 Debugging
+                  const response = await axios.get(API_URL + 'admin/house/' + houseId + '/adminposts');
+          
+                  console.log("API Response:", response.data); // 🟢 Debugging
+          
+                  if (Array.isArray(response.data)) {
+                    this.adminPosts = response.data; 
+                  } else {
+                    console.error("Fehler: Die API hat kein Array zurückgegeben", response.data);
+                    this.adminPosts = [];
+                  }
+                } catch (error) {
+                  console.error("Fehler beim Laden der AdminPosts:", error);
+                  this.adminPosts = [];
+                }
+            },
+        
+            
 
-            if(adminPost !== undefined) {
-                return adminPost;
-            }
-
-            const response = await axios.get(API_URL + 'admin/house/' + houseId + '/adminposts')
-            return response.data
-
-        },
 
         async deleteAdminPost(postId) {
             await axios.delete(API_URL + 'admin/adminpost/' + postId);
@@ -52,4 +63,4 @@ export const useAdminPostStore = defineStore('adminPost', {
 
     }
 
-})
+});
