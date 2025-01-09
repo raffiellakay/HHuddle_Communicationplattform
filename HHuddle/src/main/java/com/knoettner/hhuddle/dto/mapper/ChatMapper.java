@@ -23,7 +23,9 @@ public class ChatMapper {
         chat.setId(chatDto.getId());
         chat.setTimestamp(chatDto.getTimestamp());
         chat.setMessages(chatDto.getMessages().stream(). map(e ->chatMessageMapper.toEntity(e)).collect(Collectors.toSet()));
-    //    chat.setParticipants(chatDto.getParticipants().stream().map(e ->chatParticipantsMapper.toEntity(e)).collect(Collectors.toSet()));
+    //  chat.setParticipants(chatDto.getParticipants().stream().map(e ->chatParticipantsMapper.toEntity(e)).collect(Collectors.toSet()));
+        chat.setVisibleToSecondParticipant(dto.isVisibleToSecondParticipant());
+        chat.setTimestamp(LocalDateTime.now());
         return chat;
     }
 */
@@ -36,6 +38,9 @@ public class ChatMapper {
             chatDto.setMessages(chat.getMessages().stream(). map(e ->chatMessageMapper.toDto(e)).collect(Collectors.toSet()));
         chatDto.setFirst_participant(basicUserMapper.toDto(chat.getFirstParticipant()));
         chatDto.setSecond_participant(basicUserMapper.toDto(chat.getSecondParticipant()));
+        chat.isVisibleToFirstParticipant();
+        chat.isVisibleToSecondParticipant();
+
         return chatDto;
     }
 
