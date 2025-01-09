@@ -24,7 +24,7 @@ const isHousePage = computed(() =>{
 })
 
 
-const showForm = ref(false); 
+const showAdminPostForm = ref(false); 
 
 //Debugging
 console.log(route.path);
@@ -50,9 +50,9 @@ console.log(showForm.value);
       </v-btn>
 <!-- Öffnen der PostForm Komponent in einem Dialog -->
    
-      <v-dialog v-model="showForm" max-width="500">
+      <v-dialog v-model="showAdminPostForm" max-width="500">
         <template v-slot:default="{close}">
-          <AdminPostForm @close="close"></AdminPostForm>
+          <AdminPostForm @add-adminPost="$emit('add-adminPost', $event)" @close="close"></AdminPostForm>
         </template>
 
       </v-dialog>
