@@ -5,6 +5,8 @@ import { useAdminPostStore } from "@/stores/Admin/adminPostStore";
 import { useRoute } from "vue-router";
 
 
+const route = useRoute();
+
 const props = defineProps({
   postId: Number,
 });
@@ -13,7 +15,7 @@ const props = defineProps({
 const adminPostStore = useAdminPostStore();
 
 
-// 🛠 HouseId dynamisch aus der Route holen
+// HouseId dynamisch aus der Route holen
 const houseId = computed(() => route.params.houseId);
 
 // AdminPosts aus dem Store holen
@@ -52,16 +54,5 @@ onMounted(async () => {
 </v-container>
 
 
-
-
-
-
-  
-      <v-card>
-      
-      <v-card-title> Titel </v-card-title>
-      <v-card-text> Beschreibung </v-card-text>
-
-    </v-card>
     
 </template>
