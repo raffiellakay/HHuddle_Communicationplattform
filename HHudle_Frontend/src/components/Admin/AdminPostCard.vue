@@ -13,16 +13,18 @@ const props = defineProps({
 const adminPostStore = useAdminPostStore();
 
 
-// Holt den richtigen Post aus dem Store
-const adminPost = computed(() => 
-  adminPostStore.adminPosts.find(post => post.Id === props.postId)
-);
+// 🛠 HouseId dynamisch aus der Route holen
+const houseId = computed(() => route.params.houseId);
 
-//Löschen des AdminPosts
-async function deleteAdminPost(postId) {
-  await adminPostStore.deleteAdminPost(postId);
-  //Eventuell kommt hier ein router.push je nachdem wo nach dem Löschen hinnavigiert werden soll, wahrscheinlich aber wieder auf diese Seite
-}
+// AdminPosts aus dem Store holen
+const adminPosts = computed(() => adminPostStore.adminPosts);
+
+onMounted(async () => {
+  if (houseId.value) {
+    console.log("Fetching posts for houseId:", houseId.value); // 🟢 Debugging
+    await adminPostStore.getAdminPostsByHouseId(houseId.value);
+  }
+});
 
 
 
@@ -35,13 +37,15 @@ async function deleteAdminPost(postId) {
  
 
 <v-container>
-<h1>Admin Posts für Haus {{ houseId }}</h1>
+
 
 <v-row>
-      <v-col v-if="adminPost">
+      <v-col v-for="adminPost in adminPosts" :key="adminPost.id" cols="12" md="6">
         <v-card>
           <v-card-title>{{ adminPost.title }}</v-card-title>
           <v-card-text>{{ adminPost.text }}</v-card-text>
+          <v-card-text> {{ adminPost.timestamp }}</v-card-text>
+          <v-card-text> {{ adminPost.user.username }}</v-card-text>
         </v-card>
       </v-col>
     </v-row>
