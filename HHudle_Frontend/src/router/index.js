@@ -12,14 +12,16 @@ import PackageFinderView from '@/views/User/PackageFinderView.vue';
 import SearchAndFindView from '@/views/User/SearchAndFindView.vue';
 import AHomeView from '@/views/Admin/AHomeView.vue';
 import LoginLayout from '@/layouts/LoginLayout.vue';
-import AllHousesView from '@/views/Admin/AllHousesView.vue';
+
 import AboutUsView from '@/views/AboutUsView.vue';
 import ContactView from '@/views/ContactView.vue';
 import AHouseLayout from '@/layouts/Admin/AHouseLayout.vue';
-import HouseView from '@/views/Admin/HouseView.vue';
+import AdminPostsView from '@/components/Admin/AdminPosts.vue';
 
 
 import { useAuthStore } from '@/stores/authStore';
+import AHouseView from '@/views/Admin/AHouseView.vue';
+
 
 
 
@@ -77,11 +79,12 @@ const routes = [
         component: AHomeView,
         meta: { requiresAuth: true  },
       }, 
-    
+     
       {
-        path: 'house',
+        path: 'house/:houseId',
         name: 'House',
-        component: HouseView,
+        component: AHouseView,
+        props: true,
         meta: { requiresAuth: true  },
       }
     ]
