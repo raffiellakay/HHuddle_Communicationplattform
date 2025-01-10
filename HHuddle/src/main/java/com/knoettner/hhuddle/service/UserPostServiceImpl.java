@@ -17,6 +17,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import static com.knoettner.hhuddle.Category.BLACKBOARD;
+
 @Service
 public class UserPostServiceImpl implements UserPostService {
     @Autowired
@@ -93,6 +95,36 @@ public class UserPostServiceImpl implements UserPostService {
         postDto.setId(savedPost.getId());
         return postDto;
     }
+
+    @Override
+    public PostDto createBlackboardPost(PostDto postDto) {
+        Post newBlackboardPost = postMapper.toEntity(postDto);
+        newBlackboardPost.setTimestamp(LocalDateTime.now());
+        newBlackboardPost.setCategory(BLACKBOARD);
+
+        Post savedBlackboardPost= postRepository.save(newBlackboardPost);
+        Long userId = postDto.getUser().getId();
+        Long boardId = postDto.getBoardId();
+        Long postId = savedBlackboardPost.getId();
+        UserPostKey userPostKey = new UserPostKey(boardId, userId, postId);
+        Optional<Board> maybeBoard = boardRepository.findById(boardId);
+        Optional<MyUser> maybeUser = userRepository.findById(userId);
+        if (maybeBoard.isPresent() && maybeUser.isPresent()) {
+            UserPost userPost = new UserPost(userPostKey, maybeBoard.get(), maybeUser.get(), savedBlackboardPost);
+            userPostRepository.save(userPost);
+        }
+
+        postDto.setId(savedBlackboardPost.getId());
+        return postDto;
+
+
+
+    }
+
+
+
+
+
     //funktioniert nicht? löscht nur alten Post erstellt keinen neuen
     @Override
     public PostDto updateUserPost( PostDto updatedPost) {//TODO einzelne Felder updaten

@@ -24,6 +24,13 @@ public class UserPostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
     }
 
+    @PostMapping("/blackboardpost")
+    @PreAuthorize("hasRole('RESIDENT')")
+    public ResponseEntity<PostDto>createBlackboardPost(@RequestBody PostDto postDto) {
+        PostDto createdBlackboardPost = userPostService.createBlackboardPost(postDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdBlackboardPost);
+    }
+
     @PutMapping("/update")
     @PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity<PostDto> updateUserPost(@RequestBody PostDto postDto) {
