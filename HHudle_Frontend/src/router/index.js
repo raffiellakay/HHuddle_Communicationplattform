@@ -16,10 +16,12 @@ import LoginLayout from '@/layouts/LoginLayout.vue';
 import AboutUsView from '@/views/AboutUsView.vue';
 import ContactView from '@/views/ContactView.vue';
 import AHouseLayout from '@/layouts/Admin/AHouseLayout.vue';
-import HouseView from '@/views/Admin/HouseView.vue';
+import AdminPostsView from '@/views/Admin/AdminPostsView.vue';
 
 
 import { useAuthStore } from '@/stores/authStore';
+import AHouseView from '@/views/Admin/AHouseView.vue';
+
 
 
 
@@ -80,8 +82,15 @@ const routes = [
     
       {
         path: 'house/:houseId/adminposts',
+        name: 'AdminPosts',
+        component: AdminPostsView,
+        props: true,
+        meta: { requiresAuth: true  },
+      }, 
+      {
+        path: 'house/:houseId',
         name: 'House',
-        component: HouseView,
+        component: AHouseView,
         props: true,
         meta: { requiresAuth: true  },
       }

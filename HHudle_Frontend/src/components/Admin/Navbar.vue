@@ -28,7 +28,7 @@ const showAdminPostForm = ref(false);
 
 //Debugging
 console.log(route.path);
-console.log(showForm.value);
+console.log(showAdminPostForm.value);
 
 
 </script>
@@ -45,7 +45,7 @@ console.log(showForm.value);
   
 
   <template v-if="isHousePage">
-      <v-btn icon @click="showForm = true">
+      <v-btn icon @click="showAdminPostForm = true">
         <v-icon class="plus-icon"> mdi-plus-circle</v-icon>
       </v-btn>
 <!-- Öffnen der PostForm Komponent in einem Dialog -->

@@ -2,6 +2,7 @@
 
 import { ref, onMounted } from 'vue';
 import { useHouseStore } from '@/stores/Admin/houseStore';
+import { useRouter } from 'vue-router';
 
 //Zugriffe auf ...
 const houseStore = useHouseStore();
@@ -9,8 +10,9 @@ const houseStore = useHouseStore();
 const dialog = ref(false); // (dialog is a reaktiver Boolean, also ob´s fürs hinzufügen eines neuen Hauses geöffnet oder geschlossen is). //Dialogfensterung mit v-dialog aus Vuetify. Is auf true gesetzt, Dialogfenster wird angezeigt, is false, bleibts geschlossen. Also, wirds eben angeklickt oder nicht
                           //reaktive Variablen, sind Variablen die automatisch aktualisiert werden, wenn sich etwas an ihnen ändert (Ansict wird auto aktualisiert)
  
+const router = useRouter();
 
- const newHouse = ref({
+const newHouse = ref({
   address: '', 
   residents: [],
   facilities: []
@@ -39,6 +41,11 @@ async function saveHouse() {
   }
 }
 
+//Soll bei Klick auf Kachel auf die jeweilige Hausseite navigieren
+const goToHouse = (houseId) => {
+  router.push(`/admin/house/${houseId}`);
+};
+
 </script>
 
 <template>
@@ -55,7 +62,7 @@ Ich bin die Admin Homeview
             sm="6"
             md="4"
           >
-            <v-card class="d-flex flex-column align-center" outlined>
+            <v-card class="d-flex flex-column align-center" outlined @click="goToHouse(house.id)">
               <!-- Anzeige der Adresse des Hauses -->
               <v-card-title>{{ house.address }}</v-card-title>
             </v-card>

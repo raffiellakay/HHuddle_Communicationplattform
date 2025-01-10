@@ -22,14 +22,18 @@ export const useHouseStore = defineStore('house', {
         },
 
         async getHouseById(houseId) {
-            const house = this.houses.find(p => p.houseId === houseId)
+
+            const response = await axios.get(API_URL + 'admin/house/' + houseId);
+        
+
+            const house = this.houses.find(p => p.houseId === house.Id)
 
             if (house !== undefined) {
                 return house;
             }
+            return response.data;
 
-            const response = await axios.get(API_URL + 'admin/house' + houseId)
-            return response.data
+            
         },
 
         async deleteHouseById(houseId) {
