@@ -1,6 +1,6 @@
 <script setup>
 
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useHouseStore } from '@/stores/Admin/houseStore';
 import { useRouter } from 'vue-router';
 
@@ -41,10 +41,17 @@ async function saveHouse() {
   }
 }
 
+//Sortiert die Häuser aufsteigend nach ID
+const sortedHouses = computed(() => {
+  return [...houseStore.houses].sort((a, b) => a.id - b.id);
+});
+
 //Soll bei Klick auf Kachel auf die jeweilige Hausseite navigieren
 const goToHouse = (houseId) => {
   router.push(`/admin/house/${houseId}`);
 };
+
+
 
 </script>
 
@@ -56,7 +63,7 @@ Ich bin die Admin Homeview
         <!-- Kachel-Layout: Zeige die Liste der Häuser -->
         <v-row>
           <v-col
-            v-for="house in houseStore.houses" 
+            v-for="house in sortedHouses" 
             :key="house.id"
             cols="12"
             sm="6"
