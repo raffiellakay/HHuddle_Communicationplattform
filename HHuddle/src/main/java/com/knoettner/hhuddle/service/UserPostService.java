@@ -18,6 +18,8 @@ public interface UserPostService {
     PostDto createUserPost(PostDto postDto);
 
 
+    PostDto createBlackboardPost(PostDto postDto);
+
     PostDto updateUserPost(PostDto updatedPost);
 
     PostDto getPost(Long postId);
