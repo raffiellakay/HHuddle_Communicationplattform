@@ -15,7 +15,7 @@ const showAdminPostForm = ref(false);
 
 const addAdminPost = async (adminPost) => {
   await adminPostStore.createAdminPost(adminPost);
-  showAdminPostForm=false;
+  showAdminPostForm.value=false;
 }
 
 
@@ -30,17 +30,14 @@ const props = defineProps({
 
 
 onMounted(async () => {
-  if (houseId.value) {
-    await adminPostStore.getAdminPostsByHouseId(houseId.value);
+  if (props.houseId) {
+    await adminPostStore.getAdminPostsByHouseId(props.houseId);
   }
 });
 
 </script>
 
 <template>
-
-  
-
 
 
     <h1>Admin Posts für Haus {{ houseId }}</h1>

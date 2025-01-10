@@ -2,6 +2,12 @@
 import { computed, onMounted } from "vue";
 import { useHouseStore } from "@/stores/Admin/houseStore";
 import { useRoute } from "vue-router";
+import AdminPostsView from '@/components/Admin/AdminPosts.vue';
+
+
+const props = defineProps({
+    houseId: Number
+})
 
 const route = useRoute();
 const houseStore = useHouseStore();
@@ -33,4 +39,9 @@ const house = computed(() => houseStore.houses.find(h => h.id == houseId.value))
 
     <v-alert v-else type="warning">Haus nicht gefunden!</v-alert>
   </v-container>
+
+<v-container>
+    <AdminPostsView/>
+</v-container>
+
 </template>
