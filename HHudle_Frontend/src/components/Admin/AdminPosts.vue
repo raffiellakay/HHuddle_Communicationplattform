@@ -24,7 +24,7 @@ const route = useRoute();
 const show = ref(false);
 
 const props = defineProps({
-  houseId: Number // Falls es als String übergeben wird, sonst Number
+  houseId: Number
 });
 
 

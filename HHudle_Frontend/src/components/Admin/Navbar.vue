@@ -8,6 +8,9 @@ import AdminPostForm from '@/components/Admin/AdminPostForm.vue';
 const router = useRouter(); //Gibt Router Instanz zurück
 const route = useRoute(); //Gibt aktuelle Route zurück 
 
+//AdminPostForm bekommt houseId entweder als prop oder aus der route 
+const houseId = computed(() => Number(route.params.houseId) || null);
+
 
 //showDrawer Konstante ist per default auf false
 const showDrawer = ref(false);
@@ -51,9 +54,12 @@ console.log(showAdminPostForm.value);
 <!-- Öffnen der PostForm Komponent in einem Dialog -->
    
       <v-dialog v-model="showAdminPostForm" max-width="500">
-        <template v-slot:default="{close}">
-          <AdminPostForm @add-adminPost="$emit('add-adminPost', $event)" @close="close"></AdminPostForm>
-        </template>
+        
+          <AdminPostForm 
+          :houseId="houseId" 
+          @adminPost-added="refreshPosts" 
+          @close="showAdminPostForm=false"></AdminPostForm>
+      
 
       </v-dialog>
 

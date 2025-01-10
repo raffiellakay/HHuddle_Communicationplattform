@@ -3,6 +3,7 @@ import { computed, onMounted } from "vue";
 import { useHouseStore } from "@/stores/Admin/houseStore";
 import { useRoute } from "vue-router";
 import AdminPostsView from '@/components/Admin/AdminPosts.vue';
+import { useAdminPostStore } from "@/stores/Admin/adminPostStore";
 
 
 const props = defineProps({
@@ -11,15 +12,25 @@ const props = defineProps({
 
 const route = useRoute();
 const houseStore = useHouseStore();
+const adminPostStore = useAdminPostStore();
 
 // 🛠 HouseId aus der URL holen
-const houseId = computed(() => route.params.houseId);
+const houseId = computed(() => Number(route.params.houseId));
 
 onMounted(async () => {
   if (houseId.value) {
     await houseStore.getHouseById(houseId.value);
+    await adminPostStore.getAdminPostsByHouseId(houseId.value);
   }
 });
+
+
+const refreshPosts = async () => {
+  if (houseId.value) {
+    await adminPostStore.getAdminPostsByHouseId(houseId.value);
+  }
+};
+
 
 // 🛠 Das aktuelle Haus abrufen
 const house = computed(() => houseStore.houses.find(h => h.id == houseId.value));
@@ -41,7 +52,7 @@ const house = computed(() => houseStore.houses.find(h => h.id == houseId.value))
   </v-container>
 
 <v-container>
-    <AdminPostsView/>
+    <AdminPostsView :houseId="houseId" @adminPost-added="refreshPosts"/>
 </v-container>
 
 </template>

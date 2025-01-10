@@ -2,29 +2,48 @@
 //Form erstellt mit Hilfe von https://pablog.42web.io/vuetify-form-builder?i=1
 //Diese Form dient dem hinzufügen und bearbeiten von AdminPosts 
 
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
+import { useAdminPostStore } from "@/stores/Admin/adminPostStore.js"
+import { useRoute } from "vue-router";
 
 
-//Definition des adminPost props welches alle Details beinhaltet
-const props = defineProps(['adminPost']);
+const props = defineProps({
+  houseId: Number
+})
 
 //Emitting der events für Kommunikation mit parent component (in diesem Fall die component, auf der man die Form aufrufen kann)
-const emits = defineEmits(['add-adminPost', 'update-adminPost']);
-
+const emits = defineEmits(['adminPost-added', 'close']);
+const adminPostStore = useAdminPostStore();
+const route = useRoute();
 
 //Definition ref Instanzen
-const id = ref(null); //Kann wahrscheinlich entfernt werden da automatisch assigned
 const title = ref('');
 const text = ref('');
-const boardId = ref(0);
+const boardId = ref(null);
+
+
+const houseId = ref(route.params.houseId ? Number(route.params.houseId) : null);
+
+console.log("AdminPostForm wurde geöffnet mit houseId: ", houseId.value) //Debug 
 
 
 //Die Form besitzt zwei Modi: Creation und Edit Mode
 const isEdit = ref(false);
 
+onMounted(async () => {
+  if (houseId.value) {
+    console.log(`🔍 Lade boardId für houseId: ${houseId.value}...`);
+    boardId.value = await adminPostStore.getAdminBoardIdByHouseId(houseId.value);
+    console.log(`✅ Geladene boardId: ${boardId.value} für houseId: ${houseId.value}`);
+  } else {
+    console.error("❌ Fehler: `houseId` ist undefined!");
+  }
+});
 
 
-//Schaut ob Änderungen an der AdminPostForm gemacht wurden und füllt die Form mit den existierenden Werten vom adminPost Prop
+//Bearbeitung eines AdminPosts ist nicht implementiert 
+
+/*
 watch(() => props.adminPost, (newPost) => {
     if(newPost) {
     // Werte aus adminPost zuweisen
@@ -37,64 +56,33 @@ watch(() => props.adminPost, (newPost) => {
     }
   },
   { immediate: true } // Läuft beim ersten Laden automatisch
-);
+);*/
 
 
 //Kümmert sich um Formsubmission, emitted update-post wenn isEdit true ist mit dem überarbeitenden Post Details, ansonsten wird add-post mit den neuen Post Details emitted 
-const handleSubmit = () => {
-  const updatedAdminPost = {
-    title: title.value,
-    text: text.value,
-    boardId: boardId.value,
-
-  };
-
-  if (isEdit.value) {
-    // Emit 'update-post' mit der ID von adminPost
-    emits('update-adminPost', { ...updatedAdminPost, id: props.adminPost.id });
-  } else {
-    // Emit 'add-post' für das Erstellen eines neuen Posts
-    emits('add-adminPost', updatedAdminbPost);
+const handleSubmit = async () => {
+  if (!boardId.value) {
+    console.error("❌ Fehler: `boardId` wurde nicht gefunden.");
+    return;
   }
 
-  closeForm();
+  const newAdminPost = {
+    title: title.value,
+    text: text.value,
+    boardId: boardId.value
+  };
+
+  console.log("📡 Sende AdminPost an Backend:", newAdminPost);
+
+  try {
+    await adminPostStore.createAdminPost(newAdminPost);
+    emits("adminPost-added"); // ✅ Event auslösen, um `HouseView.vue` zu aktualisieren
+    emits("close"); // ✅ Modal schließen
+  } catch (error) {
+    console.error("❌ Fehler beim Erstellen des AdminPosts:", error);
+  }
 };
 
-
-
-
-const formSubmit = (close) => {
-  console.log("Form submitted!");
-  closeForm();
-};
-
-
-
-
-const pictureupload = ref([]);
-
-
-
-
-const postClick = () => {
-  console.log(2 + 2);
-};
-
-
-const anonymousCheckbox = ref(false);
-
-
-
-//Formatiert Datum auf DD.MM.YYYY
-const formatToGermanDate = (date) => {
-  if (!date) return ""; // Rückgabe eines leeren Strings, wenn kein Datum vorhanden ist
-  const d = new Date(date);
-  return d.toLocaleDateString("de-DE", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
-};
 
 </script>
 
@@ -115,6 +103,7 @@ const formatToGermanDate = (date) => {
                     type="text"
                     :persistent-hint="false"
                     name="title"
+                    required
                   >
                   </v-text-field>
                 </div>
@@ -128,8 +117,9 @@ const formatToGermanDate = (date) => {
                     variant="outlined"
                     label="Beschreibung"
                     density="default"
-                    v-model="description"
+                    v-model="text"
                     name="description"
+                    required
                   >
                   </v-textarea>
                 </div>
@@ -145,6 +135,7 @@ const formatToGermanDate = (date) => {
               <v-col>
                
                   <v-btn
+                    type="submit"
                     
                     color="primary"
                     variant="flat"
@@ -157,7 +148,7 @@ const formatToGermanDate = (date) => {
                     elevation="0"
                     :ripple="true"
                   >
-                  {{ isEdit ? 'Update Post' : 'Add Post' }}
+                  Add Post 
                  
                   </v-btn>
              

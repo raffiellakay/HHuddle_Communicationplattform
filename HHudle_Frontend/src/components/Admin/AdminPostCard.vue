@@ -28,6 +28,24 @@ onMounted(async () => {
   }
 });
 
+
+//Formatiert Datum auf DD.MM.YYYY
+const formatToGermanDate = (date) => {
+  if (!date) return ""; // Rückgabe eines leeren Strings, wenn kein Datum vorhanden ist
+  const d = new Date(date);
+  return d.toLocaleDateString("de-DE", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+};
+
+
+
+const formattedTimestamp = computed(() =>
+  formatToGermanDate(selectedStartDate.value)
+);
+
 </script>
 
 
