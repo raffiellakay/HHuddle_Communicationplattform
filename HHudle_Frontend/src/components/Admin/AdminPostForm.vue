@@ -32,11 +32,11 @@ const isEdit = ref(false);
 
 onMounted(async () => {
   if (houseId.value) {
-    console.log(`🔍 Lade boardId für houseId: ${houseId.value}...`);
+    console.log('Lade boardId für houseId: ${houseId.value}...');
     boardId.value = await adminPostStore.getAdminBoardIdByHouseId(houseId.value);
-    console.log(`✅ Geladene boardId: ${boardId.value} für houseId: ${houseId.value}`);
+    console.log('Geladene boardId: ${boardId.value} für houseId: ${houseId.value}');
   } else {
-    console.error("❌ Fehler: `houseId` ist undefined!");
+    console.error("Fehler: `houseId` ist undefined");
   }
 });
 

@@ -4,6 +4,7 @@ import { ref, onMounted, computed } from 'vue';
 import { useHouseStore } from '@/stores/Admin/houseStore';
 import { useRouter } from 'vue-router';
 
+
 //Zugriffe auf ...
 const houseStore = useHouseStore();
 
@@ -17,6 +18,8 @@ const newHouse = ref({
   residents: [],
   facilities: []
 });
+
+
 //beim Seitenstart werden alle Häuser geladen
 onMounted(async () => {
   await houseStore.getAllHouses();
@@ -56,7 +59,7 @@ const goToHouse = (houseId) => {
 </script>
 
 <template>
-Ich bin die Admin Homeview
+  Ich bin die Admin Homeview
 
  <!-- Gesamtes Layout -->
  <v-container>
@@ -76,10 +79,10 @@ Ich bin die Admin Homeview
           </v-col>
         </v-row>
 
-        <!-- Button zum Hinzufügen eines neuen Hauses -->
-        <v-btn @click="dialog = true" class="mt-4" color="primary">
-          + Neues Haus hinzufügen
-        </v-btn>
+    <!-- Button zum Hinzufügen eines neuen Hauses -->
+    <v-btn @click="dialog = true" class="mt-4" color="primary">
+      + Neues Haus hinzufügen
+    </v-btn>
 
         <!-- Dialog zum Hinzufügen eines neuen Hauses -->
         <v-dialog v-model="dialog" max-width="500px">
@@ -93,30 +96,21 @@ Ich bin die Admin Homeview
               required
             ></v-text-field>
 
-            <!-- Feld 2: Bewohner -->
-            <v-text-field
-              v-model="newHouse.residents"
-              label="Bewohner"
-              hint="Gib die Namen oder Anzahl der Bewohner ein"
-              persistent-hint
-            ></v-text-field>
+          <!-- Feld 2: Bewohner -->
+          <v-text-field v-model="newHouse.residents" label="Bewohner" hint="Gib die Namen oder Anzahl der Bewohner ein"
+            persistent-hint></v-text-field>
 
-            <!-- Feld 3: Einrichtungen -->
-            <v-text-field
-              v-model="newHouse.facilities"
-              label="Einrichtungen"
-              hint="Z.B.: Pool, Gemeinschaftsraum, Parkplatz"
-              persistent-hint
-            ></v-text-field>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn text @click="dialog = false">Abbrechen</v-btn>
-            <v-btn text color="primary" @click="saveHouse">Speichern</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-      </v-container>
-    
+          <!-- Feld 3: Einrichtungen -->
+          <v-text-field v-model="newHouse.facilities" label="Einrichtungen"
+            hint="Z.B.: Pool, Gemeinschaftsraum, Parkplatz" persistent-hint></v-text-field>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn text @click="dialog = false">Abbrechen</v-btn>
+          <v-btn text color="primary" @click="saveHouse">Speichern</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-container>
 </template>
 
 
