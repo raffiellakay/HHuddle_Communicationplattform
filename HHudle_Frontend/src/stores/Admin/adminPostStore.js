@@ -41,7 +41,7 @@ export const useAdminPostStore = defineStore('adminPost', {
             id: null,
             user: adminUser, //Eingeloggter Benutzer wird gesetzt 
             category: "FRONTPAGE", 
-            timestamp: "2024-12-03T15:52:42", 
+            timestamp: " ", 
             photo: null, 
             starttime: null, 
             endtime: null, 
