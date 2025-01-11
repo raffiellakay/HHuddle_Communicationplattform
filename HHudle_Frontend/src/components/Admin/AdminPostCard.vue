@@ -57,7 +57,7 @@ const confirmDelete = async () => {
       await adminPostStore.deleteAdminPost(postToDelete.value.id);
 
       await adminPostStore.getAdminPostsByHouseId(houseId.value);
-      
+
       showDeleteChecker.value = false; 
       postToDelete.value = null;
     } catch (error) {
@@ -66,6 +66,10 @@ const confirmDelete = async () => {
   } 
 }
 
+//Sortiert adminPosts nach Zeit und Erstellungsdatum 
+const sortedAdminPostsByTimeCreated = computed(() => {
+  return [...adminPosts.value].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+});
 
 
 //Formatiert Datum auf DD.MM.YYYY
@@ -92,7 +96,7 @@ const formatToDateTime = (date) => {
   <v-container>
 
     <v-row align="center" justify="center">
-      <v-col v-for="adminPost in adminPosts" :key="adminPost.id" cols="12" md="6">
+      <v-col v-for="adminPost in sortedAdminPostsByTimeCreated" :key="adminPost.id" cols="12" md="6">
         <v-card 
         class="mx-auto"
         elevation="5"

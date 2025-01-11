@@ -20,6 +20,7 @@ const addAdminPost = async (adminPost) => {
 
 
 
+
 const route = useRoute();
 const show = ref(false);
 
@@ -49,7 +50,8 @@ const refreshPosts = async() => {
     <h1>Admin Posts für Haus {{ houseId }}</h1>
 
 <v-container>
-<AdminPostCard @adminPost-deleted="refreshPosts"/>
+<AdminPostCard 
+@adminPost-deleted="refreshPosts"/>
 </v-container>
 
 
