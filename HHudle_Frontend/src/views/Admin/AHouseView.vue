@@ -4,7 +4,9 @@ import { useHouseStore } from "@/stores/Admin/houseStore";
 import { useRoute } from "vue-router";
 import AdminPostsView from '@/components/Admin/AdminPosts.vue';
 import { useAdminPostStore } from "@/stores/Admin/adminPostStore";
-
+import viennaHouseImage1 from '@/assets/Pictures/ViennaHouse1.jpg';
+import viennaHouseImage2 from '@/assets/Pictures/ViennaHouse2.jpg';
+import viennaHouseImage3 from '@/assets/Pictures/ViennaHouse3.jpg';
 
 const props = defineProps({
     houseId: Number
@@ -32,12 +34,37 @@ const refreshPosts = async () => {
 };
 
 
-// 🛠 Das aktuelle Haus abrufen
+//Das aktuelle Haus abrufen
 const house = computed(() => houseStore.houses.find(h => h.id == houseId.value));
+
+
+//Bilder setzen je nach Haus
+const houseImage = computed(() => {
+  switch (houseId.value) {
+    case 1:
+      return viennaHouseImage1;
+    case 2:
+      return viennaHouseImage2;
+    case 3:
+      return viennaHouseImage3;
+    default:
+      return viennaHouseImage1;
+  }
+});
+
+
+
 </script>
 
 <template>
+  <v-img
+    class="header-image"
+    :src="houseImage"
+    cover></v-img>
+
+
   <v-container>
+    
     <h1>Haus Details</h1>
     
     <v-card v-if="house">
@@ -56,3 +83,17 @@ const house = computed(() => houseStore.houses.find(h => h.id == houseId.value))
 </v-container>
 
 </template>
+
+<style scoped>
+
+.header-image {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100vw; /* Volle Breite */
+  height: 400px; /* Oder `100vh` für Fullscreen */
+  object-fit: cover; /* Stellt sicher, dass das Bild nicht verzerrt wird */
+
+}
+
+</style>
