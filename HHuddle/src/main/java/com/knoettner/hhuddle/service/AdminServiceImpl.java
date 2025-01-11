@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -179,6 +180,7 @@ public class AdminServiceImpl implements AdminService {
         newAdminPost.setCategory(FRONTPAGE);
         newAdminPost.setTitle(post.getTitle());
         newAdminPost.setTimestamp(LocalDateTime.now());
+        post.setTimestamp(LocalDateTime.now());
         postRepository.save(newAdminPost);
         //set id in dto so its same as real post
         post.setId(newAdminPost.getId());
