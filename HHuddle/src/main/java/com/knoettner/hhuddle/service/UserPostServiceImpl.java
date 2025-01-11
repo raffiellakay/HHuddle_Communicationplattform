@@ -135,8 +135,7 @@ public class UserPostServiceImpl implements UserPostService {
         Optional <Post> dbpost = postRepository.findById(id);// sucht nach einem post in db
         if (!dbpost.isPresent())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "post with this id not exist");
-        postRepository.deleteById(id); //löscht bestehdes Post in DB
-        postRepository.save(post);// speichert das upgedated Post neu
+        postRepository.updatePost(post.getId(), post.getEndtime(),post.isAnonymous(), post.isPrivate(), post.getPathToPhoto(), post.getText(), post.getTitle(), post.getFacility(), post.getStarttime());
         return updatedPost;
     }
 
