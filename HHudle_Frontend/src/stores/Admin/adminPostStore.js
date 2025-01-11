@@ -105,31 +105,31 @@ export const useAdminPostStore = defineStore('adminPost', {
 
         async getAdminBoardIdByHouseId(houseId) {
           try {
-            console.log(`Sende API-Request für BoardId von houseId: ${houseId}...`); //Debugging
-        
-            const response = await axios.get('${API_URL}admin/house/${houseId}/adminboard');
-            
-            console.log("API Antwort:", response.data); //Debugging: zeigt API-Antwort in der Konsole
-        
-            //Falls die API direkt eine Zahl (ID) zurückgibt, diese verwenden
+            console.log(`Sende API-Request für BoardId von houseId: ${houseId}...`);
+
+            const response = await axios.get(`${API_URL}admin/house/${houseId}/adminboard`);
+
+            console.log("API Antwort:", response.data); // Debugging: zeigt API-Antwort in der Konsole
+
+            // Falls die API direkt eine Zahl (ID) zurückgibt, diese verwenden
             if (typeof response.data === "number") {
               this.boards.push({ houseId: houseId, id: response.data });
               console.log(`BoardId ${response.data} für houseId ${houseId} gefunden.`);
               return response.data;
             }
-        
+
             //Falls die API ein Objekt zurückgibt, die ID extrahieren
             if (response.data && typeof response.data === "object" && response.data.id) {
               this.boards.push({ houseId: houseId, id: response.data.id });
-              console.log(`BoardId ${response.data.id} für houseId ${houseId} gefunden.`); //Debugging
+              console.log(`BoardId ${response.data.id} für houseId ${houseId} gefunden.`);
               return response.data.id;
             } 
-        
-            console.warn(`Keine gültige BoardId für houseId ${houseId} erhalten.`, response.data); //Debugging
+
+            console.warn(`Keine gültige BoardId für houseId ${houseId} erhalten.`, response.data);
             return null;
-            
+
           } catch (error) {
-            console.error(`Fehler beim Laden der BoardId für houseId ${houseId}:`, error); //Debugging
+            console.error(`Fehler beim Laden der BoardId für houseId ${houseId}:`, error);
             return null;
           }
         },
