@@ -1,5 +1,6 @@
 package com.knoettner.hhuddle.repository;
 
+import com.knoettner.hhuddle.models.Facility;
 import com.knoettner.hhuddle.models.Post;
 import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
@@ -31,9 +32,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                     Boolean is_anonymous,
                     Boolean is_private,
                     String path_to_photo,
-                    String starttime,
+                    LocalDateTime starttime,
                     String text,
                     String post_title,
-                    String facility_id
+                    Facility facility_id
     );
 }
