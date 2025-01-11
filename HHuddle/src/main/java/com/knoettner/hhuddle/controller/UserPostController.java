@@ -1,5 +1,6 @@
 package com.knoettner.hhuddle.controller;
 
+import com.knoettner.hhuddle.Category;
 import com.knoettner.hhuddle.dto.PostDto;
 import com.knoettner.hhuddle.service.UserPostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,36 @@ public class UserPostController {
     @PostMapping("/blackboardpost")
     @PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity<PostDto>createBlackboardPost(@RequestBody PostDto postDto) {
-        PostDto createdBlackboardPost = userPostService.createBlackboardPost(postDto);
+        postDto.setCategory(Category.BLACKBOARD.toString());
+        PostDto createdBlackboardPost = userPostService.createUserPost(postDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdBlackboardPost);
     }
+
+    @PostMapping("/packagepost")
+    @PreAuthorize("hasRole('RESIDENT')")
+    public ResponseEntity<PostDto>createPackagePost(@RequestBody PostDto postDto) {
+        postDto.setCategory(Category.PACKAGE.toString());
+        PostDto createdPackagePost = userPostService.createUserPost(postDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdPackagePost);
+    }
+
+    @PostMapping("/exchangepost")
+    @PreAuthorize("hasRole('RESIDENT')")
+    public ResponseEntity<PostDto>createExchangePost(@RequestBody PostDto postDto) {
+        postDto.setCategory(Category.EXCHANGE.toString());
+        PostDto createdExchangePost = userPostService.createUserPost(postDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdExchangePost);
+    }
+
+
+    @PostMapping("/eventspost")
+    @PreAuthorize("hasRole('RESIDENT')")
+    public ResponseEntity<PostDto>createEventsPost(@RequestBody PostDto postDto) {
+        postDto.setCategory(Category.EVENTS.toString());
+        PostDto createdEventsPost = userPostService.createUserPost(postDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdEventsPost);
+    }
+
 
     @PutMapping("/update")
     @PreAuthorize("hasRole('RESIDENT')")

@@ -96,6 +96,7 @@ public class UserPostServiceImpl implements UserPostService {
         return postDto;
     }
 
+   /*
     @Override
     public PostDto createBlackboardPost(PostDto postDto) {
         Post newBlackboardPost = postMapper.toEntity(postDto);
@@ -120,6 +121,7 @@ public class UserPostServiceImpl implements UserPostService {
 
 
     }
+    */
 
 
 
