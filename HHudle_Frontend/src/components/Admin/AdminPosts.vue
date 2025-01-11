@@ -35,6 +35,12 @@ onMounted(async () => {
   }
 });
 
+const refreshPosts = async() => {
+  if(props.houseId) {
+    await adminPostStore.getAdminPostsByHouseId(props.houseId);
+  }
+}
+
 </script>
 
 <template>
@@ -43,7 +49,7 @@ onMounted(async () => {
     <h1>Admin Posts für Haus {{ houseId }}</h1>
 
 <v-container>
-<AdminPostCard/>
+<AdminPostCard @adminPost-deleted="refreshPosts"/>
 </v-container>
 
 
