@@ -62,7 +62,7 @@ watch(() => props.adminPost, (newPost) => {
 //Kümmert sich um Formsubmission, emitted update-post wenn isEdit true ist mit dem überarbeitenden Post Details, ansonsten wird add-post mit den neuen Post Details emitted 
 const handleSubmit = async () => {
   if (!boardId.value) {
-    console.error("❌ Fehler: `boardId` wurde nicht gefunden.");
+    console.error("Fehler: `boardId` wurde nicht gefunden.");
     return;
   }
 
@@ -72,14 +72,14 @@ const handleSubmit = async () => {
     boardId: boardId.value
   };
 
-  console.log("📡 Sende AdminPost an Backend:", newAdminPost);
+  console.log("Sende AdminPost an Backend:", newAdminPost);
 
   try {
     await adminPostStore.createAdminPost(newAdminPost);
-    emits("adminPost-added"); // ✅ Event auslösen, um `HouseView.vue` zu aktualisieren
-    emits("close"); // ✅ Modal schließen
+    emits("adminPost-added"); //Event auslösen, um `HouseView.vue` zu aktualisieren
+    emits("close");
   } catch (error) {
-    console.error("❌ Fehler beim Erstellen des AdminPosts:", error);
+    console.error("Fehler beim Erstellen des AdminPosts:", error);
   }
 };
 

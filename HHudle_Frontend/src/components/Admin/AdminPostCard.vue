@@ -3,6 +3,8 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { useAdminPostStore } from "@/stores/Admin/adminPostStore";
 import { useRoute } from "vue-router";
+import DeleteButton from "@/components/Icons/DeleteButton.vue";
+
 
 
 const route = useRoute();
@@ -41,33 +43,66 @@ const formatToGermanDate = (date) => {
 };
 
 
+//Formatiert Datum auf DD.MM.YYYY
+const formatToDateTime = (date) => {
+  if (!date) return ""; // Rückgabe eines leeren Strings, wenn kein Datum vorhanden ist
+  const d = new Date(date);
+  return d.toLocaleDateString("de-DE", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
 
-const formattedTimestamp = computed(() =>
-  formatToGermanDate(selectedStartDate.value)
-);
+  });
+};
+
 
 </script>
 
 
 <template>
 
- 
-
-<v-container>
 
 
-<v-row>
+
+
+
+    <v-row align="center" justify="center">
       <v-col v-for="adminPost in adminPosts" :key="adminPost.id" cols="12" md="6">
-        <v-card>
-          <v-card-title>{{ adminPost.title }}</v-card-title>
-          <v-card-text>{{ adminPost.text }}</v-card-text>
-          <v-card-text> {{ adminPost.timestamp }}</v-card-text>
-          <v-card-text> {{ adminPost.user.username }}</v-card-text>
+        <v-card 
+        class="mx-auto"
+        elevation="5"
+        >
+         <v-card-item>
+            <v-card-title>{{ adminPost.title }}</v-card-title> 
+            <DeleteButton/> 
+          
+          <v-card-subtitle> {{ formatToDateTime(adminPost.timestamp) }}</v-card-subtitle>
+        </v-card-item>
+          <v-card-text> {{ adminPost.text }}</v-card-text>
+          <v-row>
+            
+            <v-card-text> {{ adminPost.user.username }}</v-card-text>
+          </v-row>
         </v-card>
       </v-col>
     </v-row>
-</v-container>
 
 
-    
+
+
 </template>
+
+<style scoped>
+
+
+
+
+
+
+
+
+
+</style>

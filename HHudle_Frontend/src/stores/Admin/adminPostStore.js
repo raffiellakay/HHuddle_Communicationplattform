@@ -15,7 +15,7 @@ export const useAdminPostStore = defineStore('adminPost', {
     actions: {
       async createAdminPost(adminPost) {
         try {
-          console.log("📡 API-Request wird gesendet mit Daten:", adminPost);
+          console.log("API-Request wird gesendet mit Daten:", adminPost);
 
           //Beim Erstellen des AdminPosts muss der User korrekt als Admin gesetzt werden 
           //Zuerst wird geprüft ob der User eingeloggt ist, dafür nutzen wir den authstore
@@ -39,7 +39,7 @@ export const useAdminPostStore = defineStore('adminPost', {
           const requestBody = {
             ...adminPost, //Enthät alle anderen Post Daten (title, text etc.) 
             id: null,
-            user: adminUser, // Eingeloggter Benutzer wird gesetzt 
+            user: adminUser, //Eingeloggter Benutzer wird gesetzt 
             category: "FRONTPAGE", 
             timestamp: "2024-12-03T15:52:42", 
             photo: null, 
@@ -62,13 +62,13 @@ export const useAdminPostStore = defineStore('adminPost', {
           });
       
           if (response.data) {
-            console.log("✅ AdminPost erfolgreich erstellt:", response.data);
+            console.log("AdminPost erfolgreich erstellt:", response.data);
             this.adminPosts.push(response.data); //Direkt in den Store einfügen
           } else {
-            console.error("⚠️ API hat keine gültige Antwort zurückgegeben:", response);
+            console.error("API hat keine gültige Antwort zurückgegeben:", response); //Debugging
           }
         } catch (error) {
-          console.error("❌ Fehler beim Erstellen des AdminPosts:", error);
+          console.error("Fehler beim Erstellen des AdminPosts:", error); //Debugging
         }
       },
 
@@ -76,19 +76,19 @@ export const useAdminPostStore = defineStore('adminPost', {
         async getAdminPostsByHouseId(houseId) {
             
                 try {
-                  console.log("Fetching AdminPosts for houseId:", houseId); // Debugging
+                  console.log("Fetching AdminPosts for houseId:", houseId); //Debugging
                   const response = await axios.get(API_URL + 'admin/house/' + houseId + '/adminposts');
           
-                  console.log("API Response:", response.data); // Debugging
+                  console.log("API Response:", response.data); //Debugging
           
                   if (Array.isArray(response.data)) {
                     this.adminPosts = response.data; 
                   } else {
-                    console.error("Fehler: Die API hat kein Array zurückgegeben", response.data);
+                    console.error("Fehler: Die API hat kein Array zurückgegeben", response.data); //Debugging
                     this.adminPosts = [];
                   }
                 } catch (error) {
-                  console.error("Fehler beim Laden der AdminPosts:", error);
+                  console.error("Fehler beim Laden der AdminPosts:", error); //Debugging
                   this.adminPosts = [];
                 }
             },
@@ -105,31 +105,31 @@ export const useAdminPostStore = defineStore('adminPost', {
 
         async getAdminBoardIdByHouseId(houseId) {
           try {
-            console.log(`📡 Sende API-Request für BoardId von houseId: ${houseId}...`);
+            console.log(`Sende API-Request für BoardId von houseId: ${houseId}...`); //Debugging
         
-            const response = await axios.get(`${API_URL}admin/house/${houseId}/adminboard`);
+            const response = await axios.get('${API_URL}admin/house/${houseId}/adminboard');
             
-            console.log("🔍 API Antwort:", response.data); // Debugging: zeigt API-Antwort in der Konsole
+            console.log("API Antwort:", response.data); //Debugging: zeigt API-Antwort in der Konsole
         
-            // ✅ Falls die API direkt eine Zahl (ID) zurückgibt, diese verwenden
+            //Falls die API direkt eine Zahl (ID) zurückgibt, diese verwenden
             if (typeof response.data === "number") {
               this.boards.push({ houseId: houseId, id: response.data });
-              console.log(`✅ BoardId ${response.data} für houseId ${houseId} gefunden.`);
+              console.log(`BoardId ${response.data} für houseId ${houseId} gefunden.`);
               return response.data;
             }
         
-            // ✅ Falls die API ein Objekt zurückgibt, die ID extrahieren
+            //Falls die API ein Objekt zurückgibt, die ID extrahieren
             if (response.data && typeof response.data === "object" && response.data.id) {
               this.boards.push({ houseId: houseId, id: response.data.id });
-              console.log(`✅ BoardId ${response.data.id} für houseId ${houseId} gefunden.`);
+              console.log(`BoardId ${response.data.id} für houseId ${houseId} gefunden.`); //Debugging
               return response.data.id;
             } 
         
-            console.warn(`⚠️ Keine gültige BoardId für houseId ${houseId} erhalten.`, response.data);
+            console.warn(`Keine gültige BoardId für houseId ${houseId} erhalten.`, response.data); //Debugging
             return null;
             
           } catch (error) {
-            console.error(`❌ Fehler beim Laden der BoardId für houseId ${houseId}:`, error);
+            console.error(`Fehler beim Laden der BoardId für houseId ${houseId}:`, error); //Debugging
             return null;
           }
         },
