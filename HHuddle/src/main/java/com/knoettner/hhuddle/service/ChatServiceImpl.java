@@ -121,7 +121,12 @@ public class ChatServiceImpl implements ChatService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User is not a participant of the chat");
         }
 
-        chatRepository.save(chat);
+        // delete chat if both have deleted
+        if (!chat.isVisibleToFirstParticipant() && !chat.isVisibleToSecondParticipant()) {
+            chatRepository.deleteById(chat.getId());
+        } else {
+            chatRepository.save(chat);
+        }
     }
 
 

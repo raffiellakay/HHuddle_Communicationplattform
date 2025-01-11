@@ -38,8 +38,8 @@ public class ChatMapper {
             chatDto.setMessages(chat.getMessages().stream(). map(e ->chatMessageMapper.toDto(e)).collect(Collectors.toSet()));
         chatDto.setFirst_participant(basicUserMapper.toDto(chat.getFirstParticipant()));
         chatDto.setSecond_participant(basicUserMapper.toDto(chat.getSecondParticipant()));
-        chat.isVisibleToFirstParticipant();
-        chat.isVisibleToSecondParticipant();
+        chatDto.setVisibleToFirstParticipant(chat.isVisibleToFirstParticipant());
+        chatDto.setVisibleToSecondParticipant(chat.isVisibleToSecondParticipant());
 
         return chatDto;
     }
