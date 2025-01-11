@@ -9,6 +9,7 @@ import com.knoettner.hhuddle.repository.BoardRepository;
 import com.knoettner.hhuddle.repository.PostRepository;
 import com.knoettner.hhuddle.repository.UserPostRepository;
 import com.knoettner.hhuddle.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -128,6 +129,9 @@ public class UserPostServiceImpl implements UserPostService {
 
 
     //funktioniert nicht? löscht nur alten Post erstellt keinen neuen
+
+
+
     @Override
     public PostDto updateUserPost( PostDto updatedPost) {//TODO einzelne Felder updaten
         Post post = postMapper.toEntity(updatedPost);
@@ -135,7 +139,17 @@ public class UserPostServiceImpl implements UserPostService {
         Optional <Post> dbpost = postRepository.findById(id);// sucht nach einem post in db
         if (!dbpost.isPresent())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "post with this id not exist");
-        postRepository.updatePost(post.getId(), post.getEndtime(),post.isAnonymous(), post.isPrivate(), post.getPathToPhoto(), post.getText(), post.getTitle(), post.getFacility(), post.getStarttime());
+        postRepository.updatePost(
+                post.getId(),
+                post.getEndtime(),
+                post.isAnonymous(),
+                post.isPrivate(),
+                post.getPathToPhoto(),
+                post.getStarttime(),
+                post.getText(),
+                post.getTitle(),
+                post.getFacility()
+        );
         return updatedPost;
     }
 
