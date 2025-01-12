@@ -4,6 +4,7 @@ import { computed, onMounted, ref, watch } from "vue";
 import { useAdminPostStore } from "@/stores/Admin/adminPostStore";
 import { useRoute } from "vue-router";
 import DeleteButton from "@/components/Icons/DeleteButton.vue";
+import EditButton from "@/components/Icons/EditButton.vue";
 import ConfirmDeleteCheck from "@/components/ConfirmDeleteCheck.vue";
 
 
