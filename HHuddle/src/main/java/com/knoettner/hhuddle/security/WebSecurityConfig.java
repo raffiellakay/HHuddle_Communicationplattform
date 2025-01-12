@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -57,7 +58,7 @@ public class WebSecurityConfig {
         //Returns PW Encoder
         return new BCryptPasswordEncoder();
     }
- 
+/*
 //Chain of filters that are used one after another
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -78,5 +79,21 @@ public class WebSecurityConfig {
 //Spring Security function that builds the chain of filters
         return http.build();
     }
+ */
 
+// to remove authorization while testing TODO remove later
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/swagger-ui/**", "/v3/**", "/api/**").permitAll() // Allow all Swagger and API paths
+                        .anyRequest().permitAll() // Allow unrestricted access for testing
+                )
+                .cors(c -> c.configurationSource(customCorsConfiguration)); // Enable CORS configuration
+
+        // Temporarily disable JWT token authentication for testing
+        // http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
 }

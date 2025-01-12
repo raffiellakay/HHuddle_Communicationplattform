@@ -19,14 +19,14 @@ public class UserPostController {
     private UserPostService userPostService;
 
     @PostMapping("/post")
-    @PreAuthorize("hasRole('RESIDENT')")
+   // @PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity<PostDto> createUserPost(@RequestBody PostDto postDto) {
         PostDto createdPost = userPostService.createUserPost(postDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
     }
 
     @PostMapping("/blackboardpost")
-    @PreAuthorize("hasRole('RESIDENT')")
+   // @PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity<PostDto>createBlackboardPost(@RequestBody PostDto postDto) {
         postDto.setCategory(Category.BLACKBOARD.toString());
         PostDto createdBlackboardPost = userPostService.createUserPost(postDto);
@@ -34,7 +34,7 @@ public class UserPostController {
     }
 
     @PostMapping("/packagepost")
-    @PreAuthorize("hasRole('RESIDENT')")
+   // @PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity<PostDto>createPackagePost(@RequestBody PostDto postDto) {
         postDto.setCategory(Category.PACKAGE.toString());
         PostDto createdPackagePost = userPostService.createUserPost(postDto);
@@ -42,7 +42,7 @@ public class UserPostController {
     }
 
     @PostMapping("/exchangepost")
-    @PreAuthorize("hasRole('RESIDENT')")
+   // @PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity<PostDto>createExchangePost(@RequestBody PostDto postDto) {
         postDto.setCategory(Category.EXCHANGE.toString());
         PostDto createdExchangePost = userPostService.createUserPost(postDto);
@@ -51,7 +51,7 @@ public class UserPostController {
 
 
     @PostMapping("/eventspost")
-    @PreAuthorize("hasRole('RESIDENT')")
+   // @PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity<PostDto>createEventsPost(@RequestBody PostDto postDto) {
         postDto.setCategory(Category.EVENTS.toString());
         PostDto createdEventsPost = userPostService.createUserPost(postDto);
@@ -60,7 +60,7 @@ public class UserPostController {
 
 
     @PutMapping("/update")
-    @PreAuthorize("hasRole('RESIDENT')")
+    //@PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity<PostDto> updateUserPost(@RequestBody PostDto postDto) {
         PostDto updatedPost = userPostService.updateUserPost(postDto);
         return ResponseEntity.status(HttpStatus.OK).body(updatedPost);
@@ -70,14 +70,14 @@ public class UserPostController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/post/{id}")
-    @PreAuthorize("hasRole('RESIDENT')")
+    //@PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity<PostDto>  getPost(@PathVariable("id") Long postId) {
         return ResponseEntity.status(HttpStatus.OK).body(userPostService.getPost(postId));
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/allposts")
-    @PreAuthorize("hasRole('RESIDENT')")
+   // @PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity  <Set<PostDto>> getAllPosts(){
         Set<PostDto> allPosts = userPostService.getAllPosts();
         return ResponseEntity.status(HttpStatus.OK).body(allPosts);
@@ -86,7 +86,7 @@ public class UserPostController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/user/{id}")
-    @PreAuthorize("hasRole('RESIDENT')")
+   // @PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity<Set<PostDto>> getPostsByUserId(@PathVariable("id") Long userId){
         Set<PostDto>userPosts = userPostService.getPostsByUserId(userId);
         return ResponseEntity.status(HttpStatus.OK).body(userPosts);
@@ -95,14 +95,14 @@ public class UserPostController {
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/post/{id}")
-    @PreAuthorize("hasRole('RESIDENT')")
+   // @PreAuthorize("hasRole('RESIDENT')")
     void deletePost(@PathVariable("id") Long postId) {
         userPostService.deletePost(postId);
     }
 
      @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{userId}")
-     @PreAuthorize("hasRole('RESIDENT')")
+    // @PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity<Void> deletePostsByUserId(@PathVariable("userId") Long userId) {
         userPostService.deletePostsByUserId(userId);
         return ResponseEntity.noContent().build();// "No content" nur am Backend. der Server schickt keinen Body zurück!
