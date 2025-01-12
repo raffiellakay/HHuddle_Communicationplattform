@@ -76,7 +76,7 @@ console.log(showAdminPostForm.value);
 
     <!-- Inhalte des Navigation Drawers -->
     <v-list>
-      <v-list-item :to="{ path: '/admin/houses'}">
+      <v-list-item :to="{ path: '/admin/home'}">
         <v-list-item-title>Häuser</v-list-item-title>
       </v-list-item>    
       <v-list-item>Über Uns</v-list-item>

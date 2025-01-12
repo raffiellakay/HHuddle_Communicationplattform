@@ -12,6 +12,7 @@ import PackageFinderView from '@/views/User/PackageFinderView.vue';
 import SearchAndFindView from '@/views/User/SearchAndFindView.vue';
 import AHomeView from '@/views/Admin/AHomeView.vue';
 import LoginLayout from '@/layouts/LoginLayout.vue';
+import AllBoardsView from '@/views/User/AllBoardsView.vue';
 
 import AboutUsView from '@/views/AboutUsView.vue';
 import ContactView from '@/views/ContactView.vue';
@@ -38,6 +39,12 @@ const routes = [
         name: 'UserHome',  //Achtung! Name muss unique sein
         component: UHomeView,
         meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT']  },
+      },
+      {
+        path:'allboards',
+        name: 'AllBoards',
+        component: AllBoardsView, 
+        meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT']  }
       },
       {
         path: 'board',
