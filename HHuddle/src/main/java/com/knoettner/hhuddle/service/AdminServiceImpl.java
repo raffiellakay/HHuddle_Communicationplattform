@@ -8,6 +8,8 @@ import com.knoettner.hhuddle.dto.mapper.MyUserMapper;
 import com.knoettner.hhuddle.dto.mapper.PostMapper;
 import com.knoettner.hhuddle.models.*;
 import com.knoettner.hhuddle.repository.*;
+import com.knoettner.hhuddle.security.modelsDtos.EmailDetails;
+import com.knoettner.hhuddle.security.services.EmailService;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -57,6 +59,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired
     PasswordEncoder encoder;
+
+    @Autowired
+    EmailService emailService;
 
 
     @Override
@@ -278,9 +283,10 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public MyUserDto createUser(MyUserDto userDto) {
         MyUser user = userMapper.toEntity(userDto);
+        user.setPassword("");
         //Random PW hashed/encoded
         //user.setPassword(encoder.encode(UUID.randomUUID().toString()));
-        user.setPassword(encoder.encode("test"));
+       // user.setPassword(encoder.encode("test"));
       //  Role = Resident;
         Set<Role> roleSet = new HashSet<>();
         Optional<Role> maybeResident = roleRepository.findById(1L);
@@ -299,6 +305,10 @@ public class AdminServiceImpl implements AdminService {
         }
         userRepository.save(user);
         userDto.setId(user.getId());
+        //sends mail with temporary PW to user Mailadress
+        EmailDetails details = new EmailDetails(userDto.getMail());
+        emailService.sendMailToResetPw(details);
+
         return userDto;
     }
 
