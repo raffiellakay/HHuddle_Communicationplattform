@@ -33,7 +33,7 @@ public class EmailServiceImpl implements EmailService {
             SimpleMailMessage mailMessage
                     = new SimpleMailMessage();
             //Does User exist?
-            Optional<MyUser> maybeUser = userRepository.findByMail("raffy.k@gmx.at");
+            Optional<MyUser> maybeUser = userRepository.findById(details.getId());
             if (maybeUser.isPresent()) {
                 MyUser actualUser = maybeUser.get();
                 //Temp PW

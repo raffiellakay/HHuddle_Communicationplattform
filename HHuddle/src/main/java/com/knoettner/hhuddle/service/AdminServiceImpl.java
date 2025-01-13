@@ -283,6 +283,11 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public MyUserDto createUser(MyUserDto userDto) {
         MyUser user = userMapper.toEntity(userDto);
+        Optional<MyUser> maybeUser = userRepository.findByMail(user.getMail());
+        if (maybeUser.isPresent()) {
+            System.out.println("Diese E-Mailadresse wird bereits benutzt");
+            return userDto;
+        }
         user.setPassword("");
         //Random PW hashed/encoded
         //user.setPassword(encoder.encode(UUID.randomUUID().toString()));
@@ -306,7 +311,7 @@ public class AdminServiceImpl implements AdminService {
         userRepository.save(user);
         userDto.setId(user.getId());
         //sends mail with temporary PW to user Mailadress
-        EmailDetails details = new EmailDetails(userDto.getMail());
+        EmailDetails details = new EmailDetails( user.getMail(),user.getId());
         emailService.sendMailToResetPw(details);
 
         return userDto;
