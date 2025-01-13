@@ -57,26 +57,27 @@ const houseImage = computed(() => {
 </script>
 
 <template>
-  <v-img
-    class="header-image"
-    :src="houseImage"
+    <div class="header-container">
+    <!-- Hintergrundbild -->
+    <v-img 
+    class="header-image" 
+    :src="houseImage" 
     cover></v-img>
 
-
-  <v-container>
+    <!-- Hausdetails über dem Bild -->
+    <div class="house-details">
+      <v-card v-if="house" class="house-card">
+        <div class="house-info-row">
+          <p><strong>Adresse:</strong> {{ house.address }}</p>
+          <p><strong>Tops:</strong> {{ house.residents.length }}</p>
+          <p><strong>Einrichtungen:</strong> {{ house.facilities.length }}</p>
+        </div>
+      </v-card>
+      <v-alert v-else type="warning">Haus nicht gefunden!</v-alert>
+    </div>
+  </div>
     
-    <h1>Haus Details</h1>
-    
-    <v-card v-if="house">
-      <v-card-title>{{ house.address }}</v-card-title>
-      <v-card-text>
-        <p><strong>Bewohner:</strong> {{ house.residents.join(", ") }}</p>
-        <p><strong>Einrichtungen:</strong> {{ house.facilities.join(", ") }}</p>
-      </v-card-text>
-    </v-card>
 
-    <v-alert v-else type="warning">Haus nicht gefunden!</v-alert>
-  </v-container>
 
 <v-container>
     <AdminPostsView :houseId="houseId" @adminPost-added="refreshPosts"/>
@@ -86,14 +87,60 @@ const houseImage = computed(() => {
 
 <style scoped>
 
+.header-container {
+  position: relative;
+  width: 100vw;
+  height: 400px;
+}
+
 .header-image {
   position: relative;
   top: 0;
   left: 0;
-  width: 100vw; /* Volle Breite */
-  height: 400px; /* Oder `100vh` für Fullscreen */
-  object-fit: cover; /* Stellt sicher, dass das Bild nicht verzerrt wird */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
+.house-details {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95%;
+  max-width: 100vw;
+}
+
+.house-card {
+  background: rgba(255, 255, 255, 0.7);
+  padding: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+
+.house-info-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 gleichmäßige Spalten */
+  gap: 300px; /* Abstand zwischen den Spalten */
+  text-align: center;
+}
+
+/*Anpassung für kleine Bildschirme */
+@media (max-width: 768px) {
+  .house-info-row {
+    grid-template-columns: 1fr; /* Eine Spalte, um die Inhalte untereinander zu setzen */
+    gap: 16px; /* Weniger Abstand */
+  }
+}
+
+.house-info-row p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
 }
 
 </style>

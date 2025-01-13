@@ -20,7 +20,7 @@ const toggleDrawer = () => {
   showDrawer.value = !showDrawer.value;
 }
 
-//Checkt ob die aktuelle Seite Haus Seite ist indem es mit items im items array abgeglichen wird
+//Checkt ob die aktuelle Seite Haus Seite ist
 //Ist true wenn auf einer HausSeite und false wenn nicht
 const isHousePage = computed(() =>{
   return route.path.includes('/admin/house');
@@ -76,7 +76,7 @@ console.log(showAdminPostForm.value);
 
     <!-- Inhalte des Navigation Drawers -->
     <v-list>
-      <v-list-item :to="{ path: '/admin/houses'}">
+      <v-list-item :to="{ path: '/admin/home'}">
         <v-list-item-title>Häuser</v-list-item-title>
       </v-list-item>    
       <v-list-item>Über Uns</v-list-item>

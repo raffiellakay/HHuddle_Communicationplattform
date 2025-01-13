@@ -3,6 +3,8 @@
 import { ref, onMounted, computed } from 'vue';
 import { useHouseStore } from '@/stores/Admin/houseStore';
 import { useRouter } from 'vue-router';
+import DeleteButton from '@/components/Icons/DeleteButton.vue';
+import EditButton from '@/components/Icons/EditButton.vue';
 
 
 //Zugriffe auf ...
@@ -73,8 +75,12 @@ const goToHouse = (houseId) => {
             md="4"
           >
             <v-card class="d-flex flex-column align-center" outlined @click="goToHouse(house.id)">
+              <v-card-item>
               <!-- Anzeige der Adresse des Hauses -->
               <v-card-title>{{ house.address }}</v-card-title>
+              <EditButton class="edit-button"/>
+              <DeleteButton class="delete-button"/>
+            </v-card-item>
             </v-card>
           </v-col>
         </v-row>
@@ -108,6 +114,25 @@ const goToHouse = (houseId) => {
     </v-dialog>
   </v-container>
 </template>
+
+<style scoped>
+
+.delete-button {
+  background-color: rgb(241, 102, 102);
+  margin-left: 15px;
+
+}
+
+
+
+.edit-button {
+  background-color: rgb(168, 209, 252);
+  margin-right: 15px;
+}
+
+
+
+</style>
 
 
 
