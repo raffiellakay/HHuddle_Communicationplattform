@@ -1,10 +1,10 @@
 <script setup>
-import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import BoardCard from "@/components/User/BoardCard.vue";
 
 
 
-const route = useRoute();
+const router = useRouter();
 
 
 
@@ -18,6 +18,7 @@ const route = useRoute();
     
       
         <v-card 
+        @click="router.push('/user/board/commonrooms')"
         class="board-card"
         :elevation="3" 
         :rounded="2"
