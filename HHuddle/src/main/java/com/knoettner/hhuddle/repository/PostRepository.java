@@ -38,3 +38,4 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                     Facility facility_id
     );
 }
+
