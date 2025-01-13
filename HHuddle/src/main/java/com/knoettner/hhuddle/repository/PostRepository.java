@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findByTimestampAfter(LocalDateTime timestamp);//return the latest posts after a definate date
-
+    @Transactional
     @Modifying
     @Query(value = "update Post  set endtime = ?2," +
             " isAnonymous = ?3," +
