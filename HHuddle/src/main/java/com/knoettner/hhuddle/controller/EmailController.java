@@ -14,7 +14,7 @@ public class EmailController {
 @Autowired
     private EmailService emailService;
 
-@PostMapping("/sendMail")
+@PostMapping("/reset")
     public void sendMail (@RequestBody EmailDetails details) {
      emailService.sendMailToResetPw(details);
 
