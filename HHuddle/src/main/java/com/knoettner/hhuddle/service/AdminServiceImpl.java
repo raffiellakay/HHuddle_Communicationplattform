@@ -63,6 +63,7 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     EmailService emailService;
 
+    //////////////////////// HOUSE ////////////////////
 
     @Override
     public HouseDto createHouse(HouseDto house) {
@@ -177,6 +178,7 @@ public class AdminServiceImpl implements AdminService {
         return null;
     }
 
+//////////////////////// ADMIN POST //////////////////////////////
 
     @Override
     public PostDto createAdminPost(PostDto post) {
@@ -229,6 +231,9 @@ public class AdminServiceImpl implements AdminService {
         return allAdminPosts;
     }
 
+    ////////////////////////// FACILITY //////////////////////////
+
+
     @Override
     public FacilityDto createFacility(FacilityDto facility) {
         Facility realFacility = facilityMapper.toEntity(facility);
@@ -279,7 +284,9 @@ public class AdminServiceImpl implements AdminService {
         return allFacilites;
     }
 
-    //produces random encoded PW
+    /////////////////// USER ///////////////////////////////
+
+
     @Override
     public MyUserDto createUser(MyUserDto userDto) {
         MyUser user = userMapper.toEntity(userDto);
@@ -288,10 +295,12 @@ public class AdminServiceImpl implements AdminService {
             System.out.println("Diese E-Mailadresse wird bereits benutzt");
             return userDto;
         }
+        //PW is set & send in sendMailToResetPW method
         user.setPassword("");
         //Random PW hashed/encoded
         //user.setPassword(encoder.encode(UUID.randomUUID().toString()));
        // user.setPassword(encoder.encode("test"));
+
       //  Role = Resident;
         Set<Role> roleSet = new HashSet<>();
         Optional<Role> maybeResident = roleRepository.findById(1L);
@@ -308,6 +317,7 @@ public class AdminServiceImpl implements AdminService {
                 user.setHouse(maybeHouse.get());
             }
         }
+        user.setHasChangedPW(false);
         userRepository.save(user);
         userDto.setId(user.getId());
         //sends mail with temporary PW to user Mailadress
@@ -325,8 +335,11 @@ public class AdminServiceImpl implements AdminService {
             MyUser userEntity = maybeUser.get();
             userEntity.setId(user.getId());
             userEntity.setMail(user.getMail());
-            userEntity.setPassword(encoder.encode(UUID.randomUUID().toString()));
             userRepository.save(userEntity);
+            //new temp PW is sent to new user mail
+            EmailDetails details = new EmailDetails( userEntity.getMail(),user.getId());
+            emailService.sendMailToResetPw(details);
+
         }
         return user;
     }
