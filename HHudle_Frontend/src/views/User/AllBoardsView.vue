@@ -1,6 +1,5 @@
 <script setup>
 import { useRouter } from "vue-router";
-import BoardCard from "@/components/User/BoardCard.vue";
 
 
 
@@ -26,13 +25,19 @@ const router = useRouter();
         
             <v-card-title>Gemeinschaftsräume</v-card-title>
         </v-card>
-        <v-card class="board-card">
+        <v-card 
+        @click="router.push('/user/board/blackboard')"
+        class="board-card">
             <v-card-title>Schwarzes Brett</v-card-title>
         </v-card>
-        <v-card class="board-card">
+        <v-card 
+        @click="router.push('/user/board/packagefinder')"
+        class="board-card">
             <v-card-title>Paketfinder</v-card-title>
         </v-card>
-        <v-card class="board-card">
+        <v-card 
+        @click="router.push('/user/board/search&find')"
+        class="board-card">
             <v-card-title>Suchen und Finden</v-card-title>
         </v-card>
   
