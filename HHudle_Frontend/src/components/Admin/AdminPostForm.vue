@@ -28,11 +28,11 @@ console.log("AdminPostForm wurde geöffnet mit houseId: ", houseId.value) //Debu
 
 
 //Die Form besitzt zwei Modi: Creation und Edit Mode
-const isEdit = ref(false);
+//const isEdit = ref(false);
 
 onMounted(async () => {
   if (houseId.value) {
-    console.log('Lade boardId für houseId: ${houseId.value}...');
+    console.log('Lade boardId für houseId: ${houseId.value}...');// Debug
     boardId.value = await adminPostStore.getAdminBoardIdByHouseId(houseId.value);
     console.log('Geladene boardId: ${boardId.value} für houseId: ${houseId.value}');
   } else {
@@ -72,7 +72,7 @@ const handleSubmit = async () => {
     boardId: boardId.value
   };
 
-  console.log("Sende AdminPost an Backend:", newAdminPost);
+  console.log("Sende AdminPost an Backend:", newAdminPost);// Debug
 
   try {
     await adminPostStore.createAdminPost(newAdminPost);

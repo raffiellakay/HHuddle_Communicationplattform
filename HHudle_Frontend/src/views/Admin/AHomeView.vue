@@ -78,8 +78,8 @@ const goToHouse = (houseId) => {
               <v-card-item>
               <!-- Anzeige der Adresse des Hauses -->
               <v-card-title>{{ house.address }}</v-card-title>
-              <EditButton/>
-              <DeleteButton/>
+              <EditButton class="edit-button"/>
+              <DeleteButton class="delete-button"/>
             </v-card-item>
             </v-card>
           </v-col>
@@ -118,6 +118,25 @@ const goToHouse = (houseId) => {
     </v-dialog>
   </v-container>
 </template>
+
+<style scoped>
+
+.delete-button {
+  background-color: rgb(241, 102, 102);
+  margin-left: 15px;
+
+}
+
+
+
+.edit-button {
+  background-color: rgb(168, 209, 252);
+  margin-right: 15px;
+}
+
+
+
+</style>
 
 
 
