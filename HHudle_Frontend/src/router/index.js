@@ -108,15 +108,22 @@ const routes = [
         name: 'AboutUs',
         component: AboutUsView,
         meta: { requiresAuth: false },
-      },
-      {
-        path: 'contact',
-        name: 'Contact',
-        component: ContactView,
-        meta: { requiresAuth: false },
       }
     ]
   },
+  {
+    path: '/contact',
+    name: 'Contact',
+    component: ContactView,
+    meta: { requiresAuth: false}
+  },
+  {
+    path: '/aboutUs',
+        name: 'AboutUs',
+        component: AboutUsView,
+        meta: { requiresAuth: false }
+  }
+
 
 
   ]
@@ -190,8 +197,8 @@ router.beforeEach(async (to, from, next) => {
     }
     next();
   }
-  // secures paths from ppl with wrong role
-  // hier fehlt noch was
+
+  
 });
 
 export default router;
