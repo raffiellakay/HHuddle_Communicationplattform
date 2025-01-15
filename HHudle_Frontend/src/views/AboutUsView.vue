@@ -48,7 +48,7 @@ class="d-inline pa-2"
    :src= avatarraffy
    />
    <v-img
-   class="d-inline pa-2 ""
+   class="d-inline pa-2 "
  
 
    :src= avatarraffy
