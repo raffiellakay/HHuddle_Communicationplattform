@@ -1,4 +1,4 @@
-package com.knoettner.hhuddle.security.dtos;
+package com.knoettner.hhuddle.security.modelsDtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,13 +18,15 @@ public class JwtResponse {
     private Long id;
     private String username;
     private String mail;
+    private boolean hasChangedPw;
     private List<String> roles;
     //what backend responses when login method is called
-    public JwtResponse(String token,  Long id, String username, String mail, List<String> roles) {
+    public JwtResponse(String token,  Long id, String username, String mail, boolean hasChangedPw, List<String> roles) {
         this.token = token;
         this.id = id;
         this.username = username;
         this.mail = mail;
+        this.hasChangedPw = hasChangedPw;
         this.roles = roles;
     }
 }
