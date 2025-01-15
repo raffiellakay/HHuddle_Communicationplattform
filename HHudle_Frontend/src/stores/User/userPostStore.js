@@ -74,6 +74,11 @@ export const useUserPostStore = defineStore ('adminPost', {
         this.userPosts = response.data;
       },
 
+      async getHouseIdByUser() {
+        const response = await axios.get(`${API_URL}user/home`); 
+        this.userPosts = response.data;
+      },
+
 
       async getPost(postId) {
      

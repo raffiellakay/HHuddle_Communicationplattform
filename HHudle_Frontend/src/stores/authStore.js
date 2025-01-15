@@ -51,7 +51,9 @@ export const useAuthStore = defineStore('auth', {
             localStorage.removeItem('jwt') // Zum Logout reicht es, wenn das Frontend den JWT "vergisst"
         },
         applyAuthentication({token, id, username, mail, roles}) { 
-            localStorage.setItem('jwt', 'Bearer ' + token) // Hier wird der JWT dauerhaft unter dem Namen "jwt" (erster Parameter) gespeichert.
+            const authToken = 'Bearer ' + token;
+            localStorage.setItem('jwt', authToken) // Hier wird der JWT dauerhaft unter dem Namen "jwt" (erster Parameter) gespeichert.
+            //axios.defaults.headers.common["Authorization"] = authToken;
             this.user = {id, username, mail, roles}
             console.log(this.user)
         }

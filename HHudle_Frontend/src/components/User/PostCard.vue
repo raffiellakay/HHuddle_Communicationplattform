@@ -3,12 +3,16 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { useUserPostStore } from "@/stores/User/userPostStore";
 import { useRoute } from "vue-router";
+import { useAuthStore } from "@/stores/authStore";
 import ConfirmDeleteCheck from "@/components/ConfirmDeleteCheck.vue";
 
 const route = useRoute();
 const userPostStore = useUserPostStore();
 const userPosts = computed (() => userPostStore.userPosts);
+const authStore = useAuthStore();
+
 const show = ref(false);
+const userId = computed(() => authStore.user.id)
 
 /*
 Category {
@@ -34,8 +38,13 @@ const props = defineProps({
   userId: Number, 
 })
 
+console.log("Auth Store User:", authStore.user);
+console.log("User ID:", userId.value);
+console.log("Auth Token:", authStore.token);
+
+
 onMounted(async () => {
-  await userPostStore.getPostsByUserId(userId);
+  await userPostStore.getPostsByUserId(userId.value);
 });
 
 
@@ -56,7 +65,7 @@ onMounted(async () => {
       <v-col v-for="userPost in userPosts" :key="userPost.id" cols="12" md="4" lg="3">
         <v-card class="mx-auto" max-width="344">
           <!-- Photo als Header -->
-          <v-img></v-img>
+          
 
           <!-- Titel -->
           <v-card-title>

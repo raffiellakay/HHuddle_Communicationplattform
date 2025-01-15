@@ -27,7 +27,7 @@ export const useAdminPostStore = defineStore('adminPost', {
           }
 
           //Wir rufen aus dem LocalStore das jwt Token ab, damit wir wissen ob der User überhaupt berechtigt ist, einen AdminPost zu erstellen
-          const token = localStorage.getItem("jwt");
+          //const token = localStorage.getItem("jwt");
 
           //Informationen des AdminUsers werden aus authStore geholt 
           const adminUser = {
@@ -55,10 +55,10 @@ export const useAdminPostStore = defineStore('adminPost', {
 
           
           const response = await axios.post(`${API_URL}admin/adminpost`, requestBody, {
-            headers: {
+            /*headers: {
               Authorization: token, //Token wird gesetzt im Header 
               "Content-Type": "application/json" //Dem Backend muss mitgeteilt werden, dass wir Daten im JSON Format senden 
-            }
+            }*/
           });
       
           if (response.data) {
