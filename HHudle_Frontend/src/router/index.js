@@ -69,20 +69,20 @@ const routes = [
      
     },
  {
-        path:'chatlist',
-        name: 'chatlist',
-        component: ChatListView,
-        meta: { requiresAuth: true },
-        children:  [
-          { path: 'chat',
-            name: 'Chat',
-            component: ChatView,
-            meta: { requiresAuth: true },
-          }
-        ]    
-      }
-    ]
+  path: 'chatlist',
+  name: 'ChatListView',
+  component: ChatListView,
+  meta: { requiresAuth: true },
+ },
+    {
+      path: 'chatlist/chat/:id',
+      name: 'ChatView',
+      component: ChatView,
+      meta: { requiresAuth: true },
+      props: true,
     },
+  ],
+},
 
   {
     path: '/admin',

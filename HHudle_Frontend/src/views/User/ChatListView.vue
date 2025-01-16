@@ -1,14 +1,14 @@
 <template>
   <v-container class="chat-container" fluid>
-    <v-row class="chat-list-view" align="stretch">
+    <v-row class="chat-list-view" align-items="stretch">
       <!-- List of user chats -->
       <v-col>
         <div class="dialogs">
           <div
-            v-for="(chat, index) in userChats"
+            v-for="(chat, index) in chats"
             :key="index"
             class="dialog"
-            @click="openChat(chat)"
+            @click="navigateToChat(chat.id)"
           >
             <div class="dialog-header">
               <span class="chat-name">{{ chat.name }}</span>
@@ -25,26 +25,63 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+//import axios from "axios";
+import { useRouter } from "vue-router";
 
 export default {
-  name: "ChatList",
+  // temporary hardcoded data
+  name: "ChatListView",
   setup() {
-    const userChats = ref([
+    const chats = ref([
       {
         id: 1,
         name: "John Doe",
-        lastMessage: "Hey! How are you?",
-        lastMessageTime: "10:45 AM",
+        lastMessage: "Hey, how are you?",
+        lastMessageTime: "10:30 AM",
       },
       {
         id: 2,
         name: "Jane Smith",
-        lastMessage: "See you tomorrow.",
-        lastMessageTime: "Yesterday",
+        lastMessage: "Let's catch up later.",
+        lastMessageTime: "11:00 AM",
       },
-      
+      {
+        id: 3,
+        name: "Alice Johnson",
+        lastMessage: "See you tomorrow!",
+        lastMessageTime: "12:15 PM",
+      },
     ]);
+    const router = useRouter();
+   /* const chats = ref([]);
+    const router = useRouter();
+    const userId = 1; // Replace with the actual user ID
+
+    // Fetch chats from backend
+    const fetchChats = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/api/chats/user/${userId}`);
+        chats.value = response.data;
+      } catch (error) {
+        console.error("Error fetching chats:", error);
+      }
+    };
+
+    // Load chats on mount
+    onMounted(() => {
+      fetchChats();
+    }); */
+
+    // Navigate to ChatView
+    const navigateToChat = (chatId) => {
+      router.push({ name: "ChatView", params: { id: chatId } });
+    };
+
+    return {
+      chats,
+      navigateToChat,
+    };
   },
 };
 </script>
@@ -64,40 +101,28 @@ export default {
 .chat-list-view {
   flex: 1;
   overflow-y: auto;
-  padding: 16px;
-}
-
-.dialogs {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
 }
 
 .dialog {
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background: #f9f9f9;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
   cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.dialog:hover {
-  background-color: #e3f2fd;
 }
 
 .dialog-header {
   display: flex;
   justify-content: space-between;
+}
+
+.chat-name {
   font-weight: bold;
-  margin-bottom: 4px;
+}
+
+.chat-time {
+  color: #999;
 }
 
 .dialog-preview {
-  color: #555;
-  font-size: 0.9rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: #666;
 }
 </style>
