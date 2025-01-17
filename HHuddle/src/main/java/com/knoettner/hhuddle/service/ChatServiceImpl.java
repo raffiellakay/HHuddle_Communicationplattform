@@ -50,6 +50,8 @@ public class ChatServiceImpl implements ChatService {
                firstUserId>secondUserId?firstUser:secondUser //User nach der Id ordnen;
 
        );
+       if(firstUserId.equals(secondUserId))
+           throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User can´t chat with oneself");
 
         if(!list.isEmpty())
             throw new ResponseStatusException(HttpStatus.FOUND, "the chat has been already created");
