@@ -16,15 +16,13 @@ import AllHousesView from '@/views/Admin/AllHousesView.vue';
 import AboutUsView from '@/views/AboutUsView.vue';
 import ContactView from '@/views/ContactView.vue';
 import AHouseLayout from '@/layouts/Admin/AHouseLayout.vue';
-import HouseViewsView from '@/components/Admin/AdminPiew.vue';
+import HouseView from '@/views/Admin/HouseView.vue';
 import ChatListView from '@/views/User/ChatListView.vue';
 import ChatView from '@/views/User/ChatView.vue';
 
 
 
 import { useAuthStore } from '@/stores/authStore';
-import AHouseView from '@/views/Admin/AHouseView.vue';
-
 
 
 
@@ -68,8 +66,24 @@ const routes = [
             component: SearchAndFindView,
             meta: { requiresAuth: true },
           }]
-      }]
+     
     },
+ {
+  path: 'chatlist',
+  name: 'ChatListView',
+  component: ChatListView,
+  meta: { requiresAuth: true },
+ },
+    {
+      path: 'chatlist/chat/:id',
+      name: 'ChatView',
+      component: ChatView,
+      meta: { requiresAuth: true },
+      props: true,
+    },
+  ],
+},
+
   {
     path: '/admin',
     name: 'admin',
