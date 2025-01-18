@@ -22,6 +22,8 @@ import AdminPostsView from '@/components/Admin/AdminPosts.vue';
 
 import { useAuthStore } from '@/stores/authStore';
 import AHouseView from '@/views/Admin/AHouseView.vue';
+import PasswordResetView from '@/views/PasswordResetView.vue';
+import SetNewPasswordView from '@/views/SetNewPasswordView.vue';
 
 
 
@@ -102,14 +104,7 @@ const routes = [
     name: 'Login',
     component: LoginLayout,
     meta: { requiresAuth: false },
-    children: [
-      {
-        path: 'aboutUs',
-        name: 'AboutUs',
-        component: AboutUsView,
-        meta: { requiresAuth: false },
-      }
-    ]
+   
   },
   {
     path: '/contact',
@@ -122,6 +117,18 @@ const routes = [
         name: 'AboutUs',
         component: AboutUsView,
         meta: { requiresAuth: false }
+  },
+  {
+    path: '/password-reset',
+    name: PasswordResetView,
+    component: PasswordResetView,
+    meta: { requiresAuth: false }
+  },
+  {
+    path: '/set-new-password',
+    name: SetNewPasswordView,
+    component: SetNewPasswordView,
+    meta: {requiresAuth: true}
   }
 
 

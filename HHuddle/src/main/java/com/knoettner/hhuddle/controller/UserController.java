@@ -26,7 +26,7 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/user/passwordcheck")
-    Boolean asUserChangedFirstPW(Long userId) {
-        return userService.hasUserChangedFirstPW(userId);
+    Boolean hasUserChangedTempPW(Long userId) {
+        return userService.hasUserChangedTempPW(userId);
     }
 }

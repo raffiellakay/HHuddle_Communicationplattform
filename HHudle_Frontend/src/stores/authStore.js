@@ -7,8 +7,9 @@ import { API_URL } from '@/api'
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         isInitialized: false, // dient dazu, um festzuhalten, ob initial nach dem Seitenreload die Benutzerdaten bereits geladen wurden
-        user: null
-        //Types müssen hier noch initalisiert werden 
+        user: null,
+        hasChanged: false
+        
 
     }),
  
@@ -54,6 +55,10 @@ export const useAuthStore = defineStore('auth', {
             localStorage.setItem('jwt', 'Bearer ' + token) // Hier wird der JWT dauerhaft unter dem Namen "jwt" (erster Parameter) gespeichert.
             this.user = {id, username, mail, roles}
             console.log(this.user)
+        },
+        hasUserChangedTempPW(id) {
+            console.log(axios.get(API_URL + 'user/passwordcheck', id))
+           
         }
     }
 })

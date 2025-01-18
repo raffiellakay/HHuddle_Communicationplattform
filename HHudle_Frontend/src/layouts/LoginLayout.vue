@@ -10,9 +10,14 @@ const errorMessage = ref('');
 
 const router = useRouter();
 const handleLogin = async () => {
+  const userId = useAuthStore().user.id;
+  const hasChangedPW = useAuthStore().hasUserChangedTempPW(userId);
   const roles = useAuthStore().user.roles
   const rolePmanagement = roles.find(role => role === 'ROLE_PMANAGEMENT');
   const roleResident = roles.find(role => role === 'ROLE_RESIDENT')
+  if(!hasChangedPW) {
+    await router.push('/set-new-password')
+  }
   if(rolePmanagement) {
     await router.push('/admin/home')
     return
