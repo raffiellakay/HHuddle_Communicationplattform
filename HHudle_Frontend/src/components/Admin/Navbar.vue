@@ -79,8 +79,8 @@ console.log(showAdminPostForm.value);
       <v-list-item :to="{ path: '/admin/home'}">
         <v-list-item-title>Häuser</v-list-item-title>
       </v-list-item>    
-      <v-list-item>Über Uns</v-list-item>
-      <v-list-item>Kontakt</v-list-item>
+      <v-list-item :to="{ path: '/aboutUs'}">Über Uns</v-list-item>
+      <v-list-item :to="{ path: '/contact'}">Kontakt</v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
