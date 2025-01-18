@@ -1,12 +1,15 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router'
 import { ref,computed } from 'vue'
-import AdminPostForm from './AdminPostForm.vue';
+import AdminPostForm from '@/components/Admin/AdminPostForm.vue';
 
 
 
-const router = useRouter();
-const route = useRoute();
+const router = useRouter(); //Gibt Router Instanz zurück
+const route = useRoute(); //Gibt aktuelle Route zurück 
+
+//AdminPostForm bekommt houseId entweder als prop oder aus der route 
+const houseId = computed(() => Number(route.params.houseId) || null);
 
 
 //showDrawer Konstante ist per default auf false
@@ -17,15 +20,18 @@ const toggleDrawer = () => {
   showDrawer.value = !showDrawer.value;
 }
 
-//Checkt ob die aktuelle Seite eine Board Seite ist indem es mit items im items array abgeglichen wird
-//Ist true wenn auf einer BoardSeite und false wenn nicht
-/*const isHousePage = computed(() =>{
-  const houseRoutes = items.value.map(item => item.route);
-  return houseRoutes.includes(route.path);
-})*/
+//Checkt ob die aktuelle Seite Haus Seite ist
+//Ist true wenn auf einer HausSeite und false wenn nicht
+const isHousePage = computed(() =>{
+  return route.path.includes('/admin/house');
+})
 
 
-const showForm = ref(false); 
+const showAdminPostForm = ref(false); 
+
+//Debugging
+console.log(route.path);
+console.log(showAdminPostForm.value);
 
 
 </script>
@@ -42,15 +48,18 @@ const showForm = ref(false);
   
 
   <template v-if="isHousePage">
-      <v-btn icon @click="showForm = true">
+      <v-btn icon @click="showAdminPostForm = true">
         <v-icon class="plus-icon"> mdi-plus-circle</v-icon>
       </v-btn>
 <!-- Öffnen der PostForm Komponent in einem Dialog -->
    
-      <v-dialog v-model="showForm" max-width="500">
-        <template v-slot:default="{close}">
-          <AdminPostForm @close="close"></AdminPostForm>
-        </template>
+      <v-dialog v-model="showAdminPostForm" max-width="500">
+        
+          <AdminPostForm 
+          :houseId="houseId" 
+          @adminPost-added="refreshPosts" 
+          @close="showAdminPostForm=false"></AdminPostForm>
+      
 
       </v-dialog>
 
@@ -67,7 +76,7 @@ const showForm = ref(false);
 
     <!-- Inhalte des Navigation Drawers -->
     <v-list>
-      <v-list-item :to="{ path: '/admin/houses'}">
+      <v-list-item :to="{ path: '/admin/home'}">
         <v-list-item-title>Häuser</v-list-item-title>
       </v-list-item>    
       <v-list-item>Über Uns</v-list-item>

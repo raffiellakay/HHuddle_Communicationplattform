@@ -1,14 +1,14 @@
 package com.knoettner.hhuddle.controller;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
+import com.knoettner.hhuddle.models.MyUser;
 import com.knoettner.hhuddle.repository.RoleRepository;
 import com.knoettner.hhuddle.repository.UserRepository;
-import com.knoettner.hhuddle.security.dtos.JwtResponse;
-import com.knoettner.hhuddle.security.dtos.LoginDto;
+import com.knoettner.hhuddle.security.modelsDtos.JwtResponse;
+import com.knoettner.hhuddle.security.modelsDtos.LoginDto;
 import com.knoettner.hhuddle.security.jwt.JwtUtils;
 import com.knoettner.hhuddle.security.services.UserDetailsImpl;
 import jakarta.validation.Valid;
@@ -55,6 +55,7 @@ public class AuthController {
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getMail(),
+                userDetails.isHasChangedPw(),
                 roles));
     }
 
@@ -78,6 +79,7 @@ public class AuthController {
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getMail(),
+                userDetails.isHasChangedPw(),
                 roles));
     }
 }
