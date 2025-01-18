@@ -23,4 +23,10 @@ public class UserController {
    Long getHouseIdByUser(@PathVariable("id") Long userId) {
       return userService.getHouseIdByUser(userId);
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/user/passwordcheck")
+    Boolean asUserChangedFirstPW(Long userId) {
+        return userService.hasUserChangedFirstPW(userId);
+    }
 }

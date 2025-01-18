@@ -23,4 +23,14 @@ public class UserServiceImpl implements UserService {
         }
         return 0L;
     }
+
+    @Override
+    public Boolean hasUserChangedFirstPW(Long userId) {
+        Optional<MyUser> maybeUser = userRepository.findById(userId);
+        if (maybeUser.isPresent()) {
+            boolean hasChangedPWalready = maybeUser.get().isHasChangedPW();
+            return hasChangedPWalready;
+        }
+        return null;
+    }
 }

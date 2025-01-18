@@ -55,7 +55,6 @@ public class AuthController {
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getMail(),
-                userDetails.isHasChangedPw(),
                 roles));
     }
 
@@ -79,7 +78,6 @@ public class AuthController {
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getMail(),
-                userDetails.isHasChangedPw(),
                 roles));
     }
 }
