@@ -24,13 +24,56 @@
   </v-container>
 </template>
 
-<script>
-import { ref, onMounted } from "vue";
+<script setup>
+import { ref, onMounted, computed } from "vue";
 //import axios from "axios";
 import { useRouter } from "vue-router";
+import {useChatStore}from "@/stores/User/chatStore";
 
-export default {
-  // temporary hardcoded data
+
+const ChatStore = userChatStore();
+
+const dialog = ref(false);
+
+const router = useRouter();
+
+const newChat = ref({
+  userId: 
+});
+
+onMounted(async() => {
+  await ChatStore.fetchChats();
+});
+
+async function saveChat() {
+  try {
+    const chatData = {
+      userId: newChat.value.userId,
+    }
+  }
+  await ChatStore.createChat(chatData);
+  dialog.value = false;
+}
+
+newChat.value = { userId: };
+catch (error) {
+  console.error("Fehler beim Speichern des Chats:", error);
+}
+
+
+//Sortiert die Chats aufsteigend nach ID
+const sortedChats = computed(() => {
+  return ChatStore.chats.value.sort((a, b) => a.id - b.id);
+});
+
+//Navigiert zur ChatView
+function.navigateToChat = (ChatId) => {
+  router.push(´/chat/${ChatId}´);
+}
+
+
+/*export default {
+  // temporary hardcoded data 
   name: "ChatListView",
   setup() {
     const chats = ref([
@@ -74,16 +117,7 @@ export default {
     }); */
 
     // Navigate to ChatView
-    const navigateToChat = (chatId) => {
-      router.push({ name: "ChatView", params: { id: chatId } });
-    };
-
-    return {
-      chats,
-      navigateToChat,
-    };
-  },
-};
+    
 </script>
 
 <style>
