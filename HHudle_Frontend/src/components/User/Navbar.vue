@@ -116,8 +116,8 @@ const showForm = ref(false);
         </template>
       </v-list-group>
       <v-list-item>Chat</v-list-item>
-      <v-list-item>Über Uns</v-list-item>
-      <v-list-item>Kontakt</v-list-item>
+      <v-list-item :to="{ path: '/aboutUs'}">Über Uns</v-list-item>
+      <v-list-item :to="{ path: '/contact'}">Kontakt</v-list-item>
 
 
     </v-list>

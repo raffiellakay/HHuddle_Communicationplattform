@@ -7,6 +7,7 @@ export const useChatStore = defineStore("chatStore", {
     chats: [], // Initialize an empty array
   }),
   actions: {
+<<<<<<< HEAD
 
     // Create a new chat
     async createChat(chat) {
@@ -17,6 +18,8 @@ export const useChatStore = defineStore("chatStore", {
         console.error("Error creating chat:", error);
       }
     },
+=======
+>>>>>>> parent of 4393328 (Merge branch 'Ksenia2' of https://github.com/raffiellakay/HHuddle into Ksenia2)
     // Fetch chats from backend
     async fetchChats() {
       try {
@@ -26,6 +29,7 @@ export const useChatStore = defineStore("chatStore", {
         console.error("Error fetching chats from backend:", error);
       }
     },
+<<<<<<< HEAD
     // Fetch a chat by id
     async fetchChatById(chatId) {
       try {
@@ -46,5 +50,7 @@ export const useChatStore = defineStore("chatStore", {
         console.error("Error deleting chat:", error);
       }
     },
+=======
+>>>>>>> parent of 4393328 (Merge branch 'Ksenia2' of https://github.com/raffiellakay/HHuddle into Ksenia2)
   },
 });

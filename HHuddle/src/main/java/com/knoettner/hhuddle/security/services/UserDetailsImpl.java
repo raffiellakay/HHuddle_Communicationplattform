@@ -3,6 +3,7 @@ package com.knoettner.hhuddle.security.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.knoettner.hhuddle.models.MyUser;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,6 +27,11 @@ public class UserDetailsImpl implements UserDetails {
         @JsonIgnore
         private String password;
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> parent of 4393328 (Merge branch 'Ksenia2' of https://github.com/raffiellakay/HHuddle into Ksenia2)
         private Collection<? extends GrantedAuthority> authorities;
 
         public UserDetailsImpl(Long id, String username, String mail, String password,
@@ -59,7 +65,12 @@ public class UserDetailsImpl implements UserDetails {
             return id;
         }
 
+<<<<<<< HEAD
         public String getMail() {
+=======
+
+    public String getMail() {
+>>>>>>> parent of 4393328 (Merge branch 'Ksenia2' of https://github.com/raffiellakay/HHuddle into Ksenia2)
             return mail;
         }
 

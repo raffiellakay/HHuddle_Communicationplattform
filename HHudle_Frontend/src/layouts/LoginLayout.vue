@@ -8,8 +8,18 @@ import { isAxiosError } from 'axios';
 const errorMessage = ref('');
 
 const router = useRouter();
-const handleLogin = () => {
-  router.push('/user/home');
+const handleLogin = async () => {
+  const roles = useAuthStore().user.roles
+  const rolePmanagement = roles.find(role => role === 'ROLE_PMANAGEMENT');
+  const roleResident = roles.find(role => role === 'ROLE_RESIDENT')
+  if(rolePmanagement) {
+    await router.push('/admin/home')
+    return
+  }
+  if(roleResident) {
+    await router.push('/user/home')
+    return
+  }
 }
 
 
@@ -27,8 +37,8 @@ const credentials = ref({
 async function login() { 
   try {
     await authStore.login(credentials.value)
-
-    await router.push('/admin/home')
+    await handleLogin();
+    
 
   } catch (err) {
     if (isAxiosError(err) && err.response?.status === 401) {

@@ -5,7 +5,7 @@
       <v-col>
         <div class="dialogs">
           <div
-            v-for="(chat, index) in sortedChats"
+            v-for="(chat, index) in chats"
             :key="index"
             class="dialog"
             @click="navigateToChat(chat.id)"
@@ -24,50 +24,13 @@
   </v-container>
 </template>
 
-<script setup>
-import { ref, onMounted, computed } from "vue";
+<script>
+import { ref, onMounted } from "vue";
+//import axios from "axios";
 import { useRouter } from "vue-router";
-import { useChatStore } from "@/stores/User/chatStore"; // Corrected import
 
-const ChatStore = useChatStore();
-const dialog = ref(false);
-const router = useRouter();
-
-const newChat = ref({
-  userId: null,
-});
-
-onMounted(async () => {
-  await ChatStore.fetchChats();
-});
-
-async function saveChat() {
-  try {
-    const chatData = {
-      userId: newChat.value.userId,
-    };
-    await ChatStore.createChat(chatData);
-    dialog.value = false;
-    alert("Chat successfully saved!");
-  } catch (error) {
-    console.error("Fehler beim Speichern des Chats:", error);
-    alert("Failed to save chat. Please try again.");
-  }
-}
-
-// Sort chats by ID
-const sortedChats = computed(() => {
-  return ChatStore.chats.sort((a, b) => a.id - b.id);
-});
-
-// Navigate to ChatView
-function navigateToChat(chatId) {
-  router.push(`/chat/${chatId}`);
-}
-
-
-/*
-   temporary hardcoded data 
+export default {
+  // temporary hardcoded data
   name: "ChatListView",
   setup() {
     const chats = ref([
@@ -109,12 +72,23 @@ function navigateToChat(chatId) {
     onMounted(() => {
       fetchChats();
     }); */
+
+    // Navigate to ChatView
+    const navigateToChat = (chatId) => {
+      router.push({ name: "ChatView", params: { id: chatId } });
+    };
+
+    return {
+      chats,
+      navigateToChat,
+    };
+  },
+};
 </script>
 
 <style>
 .chat-container {
-  max-width: 100%;
-  width: 600px;
+  max-width: 600px;
   margin: auto;
   height: 80vh;
   display: flex;
@@ -122,7 +96,6 @@ function navigateToChat(chatId) {
   border: 1px solid #ccc;
   border-radius: 8px;
   overflow: hidden;
-  background-color: #f9f9f9;
 }
 
 .chat-list-view {
@@ -134,10 +107,6 @@ function navigateToChat(chatId) {
   padding: 10px;
   border-bottom: 1px solid #eee;
   cursor: pointer;
-}
-
-.dialog:hover {
-  background-color: #f0f0f0;
 }
 
 .dialog-header {
@@ -157,10 +126,3 @@ function navigateToChat(chatId) {
   color: #666;
 }
 </style>
-
-
-
-
-
-
-    
