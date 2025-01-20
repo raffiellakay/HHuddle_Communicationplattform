@@ -3,13 +3,24 @@ import { ref } from 'vue';
 import { useAuthStore } from '@/stores/authStore';
 import { useRouter } from 'vue-router';
 import { isAxiosError } from 'axios';
+import NavbarDefault from '@/components/DefaultNavbar.vue';
 
 
 const errorMessage = ref('');
 
 const router = useRouter();
-const handleLogin = () => {
-  router.push('/user/home');
+const handleLogin = async () => {
+  const roles = useAuthStore().user.roles
+  const rolePmanagement = roles.find(role => role === 'ROLE_PMANAGEMENT');
+  const roleResident = roles.find(role => role === 'ROLE_RESIDENT')
+  if(rolePmanagement) {
+    await router.push('/admin/home')
+    return
+  }
+  if(roleResident) {
+    await router.push('/user/home')
+    return
+  }
 }
 
 
@@ -27,8 +38,8 @@ const credentials = ref({
 async function login() { 
   try {
     await authStore.login(credentials.value)
-
-    await router.push('/admin/home')
+    await handleLogin();
+    
 
   } catch (err) {
     if (isAxiosError(err) && err.response?.status === 401) {
@@ -49,6 +60,7 @@ async function login() {
 <template>
   <!-- Vuetify App -->
   <v-app>
+    <NavbarDefault/>
     <!-- Hauptbereich -->
     <v-main class="d-flex align-center justify-center" style="height: 100vh; background-color: #f5f5f5;">
       <v-container>

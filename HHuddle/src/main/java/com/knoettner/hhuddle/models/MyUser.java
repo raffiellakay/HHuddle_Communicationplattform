@@ -1,10 +1,8 @@
 package com.knoettner.hhuddle.models;
 
-import com.knoettner.hhuddle.security.models.PasswordResetToken;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 @Entity
@@ -50,6 +48,7 @@ public class MyUser {
     @JoinColumn( name = "house_id_FK")
     private House house;
 
-    @OneToOne
-    private PasswordResetToken token;
+    private boolean hasChangedPW;
+
+
 }

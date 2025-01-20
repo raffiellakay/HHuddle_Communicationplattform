@@ -81,7 +81,7 @@ public class PostMapper {
         Post post = new Post();
         post.setId(postdto.getId());
         post.setCategory(Category.valueOf(postdto.getCategory().toUpperCase()));
-        post.setTimestamp(postdto.getTimestamp());
+        post.setTimestamp(LocalDateTime.now());
         post.setTitle(postdto.getTitle());
         post.setText(postdto.getText());
         post.setAnonymous(postdto.isAnonymous());
