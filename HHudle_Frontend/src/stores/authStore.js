@@ -53,6 +53,7 @@ export const useAuthStore = defineStore('auth', {
         applyAuthentication({token, id, username, mail, roles}) { 
             localStorage.setItem('jwt', 'Bearer ' + token) // Hier wird der JWT dauerhaft unter dem Namen "jwt" (erster Parameter) gespeichert.
             this.user = {id, username, mail, roles}
+            //get info from token, set timer for that timeframe, set user null=log out when time runs out
             console.log(this.user)
         }
     }
