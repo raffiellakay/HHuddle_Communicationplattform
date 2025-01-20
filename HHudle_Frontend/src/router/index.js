@@ -16,10 +16,20 @@ import AllHousesView from '@/views/Admin/AllHousesView.vue';
 import AboutUsView from '@/views/AboutUsView.vue';
 import ContactView from '@/views/ContactView.vue';
 import AHouseLayout from '@/layouts/Admin/AHouseLayout.vue';
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 6eb53bd73f6978779870e3ea383f19f273b70b0d
 import HouseView from '@/views/Admin/HouseView.vue';
 import ChatListView from '@/views/User/ChatListView.vue';
 import ChatView from '@/views/User/ChatView.vue';
 
+<<<<<<< HEAD
+=======
+import AdminPostsView from '@/components/Admin/AdminPosts.vue';
+>>>>>>> origin/staging
+=======
+>>>>>>> 6eb53bd73f6978779870e3ea383f19f273b70b0d
 
 
 import { useAuthStore } from '@/stores/authStore';

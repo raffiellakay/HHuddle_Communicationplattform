@@ -26,6 +26,11 @@ public class UserDetailsImpl implements UserDetails {
         @JsonIgnore
         private String password;
 
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> 6eb53bd73f6978779870e3ea383f19f273b70b0d
         private Collection<? extends GrantedAuthority> authorities;
 
         public UserDetailsImpl(Long id, String username, String mail, String password,
@@ -59,7 +64,12 @@ public class UserDetailsImpl implements UserDetails {
             return id;
         }
 
+<<<<<<< HEAD
+
+    public String getMail() {
+=======
         public String getMail() {
+>>>>>>> 6eb53bd73f6978779870e3ea383f19f273b70b0d
             return mail;
         }
 
