@@ -8,15 +8,12 @@ import com.knoettner.hhuddle.dto.mapper.MyUserMapper;
 import com.knoettner.hhuddle.dto.mapper.PostMapper;
 import com.knoettner.hhuddle.models.*;
 import com.knoettner.hhuddle.repository.*;
-import com.knoettner.hhuddle.security.modelsDtos.EmailDetails;
-import com.knoettner.hhuddle.security.services.EmailService;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -60,10 +57,6 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     PasswordEncoder encoder;
 
-    @Autowired
-    EmailService emailService;
-
-    //////////////////////// HOUSE ////////////////////
 
     @Override
     public HouseDto createHouse(HouseDto house) {
@@ -178,7 +171,6 @@ public class AdminServiceImpl implements AdminService {
         return null;
     }
 
-//////////////////////// ADMIN POST //////////////////////////////
 
     @Override
     public PostDto createAdminPost(PostDto post) {
@@ -187,7 +179,6 @@ public class AdminServiceImpl implements AdminService {
         newAdminPost.setCategory(FRONTPAGE);
         newAdminPost.setTitle(post.getTitle());
         newAdminPost.setTimestamp(LocalDateTime.now());
-        post.setTimestamp(LocalDateTime.now());
         postRepository.save(newAdminPost);
         //set id in dto so its same as real post
         post.setId(newAdminPost.getId());
@@ -230,9 +221,6 @@ public class AdminServiceImpl implements AdminService {
         }
         return allAdminPosts;
     }
-
-    ////////////////////////// FACILITY //////////////////////////
-
 
     @Override
     public FacilityDto createFacility(FacilityDto facility) {
@@ -284,23 +272,13 @@ public class AdminServiceImpl implements AdminService {
         return allFacilites;
     }
 
-    /////////////////// USER ///////////////////////////////
-
-
+    //produces random encoded PW
     @Override
     public MyUserDto createUser(MyUserDto userDto) {
         MyUser user = userMapper.toEntity(userDto);
-        Optional<MyUser> maybeUser = userRepository.findByMail(user.getMail());
-        if (maybeUser.isPresent()) {
-            System.out.println("Diese E-Mailadresse wird bereits benutzt");
-            return userDto;
-        }
-        //PW is set & send in sendMailToResetPW method
-        user.setPassword("");
         //Random PW hashed/encoded
         //user.setPassword(encoder.encode(UUID.randomUUID().toString()));
-       // user.setPassword(encoder.encode("test"));
-
+        user.setPassword(encoder.encode("test"));
       //  Role = Resident;
         Set<Role> roleSet = new HashSet<>();
         Optional<Role> maybeResident = roleRepository.findById(1L);
@@ -317,13 +295,8 @@ public class AdminServiceImpl implements AdminService {
                 user.setHouse(maybeHouse.get());
             }
         }
-        user.setHasChangedPW(false);
         userRepository.save(user);
         userDto.setId(user.getId());
-        //sends mail with temporary PW to user Mailadress
-        EmailDetails details = new EmailDetails( user.getMail(),user.getId());
-        emailService.sendMailToResetPw(details);
-
         return userDto;
     }
 
@@ -335,11 +308,8 @@ public class AdminServiceImpl implements AdminService {
             MyUser userEntity = maybeUser.get();
             userEntity.setId(user.getId());
             userEntity.setMail(user.getMail());
+            userEntity.setPassword(encoder.encode(UUID.randomUUID().toString()));
             userRepository.save(userEntity);
-            //new temp PW is sent to new user mail
-            EmailDetails details = new EmailDetails( userEntity.getMail(),user.getId());
-            emailService.sendMailToResetPw(details);
-
         }
         return user;
     }

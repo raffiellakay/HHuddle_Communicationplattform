@@ -1,4 +1,4 @@
-package com.knoettner.hhuddle.security.modelsDtos;
+package com.knoettner.hhuddle.security.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

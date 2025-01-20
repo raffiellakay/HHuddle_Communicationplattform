@@ -1,6 +1,6 @@
 // src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
-import { ref } from "vue";
+
 
 import AHomeLayout from '@/layouts/Admin/AHomeLayout.vue';
 import UHomeLayout from '@/layouts/User/UHomeLayout.vue';
@@ -12,30 +12,17 @@ import PackageFinderView from '@/views/User/PackageFinderView.vue';
 import SearchAndFindView from '@/views/User/SearchAndFindView.vue';
 import AHomeView from '@/views/Admin/AHomeView.vue';
 import LoginLayout from '@/layouts/LoginLayout.vue';
-import AllBoardsView from '@/views/User/AllBoardsView.vue';
-
+import AllHousesView from '@/views/Admin/AllHousesView.vue';
 import AboutUsView from '@/views/AboutUsView.vue';
 import ContactView from '@/views/ContactView.vue';
 import AHouseLayout from '@/layouts/Admin/AHouseLayout.vue';
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> parent of 4393328 (Merge branch 'Ksenia2' of https://github.com/raffiellakay/HHuddle into Ksenia2)
 import HouseView from '@/views/Admin/HouseView.vue';
 import ChatListView from '@/views/User/ChatListView.vue';
 import ChatView from '@/views/User/ChatView.vue';
 
-<<<<<<< HEAD
-=======
-=======
-import AdminPostsView from '@/components/Admin/AdminPosts.vue';
->>>>>>> origin/staging
->>>>>>> parent of 4393328 (Merge branch 'Ksenia2' of https://github.com/raffiellakay/HHuddle into Ksenia2)
 
 
 import { useAuthStore } from '@/stores/authStore';
-import AHouseView from '@/views/Admin/AHouseView.vue';
-
 
 
 
@@ -45,45 +32,39 @@ const routes = [
     path: '/user',
     name: 'Home',
     component: UHomeLayout,
-    meta: { requiresAuth: true   },
+    meta: { requiresAuth: true },
     children: [
       {
         path: 'home',
         name: 'UserHome',  //Achtung! Name muss unique sein
         component: UHomeView,
-        meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT']  },
-      },
-      {
-        path:'allboards',
-        name: 'AllBoards',
-        component: AllBoardsView, 
-        meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT']  }
+        meta: { requiresAuth: true },
       },
       {
         path: 'board',
         name: 'Board',
         component: BoardLayout,
-        meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT']   },
+        meta: { requiresAuth: true  },
         children: [
           {
             path: 'commonrooms',
             component: CommonRoomsView,
-            meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT']  }, 
+            meta: { requiresAuth: true }, 
           },
           {
             path: 'blackboard',
             component: BlackBoardView,
-            meta: { requiresAuth: true , requiredRoles: ['ROLE_RESIDENT']  },
+            meta: { requiresAuth: true  },
           },
           {
             path: 'packagefinder',
             component: PackageFinderView,
-            meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT']  },
+            meta: { requiresAuth: true },
           },
           {
             path:'search&find',
             component: SearchAndFindView,
-            meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
+            meta: { requiresAuth: true },
           }]
      
     },
@@ -107,21 +88,25 @@ const routes = [
     path: '/admin',
     name: 'admin',
     component: AHomeLayout,
-    meta: { requiresAuth: true, requiredRoles: ['ROLE_PMANAGEMENT'] },
+    meta: { requiresAuth: true },
     children: [
       {
         path: 'home',
         name: 'AdminHome',
         component: AHomeView,
-        meta: { requiresAuth: true , requiredRoles: ['ROLE_PMANAGEMENT'] },
+        meta: { requiresAuth: true  },
       }, 
-     
       {
-        path: 'house/:houseId',
+        path: 'houses',
+        name: 'AllHouses',
+        component: AllHousesView,
+        meta: { requiresAuth: true },
+      }, 
+      {
+        path: 'house',
         name: 'House',
-        component: AHouseView,
-        props: true,
-        meta: { requiresAuth: true , requiredRoles: ['ROLE_PMANAGEMENT'] },
+        component: HouseView,
+        meta: { requiresAuth: true  },
       }
     ]
   },
@@ -137,22 +122,15 @@ const routes = [
         name: 'AboutUs',
         component: AboutUsView,
         meta: { requiresAuth: false },
+      },
+      {
+        path: 'contact',
+        name: 'Contact',
+        component: ContactView,
+        meta: { requiresAuth: false },
       }
     ]
   },
-  {
-    path: '/contact',
-    name: 'Contact',
-    component: ContactView,
-    meta: { requiresAuth: false}
-  },
-  {
-    path: '/aboutUs',
-        name: 'AboutUs',
-        component: AboutUsView,
-        meta: { requiresAuth: false }
-  }
-
 
 
   ]
@@ -170,64 +148,36 @@ const router = createRouter({
 });
 
 
-
-router.beforeEach(async (to, from, next) => {
-  await useAuthStore().initialize();
-  //secures Websites from not logged in ppl
-  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-  const requiresPMRole = to.matched.some((record) =>
-    record.meta.requiredRoles?.includes("ROLE_PMANAGEMENT")
-  );
-  const requiresResidentRole = to.matched.some((record) =>
-    record.meta.requiredRoles?.includes("ROLE_RESIDENT")
-  );
-  let userRoles = [];
-  if (useAuthStore().user) {
-    userRoles = useAuthStore().user.roles;
+router.beforeEach(async (to, from) => {
+  useAuthStore().initialize()})
+  /*
+  if (
+    // make sure the user is authenticated
+    !isAuthenticated &&
+    to.name !== 'Login'
+  ) {
+    // redirect the user to the login page
+    return { name: 'Login' }
   }
-  const loggedIn = useAuthStore().user;
-  if (requiresAuth && !loggedIn) {
-    next("/");
-  } else {
-    if (!requiresPMRole && !requiresResidentRole) {
-      next();
-      return;
-    }
-
-    if (
-      requiresPMRole &&
-      userRoles.find((role) => role === "ROLE_PMANAGEMENT")
-    ) {
-      next();
-      return;
-    }
-    if (
-      requiresResidentRole &&
-      userRoles.find((role) => role === "ROLE_RESIDENT")
-    ) {
-      next();
-      return;
-    }
-
-    const rolePmanagement = userRoles.find(
-      (role) => role === "ROLE_PMANAGEMENT"
-    );
-    const roleResident = userRoles.find((role) => role === "ROLE_RESIDENT");
-    console.log(rolePmanagement);
-    console.log(roleResident);
-
-    if (rolePmanagement) {
-      next("/admin/home");
-      return;
-    }
-    if (roleResident) {
-      next("/user/home");
-      return;
-    }
-    next();
-  }
-
+})
+/*
+// Global route guard will check the authentication and authorization
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('token');
   
+  if (to.matched.some((route) => route.meta.requiresAuth)) {
+    if (token) {
+      const decodedToken = jwt.decode(token);
+      if (to.meta.allowedRoles && to.meta.allowedRoles.includes(decodedToken.role)) {
+        next(); // User has the required role
+      
+    }}
+     else {
+      next('/'); // User is not authenticated; redirect to login
+    }
+  } else {
+    next(); // Allow access to non-protected routes
+  }
 });
-
+*/
 export default router;

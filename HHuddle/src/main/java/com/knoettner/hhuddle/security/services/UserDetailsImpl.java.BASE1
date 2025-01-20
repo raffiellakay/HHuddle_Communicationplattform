@@ -3,6 +3,7 @@ package com.knoettner.hhuddle.security.services;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.knoettner.hhuddle.models.MyUser;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,14 +27,17 @@ public class UserDetailsImpl implements UserDetails {
         @JsonIgnore
         private String password;
 
+        private boolean hasChangedPw;
+
         private Collection<? extends GrantedAuthority> authorities;
 
-        public UserDetailsImpl(Long id, String username, String mail, String password,
+        public UserDetailsImpl(Long id, String username, String mail, String password, boolean hasChangedPw,
                                Collection<? extends GrantedAuthority> authorities) {
             this.id = id;
             this.username = username;
             this.mail = mail;
             this.password = password;
+            this.hasChangedPw = hasChangedPw;
             this.authorities = authorities;
         }
 
@@ -47,6 +51,7 @@ public class UserDetailsImpl implements UserDetails {
                     user.getUsername(),
                     user.getMail(),
                     user.getPassword(),
+                    user.isHasChangedPW(),
                     authorities);
         }
 
@@ -59,7 +64,11 @@ public class UserDetailsImpl implements UserDetails {
             return id;
         }
 
-        public String getMail() {
+    public boolean isHasChangedPw() {
+        return hasChangedPw;
+    }
+
+    public String getMail() {
             return mail;
         }
 

@@ -71,7 +71,7 @@ public class WebSecurityConfig {
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/v3/**").permitAll()
                                 .anyRequest().authenticated()
-                ).cors(c -> c.configurationSource(customCorsConfiguration));
+                ).cors(c -> c.configurationSource(customCorsConfiguration));;
 
         http.authenticationProvider(authenticationProvider());
 //authenticationJwtTokenFilter is used first

@@ -1,13 +1,8 @@
 <script setup>
 
-
-
 </script>
 
-
 <template>
-
-Das ist die Über Uns Seite
-
-
+Hier tauchen alle Häuser auf 
+    
 </template>
