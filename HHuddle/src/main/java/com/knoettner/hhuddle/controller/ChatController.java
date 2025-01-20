@@ -57,7 +57,7 @@ public class ChatController {
     @DeleteMapping("/{chatId}")
     // Use hasRole for role-based access control
    // @PreAuthorize("hasRole('RESIDENT')")
-    public ResponseEntity<Void> deleteChat(@PathVariable Long chatId, Long userId) {
+    public ResponseEntity<Void> deleteChat(@PathVariable Long chatId,@RequestParam Long userId) {
         chatService.deleteChatForUser(chatId, userId);
         return ResponseEntity.noContent().build();
     }
