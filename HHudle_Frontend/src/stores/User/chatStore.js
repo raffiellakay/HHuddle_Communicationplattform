@@ -11,7 +11,7 @@ export const useChatStore = defineStore("chatStore", {
     // Create a new chat
     async createChat(chat) {
       try {
-        const response = await axios.post("/api/chats", chat); // Backend endpoint
+        const response = await axios.post(`${API_URL}/api/chats`, chat); // Backend endpoint
         this.chats.push(response.data); // Add the response data to the chats state
       } catch (error) {
         console.error("Error creating chat:", error);
@@ -29,24 +29,21 @@ export const useChatStore = defineStore("chatStore", {
     // Fetch a chat by id
     async fetchChatById(chatId) {
       try {
-        const chat = this.chats.find((p) => p.chatId === chatId); // Find the chat in the chats state
-        if (chat !== undefined) {
-          return chat;
-        }
-        const response = await axios.get(`/api/chats/${chatId}`); // Backend endpoint
+        const response = await axios.get(`/api/chats/${chatId}`);
         return response.data;
       } catch (error) {
-        console.error("Error fetching chat by id:", error);
+        console.error("Error fetching chat by ID:", error);
       }
     },
     // Delete a chat by id
-    async deleteChatById(chatId) {
+    async deleteChat(chatId, userId) {
       try {
-        await axios.delete(`/api/chats/${chatId}`); // Backend endpoint
-        const index = this.chats.findIndex((p) => p.chatId === chatId); // Find the chat in the chats state
-        this.chats.splice(index, 1); // Remove the chat from the chats state
+        await axios.delete(`/api/chats/${chatId}`, {
+          params: { userId },
+        });
+        this.chats = this.chats.filter((chat) => chat.id !== chatId);
       } catch (error) {
-        console.error("Error deleting chat by id:", error);
+        console.error("Error deleting chat:", error);
       }
     },
   },
