@@ -18,6 +18,7 @@ const isResident = userRoles.find((role) => role === "ROLE_RESIDENT" )
 
 <template>
 <<<<<<< HEAD
+=======
 
   <NavbarResident v-if="isResident"></NavbarResident>
   <NavbarPManagement v-if="isPManagement"></NavbarPManagement>
@@ -29,8 +30,7 @@ const isResident = userRoles.find((role) => role === "ROLE_RESIDENT" )
 
  
 
-=======
->>>>>>> 6eb53bd73f6978779870e3ea383f19f273b70b0d
+>>>>>>> staging
 
 
 Das ist die Kontaktseite

@@ -1,5 +1,6 @@
 <script setup>
 
+<<<<<<< HEAD
 import NavbarResident from '@/components/User/Navbar.vue';
 import NavbarPManagement from '@/components/Admin/Navbar.vue';
 import NavbarDefault from '@/components/DefaultNavbar.vue';
@@ -12,12 +13,16 @@ let userRoles = [];
   }
 const isPManagement = userRoles.find((role) => role === "ROLE_PMANAGEMENT");
 const isResident = userRoles.find((role) => role === "ROLE_RESIDENT" )
+=======
+
+>>>>>>> 6eb53bd73f6978779870e3ea383f19f273b70b0d
 
 </script>
 
 
 <template>
 
+<<<<<<< HEAD
 
   <NavbarResident v-if="isResident"></NavbarResident>
   <NavbarPManagement v-if="isPManagement"></NavbarPManagement>
@@ -131,3 +136,9 @@ p {
 }
 
 </style>
+=======
+Das ist die Über Uns Seite
+
+
+</template>
+>>>>>>> 6eb53bd73f6978779870e3ea383f19f273b70b0d

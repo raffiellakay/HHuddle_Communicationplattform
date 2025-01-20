@@ -9,18 +9,8 @@ import NavbarDefault from '@/components/DefaultNavbar.vue';
 const errorMessage = ref('');
 
 const router = useRouter();
-const handleLogin = async () => {
-  const roles = useAuthStore().user.roles
-  const rolePmanagement = roles.find(role => role === 'ROLE_PMANAGEMENT');
-  const roleResident = roles.find(role => role === 'ROLE_RESIDENT')
-  if(rolePmanagement) {
-    await router.push('/admin/home')
-    return
-  }
-  if(roleResident) {
-    await router.push('/user/home')
-    return
-  }
+const handleLogin = () => {
+  router.push('/user/home');
 }
 
 
@@ -38,8 +28,8 @@ const credentials = ref({
 async function login() { 
   try {
     await authStore.login(credentials.value)
-    await handleLogin();
-    
+
+    await router.push('/admin/home')
 
   } catch (err) {
     if (isAxiosError(err) && err.response?.status === 401) {

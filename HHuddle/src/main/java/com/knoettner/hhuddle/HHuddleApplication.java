@@ -73,7 +73,7 @@ public class HHuddleApplication implements CommandLineRunner  {
             Role residentRole = roleRepository.findById(1L).get();
             Set<Role> roleSet = new HashSet<>();
             roleSet.add(residentRole);
-           MyUserDto dto = new MyUserDto(null,  "residenttest@gmx.at", "Top_12",  1L);
+           MyUserDto dto = new MyUserDto(null,  "residenttest@gmx.at", "Top_12",  2L);
             try {
                 adminService.createUser(dto);
             }
