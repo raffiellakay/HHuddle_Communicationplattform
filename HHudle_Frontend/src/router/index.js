@@ -13,20 +13,10 @@ import SearchAndFindView from '@/views/User/SearchAndFindView.vue';
 import AHomeView from '@/views/Admin/AHomeView.vue';
 import LoginLayout from '@/layouts/LoginLayout.vue';
 import AllBoardsView from '@/views/User/AllBoardsView.vue';
-
 import AboutUsView from '@/views/AboutUsView.vue';
 import ContactView from '@/views/ContactView.vue';
-import AHouseLayout from '@/layouts/Admin/AHouseLayout.vue';
-<<<<<<< HEAD
-import HouseView from '@/views/Admin/HouseView.vue';
 import ChatListView from '@/views/User/ChatListView.vue';
 import ChatView from '@/views/User/ChatView.vue';
-
-=======
-import AdminPostsView from '@/components/Admin/AdminPosts.vue';
->>>>>>> origin/staging
-
-
 import { useAuthStore } from '@/stores/authStore';
 import AHouseView from '@/views/Admin/AHouseView.vue';
 
