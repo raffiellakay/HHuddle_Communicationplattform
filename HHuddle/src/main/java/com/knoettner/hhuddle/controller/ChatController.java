@@ -26,7 +26,7 @@ public class ChatController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/create")
     // Use hasRole for role-based access control
-   // @PreAuthorize("hasRole('RESIDENT')")
+    @PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity<ChatDto> createChat(
             @RequestParam Long firstUserId,
             @RequestParam Long secondUserId) {
@@ -37,7 +37,7 @@ public class ChatController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/send-message")
     // Use hasRole for role-based access control
-    //@PreAuthorize("hasRole('RESIDENT')")
+    @PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity<ChatMessageResponseDto> sendMessage(
             @RequestBody ChatMessageRequestDto chatMessageRequestDto) {
         ChatMessageResponseDto sentMessage = chatService.sendMessage(chatMessageRequestDto);
@@ -47,7 +47,7 @@ public class ChatController {
     // Einzelnen Chat abrufen
     @GetMapping("/{chatId}")
     // Use hasRole for role-based access control
-   // @PreAuthorize("hasRole('RESIDENT')")
+    @PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity<ChatDto> getChat(@PathVariable Long chatId) {
         ChatDto chatDto = chatService.getChatById(chatId);
         return ResponseEntity.ok(chatDto);
@@ -56,7 +56,7 @@ public class ChatController {
      //Chat (für User) löschen
     @DeleteMapping("/{chatId}")
     // Use hasRole for role-based access control
-   // @PreAuthorize("hasRole('RESIDENT')")
+    @PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity<Void> deleteChat(@PathVariable Long chatId, Long userId) {
         chatService.deleteChatForUser(chatId, userId);
         return ResponseEntity.noContent().build();
@@ -64,7 +64,7 @@ public class ChatController {
 
     @GetMapping("/user/{userId}")
     // Use hasRole for role-based access control
-    //@PreAuthorize("hasRole('RESIDENT')")
+    @PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity<List<ChatDto>> getUserChats(@PathVariable Long userId) {
         List<ChatDto> chats = chatService.getChatsByUserId(userId);
         return ResponseEntity.ok(chats);
