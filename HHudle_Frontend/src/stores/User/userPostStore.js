@@ -9,7 +9,7 @@ import { useAuthStore } from "@/stores/authStore";
 export const useUserPostStore = defineStore ('adminPost', {
     state: () => ({
         userPosts: [], //Array für alle UserPosts
-        //Noch ein State für das Filtern nach Kategorien
+        filteredPostsByCategory: [], //Noch ein State für das Filtern nach Kategorien
     }),
 
     actions: {
@@ -71,9 +71,24 @@ export const useUserPostStore = defineStore ('adminPost', {
 
 
       async getAllPosts() {
-        const response = await axios.get(`${API_URL}posts/allposts`);
-        this.userPosts = response.data;
+        try {
+          console.log('Lade alle Posts...');
+          const response = await axios.get(`${API_URL}posts/allposts`);
+          this.userPosts = response.data;
+          console.log('Alle Posts geladen:', this.userPosts);
+        } catch (error) {
+          console.error('Fehler beim Laden der Posts:', error);
+        }
       },
+  
+      filterPostsByCategory(category) {
+        console.log(`Filtere Posts nach Kategorie: ${category}`);
+        this.filteredPostsByCategory = this.userPosts.filter(
+          (post) => post.category === category
+        );
+        console.log('Gefilterte Posts: ', this.filteredPostsByCategory);
+      },
+  
 
       async getHouseIdByUser() {
         const response = await axios.get(`${API_URL}user/home`); 

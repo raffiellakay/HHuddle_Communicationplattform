@@ -45,10 +45,10 @@ const handleBoardClick = () => {
 //Navigiert danach zur entsprechenden route des Items auf @click
 const setActiveItem = (item) => {
   activeItem.value = item.title;
-  isBoardsOpen.value = true; //Hält Dropdown unter "Boards" offen, falls einer der Unterpunkte angeklickt wurde
-  router.push(item.route);
+  isBoardsOpen.value = true;
+  router.push({ path: item.route });
   showDrawer.value = false;
-}
+};
 
 //Checkt ob die aktuelle Seite eine Board Seite ist indem es mit items im items array abgeglichen wird
 //Ist true wenn auf einer BoardSeite und false wenn nicht
