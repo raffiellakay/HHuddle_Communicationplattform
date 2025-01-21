@@ -3,20 +3,23 @@ import { useRoute, useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { computed } from 'vue';
 import PostForm from '@/components/User/PostForm.vue';
+import { useAuthStore } from '@/stores/authStore';
+
 
 
 
 const router = useRouter(); //Gibt Router Instanz zurück
 const route = useRoute(); // Gibt aktuelle Route zurück 
+const authStore = useAuthStore();
 
 
 
 //showDrawer Konstante ist per default auf false
 const showDrawer = ref(false);
-
-
 //Zustand des aktiven Items im Untermenü von Boards 
 const activeItem = ref(null);
+const isBoardsOpen = ref(false);
+const showForm = ref(false); 
 
 //Liste an Unteritems in Array
 const items = ref([
@@ -32,10 +35,17 @@ const toggleDrawer = () => {
   showDrawer.value = !showDrawer.value;
 }
 
+// Boards-Titel wurde geklickt
+const handleBoardClick = () => {
+  router.push('/user/allboards'); 
+  showDrawer.value = false; //Drawer schließen
+};
+
 //Ruft setActiveItem Methode auf, und übernimmt item als Parameter, setzt den value von activeItem auf den Titel des übergebenen Items.
 //Navigiert danach zur entsprechenden route des Items auf @click
 const setActiveItem = (item) => {
   activeItem.value = item.title;
+  isBoardsOpen.value = true; //Hält Dropdown unter "Boards" offen, falls einer der Unterpunkte angeklickt wurde
   router.push(item.route);
   showDrawer.value = false;
 }
@@ -47,7 +57,12 @@ const isBoardPage = computed(() =>{
   return boardRoutes.includes(route.path);
 })
 
-const showForm = ref(false); 
+
+const handleLogout = () => {
+  authStore.logout();
+  router.push('/');
+}
+
 
 
 
@@ -72,7 +87,9 @@ const showForm = ref(false);
    
       <v-dialog v-model="showForm" max-width="500">
         <template v-slot:default="{close}">
-          <PostForm @close="close"></PostForm>
+          <PostForm 
+          @close="close">
+        </PostForm>
         </template>
       
     </v-dialog>
@@ -93,20 +110,25 @@ const showForm = ref(false);
 
 
     <!-- Inhalte des Navigation Drawers -->
-    <v-list>
+    <v-list class="drawer-content">
       <v-list-item :to="{ path: '/user/home'}">
         <v-list-item-title>Startseite</v-list-item-title>
       </v-list-item>
 
 
-      <v-list-group value="Boards">
+      <v-list-group v-model="isBoardsOpen">
         <template v-slot:activator="{props}">
-        <v-list-item v-bind="props" title="Boards"></v-list-item>
+        <v-list-item v-bind="props">
+          <v-list-item-title @click="handleBoardClick">
+            Boards
+          </v-list-item-title>
+        </v-list-item>
         </template>
 
 
         <template v-slot>
-          <v-list-item v-for="item in items"
+          <v-list-item 
+          v-for="item in items"
           :key="item.title"
           :title="item.title"
           :class="{'v-list-item--active': activeItem === item.title}"
@@ -121,6 +143,12 @@ const showForm = ref(false);
 
 
     </v-list>
+
+    <div class="logout-container">
+    <v-btn icon @click="handleLogout" >
+        <v-icon class="logout-icon" color="red">mdi-logout</v-icon>
+      </v-btn>
+    </div>
   </v-navigation-drawer>
 </template>
 
@@ -156,4 +184,19 @@ const showForm = ref(false);
   padding-right: 20px
 }
 
+.custom-drawer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Abstand zwischen oben und unten */
+  height: 100%; /* Stellt sicher, dass der Drawer die volle Höhe einnimmt */
+}
+
+.drawer-content {
+  flex-grow: 1; /* Füllt den verfügbaren Platz aus */
+}
+
+.logout-container {
+  padding: 16px; /* Abstand des Buttons vom Rand */
+  padding-top: 300px;
+}
 </style>
