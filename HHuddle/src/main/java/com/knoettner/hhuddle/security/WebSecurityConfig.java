@@ -82,6 +82,7 @@ public class WebSecurityConfig {
 }
 
 /*
+
 // to remove authorization while testing. can be deleted!
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
