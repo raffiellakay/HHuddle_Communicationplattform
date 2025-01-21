@@ -30,40 +30,21 @@ import { useRouter } from "vue-router";
 import { useChatStore } from "@/stores/User/chatStore"; // Corrected import
 
 const ChatStore = useChatStore();
-const dialog = ref(false);
 const router = useRouter();
-
-const newChat = ref({
-  userId: null,
-});
+const userChats= ref([])
 
 onMounted(async () => {
-  await ChatStore.fetchChats();
+  userChats.value = await ChatStore.fetchChatById(53)
 });
 
-async function saveChat() {
-  try {
-    const chatData = {
-      userId: newChat.value.userId,
-    };
-    await ChatStore.createChat(chatData);
-    dialog.value = false;
-    alert("Chat successfully saved!");
-  } catch (error) {
-    console.error("Fehler beim Speichern des Chats:", error);
-    alert("Failed to save chat. Please try again.");
-  }
-}
 
-// Sort chats by ID
-const sortedChats = computed(() => {
-  return ChatStore.chats.sort((a, b) => a.id - b.id);
-});
-
-// Navigate to ChatView
 function navigateToChat(chatId) {
   router.push(`/chat/${chatId}`);
 }
+
+
+
+
 
 
 /*
