@@ -9,6 +9,7 @@ import { useAuthStore } from "@/stores/authStore";
 export const useUserPostStore = defineStore ('adminPost', {
     state: () => ({
         userPosts: [], //Array für alle UserPosts
+        //Noch ein State für das Filtern nach Kategorien
     }),
 
     actions: {
@@ -152,9 +153,8 @@ export const useUserPostStore = defineStore ('adminPost', {
             console.error("Fehler beim updaten von userPost", error);
             throw error;
         }
-    }
-
-
+    }, 
+  
 
     }
 

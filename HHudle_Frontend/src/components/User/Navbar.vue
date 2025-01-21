@@ -3,11 +3,14 @@ import { useRoute, useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { computed } from 'vue';
 import PostForm from '@/components/User/PostForm.vue';
+import { useAuthStore } from '@/stores/authStore';
+
 
 
 
 const router = useRouter(); //Gibt Router Instanz zurück
 const route = useRoute(); // Gibt aktuelle Route zurück 
+const authStore = useAuthStore();
 
 
 
@@ -55,6 +58,11 @@ const isBoardPage = computed(() =>{
 })
 
 
+const handleLogout = () => {
+  authStore.logout();
+  router.push('/');
+}
+
 
 
 
@@ -79,7 +87,9 @@ const isBoardPage = computed(() =>{
    
       <v-dialog v-model="showForm" max-width="500">
         <template v-slot:default="{close}">
-          <PostForm @close="close"></PostForm>
+          <PostForm 
+          @close="close">
+        </PostForm>
         </template>
       
     </v-dialog>
@@ -100,7 +110,7 @@ const isBoardPage = computed(() =>{
 
 
     <!-- Inhalte des Navigation Drawers -->
-    <v-list>
+    <v-list class="drawer-content">
       <v-list-item :to="{ path: '/user/home'}">
         <v-list-item-title>Startseite</v-list-item-title>
       </v-list-item>
@@ -133,6 +143,12 @@ const isBoardPage = computed(() =>{
 
 
     </v-list>
+
+    <div class="logout-container">
+    <v-btn icon @click="handleLogout" >
+        <v-icon class="logout-icon" color="red">mdi-logout</v-icon>
+      </v-btn>
+    </div>
   </v-navigation-drawer>
 </template>
 
@@ -168,4 +184,19 @@ const isBoardPage = computed(() =>{
   padding-right: 20px
 }
 
+.custom-drawer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Abstand zwischen oben und unten */
+  height: 100%; /* Stellt sicher, dass der Drawer die volle Höhe einnimmt */
+}
+
+.drawer-content {
+  flex-grow: 1; /* Füllt den verfügbaren Platz aus */
+}
+
+.logout-container {
+  padding: 16px; /* Abstand des Buttons vom Rand */
+  padding-top: 300px;
+}
 </style>

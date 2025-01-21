@@ -17,15 +17,15 @@ const userId = computed(() => authStore.user.id)
 /*
 Category {
   //Schwarzes Brett
-    BLACKBOARD,
+    BLACKBOARD, 0
   //Ankündigungen
-    FRONTPAGE,
+    FRONTPAGE, 1
   //Wer hat mein Paket?
-    PACKAGE,
+    PACKAGE, 2
   //Wer macht was wann wo?
-    EVENTS,
+    EVENTS, 3
   //Biete-Suche-Tausche-Verschenke
-    EXCHANGE;
+    EXCHANGE; 4
 
 }*/
 
