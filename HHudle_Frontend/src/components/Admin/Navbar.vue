@@ -34,6 +34,12 @@ console.log(route.path);
 console.log(showAdminPostForm.value);
 
 
+
+const handleLogout = () => {
+  authStore.logout();
+  router.push('/');
+}
+
 </script>
 
 <template>
@@ -81,9 +87,22 @@ console.log(showAdminPostForm.value);
       </v-list-item>    
       <v-list-item :to="{ path: '/aboutUs'}">Über Uns</v-list-item>
       <v-list-item :to="{ path: '/contact'}">Kontakt</v-list-item>
+      <v-list-item class="logout-icon">
+      <v-btn icon @click="handleLogout" >
+        <v-icon color="red">mdi-logout</v-icon>
+      </v-btn>
+      </v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
 
 
-<style scoped></style>
+<style scoped>
+
+.logout-icon {
+  padding-top: 500px; 
+}
+
+
+
+</style>
