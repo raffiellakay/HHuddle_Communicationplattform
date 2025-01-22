@@ -64,7 +64,7 @@ public class ChatController {
 
     @GetMapping("/user/{userId}")
     // Use hasRole for role-based access control
-    //@PreAuthorize("hasRole('RESIDENT')")
+    @PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity<List<ChatDto>> getUserChats(@PathVariable Long userId) {
         List<ChatDto> chats = chatService.getChatsByUserId(userId);
         return ResponseEntity.ok(chats);

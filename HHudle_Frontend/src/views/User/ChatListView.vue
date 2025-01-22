@@ -6,16 +6,15 @@
         <div class="dialogs">
           <div
             v-for="(chat, index) in sortedChats"
-            :key="index"
+            :key="chat.id"
             class="dialog"
             @click="navigateToChat(chat.id)"
           >
             <div class="dialog-header">
-              <span class="chat-name">{{ chat.name }}</span>
-              <span class="chat-time">{{ chat.lastMessageTime }}</span>
+              <span class="chat-time">{{ chat.lastMessageTime || 'N/A' }}</span>
             </div>
             <div class="dialog-preview">
-              <span>{{ chat.lastMessage }}</span>
+              <span>{{ chat.lastMessage || 'No messages yet' }}</span>
             </div>
           </div>
         </div>
@@ -27,17 +26,33 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
-import { useChatStore } from "@/stores/User/chatStore"; // Corrected import
+import { useChatStore } from "@/stores/User/chatStore";
 
-const ChatStore = useChatStore();
+const chatStore = useChatStore();
 const router = useRouter();
-const userChats= ref([])
 
-onMounted(async () => {
-  userChats.value = await ChatStore.fetchChatById(53)
+// Reactive data for chats
+const userChats = ref([]);
+
+// Computed property to sort chats by last message time
+const sortedChats = computed(() => {
+  return [...userChats.value].sort((a, b) =>
+    new Date(b.lastMessageTime) - new Date(a.lastMessageTime)
+  );
 });
 
+// Fetch chats on component mount
+onMounted(async () => {
+  const userId = 2; // Replace with dynamic user ID as needed
+  try {
+    await chatStore.fetchChatsByUserId(userId);
+    userChats.value = chatStore.chats; // Sync chats from the store
+  } catch (error) {
+    console.error("Error fetching user chats:", error);
+  }
+});
 
+// Navigate to a specific chat
 function navigateToChat(chatId) {
   router.push(`/chat/${chatId}`);
 }
