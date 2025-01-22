@@ -11,15 +11,22 @@ import EditButton from '@/components/Icons/EditButton.vue';
 const houseStore = useHouseStore();
 
 const dialog = ref(false); // (dialog is a reaktiver Boolean, also ob´s fürs hinzufügen eines neuen Hauses geöffnet oder geschlossen is). //Dialogfensterung mit v-dialog aus Vuetify. Is auf true gesetzt, Dialogfenster wird angezeigt, is false, bleibts geschlossen. Also, wirds eben angeklickt oder nicht
-                          //reaktive Variablen, sind Variablen die automatisch aktualisiert werden, wenn sich etwas an ihnen ändert (Ansict wird auto aktualisiert)
- 
+//reaktive Variablen, sind Variablen die automatisch aktualisiert werden, wenn sich etwas an ihnen ändert (Ansict wird auto aktualisiert)
+
 const router = useRouter();
 
 const newHouse = ref({
-  address: '', 
-  residents: [],
-  facilities: []
+  address: '',
+
+  facilities: [
+
+
+  ]
 });
+const newFacility = ref({
+  type: '',
+  description: '',
+})
 
 
 //beim Seitenstart werden alle Häuser geladen
@@ -30,19 +37,20 @@ onMounted(async () => {
 //neues Haus anlegen
 async function saveHouse() {
   try {
-    const houseData = {
-      address: newHouse.value.address,
-      residents: newHouse.value.residents,
-      facilities: newHouse.value.facilities
-    };
-
-    await houseStore.createHouse(houseData);
-    dialog.value = false; // Dialog schließen
-
-    // Felder zurücksetzen - wichtig, dass Felder genauso aussehen wie oben --> leeres Array wenn Backend ein Set erwartet!
-    newHouse.value = { address: '', residents: [], facilities: [] };
+    await houseStore.createHouse(newHouse.value);
+    dialog.value = false;
+    newHouse.value = { address: '', facilities: [] }; // Reset fields
+    newFacility.value = { type: '', description: '' }; // Reset temporary facility
   } catch (error) {
-    console.error('Fehler beim Speichern des Hauses:', error);
+    console.error('Error while saving house:', error);
+  }
+}
+
+// Add a new facility to the facilities array
+function addFacility() {
+  if (newFacility.value.type && newFacility.value.description) {
+    newHouse.value.facilities.push({ ...newFacility.value }); // Add facility to array
+    newFacility.value = { type: '', description: '' }; // Reset temporary facility
   }
 }
 
@@ -63,27 +71,21 @@ const goToHouse = (houseId) => {
 <template>
   Ich bin die Admin Homeview
 
- <!-- Gesamtes Layout -->
- <v-container>
-        <!-- Kachel-Layout: Zeige die Liste der Häuser -->
-        <v-row>
-          <v-col
-            v-for="house in sortedHouses" 
-            :key="house.id"
-            cols="12"
-            sm="6"
-            md="4"
-          >
-            <v-card class="d-flex flex-column align-center" outlined @click="goToHouse(house.id)">
-              <v-card-item>
-              <!-- Anzeige der Adresse des Hauses -->
-              <v-card-title>{{ house.address }}</v-card-title>
-              <EditButton class="edit-button"/>
-              <DeleteButton class="delete-button"/>
-            </v-card-item>
-            </v-card>
-          </v-col>
-        </v-row>
+  <!-- Gesamtes Layout -->
+  <v-container>
+    <!-- Kachel-Layout: Zeige die Liste der Häuser -->
+    <v-row>
+      <v-col v-for="house in sortedHouses" :key="house.id" cols="12" sm="6" md="4">
+        <v-card class="d-flex flex-column align-center" outlined @click="goToHouse(house.id)">
+          <v-card-item>
+            <!-- Anzeige der Adresse des Hauses -->
+            <v-card-title>{{ house.address }}</v-card-title>
+            <EditButton class="edit-button" />
+            <DeleteButton class="delete-button" />
+          </v-card-item>
+        </v-card>
+      </v-col>
+    </v-row>
 
     <!-- Button zum Hinzufügen eines neuen Hauses -->
     <v-btn @click="dialog = true" class="mt-4" color="primary">
@@ -95,16 +97,20 @@ const goToHouse = (houseId) => {
       <v-card>
         <v-card-title>Neues Haus hinzufügen</v-card-title>
         <v-card-text>
-          <!-- Feld 1: Adresse -->
-          <v-text-field v-model="newHouse.address" label="Adresse des Hauses" required></v-text-field>
+          <v-form @submit.prevent="saveHouse">
+            <v-text-field v-model="newHouse.address" label="Adresse des Hauses" required></v-text-field>
 
-          <!-- Feld 2: Bewohner -->
-          <v-text-field v-model="newHouse.residents" label="Bewohner" hint="Gib die Namen oder Anzahl der Bewohner ein"
-            persistent-hint></v-text-field>
+            <v-divider></v-divider>
+            <v-card-subtitle>Einrichtungen hinzufügen</v-card-subtitle>
+            <v-text-field v-model="newFacility.type" label="Art der Einrichtung" required></v-text-field>
+            <v-text-field v-model="newFacility.description" label="Beschreibung" required></v-text-field>
+            <v-btn color="secondary" @click="addFacility">Einrichtung hinzufügen</v-btn>
 
-          <!-- Feld 3: Einrichtungen -->
-          <v-text-field v-model="newHouse.facilities" label="Einrichtungen"
-            hint="Z.B.: Pool, Gemeinschaftsraum, Parkplatz" persistent-hint></v-text-field>
+            <v-divider></v-divider>
+            <div v-for="(facility, index) in newHouse.facilities" :key="index">
+              <p>{{ index + 1 }}. {{ facility.type }}: {{ facility.description }}</p>
+            </div>
+          </v-form>
         </v-card-text>
         <v-card-actions>
           <v-btn text @click="dialog = false">Abbrechen</v-btn>
@@ -116,7 +122,6 @@ const goToHouse = (houseId) => {
 </template>
 
 <style scoped>
-
 .delete-button {
   background-color: rgb(241, 102, 102);
   margin-left: 15px;
@@ -129,9 +134,6 @@ const goToHouse = (houseId) => {
   background-color: rgb(168, 209, 252);
   margin-right: 15px;
 }
-
-
-
 </style>
 
 
