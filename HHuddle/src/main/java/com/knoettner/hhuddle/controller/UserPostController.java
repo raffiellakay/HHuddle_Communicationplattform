@@ -109,5 +109,12 @@ public class UserPostController {
         // return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/house/{id}")
+    @PreAuthorize("hasRole('RESIDENT')")
+    public Set<PostDto> getPostsByHouseId(@PathVariable("id") Long houseId){
+       return userPostService.getPostsByHouseId(houseId);
+    }
 }
 
