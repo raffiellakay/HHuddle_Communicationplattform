@@ -14,7 +14,7 @@ export const useChatStore = defineStore("chatStore", {
      */
     async createChat({ firstUserId, secondUserId }) {
       try {
-        const response = await axios.post(`${API_URL}/api/chats/create`, null, {
+        const response = await axios.post(`${API_URL}chats/create`, null, {
           params: { firstUserId, secondUserId },
         });
         this.chats.push(response.data); // Add the new chat to state
@@ -30,7 +30,7 @@ export const useChatStore = defineStore("chatStore", {
      */
     async sendMessage(messageData) {
       try {
-        const response = await axios.post(`${API_URL}/api/chats/send-message`, messageData);
+        const response = await axios.post(`${API_URL}chats/send-message`, messageData);
         return response.data; // Return the sent message
       } catch (error) {
         console.error("Error sending message:", error);
@@ -43,7 +43,7 @@ export const useChatStore = defineStore("chatStore", {
      */
     async fetchChatsByUserId(userId) {
       try {
-        const response = await axios.get(`${API_URL}/api/chats/user/${userId}`);
+        const response = await axios.get(`${API_URL}chats/user/${userId}`);
         this.chats = response.data; // Update the chats list
       } catch (error) {
         console.error("Error fetching user chats:", error);
@@ -57,7 +57,7 @@ export const useChatStore = defineStore("chatStore", {
      */
     async fetchChatById(chatId) {
       try {
-        const response = await axios.get(`${API_URL}/api/chats/${chatId}`);
+        const response = await axios.get(`${API_URL}chats/${chatId}`);
         return response.data; // Return the chat details
       } catch (error) {
         console.error("Error fetching chat by ID:", error);
@@ -71,7 +71,7 @@ export const useChatStore = defineStore("chatStore", {
      */
     async deleteChat(chatId, userId) {
       try {
-        await axios.delete(`${API_URL}/api/chats/${chatId}`, {
+        await axios.delete(`${API_URL}chats/${chatId}`, {
           params: { userId },
         });
         this.chats = this.chats.filter((chat) => chat.id !== chatId); // Remove chat from state
