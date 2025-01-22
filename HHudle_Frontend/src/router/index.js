@@ -79,44 +79,11 @@ const routes = [
             props: true,
             meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
           },
-          // Dynamische Route als Fallback für weitere Kategorien
-          {
-            path: ':category',
-            name: 'DynamicCategory',
-            component: PostCard, // Generisches Layout für dynamische Kategorien
-            props: true,
-            meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
-            beforeEnter: (to, from, next) => {
-              const allowedCategories = ['blackboard', 'commonrooms', 'packagefinder', 'search&find'];
-              if (!allowedCategories.includes(to.params.category)) {
-                next('/user/board/blackboard'); // Fallback zu einer Standardroute
-              } else {
-                next(); // Weiter zur gewünschten Kategorie
-              }
-            },
-          },
+  
         ],
       }]
     },
-          }]
      
-    },
- {
-  path: 'chatlist',
-  name: 'ChatListView',
-  component: ChatListView,
-  meta: { requiresAuth: true },
- },
-    {
-      path: 'chatlist/chat/:id',
-      name: 'ChatView',
-      component: ChatView,
-      meta: { requiresAuth: true },
-      props: true,
-    },
-  ],
-},
-
   {
     path: '/admin',
     name: 'admin',

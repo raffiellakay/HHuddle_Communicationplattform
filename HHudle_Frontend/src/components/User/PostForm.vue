@@ -1,24 +1,107 @@
 <script setup>
 //Form erstellt mit Hilfe von https://pablog.42web.io/vuetify-form-builder?i=1
 
-import { ref, computed } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
+import { useUserPostStore } from "@/stores/User/userPostStore.js"
+import { useRoute } from "vue-router";
+import { useAdminPostStore } from "@/stores/Admin/adminPostStore";
+
+
+
+const props = defineProps({
+  houseId: Number, 
+  boardId: Number,
+})
+
+const emits = defineEmits(['userPost-added', 'close']); 
+const userPostStore = useAdminPostStore(); 
+const route = useRoute(); 
+
+//Definition ref Instanzen
+const title = ref(''); 
+const text = ref('');
+const category = ref('');
+const timestamp = ref("2024-12-18T15:52:42"); 
+const photo = ref(null);
+
+const user = {};
+const boardId = ref(null);
+const isPrivate = false; 
+const anonymous = ref(true); 
+
+//Datum und Zeit 
+const startDate = ref(null);
+const startTime = ref("");
+const endDate = ref(null); 
+const endTime = ref(""); 
+
+// Validierung der Zeiteingabe (HH:mm)
+function validateTimeInput(event) {
+  const value = event.target.value;
+  const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)?$/;
+  if (!timeRegex.test(value)) {
+    event.target.value = value.slice(0, -1); // Ungültige Eingabe entfernen
+  }
+}
+
+// Kombiniere Datum und Zeit
+function combineDateTime(date, time) {
+  if (!date || !time) return null;
+  return `${date}T${time}`;
+}
+
+const combinedStartTime = combineDateTime(startDate.value, startTime.value);
+const combinedEndTime = combineDateTime(endDate.value, endTime.value); 
+
+
+console.log("UserPost wurde geöffnet mit boardId: ", boardId.value) //Debug 
+
+//Die Form besitzt zwei Modi: Creation und Edit Mode
+const isEdit = ref(false);
+
+//Kümmert sich um Formsubmission, emitted update-post wenn isEdit true ist mit dem überarbeitenden Post Details, ansonsten wird add-post mit den neuen Post Details emitted 
+const handleSubmit = async () => {
+  if (!boardId.value) {
+    console.error("Fehler: `boardId` wurde nicht gefunden.");
+    return;
+  }
+
+  const newUserPost = {
+    title:  	  title.value,
+    text:       text.value,
+    category:   category.value, 
+    timestamp:  timestamp.value, 
+    photo:      photo.value, 
+    starttime:  combinedStartTime, 
+    endtime:    combinedEndTime, 
+    user:       user.value, 
+    boardId:    boardId.value, 
+    isPrivate:  isPrivate.value, 
+    anonymous:  anonymous.value,
+  };
+
+  console.log("Sende UserPost an Backend:", newUserPost);// Debug
+
+  try {
+    await userPostStore.createUserPost(newUserPost);
+    emits("userPost-added"); //Event auslösen, um `HouseView.vue` zu aktualisieren
+    emits("close");
+  } catch (error) {
+    console.error("Fehler beim Erstellen des UserPosts:", error);
+  }
+};
+
+
+
+
 
 const form = ref(null);
 const formSubmit = (close) => {
   console.log("Form submitted!");
   close();
 };
-const title = ref("");
-const startdate = ref("");
-const description = ref("");
 
 
-const pictureupload = ref([]);
-const eventtag = ref("");
-const eventtagGroup = ref([
-  { id: "1732962385361", label: "Privat", value: "" },
-  { id: "radioGroup-1732962390768", label: "Öffentlich", value: "" },
-]);
 
 
 
@@ -61,7 +144,7 @@ const formattedEndDate = computed(() =>
   <v-card>
     <v-layout>
       <v-main>
-        <v-container scrollable>
+        <v-container>
           <v-form ref="form" @submit.prevent="formSubmit">
             <v-row>
               <v-col>
@@ -92,27 +175,45 @@ const formattedEndDate = computed(() =>
                   attach
                 >
                   <!-- Slot für den Activator -->
-                  <template v-slot:activator="{ attrs }">
+                  <template #activator="{ props }">
                     <v-text-field
-                      :model-value="formattedStartDate"
+                      v-bind="props"
+                      :value="formatToGermanDate(startDate)"
                       label="Startdatum"
                       variant="outlined"
                       prepend-inner-icon="mdi-calendar-blank"
                       readonly
                       @click="showStartDatePicker = true"
-                      v-bind="attrs"
+                      
                     ></v-text-field>
                   </template>
 
                   <!-- Date Picker -->
                   <v-date-picker
-                    v-model="selectedStartDate"
+                    v-model="startDate"
                     @input="showStartDatePicker = false"
                     locale="de"
                   ></v-date-picker>
                 </v-menu>
               </v-col>
+              <v-col>
+                <div>
+                  <v-text-field
+                    variant="outlined"
+                    label="Startzeit"
+                    density="default"
+                    v-model="starttime"
+                    type="text"
+                    :persistent-hint="false"
+                    name="Startzeit"
+                  >
+                  </v-text-field>
+                </div>
+
+              </v-col>
             </v-row>
+
+            
 
             <v-row>
               <v-col>
@@ -146,6 +247,21 @@ const formattedEndDate = computed(() =>
                   ></v-date-picker>
                 </v-menu>
               </v-col>
+              <v-col>
+                <div>
+                  <v-text-field
+                    variant="outlined"
+                    label="Endzeit"
+                    density="default"
+                    v-model="endtime"
+                    type="text"
+                    :persistent-hint="false"
+                    name="Endzeit"
+                  >
+                  </v-text-field>
+                </div>
+
+              </v-col>
             </v-row>
 
             <v-row>
@@ -155,8 +271,8 @@ const formattedEndDate = computed(() =>
                     variant="outlined"
                     label="Beschreibung"
                     density="default"
-                    v-model="description"
-                    name="description"
+                    v-model="text"
+                    name="Beschreibung"
                   >
                   </v-textarea>
                 </div>
@@ -188,7 +304,7 @@ const formattedEndDate = computed(() =>
                     label="Foto hochladen"
                     density="default"
                     :clearable="false"
-                    v-model="pictureupload"
+                    v-model="photo"
                     multiple=""
                     hint=""
                     :persistent-hint="false"
@@ -208,7 +324,7 @@ const formattedEndDate = computed(() =>
                 <div>
                   <div>
                     <v-checkbox
-                      v-model="anonymousCheckbox"
+                      v-model="anonymous"
                       label="Anonym Posten"
                       color="primary"
             

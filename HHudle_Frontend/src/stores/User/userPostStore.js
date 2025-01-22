@@ -9,8 +9,20 @@ import { useAuthStore } from "@/stores/authStore";
 export const useUserPostStore = defineStore ('adminPost', {
     state: () => ({
         userPosts: [], //Array für alle UserPosts
-        filteredPostsByCategory: [], //Noch ein State für das Filtern nach Kategorien
+        currentCategory: null, //Noch ein State für das Filtern nach Kategorien
+        loading: false,
     }),
+
+    getters: {
+      filteredPostsByCategory: (state) => {
+        if (!state.currentCategory) return state.userPosts;
+        return state.userPosts.filter(
+          (post) => post.category.toUpperCase() === state.currentCategory.toUpperCase()
+        );
+      },
+    },
+
+
 
     actions: {
         async createUserPost(userPost) {
@@ -70,25 +82,24 @@ export const useUserPostStore = defineStore ('adminPost', {
       },
 
 
-      async getAllPosts() {
+      async getPostsByHouseId(houseId) {
         try {
-          console.log('Lade alle Posts...');
-          const response = await axios.get(`${API_URL}posts/allposts`);
+          console.log(`Lade alle Posts für House ID: ${houseId}`);
+          const response = await axios.get(`${API_URL}posts/house/${houseId}`);
           this.userPosts = response.data;
-          console.log('Alle Posts geladen:', this.userPosts);
+          console.log("Posts für House ID geladen:", this.userPosts);
         } catch (error) {
-          console.error('Fehler beim Laden der Posts:', error);
+          console.error("Fehler beim Laden der Posts für House ID:", error);
         }
       },
-  
+    
       filterPostsByCategory(category) {
         console.log(`Filtere Posts nach Kategorie: ${category}`);
         this.filteredPostsByCategory = this.userPosts.filter(
-          (post) => post.category === category
+          (post) => post.category.toUpperCase() === category.toUpperCase()
         );
-        console.log('Gefilterte Posts: ', this.filteredPostsByCategory);
+        console.log("Gefilterte Posts: ", this.filteredPostsByCategory);
       },
-  
 
       async getHouseIdByUser() {
         const response = await axios.get(`${API_URL}user/home`); 

@@ -6,21 +6,28 @@ import { useRoute } from "vue-router";
 import { useAuthStore } from "@/stores/authStore";
 import ConfirmDeleteCheck from "@/components/ConfirmDeleteCheck.vue";
 
-const route = useRoute();
+
 const userPostStore = useUserPostStore();
-const filteredUserPosts = ref([]);
+const filteredUserPosts = computed(() => {
+  return userPostStore.filteredPostsByCategory;
+});
+
+
 const authStore = useAuthStore();
 
-const category = computed(() => route.params.category);
-console.log("Aktuelle Kategorie aus der URL:", category.value);
 const show = ref(false); 
 const userId = computed(() => authStore.user.id)
 
+const props = defineProps({
+  category: {
+    type: String, 
+    required: true, 
+  }
+})
 
-
-const normalizedCategory = computed(() => {
+/*const normalizedCategory = computed(() => {
   return category.value ? category.value.toUpperCase() : null;
-});
+});*/
 /*
 Category {
   //Schwarzes Brett
@@ -50,17 +57,22 @@ console.log("Auth Token:", authStore.token);
   await userPostStore.getPostsByUserId(userId.value);
 });*/
 
-//Hole alle Posts aus Store und filtere nach Kategorie 
 onMounted(async () => {
-  if (!normalizedCategory.value) {
-    console.error('Kategorie ist nicht definiert!');
-    return;
-  }
-  console.log('Kategorie nach Normalisierung:', normalizedCategory.value);
+  try {
+    const houseId = authStore.user.houseId; // Hole die `houseId` aus dem User-Objekt
+    if (!houseId) {
+      console.error("Keine House ID gefunden!");
+      return;
+    }
 
-  await userPostStore.getAllPosts();
-  userPostStore.filterPostsByCategory(normalizedCategory.value); // Filter mit Großbuchstaben
-  filteredUserPosts.value = userPostStore.filteredPostsByCategory;
+    console.log("Lade Posts für House ID:", houseId);
+    await userPostStore.getPostsByHouseId(houseId);
+
+    console.log("Filtere Posts nach Kategorie:", props.category);
+    userPostStore.filterPostsByCategory(props.category);
+  } catch (error) {
+    console.error("Fehler beim Laden der Posts:", error);
+  }
 });
 
 
@@ -72,9 +84,9 @@ onMounted(async () => {
 <template>
 <!-- Dieser Teil beinhaltet das potenzielle Kartendesign für UserPosts-->
 
-<v-container v-if="filteredUserPosts && filteredUserPosts.length > 0">
-  <h1> Zeige Beiträge für Kategorie: {{ category  }}</h1>
-    <v-row>
+<v-container>
+  <h1> Zeige Beiträge für Kategorie: {{ category }}</h1>
+    <v-row v-if="filteredUserPosts.length > 0">
       <v-col v-for="filteredUserPost in filteredUserPosts" :key="filteredUserPost.id" cols="12" md="4" lg="3">
         <v-card class="mx-auto" max-width="344">
           <!-- Photo als Header -->
@@ -96,7 +108,7 @@ onMounted(async () => {
             Erstellungszeit: {{ filteredUserPost.timestamp }}
           </v-card-subtitle>
           <v-card-subtitle>
-            Ersteller: {{ filteredUserPost.user?.username || 'Unbekannt' }} <!-- Checkt ob es einen username gibt, ansonsten "Unbekannt"-->
+            Ersteller: {{ filteredUserPost.user?.username || 'Unbekannt' }} 
           </v-card-subtitle>
 
           <!-- Aktionen -->
@@ -111,7 +123,7 @@ onMounted(async () => {
             <div v-show="show">
               <v-divider></v-divider>
               <v-card-text>
-                {{ filteredUserPost.description }}
+                {{ filteredUserPost.text }}
               </v-card-text>
             </div>
           </v-expand-transition>

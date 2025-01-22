@@ -4,7 +4,9 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
-const category = computed(() => route.params.category);
+
+const category = "BLACKBOARD"
+
 </script>
 
 <template>
