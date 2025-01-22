@@ -4,7 +4,9 @@ import com.knoettner.hhuddle.dto.CreateUpdateUserDto;
 import com.knoettner.hhuddle.dto.HouseDto;
 import com.knoettner.hhuddle.dto.MyUserDto;
 import com.knoettner.hhuddle.models.*;
+import com.knoettner.hhuddle.repository.PostRepository;
 import com.knoettner.hhuddle.repository.RoleRepository;
+import com.knoettner.hhuddle.repository.UserPostRepository;
 import com.knoettner.hhuddle.repository.UserRepository;
 import com.knoettner.hhuddle.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -29,6 +32,10 @@ public class HHuddleApplication implements CommandLineRunner  {
     RoleRepository roleRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserPostRepository userPostRepository;
+    @Autowired
+    private PostRepository postRepository;
 
 
     public static void main(String[] args) {
@@ -74,6 +81,22 @@ public class HHuddleApplication implements CommandLineRunner  {
                 System.out.println(e);
             }
         }
+
+        //Hardcoded Post:
+
+//ist falsch (kein UserPost,damit wird er falsch in die Datenbank übernommen, was zu Problemen führen kann
+        //  Post post = new Post(2L,"newtitle2", "newtext2", Category.BLACKBOARD, LocalDateTime.now(),null, true, null, null, null, false, null);
+       //postRepository.save(post);
+
+       //UserPostKey userPostKey = new UserPostKey(0L, 1L, 2L);
+
+
+
+    }
+
+}
+
+
 
 
 
@@ -138,5 +161,5 @@ public class HHuddleApplication implements CommandLineRunner  {
       //  System.out.println(adminService.getAllHouses());
 
 
-    }
-}
+
+

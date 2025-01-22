@@ -1,11 +1,9 @@
 import { fileURLToPath, URL } from 'node:url';
-
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vueDevTools from 'vite-plugin-vue-devtools';
-import vuetify from 'vite-plugin-vuetify'; // Vuetify-Plugin importieren
+import vuetify from 'vite-plugin-vuetify';
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
@@ -17,4 +15,9 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  server: {
+    port: 5174,
+    open: true, // Automatically open the browser
+  },
+  base: '/', // Ensure the base URL is set correctly
 });

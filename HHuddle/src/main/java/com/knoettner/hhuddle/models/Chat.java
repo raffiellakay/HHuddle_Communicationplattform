@@ -34,6 +34,10 @@ public class Chat {
     @JoinColumn( name = "second_participant_id")
     private MyUser secondParticipant;
 
+    private boolean visibleToFirstParticipant = true;  //um chat einseiting sichtbar zu machen
+    private boolean visibleToSecondParticipant = true;
+
+
 
 
 }
