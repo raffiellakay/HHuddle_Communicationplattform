@@ -8,10 +8,8 @@ export const useChatStore = defineStore("chatStore", {
   }),
 
   actions: {
-    /**
-     * Create a new chat between two users.
-     * @param {Object} params - Contains firstUserId and secondUserId.
-     */
+    // Create a new chat between two users.
+     
     async createChat({ firstUserId, secondUserId }) {
       try {
         const response = await axios.post(`${API_URL}chats/create`, null, {
@@ -23,11 +21,8 @@ export const useChatStore = defineStore("chatStore", {
       }
     },
 
-    /**
-     * Send a message in a chat.
-     * @param {Object} messageData - Data for the chat message.
-     * @returns {Object} - Sent message response.
-     */
+    // Send a message in a chat.
+     
     async sendMessage(messageData) {
       try {
         const response = await axios.post(`${API_URL}chats/send-message`, messageData);
@@ -37,24 +32,21 @@ export const useChatStore = defineStore("chatStore", {
       }
     },
 
-    /**
-     * Fetch all chats for a specific user.
-     * @param {Number} userId - ID of the user.
-     */
+    // Fetch all chats for a specific user.
+     
     async fetchChatsByUserId(userId) {
       try {
         const response = await axios.get(`${API_URL}chats/user/${userId}`);
+        console.log("Fetched chats", response.data);
         this.chats = response.data; // Update the chats list
+        return this.chats;
       } catch (error) {
         console.error("Error fetching user chats:", error);
       }
     },
 
-    /**
-     * Fetch a single chat by ID.
-     * @param {Number} chatId - ID of the chat.
-     * @returns {Object} - Chat data.
-     */
+    // Fetch a single chat by ID.
+    
     async fetchChatById(chatId) {
       try {
         const response = await axios.get(`${API_URL}chats/${chatId}`);
@@ -64,11 +56,8 @@ export const useChatStore = defineStore("chatStore", {
       }
     },
 
-    /**
-     * Delete a chat for a specific user.
-     * @param {Number} chatId - ID of the chat to delete.
-     * @param {Number} userId - ID of the user requesting deletion.
-     */
+    //Delete a chat for a specific user.
+    
     async deleteChat(chatId, userId) {
       try {
         await axios.delete(`${API_URL}chats/${chatId}`, {
