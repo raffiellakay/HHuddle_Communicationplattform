@@ -3,6 +3,6 @@
 </script>
 
 <template>
-Ich bin das Board für Gemeinschaftsräume
+Ich bin das Board für Gemeinschaftsräume asdfadsfsdf
     
 </template>

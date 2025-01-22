@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { useAuthStore } from '@/stores/authStore';
 import { useRouter } from 'vue-router';
 import { isAxiosError } from 'axios';
+import NavbarDefault from '@/components/DefaultNavbar.vue';
 
 
 const errorMessage = ref('');
@@ -59,6 +60,7 @@ async function login() {
 <template>
   <!-- Vuetify App -->
   <v-app>
+    <NavbarDefault/>
     <!-- Hauptbereich -->
     <v-main class="d-flex align-center justify-center" style="height: 100vh; background-color: #f5f5f5;">
       <v-container>

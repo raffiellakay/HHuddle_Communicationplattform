@@ -18,6 +18,8 @@ public interface UserPostService {
     PostDto createUserPost(PostDto postDto);
 
 
+  //  PostDto createBlackboardPost(PostDto postDto);
+
     PostDto updateUserPost(PostDto updatedPost);
 
     PostDto getPost(Long postId);
@@ -32,4 +34,6 @@ public interface UserPostService {
     void deletePost(Long postId);
 
     void deletePostsByUserId(Long userId);
+
+    Set<PostDto> getPostsByHouseId(Long houseId);
 }

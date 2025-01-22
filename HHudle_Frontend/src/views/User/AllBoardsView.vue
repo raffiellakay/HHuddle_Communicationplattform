@@ -1,10 +1,9 @@
 <script setup>
-import { useRoute } from "vue-router";
-import BoardCard from "@/components/User/BoardCard.vue";
+import { useRouter } from "vue-router";
 
 
 
-const route = useRoute();
+const router = useRouter();
 
 
 
@@ -18,6 +17,7 @@ const route = useRoute();
     
       
         <v-card 
+        @click="router.push('/user/board/commonrooms')"
         class="board-card"
         :elevation="3" 
         :rounded="2"
@@ -25,13 +25,19 @@ const route = useRoute();
         
             <v-card-title>Gemeinschaftsräume</v-card-title>
         </v-card>
-        <v-card class="board-card">
+        <v-card 
+        @click="router.push('/user/board/blackboard')"
+        class="board-card">
             <v-card-title>Schwarzes Brett</v-card-title>
         </v-card>
-        <v-card class="board-card">
+        <v-card 
+        @click="router.push('/user/board/packagefinder')"
+        class="board-card">
             <v-card-title>Paketfinder</v-card-title>
         </v-card>
-        <v-card class="board-card">
+        <v-card 
+        @click="router.push('/user/board/search&find')"
+        class="board-card">
             <v-card-title>Suchen und Finden</v-card-title>
         </v-card>
   

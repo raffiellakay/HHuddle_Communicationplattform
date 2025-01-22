@@ -19,6 +19,8 @@ public class ChatDto {
     private BasicUserDto first_participant;
     private BasicUserDto second_participant;
     private Set<ChatMessageResponseDto> messages;
+    private boolean visibleToFirstParticipant;
+    private boolean visibleToSecondParticipant;
 
 
 }

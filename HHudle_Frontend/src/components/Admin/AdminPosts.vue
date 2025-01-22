@@ -2,7 +2,6 @@
 
 import AdminPostCard from '@/components/Admin/AdminPostCard.vue';
 import { useAdminPostStore } from '@/stores/Admin/adminPostStore';
-import AdminPostForm from '@/components/Admin/AdminPostForm.vue'
 import { computed, onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 
