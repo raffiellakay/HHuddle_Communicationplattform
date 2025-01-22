@@ -5,13 +5,13 @@ import com.knoettner.hhuddle.UserPostKey;
 import com.knoettner.hhuddle.dto.PostDto;
 import com.knoettner.hhuddle.dto.mapper.PostMapper;
 import com.knoettner.hhuddle.models.*;
-import com.knoettner.hhuddle.repository.BoardRepository;
-import com.knoettner.hhuddle.repository.PostRepository;
-import com.knoettner.hhuddle.repository.UserPostRepository;
-import com.knoettner.hhuddle.repository.UserRepository;
+import com.knoettner.hhuddle.repository.*;
+import com.knoettner.hhuddle.security.services.UserDetailsImpl;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -32,6 +32,7 @@ public class UserPostServiceImpl implements UserPostService {
     private BoardRepository boardRepository;
     @Autowired
     private UserPostRepository userPostRepository;
+    private HouseRepository houseRepository;
 
 
     @Override
@@ -217,6 +218,42 @@ public class UserPostServiceImpl implements UserPostService {
 
 
      }
+
+    @Override
+    public Set<PostDto> getPostsByHouseId(Long houseId) {
+        //securitycontextholder gets authenticationinfo
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        //gets special user details (=principals)
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Long userId = userDetails.getId();
+        Optional<MyUser> maybeUser = userRepository.findById(userId);
+        if (maybeUser.isEmpty()) {
+            return null;
+        }
+
+        MyUser user = maybeUser.get();
+        Long houseIdFromUser = user.getHouse().getId();
+
+        if(houseIdFromUser != houseId) {
+            return null;
+        }
+
+        List<Post> allPosts = postRepository.findAll();
+        Set<PostDto> allPostfromHouse = new HashSet<>();
+        for (Post currentPost : allPosts) {
+            //if one post is not correctly in databank and has no userPost Connection it would throw error, so there is a try catch and an fixed Id to avoid that
+            Long id = -1L;
+            try {
+                id = currentPost.getUserPost().getBoard().getHouse().getId();
+            } catch (Exception e) {
+                id = -1L;
+            }
+            if (id == houseId) {
+              allPostfromHouse.add(postMapper.toDto(currentPost));
+            }
+        }
+        return allPostfromHouse;
+    }
 }
 
 
