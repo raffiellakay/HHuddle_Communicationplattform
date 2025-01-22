@@ -59,7 +59,7 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    //Chain of filters that are used one after another
+   //Chain of filters that are used one after another
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 //Cross-Site Request Forgery automatically with SpringSecurity - disabled! (HTTPRequests from not good websites)
@@ -81,8 +81,8 @@ public class WebSecurityConfig {
     }
 }
 
-/*
 
+/*
 // to remove authorization while testing. can be deleted!
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
