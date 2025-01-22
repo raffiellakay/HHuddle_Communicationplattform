@@ -84,11 +84,11 @@ public class HHuddleApplication implements CommandLineRunner  {
 
         //Hardcoded Post:
 
+//ist falsch (kein UserPost,damit wird er falsch in die Datenbank übernommen, was zu Problemen führen kann
+        //  Post post = new Post(2L,"newtitle2", "newtext2", Category.BLACKBOARD, LocalDateTime.now(),null, true, null, null, null, false, null);
+       //postRepository.save(post);
 
-       Post post = new Post(2L,"newtitle2", "newtext2", Category.BLACKBOARD, LocalDateTime.now(),null, true, null, null, null, false, null);
-       postRepository.save(post);
-
-       UserPostKey userPostKey = new UserPostKey(0L, 1L, 2L);
+       //UserPostKey userPostKey = new UserPostKey(0L, 1L, 2L);
 
 
 
