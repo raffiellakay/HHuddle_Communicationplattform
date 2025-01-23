@@ -11,10 +11,10 @@
             @click="navigateToChat(chat.id)"
           >
             <div class="dialog-header">
-              <span class="chat-time">{{ chat.lastMessageTime || 'N/A' }}</span>
+              <span class="chat-time">{{formatDate(chat.timestamp)  || 'N/A' }}</span>
             </div>
             <div class="dialog-preview">
-              <span>{{ chat.text || 'No messages yet' }}</span>
+              <span>{{ chat.messages[chat.messages.length - 1]?.text || 'No messages yet' }}</span>
             </div>
           </div>
         </div>
@@ -41,9 +41,14 @@ const sortedChats = computed(() => {
   );
 });
 
+//date format
+const formatDate = (date) => {
+  return new Date(date).toLocaleDateString() +  " " + new Date(date).toLocaleTimeString();
+};
+
 // Fetch chats on component mount
 onMounted(async () => {
-  const userId = 2; // Replace with dynamic user ID as needed
+  const userId = 52; // Replace with dynamic user ID as needed
   try {
     await chatStore.fetchChatsByUserId(userId);
     userChats.value = chatStore.chats; // Sync chats from the store
