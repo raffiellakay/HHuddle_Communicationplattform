@@ -59,7 +59,7 @@ onMounted(async () => {
 
 // Navigate to a specific chat
 function navigateToChat(chatId) {
-  router.push(`/chat/${chatId}`);
+  router.push({ name: 'ChatView', params: { id: chatId } });;
 }
 
 
