@@ -30,7 +30,7 @@ import { useChatStore } from "@/stores/User/chatStore";
 
 const chatStore = useChatStore();
 const router = useRouter();
-
+const userId = 52; // Replace with dynamic user ID as needed
 // Reactive data for chats
 const userChats = ref([]);
 
@@ -48,7 +48,7 @@ const formatDate = (date) => {
 
 // Fetch chats on component mount
 onMounted(async () => {
-  const userId = 52; // Replace with dynamic user ID as needed
+  
   try {
     await chatStore.fetchChatsByUserId(userId);
     userChats.value = chatStore.chats; // Sync chats from the store
@@ -59,7 +59,7 @@ onMounted(async () => {
 
 // Navigate to a specific chat
 function navigateToChat(chatId) {
-  router.push({ name: 'ChatView', params: { id: chatId } });;
+  router.push({ name: 'ChatView', params: { id: chatId }, query: { senderId: 52 } });;
 }
 
 

@@ -31,17 +31,17 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { useRouter, useRoute } from "vue-router";
+import { useRoute } from "vue-router";
 import { useChatStore } from "@/stores/User/chatStore";
 
 const chatStore = useChatStore();
-const router = useRouter();
 const route = useRoute();
 
-const chatId = route.params.chatId;
+const chatId = route.params.id;
+const senderId = route.query.senderId;
 const chatMessages = ref([]);
 const newMessage = ref("");
-
+console.log(route);
 onMounted(async () => {
   await fetchChat();
 });
@@ -56,12 +56,16 @@ async function fetchChat() {
 }
 
 async function sendMessage() {
+  console.log("Sending message:", newMessage.value, senderId);
   if (!newMessage.value.trim()) return;
+//"senderId": 52,
+ // "chatId": 2,
+ // "text": "wie gehts dir?"
 
   const messageData = {
     chatId,
     text: newMessage.value,
-    timestamp: new Date().toISOString(),
+    senderId,
   };
 
   try {
@@ -103,4 +107,3 @@ function formatDate(date) {
   font-size: 1em;
 }
 </style>
-    
