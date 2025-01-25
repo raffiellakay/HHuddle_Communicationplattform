@@ -13,13 +13,10 @@ import SearchAndFindView from '@/views/User/SearchAndFindView.vue';
 import AHomeView from '@/views/Admin/AHomeView.vue';
 import LoginLayout from '@/layouts/LoginLayout.vue';
 import AllBoardsView from '@/views/User/AllBoardsView.vue';
-
 import AboutUsView from '@/views/AboutUsView.vue';
 import ContactView from '@/views/ContactView.vue';
-import AHouseLayout from '@/layouts/Admin/AHouseLayout.vue';
-import AdminPostsView from '@/components/Admin/AdminPosts.vue';
-
-
+import ChatListView from '@/views/User/ChatListView.vue';
+import ChatView from '@/views/User/ChatView.vue';
 import { useAuthStore } from '@/stores/authStore';
 import AHouseView from '@/views/Admin/AHouseView.vue';
 import PasswordResetView from '@/views/PasswordResetView.vue';
@@ -74,8 +71,24 @@ const routes = [
             component: SearchAndFindView,
             meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
           }]
-      }]
+     
     },
+ {
+  path: 'chatlist',
+  name: 'ChatListView',
+  component: ChatListView,
+  meta: { requiresAuth: true },
+ },
+    {
+      path: 'chatlist/chat/:id',
+      name: 'ChatView',
+      component: ChatView,
+      meta: { requiresAuth: true },
+      props: true,
+    },
+  ],
+},
+
   {
     path: '/admin',
     name: 'admin',

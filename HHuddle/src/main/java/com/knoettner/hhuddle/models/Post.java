@@ -1,6 +1,7 @@
 package com.knoettner.hhuddle.models;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.knoettner.hhuddle.Category;
 import jakarta.persistence.*;
 import lombok.*;
@@ -36,6 +37,8 @@ public class Post {
 
     private LocalDateTime starttime;
     private LocalDateTime endtime;
+
+    @JsonProperty("isPrivate")
     private boolean isPrivate;
 
     @ManyToOne
