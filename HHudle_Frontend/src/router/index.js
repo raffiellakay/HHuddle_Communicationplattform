@@ -21,73 +21,75 @@ import { useAuthStore } from '@/stores/authStore';
 import AHouseView from '@/views/Admin/AHouseView.vue';
 import PasswordResetView from '@/views/PasswordResetView.vue';
 import SetNewPasswordView from '@/views/SetNewPasswordView.vue';
+import AResidentsView from '@/views/Admin/AResidentsView.vue';
+import AFacilitiesView from '@/views/Admin/AFacilitiesView.vue';
 
 
 
 
 const routes = [
-  
+
   {
     path: '/user',
     name: 'Home',
     component: UHomeLayout,
-    meta: { requiresAuth: true   },
+    meta: { requiresAuth: true },
     children: [
       {
         path: 'home',
         name: 'UserHome',  //Achtung! Name muss unique sein
         component: UHomeView,
-        meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT']  },
+        meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
       },
       {
-        path:'allboards',
+        path: 'allboards',
         name: 'AllBoards',
-        component: AllBoardsView, 
-        meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT']  }
+        component: AllBoardsView,
+        meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] }
       },
       {
         path: 'board',
         name: 'Board',
         component: BoardLayout,
-        meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT']   },
+        meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
         children: [
           {
             path: 'commonrooms',
             component: CommonRoomsView,
-            meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT']  }, 
+            meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
           },
           {
             path: 'blackboard',
             component: BlackBoardView,
-            meta: { requiresAuth: true , requiredRoles: ['ROLE_RESIDENT']  },
+            meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
           },
           {
             path: 'packagefinder',
             component: PackageFinderView,
-            meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT']  },
+            meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
           },
           {
-            path:'search&find',
+            path: 'search&find',
             component: SearchAndFindView,
             meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
           }]
-     
-    },
- {
-  path: 'chatlist',
-  name: 'ChatListView',
-  component: ChatListView,
-  meta: { requiresAuth: true },
- },
-    {
-      path: 'chatlist/chat/:id',
-      name: 'ChatView',
-      component: ChatView,
-      meta: { requiresAuth: true },
-      props: true,
-    },
-  ],
-},
+
+      },
+      {
+        path: 'chatlist',
+        name: 'ChatListView',
+        component: ChatListView,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'chatlist/chat/:id',
+        name: 'ChatView',
+        component: ChatView,
+        meta: { requiresAuth: true },
+        props: true,
+      },
+    ],
+  },
 
   {
     path: '/admin',
@@ -99,16 +101,30 @@ const routes = [
         path: 'home',
         name: 'AdminHome',
         component: AHomeView,
-        meta: { requiresAuth: true , requiredRoles: ['ROLE_PMANAGEMENT'] },
-      }, 
-     
+        meta: { requiresAuth: true, requiredRoles: ['ROLE_PMANAGEMENT'] },
+      },
+
       {
         path: 'house/:houseId',
         name: 'House',
         component: AHouseView,
         props: true,
-        meta: { requiresAuth: true , requiredRoles: ['ROLE_PMANAGEMENT'] },
-      }
+        meta: { requiresAuth: true, requiredRoles: ['ROLE_PMANAGEMENT'] },
+      },
+
+      {
+        path: 'user/ :userId',
+        name: 'Residents',
+        component: AResidentsView,
+        meta: { requiresAuth: true, requiredRoles: ['ROLE_PMANAGEMENT'] },
+      },
+
+      {
+        path: 'facilities/ :facilityId',
+        name: 'Facilities',
+        component: AFacilitiesView,
+        meta: { requiresAuth: true, requiredRoles: ['ROLE_PMANAGEMENT'] },
+      },
     ]
   },
 
@@ -117,19 +133,19 @@ const routes = [
     name: 'Login',
     component: LoginLayout,
     meta: { requiresAuth: false },
-   
+
   },
   {
     path: '/contact',
     name: 'Contact',
     component: ContactView,
-    meta: { requiresAuth: false}
+    meta: { requiresAuth: false }
   },
   {
     path: '/aboutUs',
-        name: 'AboutUs',
-        component: AboutUsView,
-        meta: { requiresAuth: false }
+    name: 'AboutUs',
+    component: AboutUsView,
+    meta: { requiresAuth: false }
   },
   {
     path: '/password-reset',
@@ -141,18 +157,18 @@ const routes = [
     path: '/set-new-password',
     name: SetNewPasswordView,
     component: SetNewPasswordView,
-    meta: {requiresAuth: true}
+    meta: { requiresAuth: true }
   }
 
 
 
-  ]
-      
-  
+]
 
 
 
-  // Weitere Routen können hier hinzugefügt werden
+
+
+// Weitere Routen können hier hinzugefügt werden
 
 
 const router = createRouter({
@@ -218,7 +234,7 @@ router.beforeEach(async (to, from, next) => {
     next();
   }
 
-  
+
 });
 
 export default router;

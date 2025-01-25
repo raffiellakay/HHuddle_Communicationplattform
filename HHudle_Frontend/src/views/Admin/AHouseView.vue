@@ -9,7 +9,7 @@ import viennaHouseImage2 from '@/assets/Pictures/ViennaHouse2.jpg';
 import viennaHouseImage3 from '@/assets/Pictures/ViennaHouse3.jpg';
 
 const props = defineProps({
-    houseId: Number
+  houseId: Number
 })
 
 const route = useRoute();
@@ -57,12 +57,9 @@ const houseImage = computed(() => {
 </script>
 
 <template>
-    <div class="header-container">
+  <div class="header-container">
     <!-- Hintergrundbild -->
-    <v-img 
-    class="header-image" 
-    :src="houseImage" 
-    cover></v-img>
+    <v-img class="header-image" :src="houseImage" cover></v-img>
 
     <!-- Hausdetails über dem Bild -->
     <div class="house-details">
@@ -76,17 +73,15 @@ const houseImage = computed(() => {
       <v-alert v-else type="warning">Haus nicht gefunden!</v-alert>
     </div>
   </div>
-    
 
 
-<v-container>
-    <AdminPostsView :houseId="houseId" @adminPost-added="refreshPosts"/>
-</v-container>
 
+  <v-container>
+    <AdminPostsView :houseId="houseId" @adminPost-added="refreshPosts" />
+  </v-container>
 </template>
 
 <style scoped>
-
 .header-container {
   position: relative;
   width: 100vw;
@@ -124,16 +119,20 @@ const houseImage = computed(() => {
 
 .house-info-row {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 gleichmäßige Spalten */
-  gap: 300px; /* Abstand zwischen den Spalten */
+  grid-template-columns: repeat(3, 1fr);
+  /* 3 gleichmäßige Spalten */
+  gap: 300px;
+  /* Abstand zwischen den Spalten */
   text-align: center;
 }
 
 /*Anpassung für kleine Bildschirme */
 @media (max-width: 768px) {
   .house-info-row {
-    grid-template-columns: 1fr; /* Eine Spalte, um die Inhalte untereinander zu setzen */
-    gap: 16px; /* Weniger Abstand */
+    grid-template-columns: 1fr;
+    /* Eine Spalte, um die Inhalte untereinander zu setzen */
+    gap: 16px;
+    /* Weniger Abstand */
   }
 }
 
@@ -142,5 +141,4 @@ const houseImage = computed(() => {
   font-size: 16px;
   font-weight: 500;
 }
-
 </style>
