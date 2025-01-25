@@ -11,6 +11,10 @@ import { useAdminPostStore } from "@/stores/Admin/adminPostStore";
 const props = defineProps({
   houseId: Number, 
   boardId: Number,
+  category : {
+    type: String, 
+    required: true, 
+  }
 })
 
 const emits = defineEmits(['userPost-added', 'close']); 
@@ -35,7 +39,7 @@ const startTime = ref("");
 const endDate = ref(null); 
 const endTime = ref(""); 
 
-// Validierung der Zeiteingabe (HH:mm)
+// Validierung der Zeit (HH:mm)
 function validateTimeInput(event) {
   const value = event.target.value;
   const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)?$/;
@@ -44,15 +48,28 @@ function validateTimeInput(event) {
   }
 }
 
-// Kombiniere Datum und Zeit
+// Kombiniere Datum und Zeit für das Backend
 function combineDateTime(date, time) {
   if (!date || !time) return null;
-  return `${date}T${time}`;
+
+  // Konvertiere das Datum ins richtige Format (yyyy-MM-dd)
+  const isoDate = new Date(date).toISOString().split("T")[0];
+
+  // Kombiniere Datum und Zeit
+  return `${isoDate}T${time}`;
 }
 
-const combinedStartTime = combineDateTime(startDate.value, startTime.value);
-const combinedEndTime = combineDateTime(endDate.value, endTime.value); 
+const combinedStartDateTime = ref(null);
+const combinedEndDateTime = ref(null);
 
+// Beobachte Änderungen und aktualisiere die kombinierten Werte
+watch([startDate, startTime], () => {
+  combinedStartDateTime.value = combineDateTime(startDate.value, startTime.value);
+});
+
+watch([endDate, endTime], () => {
+  combinedEndDateTime.value = combineDateTime(endDate.value, endTime.value);
+});
 
 console.log("UserPost wurde geöffnet mit boardId: ", boardId.value) //Debug 
 
@@ -72,8 +89,8 @@ const handleSubmit = async () => {
     category:   category.value, 
     timestamp:  timestamp.value, 
     photo:      photo.value, 
-    starttime:  combinedStartTime, 
-    endtime:    combinedEndTime, 
+    starttime:  combinedStartDateTime, 
+    endtime:    combinedEndDateTime, 
     user:       user.value, 
     boardId:    boardId.value, 
     isPrivate:  isPrivate.value, 
@@ -131,6 +148,29 @@ const formatToGermanDate = (date) => {
   });
 };
 
+function formatTimeInput(field) {
+  const time = field === "startTime" ? startTime.value : endTime.value;
+
+  if (time) {
+    const [hours, minutes] = time.split(":");
+
+    // Stelle sicher, dass Stunden und Minuten zwei Ziffern haben
+    const formattedTime = `${hours?.padStart(2, "0") || "00"}:${
+      minutes?.padStart(2, "0") || "00"
+    }`;
+
+    if (field === "startTime") {
+      startTime.value = formattedTime;
+    } else if (field === "endTime") {
+      endTime.value = formattedTime;
+    }
+  }
+}
+
+
+
+
+
 //Formatierte Datumsvariablen
 /*const formattedStartDate = computed(() =>
   formatToGermanDate(selectedStartDate.value)
@@ -164,7 +204,7 @@ const formattedEndDate = computed(() =>
               </v-col>
             </v-row>
 
-            <v-row>
+            <v-row v-if="category === 'EVENTS'">
               <v-col>
                 <!--Implementierung Startdatum Feld + Date Picker -->
                 <v-menu
@@ -200,23 +240,21 @@ const formattedEndDate = computed(() =>
               <v-col>
                 <div>
                   <v-text-field
-                    variant="outlined"
-                    label="Startzeit"
-                    density="default"
-                    v-model="starttime"
-                    type="text"
-                    :persistent-hint="false"
-                    name="Startzeit"
-                  >
-                  </v-text-field>
+                  variant="outlined"
+                  label="Startzeit"
+                  density="default"
+                  placeholder="HH:mm"
+                  v-model="startTime"
+                  :persistent-hint="false"
+                  @blur="formatTimeInput('startTime')"
+                  ></v-text-field>
                 </div>
-
-              </v-col>
+            </v-col>
             </v-row>
 
             
 
-            <v-row>
+            <v-row v-if="category === 'EVENTS'">
               <v-col>
                 <!--Implementierung Enddatum Feld + Date Picker -->
                 <v-menu
@@ -251,19 +289,19 @@ const formattedEndDate = computed(() =>
               <v-col>
                 <div>
                   <v-text-field
-                    variant="outlined"
-                    label="Endzeit"
-                    density="default"
-                    v-model="endtime"
-                    type="text"
-                    :persistent-hint="false"
-                    name="Endzeit"
-                  >
-                  </v-text-field>
+                  variant="outlined"
+                  label="Endzeit"
+                  density="default"
+                  placeholder="HH:mm"
+                  v-model="endTime"
+                  :persistent-hint="false"
+                  @blur="formatTimeInput('endTime')"
+                  ></v-text-field>
                 </div>
-
+              
               </v-col>
             </v-row>
+          
 
             <v-row>
               <v-col>
@@ -284,20 +322,21 @@ const formattedEndDate = computed(() =>
             <v-row>
               <v-col>
                 <v-radio-group
+                  v-model="isPrivate"
                   inline
                   label="Ist deine Veranstaltung öffentlich oder privat?"
                   name="eventtag"
                   color="primary"
-                >
-                  <v-radio label="Öffentlich" value="publicEvent"></v-radio>
-                  <v-radio label="Privat" value="privateEvent"></v-radio>
+                > 
+                  <v-radio :value="false" label="Öffentlich"></v-radio>
+                  <v-radio :value="true" label="Privat"></v-radio>
                 </v-radio-group>
               </v-col>
             </v-row>
 
             <!--Foto Upload-->
 
-            <v-row>
+            <v-row v-if="category === 'EXCHANGE' || category === 'BLACKBOARD' || category === 'FRONTPAGE'">
               <v-col>
                 <div style="">
                   <v-file-input

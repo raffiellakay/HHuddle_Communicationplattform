@@ -1,12 +1,14 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { computed } from 'vue';
 import PostForm from '@/components/User/PostForm.vue';
 import { useAuthStore } from '@/stores/authStore';
+import { useUserPostStore } from '@/stores/User/userPostStore';
 
 
-
+const userPostStore = useUserPostStore();
+const currentCategory = computed(() => userPostStore.currentCategory);
 
 const router = useRouter(); //Gibt Router Instanz zurück
 const route = useRoute(); // Gibt aktuelle Route zurück 
@@ -20,6 +22,26 @@ const showDrawer = ref(false);
 const activeItem = ref(null);
 const isBoardsOpen = ref(false);
 const showForm = ref(false); 
+
+//Gibt aktuelle Kategorie an PostForm zurück um bestimmte Felder zu verstecken
+watch(
+  () => route.path,
+  () => {
+    // Definiere Kategorien basierend auf den Routen
+    const categoryMap = {
+      "user/home": "FRONTPAGE",
+      "/user/board/commonrooms": "EVENTS",
+      "/user/board/blackboard": "BLACKBOARD",
+      "/user/board/packagefinder": "PACKAGE",
+      "/user/board/search&find": "EXCHANGE",
+    };
+
+    // Setze die Kategorie im Store
+    const category = categoryMap[route.path] || null;
+    userPostStore.setCategory(category);
+  },
+  { immediate: true } // Sofort ausführen
+);
 
 //Liste an Unteritems in Array
 const items = ref([
@@ -77,7 +99,7 @@ const handleLogout = () => {
       <!--Bei Klick auf bar-nav-icon wird toggleDrawer Methode aufgerufen-->
       <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
     </template>
-    <v-app-bar-title>Menü</v-app-bar-title>
+    <v-app-bar-title>{{ currentCategory || "Keine Kategorie"}}</v-app-bar-title>
     
     <template v-if="isBoardPage">
       <v-btn icon @click="showForm = true">
@@ -88,6 +110,7 @@ const handleLogout = () => {
       <v-dialog v-model="showForm" max-width="500">
         <template v-slot:default="{close}">
           <PostForm 
+          :category="currentCategory"
           @close="close">
         </PostForm>
         </template>
