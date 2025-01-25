@@ -26,7 +26,7 @@ const photo = ref(null);
 
 const user = {};
 const boardId = ref(null);
-const isPrivate = false; 
+const isPrivate = ref(false); 
 const anonymous = ref(true); 
 
 //Datum und Zeit 
@@ -132,12 +132,13 @@ const formatToGermanDate = (date) => {
 };
 
 //Formatierte Datumsvariablen
-const formattedStartDate = computed(() =>
+/*const formattedStartDate = computed(() =>
   formatToGermanDate(selectedStartDate.value)
 );
 const formattedEndDate = computed(() =>
   formatToGermanDate(selectedEndDate.value)
-);
+);*/
+
 </script>
 
 <template>
@@ -175,10 +176,10 @@ const formattedEndDate = computed(() =>
                   attach
                 >
                   <!-- Slot für den Activator -->
-                  <template #activator="{ props }">
+                  <template v-slot:activator="{ attr }">
                     <v-text-field
-                      v-bind="props"
-                      :value="formatToGermanDate(startDate)"
+                      v-bind="attr"
+                      :model-value="formatToGermanDate(startDate)"
                       label="Startdatum"
                       variant="outlined"
                       prepend-inner-icon="mdi-calendar-blank"
@@ -229,7 +230,7 @@ const formattedEndDate = computed(() =>
                   <!-- Slot für den Activator -->
                   <template v-slot:activator="{ attrs }">
                     <v-text-field
-                      :model-value="formattedEndDate"
+                      :model-value="formatToGermanDate(endDate)"
                       label="Enddatum"
                       variant="outlined"
                       prepend-inner-icon="mdi-calendar-blank"
@@ -241,7 +242,7 @@ const formattedEndDate = computed(() =>
 
                   <!-- Date Picker -->
                   <v-date-picker
-                    v-model="selectedEndDate"
+                    v-model="endDate"
                     @input="showEndDatePicker = false"
                     locale="de"
                   ></v-date-picker>

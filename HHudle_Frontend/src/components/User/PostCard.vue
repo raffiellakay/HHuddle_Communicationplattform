@@ -59,7 +59,7 @@ console.log("Auth Token:", authStore.token);
 
 onMounted(async () => {
   try {
-    const houseId = authStore.user.houseId; // Hole die `houseId` aus dem User-Objekt
+    const houseId = authStore.user.houseId; // Hole die House ID des Benutzers
     if (!houseId) {
       console.error("Keine House ID gefunden!");
       return;
@@ -68,8 +68,8 @@ onMounted(async () => {
     console.log("Lade Posts für House ID:", houseId);
     await userPostStore.getPostsByHouseId(houseId);
 
-    console.log("Filtere Posts nach Kategorie:", props.category);
-    userPostStore.filterPostsByCategory(props.category);
+    console.log("Setze Kategorie:", props.category);
+    userPostStore.setCategory(props.category);
   } catch (error) {
     console.error("Fehler beim Laden der Posts:", error);
   }
