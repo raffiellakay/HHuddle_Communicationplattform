@@ -14,7 +14,7 @@
               <span class="chat-time">{{ chat.lastMessageTime || 'N/A' }}</span>
             </div>
             <div class="dialog-preview">
-              <span>{{ chat.lastMessage || 'No messages yet' }}</span>
+              <span>{{ chat.text || 'No messages yet' }}</span>
             </div>
           </div>
         </div>
