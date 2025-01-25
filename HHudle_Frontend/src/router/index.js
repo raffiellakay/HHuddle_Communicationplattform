@@ -132,7 +132,7 @@ const routes = [
         meta: { requiresAuth: false }
   },
   {
-    path: '/password-reset',
+    path: '/user/:id/passwordcheck"',
     name: PasswordResetView,
     component: PasswordResetView,
     meta: { requiresAuth: false }

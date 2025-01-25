@@ -48,7 +48,7 @@ public class MyUser {
     @JoinColumn( name = "house_id_FK")
     private House house;
 
-    private boolean hasChangedPW;
+    private boolean hasChangedPW = false;
 
 
 }

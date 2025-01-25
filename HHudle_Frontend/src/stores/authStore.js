@@ -59,9 +59,9 @@ export const useAuthStore = defineStore('auth', {
             //get info from token, set timer for that timeframe, set user null=log out when time runs out
             console.log(this.user)
         },
-        hasUserChangedTempPW(id) {
-            console.log(axios.get(API_URL + 'user/passwordcheck', id))
-           
+        async hasUserChangedTempPW(id) {
+           const { data } = await axios.get(API_URL + 'user/' + id + '/passwordcheck', id)
+           return data;
         }
     }
 })

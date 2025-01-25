@@ -48,6 +48,7 @@ public class UserServiceImpl implements UserService {
         if (maybeUser.isPresent()) {
             MyUser user = maybeUser.get();
             user.setPassword(encoder.encode(newPw));
+            user.setHasChangedPW(true);
             userRepository.save(user);
             return userMapper.toDto(user);
         }
