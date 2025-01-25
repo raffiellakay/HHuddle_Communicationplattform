@@ -10,6 +10,18 @@ const rules = [
     if (value) return true
     return 'Bitte gib deine E-Mail-Adresse ein.'
   }]
+//Funktion noch nicht fertig - neues PW schicken per Mail brauch noch getNewPassword
+  async function getNewPassword() {
+      try {
+          
+              return
+      //    }
+      }
+   //   catch (error) {
+     //     console.error("Fehler beim Zürücksetzen des Passwort ");
+       //   return null;
+      //}
+    return }
   
 </script>
 
@@ -44,8 +56,8 @@ const rules = [
                 <v-btn
                   block
                   color="primary"
-                  @click="resetPassword"
-                  :loading="loading"
+                  @click="getNewPassword"
+                
                 >
                   Passwort zurücksetzen
                 </v-btn>
