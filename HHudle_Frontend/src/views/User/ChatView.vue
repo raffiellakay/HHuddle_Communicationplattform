@@ -49,7 +49,9 @@ onMounted(async () => {
 async function fetchChat() {
   try {
     const chat = await chatStore.fetchChatById(chatId);
-    chatMessages.value = chat.messages;
+    chatMessages.value = chat.messages.sort(
+      (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
+  );
   } catch (error) {
     console.error("Error fetching chat:", error);
   }
@@ -71,6 +73,10 @@ async function sendMessage() {
   try {
     const sentMessage = await chatStore.sendMessage(messageData);
     chatMessages.value.push(sentMessage);
+
+    // Sort messages after adding the new one
+     chatMessages.value.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+     
     newMessage.value = "";
   } catch (error) {
     console.error("Error sending message:", error);
