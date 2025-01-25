@@ -116,5 +116,13 @@ public class UserPostController {
     public Set<PostDto> getPostsByHouseId(@PathVariable("id") Long houseId){
        return userPostService.getPostsByHouseId(houseId);
     }
+
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/house/{id}/{category}")
+    @PreAuthorize("hasRole('RESIDENT')")
+   public Long getBoardIdByHouseIdAndCategory(@PathVariable("id") Long houseId, @PathVariable("category") String category) {
+        return userPostService.getBoardIdByHouseIdAndCategory(houseId, category);
+    }
 }
 

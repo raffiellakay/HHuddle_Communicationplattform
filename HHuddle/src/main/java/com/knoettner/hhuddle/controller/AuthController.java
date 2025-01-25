@@ -50,12 +50,14 @@ public class AuthController {
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
-
+        Optional<MyUser> maybeUser = userRepository.findById(userDetails.getId());
+        MyUser user = maybeUser.get();
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getMail(),
-                roles));
+                roles,
+                user.getHouse().getId()));
     }
 
 
@@ -73,11 +75,14 @@ public class AuthController {
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
-
+        Optional<MyUser> maybeUser = userRepository.findById(userDetails.getId());
+        MyUser user = maybeUser.get();
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getMail(),
-                roles));
+                roles,
+                user.getHouse().getId()
+                ));
     }
 }

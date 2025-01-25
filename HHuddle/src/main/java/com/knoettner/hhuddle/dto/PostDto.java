@@ -1,6 +1,7 @@
 package com.knoettner.hhuddle.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.knoettner.hhuddle.Category;
 import com.knoettner.hhuddle.UserPostKey;
 import com.knoettner.hhuddle.models.Facility;
@@ -33,6 +34,7 @@ public class PostDto {
     private byte[] photo;
     private LocalDateTime starttime;
     private LocalDateTime endtime;
+    @JsonProperty("isPrivate")
     private boolean isPrivate;
 
     private Long facilityId;
