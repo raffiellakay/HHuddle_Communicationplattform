@@ -125,7 +125,6 @@ async function login() {
                   block
                   color="primary"
                   @click="login"
-                  :loading="loading"
                 >
                   Anmelden
                 </v-btn>

@@ -2,6 +2,7 @@ package com.knoettner.hhuddle.controller;
 
 import com.knoettner.hhuddle.dto.MyUserDto;
 import com.knoettner.hhuddle.dto.PostDto;
+import com.knoettner.hhuddle.security.modelsDtos.LoginDto;
 import com.knoettner.hhuddle.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,7 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/resetPW")
-    public MyUserDto updatePassword(String mail, String newPw) {
-        return userService.updatePassword(mail, newPw);
+    public MyUserDto updatePassword(@RequestBody LoginDto loginDto) {
+        return userService.updatePassword(loginDto.getMail(), loginDto.getPassword());
     }
 }
