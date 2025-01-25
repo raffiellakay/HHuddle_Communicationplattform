@@ -77,12 +77,18 @@ public class AuthController {
                 .collect(Collectors.toList());
         Optional<MyUser> maybeUser = userRepository.findById(userDetails.getId());
         MyUser user = maybeUser.get();
+        Long houseId = null;
+        try {
+        houseId = user.getHouse().getId();}
+        catch(Exception e) {
+
+        };
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getMail(),
                 roles,
-                user.getHouse().getId()
+                houseId
                 ));
     }
 }
