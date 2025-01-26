@@ -44,10 +44,11 @@ const isResident = userRoles.find((role) => role === "ROLE_RESIDENT" )
       <v-col cols="1">
       <v-img
    :src= avatarraffy
-  />
-      </v-col>
-    <v-col cols="1">
-      <v-img
+   />
+   <v-img
+   class="d-inline pa-2 "
+ 
+
    :src= avatarraffy
   />
       </v-col>

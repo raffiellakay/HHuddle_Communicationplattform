@@ -36,4 +36,7 @@ public interface UserPostService {
     void deletePostsByUserId(Long userId);
 
     Set<PostDto> getPostsByHouseId(Long houseId);
+
+    Long getBoardIdByHouseIdAndCategory(Long houseId, String category) ;
+
 }

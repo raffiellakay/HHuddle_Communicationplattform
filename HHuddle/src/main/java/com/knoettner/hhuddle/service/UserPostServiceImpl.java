@@ -3,6 +3,7 @@ package com.knoettner.hhuddle.service;
 import com.knoettner.hhuddle.Category;
 import com.knoettner.hhuddle.UserPostKey;
 import com.knoettner.hhuddle.dto.PostDto;
+import com.knoettner.hhuddle.dto.mapper.HouseMapper;
 import com.knoettner.hhuddle.dto.mapper.PostMapper;
 import com.knoettner.hhuddle.models.*;
 import com.knoettner.hhuddle.repository.*;
@@ -32,7 +33,9 @@ public class UserPostServiceImpl implements UserPostService {
     private BoardRepository boardRepository;
     @Autowired
     private UserPostRepository userPostRepository;
+    @Autowired
     private HouseRepository houseRepository;
+  
 
 
     @Override
@@ -253,6 +256,24 @@ public class UserPostServiceImpl implements UserPostService {
             }
         }
         return allPostfromHouse;
+    }
+
+    @Override
+    public Long getBoardIdByHouseIdAndCategory(Long houseId, String category) {
+        Optional<House> maybeHouse = houseRepository.findById(houseId);
+        if (maybeHouse.isPresent()) {
+            House house = maybeHouse.get();
+            Set<Board> boards = house.getBoards();
+            for (Board currentBoard : boards) {
+                if (currentBoard.getCategory().toString().equalsIgnoreCase(category)) {
+                   return currentBoard.getId();
+                }
+            }
+            new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");
+
+        }
+        new ResponseStatusException(HttpStatus.NOT_FOUND, "House not found");
+        return null;
     }
 }
 
