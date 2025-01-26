@@ -11,10 +11,10 @@
             @click="navigateToChat(chat.id)"
           >
             <div class="dialog-header">
-              <span class="chat-time">{{formatDate(chat.timestamp)  || 'N/A' }}</span>
+              <span class="chat-time">{{formatDate(chat.timestamp) }}</span>
             </div>
             <div class="dialog-preview">
-              <span>{{sortArrayByProperty(chat.messages, "timestamp")[0]?.text || 'No messages yet' }}</span>
+              <span>{{sortArrayByProperty(chat.messages, "timestamp")[0]?.text }}</span>
             </div>
             <div class="delete-chat">
               <v-btn @click.stop="showModalWindow(chat.id)">Delete</v-btn>
@@ -78,12 +78,15 @@ const sortArrayByProperty = (array, property) => {
 };
 
 // Delete a chat
-const deleteChatById = (chatId) => {
- chatStore.deleteChat(chatId, userId)
- showDeleteDialog.value =false
-
- 
-};
+async function deleteChatById(chatId) {
+  try {
+    await chatStore.deleteChat(chatId, userId);
+    userChats.value = userChats.value.filter(chat => chat.id !== chatId);
+    showDeleteDialog.value = false;
+  } catch (error) {
+    console.error("Error deleting chat:", error);
+  }
+}
 
 const showModalWindow = (chatId) => {
   showDeleteDialog.value = true;
