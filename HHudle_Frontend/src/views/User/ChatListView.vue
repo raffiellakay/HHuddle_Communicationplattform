@@ -14,10 +14,16 @@
               <span class="chat-time">{{formatDate(chat.timestamp)  || 'N/A' }}</span>
             </div>
             <div class="dialog-preview">
-              <span>{{ chat.messages[chat.messages.length - 1]?.text || 'No messages yet' }}</span>
+              <span>{{sortArrayByProperty(chat.messages, "timestamp")[0]?.text || 'No messages yet' }}</span>
+            </div>
+            <div class="delete-chat">
+              <v-btn @click.stop="showModalWindow(chat.id)">Delete</v-btn>
             </div>
           </div>
         </div>
+
+        <ConfirmDeleteCheck :show="showDeleteDialog" @confirm="deleteChatById(currentChatId)" @close="showDeleteDialog = false"/>
+        
       </v-col>
     </v-row>
   </v-container>
@@ -27,17 +33,20 @@
 import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useChatStore } from "@/stores/User/chatStore";
+import ConfirmDeleteCheck from "@/components/ConfirmDeleteCheck.vue";
 
 const chatStore = useChatStore();
 const router = useRouter();
 const userId = 52; // Replace with dynamic user ID as needed
 // Reactive data for chats
 const userChats = ref([]);
+const showDeleteDialog = ref(false);
+const currentChatId = ref(null);
 
 // Computed property to sort chats by last message time
 const sortedChats = computed(() => {
   return [...userChats.value].sort((a, b) =>
-    new Date(b.lastMessageTime) - new Date(a.lastMessageTime)
+    new Date(b.timestamp) - new Date(a.timestamp)
   );
 });
 
@@ -61,6 +70,25 @@ onMounted(async () => {
 function navigateToChat(chatId) {
   router.push({ name: 'ChatView', params: { id: chatId }, query: { senderId: 52 } });;
 }
+
+const sortArrayByProperty = (array, property) => {
+  return array.sort((a, b) => {
+    return new Date(b[property]) - new Date(a[property]);
+  });
+};
+
+// Delete a chat
+const deleteChatById = (chatId) => {
+ chatStore.deleteChat(chatId, userId)
+ showDeleteDialog.value =false
+
+ 
+};
+
+const showModalWindow = (chatId) => {
+  showDeleteDialog.value = true;
+  currentChatId.value = chatId;
+};
 
 
 
