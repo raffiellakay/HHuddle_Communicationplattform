@@ -19,13 +19,15 @@ public class JwtResponse {
     private String username;
     private String mail;
     private List<String> roles;
+    private Long houseId;
     //what backend responses when login method is called
-    public JwtResponse(String token,  Long id, String username, String mail, List<String> roles) {
+    public JwtResponse(String token,  Long id, String username, String mail, List<String> roles, Long houseId) {
         this.token = token;
         this.id = id;
         this.username = username;
         this.mail = mail;
         this.roles = roles;
+        this.houseId = houseId;
     }
 }
 
