@@ -69,6 +69,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers("/swagger-ui/**").permitAll()
+                                .requestMatchers("/api/user/getNewPw").permitAll()
                                 .requestMatchers("/v3/**").permitAll()
                                 .anyRequest().authenticated()
                 ).cors(c -> c.configurationSource(customCorsConfiguration));

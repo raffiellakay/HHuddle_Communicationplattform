@@ -1,8 +1,11 @@
 <script setup>
   import { ref } from 'vue'
-
+  import { useAuthStore } from '@/stores/authStore';
+  import { useRouter } from 'vue-router';
   import NavbarDefault from '@/components/DefaultNavbar.vue';
 
+  const router = useRouter();
+const authStore = useAuthStore();
 const mailAddress = ref('')
 
 const rules = [
@@ -10,17 +13,18 @@ const rules = [
     if (value) return true
     return 'Bitte gib deine E-Mail-Adresse ein.'
   }]
-//Funktion noch nicht fertig - neues PW schicken per Mail brauch noch getNewPassword
+
   async function getNewPassword() {
       try {
-          
+          await authStore.getNewPassword(mailAddress.value)
+          router.push('/');
               return
-      //    }
+        }
+      catch (error) {
+        console.log(error)
+          console.error("Fehler beim Zürücksetzen des Passwort ");
+         return null;
       }
-   //   catch (error) {
-     //     console.error("Fehler beim Zürücksetzen des Passwort ");
-       //   return null;
-      //}
     return }
   
 </script>

@@ -68,6 +68,10 @@ export const useAuthStore = defineStore('auth', {
         async resetPassword(mail, newPw) {
             await axios.put(API_URL + 'user/resetPW', { mail, password: newPw })
             this.hasChanged = true;
+        },
+        async getNewPassword(mail) {
+            await axios.put(API_URL + 'user/getNewPw', { mail })
+            
         }
     }
 })

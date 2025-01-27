@@ -37,4 +37,10 @@ public class UserController {
     public MyUserDto updatePassword(@RequestBody LoginDto loginDto) {
         return userService.updatePassword(loginDto.getMail(), loginDto.getPassword());
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/getNewPw")
+    public void getNewPassword(@RequestBody LoginDto loginDto) {
+        userService.getNewPassword(loginDto.getMail());
+    }
 }
