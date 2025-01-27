@@ -60,7 +60,9 @@ onMounted(async () => {
   
   try {
     await chatStore.fetchChatsByUserId(userId);
-    userChats.value = chatStore.chats; // Sync chats from the store
+    userChats.value = chatStore.chats.filter((chat) => { 
+      return chat.visibleToFirstParticipant;
+    }) // Sync chats from the store
   } catch (error) {
     console.error("Error fetching user chats:", error);
   }

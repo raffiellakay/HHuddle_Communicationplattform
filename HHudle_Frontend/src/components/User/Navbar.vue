@@ -19,7 +19,8 @@ const showDrawer = ref(false);
 //Zustand des aktiven Items im Untermenü von Boards 
 const activeItem = ref(null);
 const isBoardsOpen = ref(false);
-const showForm = ref(false); 
+const showForm = ref(false);
+const showNewChatModal = ref(false); 
 
 //Liste an Unteritems in Array
 const items = ref([
@@ -78,7 +79,17 @@ const handleLogout = () => {
       <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
     </template>
     <v-app-bar-title>Menü</v-app-bar-title>
-    
+
+    <v-btn icon @click="showNewChatModal= true">
+        <v-icon class="plus-icon"> mdi-plus-circle</v-icon>
+      </v-btn>
+      <v-dialog v-model="showNewChatModal" max-width="500">
+        <template v-slot:default="{close}">
+         this is a modal Window
+        </template>
+      
+    </v-dialog>
+
     <template v-if="isBoardPage">
       <v-btn icon @click="showForm = true">
         <v-icon class="plus-icon"> mdi-plus-circle</v-icon>
