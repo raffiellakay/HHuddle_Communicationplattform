@@ -1,9 +1,6 @@
 package com.knoettner.hhuddle.service;
 
-import com.knoettner.hhuddle.UserPostKey;
 import com.knoettner.hhuddle.dto.*;
-import com.knoettner.hhuddle.models.Board;
-import com.knoettner.hhuddle.models.MyUser;
 
 import java.util.Set;
 //all methods necessary for the admin view/interactions
@@ -40,7 +37,7 @@ public interface AdminService {
 //Residents for House when created
 
     MyUserDto createUser (MyUserDto userDto);
-    CreateUpdateUserDto createAdminUser (CreateUpdateUserDto adminUser) throws Exception;
+    CreateAdminDto createAdminUser (CreateAdminDto adminUser) throws Exception;
     MyUserDto updateUser( MyUserDto user);
     //no delete necessary
     //no addFunction necessary bc HouseId is in MyUserDTO

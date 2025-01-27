@@ -10,13 +10,10 @@ import com.knoettner.hhuddle.models.*;
 import com.knoettner.hhuddle.repository.*;
 import com.knoettner.hhuddle.security.modelsDtos.EmailDetails;
 import com.knoettner.hhuddle.security.services.EmailService;
-import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -345,7 +342,7 @@ public class AdminServiceImpl implements AdminService {
     }
 //necessary to hardcode an AdminUser in HHuddleApplication
     @Override
-    public CreateUpdateUserDto createAdminUser(CreateUpdateUserDto adminUser) throws Exception {
+    public CreateAdminDto createAdminUser(CreateAdminDto adminUser) throws Exception {
        if(adminUser.getId() != null){
            Optional<MyUser> maybeUser = userRepository.findById(adminUser.getId());
            if (maybeUser.isPresent()) {
@@ -366,16 +363,8 @@ public class AdminServiceImpl implements AdminService {
         roles.add(role);
         newUser.setRoles(roles);
         newUser.setPassword(encoder.encode(adminUser.getPassword()));
-        if (adminUser.getHouseId() != null) {
-            Optional<House> maybeHouse = houseRepository.findById(adminUser.getHouseId());
-            if (maybeHouse.isPresent()) {
-                newUser.setHouse(maybeHouse.get());
-            } else {
-                newUser.setHouse(null);
-            }
-        } else {
-            newUser.setHouse(null);
-        }
+        newUser.setHouse(null);
+        newUser.setHasChangedPW(adminUser.isHasChangedPW());
         newUser.setUserPosts(new HashSet<>());
         newUser.setMessages(new HashSet<>());
         newUser.setFirst_participantInChat(new HashSet<>());
