@@ -37,7 +37,7 @@ public class EmailServiceImpl implements EmailService {
             if (maybeUser.isPresent()) {
                 MyUser actualUser = maybeUser.get();
                 //Temp PW
-                String tempPw = RandomStringUtils.random(8, "0123456789abcdef");
+                String tempPw = RandomStringUtils.random(8, "0123456789abcdefgh");
                 actualUser.setPassword(encoder.encode(tempPw));
 
                 userRepository.save(actualUser);

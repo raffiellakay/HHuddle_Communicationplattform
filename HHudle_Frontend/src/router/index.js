@@ -142,6 +142,12 @@ const routes = [
     name: SetNewPasswordView,
     component: SetNewPasswordView,
     meta: {requiresAuth: true}
+  },
+  {
+    path: '/password-reset',
+    name: PasswordResetView,
+    component: PasswordResetView,
+    meta: {requiresAuth: false}
   }
 
 
