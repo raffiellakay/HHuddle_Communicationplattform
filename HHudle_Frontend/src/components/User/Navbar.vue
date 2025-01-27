@@ -38,6 +38,7 @@ watch(
 
     // Setze die Kategorie im Store
     const category = categoryMap[route.path] || null;
+    console.log("Setze Kategorie im Store:", category);
     userPostStore.setCategory(category);
   },
   { immediate: true } // Sofort ausführen
@@ -85,6 +86,9 @@ const handleLogout = () => {
   router.push('/');
 }
 
+console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
+
+
 
 
 
@@ -107,12 +111,14 @@ const handleLogout = () => {
       </v-btn>
 <!-- Öffnen der PostForm Komponent in einem Dialog -->
    
-      <v-dialog v-model="showForm" max-width="500">
+      <v-dialog v-model="showForm" max-width="500" scrollable>
         <template v-slot:default="{close}">
+          <v-card style="max-height: 80vh; overflow-y: auto;">
           <PostForm 
           :category="currentCategory"
           @close="close">
         </PostForm>
+      </v-card>
         </template>
       
     </v-dialog>

@@ -5,26 +5,33 @@ import { ref, computed, watch, onMounted } from "vue";
 import { useUserPostStore } from "@/stores/User/userPostStore.js"
 import { useRoute } from "vue-router";
 import { useAdminPostStore } from "@/stores/Admin/adminPostStore";
+import { useAuthStore } from "@/stores/authStore";
 
 
 
 const props = defineProps({
   houseId: Number, 
   boardId: Number,
-  category : {
+  category: {
     type: String, 
     required: true, 
   }
-})
+});
+
+const category = computed(() => props.category);
+
+
 
 const emits = defineEmits(['userPost-added', 'close']); 
 const userPostStore = useAdminPostStore(); 
-const route = useRoute(); 
+const authStore = useAuthStore();
 
 //Definition ref Instanzen
+const houseId = authStore.user.houseId;
+
 const title = ref(''); 
 const text = ref('');
-const category = ref('');
+
 const timestamp = ref("2024-12-18T15:52:42"); 
 const photo = ref(null);
 
@@ -39,6 +46,18 @@ const startTime = ref("");
 const endDate = ref(null); 
 const endTime = ref(""); 
 
+const resolvedCategory = computed(() => category.value);
+
+// Kombinierte Start- und Endzeit
+const combinedStartDateTime = computed(() =>
+  combineDateTime(startDate.value, startTime.value)
+);
+const combinedEndDateTime = computed(() =>
+  combineDateTime(endDate.value, endTime.value)
+);
+
+
+
 // Validierung der Zeit (HH:mm)
 function validateTimeInput(event) {
   const value = event.target.value;
@@ -51,16 +70,12 @@ function validateTimeInput(event) {
 // Kombiniere Datum und Zeit für das Backend
 function combineDateTime(date, time) {
   if (!date || !time) return null;
-
-  // Konvertiere das Datum ins richtige Format (yyyy-MM-dd)
   const isoDate = new Date(date).toISOString().split("T")[0];
-
-  // Kombiniere Datum und Zeit
   return `${isoDate}T${time}`;
 }
 
-const combinedStartDateTime = ref(null);
-const combinedEndDateTime = ref(null);
+
+
 
 // Beobachte Änderungen und aktualisiere die kombinierten Werte
 watch([startDate, startTime], () => {
@@ -78,32 +93,51 @@ const isEdit = ref(false);
 
 //Kümmert sich um Formsubmission, emitted update-post wenn isEdit true ist mit dem überarbeitenden Post Details, ansonsten wird add-post mit den neuen Post Details emitted 
 const handleSubmit = async () => {
-  if (!boardId.value) {
-    console.error("Fehler: `boardId` wurde nicht gefunden.");
-    return;
-  }
+  try {
+    // Board ID abrufen
+    const boardId = await userPostStore.getBoardIdByHouseIdAndCategory(
+      houseId,
+      props.category,
+      
+    );
+    console.log(`Poste Post auf Board mit ID: ${boardId}`)
+
+    if (!boardId) {
+      console.error("Keine gültige Board-ID gefunden!");
+      return;
+    }
+
+    //Eingeloggte User 
+    const currentUser = {
+      id: authStore.user.id,
+      username: authStore.user.username,
+
+    }
 
   const newUserPost = {
     title:  	  title.value,
     text:       text.value,
-    category:   category.value, 
+    category:   props.category, 
     timestamp:  timestamp.value, 
     photo:      photo.value, 
-    starttime:  combinedStartDateTime, 
-    endtime:    combinedEndDateTime, 
-    user:       user.value, 
-    boardId:    boardId.value, 
+    starttime:  combinedStartDateTime.value, 
+    endtime:    combinedEndDateTime.value, 
+    user:       currentUser, 
+    boardId:    boardId, 
     isPrivate:  isPrivate.value, 
     anonymous:  anonymous.value,
   };
 
   console.log("Sende UserPost an Backend:", newUserPost);// Debug
 
-  try {
+  
     await userPostStore.createUserPost(newUserPost);
-    emits("userPost-added"); //Event auslösen, um `HouseView.vue` zu aktualisieren
+    emits("userPost-added"); //Event auslösen, um `Board` zu aktualisieren
     emits("close");
-  } catch (error) {
+    close();
+
+  
+    }catch (error) {
     console.error("Fehler beim Erstellen des UserPosts:", error);
   }
 };
@@ -168,7 +202,9 @@ function formatTimeInput(field) {
 }
 
 
-
+console.log("Empfangene Kategorie in PostForm:", props.category);
+console.log("Category in PostForm:", category.value);
+console.log("Empfangene Kategorie-Wert in PostForm:", category.value);
 
 
 //Formatierte Datumsvariablen
@@ -182,11 +218,11 @@ const formattedEndDate = computed(() =>
 </script>
 
 <template>
-  <v-card>
+  <v-card style="max-height: 80vh; overflow-y: auto;">
     <v-layout>
       <v-main>
         <v-container>
-          <v-form ref="form" @submit.prevent="formSubmit">
+          <v-form ref="form" @submit.prevent="handleSubmit">
             <v-row>
               <v-col>
                 <div>
@@ -198,13 +234,15 @@ const formattedEndDate = computed(() =>
                     type="text"
                     :persistent-hint="false"
                     name="title"
+                    required
                   >
                   </v-text-field>
                 </div>
               </v-col>
             </v-row>
 
-            <v-row v-if="category === 'EVENTS'">
+            <div v-if="category === 'EVENTS'">
+            <v-row >
               <v-col>
                 <!--Implementierung Startdatum Feld + Date Picker -->
                 <v-menu
@@ -254,7 +292,7 @@ const formattedEndDate = computed(() =>
 
             
 
-            <v-row v-if="category === 'EVENTS'">
+            <v-row v-if="resolvedCategory === 'EVENTS'">
               <v-col>
                 <!--Implementierung Enddatum Feld + Date Picker -->
                 <v-menu
@@ -301,6 +339,8 @@ const formattedEndDate = computed(() =>
               
               </v-col>
             </v-row>
+          </div>
+         
           
 
             <v-row>
@@ -312,6 +352,7 @@ const formattedEndDate = computed(() =>
                     density="default"
                     v-model="text"
                     name="Beschreibung"
+                    required
                   >
                   </v-textarea>
                 </div>
@@ -327,6 +368,7 @@ const formattedEndDate = computed(() =>
                   label="Ist deine Veranstaltung öffentlich oder privat?"
                   name="eventtag"
                   color="primary"
+                  v-if="category === 'EVENTS'"
                 > 
                   <v-radio :value="false" label="Öffentlich"></v-radio>
                   <v-radio :value="true" label="Privat"></v-radio>
@@ -384,7 +426,7 @@ const formattedEndDate = computed(() =>
               <v-col>
                
                   <v-btn
-                    @click="postClick"
+                    type="submit"
                     color="primary"
                     variant="flat"
                     size="default"
