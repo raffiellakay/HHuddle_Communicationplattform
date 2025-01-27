@@ -64,6 +64,7 @@ export const useChatStore = defineStore("chatStore", {
           params: { userId },
         });
         this.chats = this.chats.filter((chat) => chat.id !== chatId); // Remove chat from state
+        console.log("Deleted chat:", chatId);
       } catch (error) {
         console.error("Error deleting chat:", error);
       }
