@@ -18,10 +18,9 @@ const isResident = userRoles.find((role) => role === "ROLE_RESIDENT" )
 
 <template>
 
-  <NavbarResident v-if="isResident"></NavbarResident>
+<NavbarResident v-if="isResident"></NavbarResident>
   <NavbarPManagement v-if="isPManagement"></NavbarPManagement>
-  <NavbarDefault v-else></NavbarDefault>
-
+  <NavbarDefault v-if="!isResident && !isPManagement"></NavbarDefault>
   <v-main>
         Das ist die Kontaktseite 
   </v-main>
