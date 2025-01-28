@@ -6,7 +6,20 @@ import { useUserPostStore } from "@/stores/User/userPostStore.js"
 import { useRoute } from "vue-router";
 import { useAdminPostStore } from "@/stores/Admin/adminPostStore";
 import { useAuthStore } from "@/stores/authStore";
+import { useForm, Field} from "vee-validate";
+import * as yup from "yup";
 
+
+// Validierungsschema
+const validationSchema = yup.object({
+  title: yup.string().required("Titel ist erforderlich."),
+  text: yup.string().required("Beschreibung ist erforderlich."),
+});
+
+// `useForm` Setup
+const { handleSubmit, errors } = useForm({
+  validationSchema,
+});
 
 
 const props = defineProps({
@@ -15,9 +28,12 @@ const props = defineProps({
   category: {
     type: String, 
     required: true, 
-  }
+  },
 });
 
+
+
+const innerValue = ref(props.value || "");
 const category = computed(() => props.category);
 
 
@@ -91,56 +107,43 @@ console.log("UserPost wurde geöffnet mit boardId: ", boardId.value) //Debug
 //Die Form besitzt zwei Modi: Creation und Edit Mode
 const isEdit = ref(false);
 
+
+
+
+
 //Kümmert sich um Formsubmission, emitted update-post wenn isEdit true ist mit dem überarbeitenden Post Details, ansonsten wird add-post mit den neuen Post Details emitted 
-const handleSubmit = async () => {
+// Form Submission
+const submitPost = handleSubmit(async (values) => {
   try {
-    // Board ID abrufen
     const boardId = await userPostStore.getBoardIdByHouseIdAndCategory(
-      houseId,
-      props.category,
-      
+      authStore.user.houseId,
+      props.category
     );
-    console.log(`Poste Post auf Board mit ID: ${boardId}`)
 
     if (!boardId) {
       console.error("Keine gültige Board-ID gefunden!");
       return;
     }
 
-    //Eingeloggte User 
-    const currentUser = {
-      id: authStore.user.id,
-      username: authStore.user.username,
+    const newUserPost = {
+      title: values.title,
+      text: values.text,
+      category: props.category,
+      photo: photo.value,
+      isPrivate: isPrivate.value,
+      anonymous: anonymous.value,
+      boardId,
+    };
 
-    }
-
-  const newUserPost = {
-    title:  	  title.value,
-    text:       text.value,
-    category:   props.category, 
-    timestamp:  timestamp.value, 
-    photo:      photo.value, 
-    starttime:  combinedStartDateTime.value, 
-    endtime:    combinedEndDateTime.value, 
-    user:       currentUser, 
-    boardId:    boardId, 
-    isPrivate:  isPrivate.value, 
-    anonymous:  anonymous.value,
-  };
-
-  console.log("Sende UserPost an Backend:", newUserPost);// Debug
-
-  
+    console.log("Sende UserPost an Backend:", newUserPost);
     await userPostStore.createUserPost(newUserPost);
-    emits("userPost-added"); //Event auslösen, um `Board` zu aktualisieren
-    emits("close");
-    close();
 
-  
-    }catch (error) {
+    emits("userPost-added");
+    emits("close");
+  } catch (error) {
     console.error("Fehler beim Erstellen des UserPosts:", error);
   }
-};
+});
 
 
 
@@ -222,21 +225,25 @@ const formattedEndDate = computed(() =>
     <v-layout>
       <v-main>
         <v-container>
-          <v-form ref="form" @submit.prevent="handleSubmit">
+          <v-form ref="form" @submit.prevent="submitPost">
             <v-row>
               <v-col>
                 <div>
+                  <Field name="title" :rules="'required'" v-slot="{field, errors}">
                   <v-text-field
+                    v-bind="field"
                     variant="outlined"
                     label="Titel"
                     density="default"
                     v-model="title"
                     type="text"
                     :persistent-hint="false"
-                    name="title"
+                    :error-messages="errors"
                     required
                   >
                   </v-text-field>
+                </Field>
+            
                 </div>
               </v-col>
             </v-row>
@@ -346,15 +353,18 @@ const formattedEndDate = computed(() =>
             <v-row>
               <v-col>
                 <div style="">
+                  <Field name="text" :rules="'required'" v-slot="{ field, errors }">
                   <v-textarea
+                    v-bind="field"
                     variant="outlined"
                     label="Beschreibung"
                     density="default"
                     v-model="text"
-                    name="Beschreibung"
+                    :error-messages="errors"
                     required
                   >
                   </v-textarea>
+                </Field>
                 </div>
               </v-col>
             </v-row>
@@ -437,6 +447,7 @@ const formattedEndDate = computed(() =>
                     :block="true"
                     elevation="0"
                     :ripple="true"
+
                   >
                     <span>
                       {{ "Post" }}

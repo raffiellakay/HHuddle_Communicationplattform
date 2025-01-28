@@ -75,28 +75,31 @@ export const useUserPostStore = defineStore ('adminPost', {
 
       async getBoardIdByHouseIdAndCategory(houseId, category) {
         try {
-          console.log(`Lade boardId für houseId: ${houseId} und Kategorie: ${category}`);
-          this.loading = true;
-  
-          // API-Aufruf
-          const response = await axios.get(`${API_URL}posts/house/${houseId}/${category}`);
-          
-          //Prüfen, ob die Antwort eine boardId enthält
-          if (response.data && response.data.boardId) {
-              const boardId = response.data.boardId;
-              console.log(`Gefundene boardId: ${boardId}`);
-              return boardId; //Gibt die boardId zurück
-          } else {
-              console.warn("Keine boardId in der Antwort enthalten:", response.data);
-              return null; //Gibt null zurück wenn keine boardId vorhanden ist
-          }
-      } catch (error) {
-          console.error("Fehler beim Laden der boardId:", error);
-          throw error; //Fehler erneut werfen, damit der Aufrufer darauf reagieren kann
-      } finally {
-          this.loading = false; //Ladezustand zurücksetzen
-      }
-      },
+            console.log(`Lade boardId für houseId: ${houseId} und Kategorie: ${category}`);
+            this.loading = true;
+    
+            // API-Aufruf
+            const response = await axios.get(`${API_URL}posts/house/${houseId}/${category}`, {
+                headers: {
+                    Authorization: localStorage.getItem("jwt"),
+                },
+            });
+    
+            // Wenn die Antwort eine Zahl ist, direkt zurückgeben
+            if (typeof response.data === "number") {
+                console.log(`Gefundene boardId: ${response.data}`);
+                return response.data;
+            } else {
+                console.warn("Antwort hat unerwartetes Format:", response.data);
+                return null;
+            }
+        } catch (error) {
+            console.error("Fehler beim Laden der boardId:", error);
+            throw error; // Fehler erneut werfen, damit der Aufrufer darauf reagieren kann
+        } finally {
+            this.loading = false; // Ladezustand zurücksetzen
+        }
+    },
 
 
       async getPostsByHouseId(houseId) {

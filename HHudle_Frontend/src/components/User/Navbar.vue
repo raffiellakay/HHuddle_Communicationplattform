@@ -21,7 +21,13 @@ const showDrawer = ref(false);
 //Zustand des aktiven Items im Untermenü von Boards 
 const activeItem = ref(null);
 const isBoardsOpen = ref(false);
-const showForm = ref(false); 
+const showForm = ref(false);
+
+
+
+const handleClose = () => {
+  showForm.value = false;
+}
 
 //Gibt aktuelle Kategorie an PostForm zurück um bestimmte Felder zu verstecken
 watch(
@@ -126,7 +132,7 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
           <v-card style="max-height: 80vh; overflow-y: auto;">
           <PostForm 
           :category="currentCategory"
-          @close="close">
+          @close="handleClose">
         </PostForm>
       </v-card>
         </template>
