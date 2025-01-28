@@ -3,6 +3,7 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
 import { API_URL } from '@/api'
+import { useRouter } from 'vue-router';
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
@@ -12,6 +13,7 @@ export const useAuthStore = defineStore('auth', {
         
 
     }),
+    
  
     actions: {
         /**
@@ -59,9 +61,17 @@ export const useAuthStore = defineStore('auth', {
             //get info from token, set timer for that timeframe, set user null=log out when time runs out
             console.log(this.user)
         },
-        hasUserChangedTempPW(id) {
-            console.log(axios.get(API_URL + 'user/passwordcheck', id))
-           
+        async hasUserChangedTempPW(id) {
+           const { data } = await axios.get(API_URL + 'user/' + id + '/passwordcheck')
+           return data;
+        },
+        async resetPassword(mail, newPw) {
+            await axios.put(API_URL + 'user/resetPW', { mail, password: newPw })
+            this.hasChanged = true;
+        },
+        async getNewPassword(mail) {
+            await axios.put(API_URL + 'user/getNewPw', { mail })
+            
         }
     }
 })

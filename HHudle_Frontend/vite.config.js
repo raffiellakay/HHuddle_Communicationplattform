@@ -16,7 +16,7 @@ export default defineConfig({
     },
   },
   server: {
-    port: 5174,
+    port: 5173,
     open: true, // Automatically open the browser
   },
   base: '/', // Ensure the base URL is set correctly

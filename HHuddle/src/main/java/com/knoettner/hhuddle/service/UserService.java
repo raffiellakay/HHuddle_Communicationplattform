@@ -6,4 +6,5 @@ public interface UserService {
     Long getHouseIdByUser(Long userId);
     Boolean hasUserChangedTempPW(Long userId);
     MyUserDto updatePassword(String mail, String newPw);
+    void getNewPassword(String mail);
 }

@@ -1,7 +1,6 @@
 package com.knoettner.hhuddle;
 
-import com.knoettner.hhuddle.dto.CreateUpdateUserDto;
-import com.knoettner.hhuddle.dto.HouseDto;
+import com.knoettner.hhuddle.dto.CreateAdminDto;
 import com.knoettner.hhuddle.dto.MyUserDto;
 import com.knoettner.hhuddle.models.*;
 import com.knoettner.hhuddle.repository.PostRepository;
@@ -15,7 +14,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -59,9 +57,9 @@ public class HHuddleApplication implements CommandLineRunner  {
         //Hardcoded Test Admin: Hausverwaltung_Mayer
         Optional<MyUser> maybeAdmin = userRepository.findByUsername("Hausverwaltung_Mayer");
         if (maybeAdmin.isEmpty()) {
-            CreateUpdateUserDto createUpdateUserDto = new CreateUpdateUserDto(null, "admin", "test@hausverwaltungstest.at", "Hausverwaltung_Mayer", null, null);
+            CreateAdminDto createAdminDto = new CreateAdminDto(null, "admin", "test@hausverwaltungstest.at", "Hausverwaltung_Mayer", null, true);
             try {
-                adminService.createAdminUser(createUpdateUserDto);
+                adminService.createAdminUser(createAdminDto);
             } catch (Exception e) {
                 System.out.println(e);
             }

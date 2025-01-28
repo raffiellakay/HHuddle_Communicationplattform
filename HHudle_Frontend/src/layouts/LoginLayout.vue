@@ -11,12 +11,14 @@ const errorMessage = ref('');
 const router = useRouter();
 const handleLogin = async () => {
   const userId = useAuthStore().user.id;
-  const hasChangedPW = useAuthStore().hasUserChangedTempPW(userId);
+  const hasChangedPW = await useAuthStore().hasUserChangedTempPW(userId);
   const roles = useAuthStore().user.roles
   const rolePmanagement = roles.find(role => role === 'ROLE_PMANAGEMENT');
   const roleResident = roles.find(role => role === 'ROLE_RESIDENT')
+
   if(!hasChangedPW) {
     await router.push('/set-new-password')
+    return
   }
   if(rolePmanagement) {
     await router.push('/admin/home')
@@ -39,7 +41,6 @@ const credentials = ref({
   password: ''
 })
 
-//Funktion noch nicht eingebunden
 async function login() { 
   try {
     await authStore.login(credentials.value)
@@ -124,7 +125,6 @@ async function login() {
                   block
                   color="primary"
                   @click="login"
-                  :loading="loading"
                 >
                   Anmelden
                 </v-btn>

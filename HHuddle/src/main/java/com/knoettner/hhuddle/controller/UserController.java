@@ -1,6 +1,8 @@
 package com.knoettner.hhuddle.controller;
 
+import com.knoettner.hhuddle.dto.MyUserDto;
 import com.knoettner.hhuddle.dto.PostDto;
+import com.knoettner.hhuddle.security.modelsDtos.LoginDto;
 import com.knoettner.hhuddle.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,8 +27,20 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/user/passwordcheck")
-    Boolean hasUserChangedTempPW(Long userId) {
+    @GetMapping("/{id}/passwordcheck")
+    Boolean hasUserChangedTempPW(@PathVariable("id") Long userId) {
         return userService.hasUserChangedTempPW(userId);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/resetPW")
+    public MyUserDto updatePassword(@RequestBody LoginDto loginDto) {
+        return userService.updatePassword(loginDto.getMail(), loginDto.getPassword());
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/getNewPw")
+    public void getNewPassword(@RequestBody LoginDto loginDto) {
+        userService.getNewPassword(loginDto.getMail());
     }
 }

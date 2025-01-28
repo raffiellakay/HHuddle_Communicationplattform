@@ -32,9 +32,7 @@ const toggleDrawer = () => {
   <!--Linkes Seitenmenü ausklappbar-->
   <v-navigation-drawer v-if="showDrawer" style="width:100%" app color="grey-darken-2" temporary width="100%">
 
-
-
-    <!-- Inhalte des Navigation Drawers -->
+  <!-- Inhalte des Navigation Drawers -->
     <v-list>
       <v-list-item :to="{ path: '/'}">Login</v-list-item>   
       <v-list-item :to="{ path: '/aboutUs'}">Über Uns</v-list-item>

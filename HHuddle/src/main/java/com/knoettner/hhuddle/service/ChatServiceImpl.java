@@ -96,7 +96,10 @@ public class ChatServiceImpl implements ChatService {
 
         chatMessageRepository.save(chatMessage);
 
-        return chatMessageMapper.toDto(chatMessageRepository.findAllByTimestamp(chatMessage.getTimestamp()).get(0));//holt die erste Nachricht von der Liste mit dem Timestamp
+        List<ChatMessage> sortedMessages = chatMessageRepository.findAllMessagesByChatId(chatMessageRequestDto.getChatId());
+
+
+        return chatMessageMapper.toDto(chatMessage);
     }
 
    /* @Override

@@ -11,13 +11,19 @@
             @click="navigateToChat(chat.id)"
           >
             <div class="dialog-header">
-              <span class="chat-time">{{ chat.lastMessageTime || 'N/A' }}</span>
+              <span class="chat-time">{{formatDate(chat.timestamp) }}</span>
             </div>
             <div class="dialog-preview">
-              <span>{{ chat.text || 'No messages yet' }}</span>
+              <span>{{sortArrayByProperty(chat.messages, "timestamp")[0]?.text }}</span>
+            </div>
+            <div class="delete-chat">
+              <v-btn @click.stop="showModalWindow(chat.id)">Delete</v-btn>
             </div>
           </div>
         </div>
+
+        <ConfirmDeleteCheck :show="showDeleteDialog" @confirm="deleteChatById(currentChatId)" @close="showDeleteDialog = false"/>
+        
       </v-col>
     </v-row>
   </v-container>
@@ -27,26 +33,36 @@
 import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useChatStore } from "@/stores/User/chatStore";
+import ConfirmDeleteCheck from "@/components/ConfirmDeleteCheck.vue";
 
 const chatStore = useChatStore();
 const router = useRouter();
-
+const userId = 52; // Replace with dynamic user ID as needed
 // Reactive data for chats
 const userChats = ref([]);
+const showDeleteDialog = ref(false);
+const currentChatId = ref(null);
 
 // Computed property to sort chats by last message time
 const sortedChats = computed(() => {
   return [...userChats.value].sort((a, b) =>
-    new Date(b.lastMessageTime) - new Date(a.lastMessageTime)
+    new Date(b.timestamp) - new Date(a.timestamp)
   );
 });
 
+//date format
+const formatDate = (date) => {
+  return new Date(date).toLocaleDateString() +  " " + new Date(date).toLocaleTimeString();
+};
+
 // Fetch chats on component mount
 onMounted(async () => {
-  const userId = 2; // Replace with dynamic user ID as needed
+  
   try {
     await chatStore.fetchChatsByUserId(userId);
-    userChats.value = chatStore.chats; // Sync chats from the store
+    userChats.value = chatStore.chats.filter((chat) => { 
+      return chat.visibleToFirstParticipant;
+    }) // Sync chats from the store
   } catch (error) {
     console.error("Error fetching user chats:", error);
   }
@@ -54,8 +70,30 @@ onMounted(async () => {
 
 // Navigate to a specific chat
 function navigateToChat(chatId) {
-  router.push(`/chat/${chatId}`);
+  router.push({ name: 'ChatView', params: { id: chatId }, query: { senderId: 52 } });;
 }
+
+const sortArrayByProperty = (array, property) => {
+  return array.sort((a, b) => {
+    return new Date(b[property]) - new Date(a[property]);
+  });
+};
+
+// Delete a chat
+async function deleteChatById(chatId) {
+  try {
+    await chatStore.deleteChat(chatId, userId);
+    userChats.value = userChats.value.filter(chat => chat.id !== chatId);
+    showDeleteDialog.value = false;
+  } catch (error) {
+    console.error("Error deleting chat:", error);
+  }
+}
+
+const showModalWindow = (chatId) => {
+  showDeleteDialog.value = true;
+  currentChatId.value = chatId;
+};
 
 
 

@@ -73,23 +73,23 @@ const routes = [
             component: SearchAndFindView,
             meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
           }]
-
-      },
-      {
-        path: 'chatlist',
-        name: 'ChatListView',
-        component: ChatListView,
-        meta: { requiresAuth: true },
-      },
-      {
-        path: 'chatlist/chat/:id',
-        name: 'ChatView',
-        component: ChatView,
-        meta: { requiresAuth: true },
-        props: true,
-      },
-    ],
-  },
+     
+    },
+ {
+  path: 'chatlist',
+  name: 'ChatListView',
+  component: ChatListView,
+  meta: { requiresAuth: true },
+ },
+    {
+      path: '/chats/:id',
+      name: 'ChatView',
+      component: ChatView,
+      meta: { requiresAuth: true },
+      props: true,
+    },
+  ],
+},
 
   {
     path: '/admin',
@@ -148,7 +148,7 @@ const routes = [
     meta: { requiresAuth: false }
   },
   {
-    path: '/password-reset',
+    path: '/user/:id/passwordcheck"',
     name: PasswordResetView,
     component: PasswordResetView,
     meta: { requiresAuth: false }
@@ -157,7 +157,13 @@ const routes = [
     path: '/set-new-password',
     name: SetNewPasswordView,
     component: SetNewPasswordView,
-    meta: { requiresAuth: true }
+    meta: {requiresAuth: true}
+  },
+  {
+    path: '/password-reset',
+    name: PasswordResetView,
+    component: PasswordResetView,
+    meta: {requiresAuth: false}
   }
 
 
