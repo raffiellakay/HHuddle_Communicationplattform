@@ -128,12 +128,7 @@ const routes = [
         component: AboutUsView,
         meta: { requiresAuth: false }
   },
-  {
-    path: '/user/:id/passwordcheck"',
-    name: PasswordResetView,
-    component: PasswordResetView,
-    meta: { requiresAuth: false }
-  },
+ 
   {
     path: '/set-new-password',
     name: SetNewPasswordView,

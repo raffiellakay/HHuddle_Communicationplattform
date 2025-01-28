@@ -16,6 +16,31 @@ const handleLogin = async () => {
   const rolePmanagement = roles.find(role => role === 'ROLE_PMANAGEMENT');
   const roleResident = roles.find(role => role === 'ROLE_RESIDENT')
 
+
+  const mailrules = [
+  value => {
+          if (value) return true
+
+          return 'Fülle das Feld bitte aus.'
+        },
+        value => {
+          if (value?.length <= 4) return true
+
+          return 'Deine E-Mail braucht mindestens 4 Zeichen.'
+        }]
+
+  const pwrules = [
+  value => {
+          if (value) return true
+
+          return 'Fülle das Feld bitte aus.'
+        },
+        value => {
+          if (value?.length <= 7) return true
+
+          return 'Dein Passwort braucht mindestens 7 Zeichen.'
+        }]
+
   if(!hasChangedPW) {
     await router.push('/set-new-password')
     return
@@ -41,7 +66,8 @@ const credentials = ref({
   password: ''
 })
 
-async function login() { 
+
+async function submit() { 
   try {
     await authStore.login(credentials.value)
     await handleLogin();
@@ -73,6 +99,7 @@ async function login() {
         <v-row justify="center">
           <v-col cols="12" md="6" lg="4">
             <!-- Login-Karte -->
+             <v-form @submit.prevent>
             <v-card class="pa-4" elevation="3">
               <!-- Titel der Karte -->
               <v-card-title class="text-h5 text-center">
@@ -86,23 +113,32 @@ async function login() {
               <v-card-text>
                 <!-- Benutzername -->
                 <v-text-field
+                :rules="mailrules"
                   v-model="credentials.mail"
                   label="E-Mail"
+                  type="email"
+                  hint="Gib hier deine E-Mail ein."
                   outlined
                   clearable
                   required
                 ></v-text-field>
 
                 <!-- Passwort -->
+
+
                 <v-text-field
+           
+                 :rules="pwrules"
                   v-model="credentials.password"
                   label="Passwort"
-                  type="password"
+                 type="password"
+                 hint="Gib hier dein Passwort ein."
                   outlined
                   clearable
                   required
+                  
                 ></v-text-field>
-
+                
                 <!-- Passwort vergessen -->
                 <div class="text-right mt-2">
                   <a href="/password-reset" class="text-decoration-none">Passwort vergessen?</a>
@@ -122,17 +158,21 @@ async function login() {
               <!-- Aktionen -->
               <v-card-actions>
                 <v-btn
+                type="submit"
                   block
                   color="primary"
-                  @click="login"
+                 
                 >
                   Anmelden
                 </v-btn>
               </v-card-actions>
             </v-card>
+          </v-form>
           </v-col>
-        </v-row>
+  
+      </v-row>
       </v-container>
+  
     </v-main>
   </v-app>
 </template>
