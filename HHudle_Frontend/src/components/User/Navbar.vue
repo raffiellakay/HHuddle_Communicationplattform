@@ -1,12 +1,14 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { computed } from 'vue';
 import PostForm from '@/components/User/PostForm.vue';
 import { useAuthStore } from '@/stores/authStore';
+import { useUserPostStore } from '@/stores/User/userPostStore';
 
 
-
+const userPostStore = useUserPostStore();
+const currentCategory = computed(() => userPostStore.currentCategory);
 
 const router = useRouter(); //Gibt Router Instanz zurück
 const route = useRoute(); // Gibt aktuelle Route zurück 
@@ -19,8 +21,28 @@ const showDrawer = ref(false);
 //Zustand des aktiven Items im Untermenü von Boards 
 const activeItem = ref(null);
 const isBoardsOpen = ref(false);
-const showForm = ref(false);
-const showNewChatModal = ref(false); 
+const showForm = ref(false); 
+
+//Gibt aktuelle Kategorie an PostForm zurück um bestimmte Felder zu verstecken
+watch(
+  () => route.path,
+  () => {
+    // Definiere Kategorien basierend auf den Routen
+    const categoryMap = {
+      "user/home": "FRONTPAGE",
+      "/user/board/commonrooms": "EVENTS",
+      "/user/board/blackboard": "BLACKBOARD",
+      "/user/board/packagefinder": "PACKAGE",
+      "/user/board/search&find": "EXCHANGE",
+    };
+
+    // Setze die Kategorie im Store
+    const category = categoryMap[route.path] || null;
+    console.log("Setze Kategorie im Store:", category);
+    userPostStore.setCategory(category);
+  },
+  { immediate: true } // Sofort ausführen
+);
 
 //Liste an Unteritems in Array
 const items = ref([
@@ -46,10 +68,10 @@ const handleBoardClick = () => {
 //Navigiert danach zur entsprechenden route des Items auf @click
 const setActiveItem = (item) => {
   activeItem.value = item.title;
-  isBoardsOpen.value = true; //Hält Dropdown unter "Boards" offen, falls einer der Unterpunkte angeklickt wurde
-  router.push(item.route);
+  isBoardsOpen.value = true;
+  router.push({ path: item.route });
   showDrawer.value = false;
-}
+};
 
 //Checkt ob die aktuelle Seite eine Board Seite ist indem es mit items im items array abgeglichen wird
 //Ist true wenn auf einer BoardSeite und false wenn nicht
@@ -63,6 +85,9 @@ const handleLogout = () => {
   authStore.logout();
   router.push('/');
 }
+
+console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
+
 
 
 
@@ -78,7 +103,7 @@ const handleLogout = () => {
       <!--Bei Klick auf bar-nav-icon wird toggleDrawer Methode aufgerufen-->
       <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
     </template>
-    <v-app-bar-title>Menü</v-app-bar-title>
+    <v-app-bar-title>{{ currentCategory || "Keine Kategorie"}}</v-app-bar-title>
 
     <v-btn icon @click="showNewChatModal= true">
         <v-icon class="plus-icon"> mdi-plus-circle</v-icon>
@@ -96,11 +121,14 @@ const handleLogout = () => {
       </v-btn>
 <!-- Öffnen der PostForm Komponent in einem Dialog -->
    
-      <v-dialog v-model="showForm" max-width="500">
+      <v-dialog v-model="showForm" max-width="500" scrollable>
         <template v-slot:default="{close}">
+          <v-card style="max-height: 80vh; overflow-y: auto;">
           <PostForm 
+          :category="currentCategory"
           @close="close">
         </PostForm>
+      </v-card>
         </template>
       
     </v-dialog>

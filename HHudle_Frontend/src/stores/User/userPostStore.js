@@ -9,8 +9,20 @@ import { useAuthStore } from "@/stores/authStore";
 export const useUserPostStore = defineStore ('adminPost', {
     state: () => ({
         userPosts: [], //Array für alle UserPosts
-        //Noch ein State für das Filtern nach Kategorien
+        currentCategory: null, //Noch ein State für das Filtern nach Kategorien
+        loading: false,
     }),
+
+    getters: {
+      filteredPostsByCategory: (state) => {
+          if (!state.currentCategory) return state.userPosts;
+          return state.userPosts.filter(
+              (post) => post.category.toUpperCase() === state.currentCategory.toUpperCase()
+          );
+      },
+  },
+
+
 
     actions: {
         async createUserPost(userPost) {
@@ -35,16 +47,8 @@ export const useUserPostStore = defineStore ('adminPost', {
           //API Request Body wird erstellt um den adminUser korrekt als user zu übergeben 
           const requestBody = {
             ...userPost, //Enthät alle anderen Post Daten (title, text etc.) 
-            //id: null,
             user: user, //Eingeloggter Benutzer wird gesetzt 
-            /*category: "FRONTPAGE", 
-            timestamp: " ", 
-            photo: null, 
-            starttime: null, 
-            endtime: null, 
-            facilityId: null, 
-            private: false, 
-            anonymous: false*/
+           
           }
 
           console.log("Zeig mir den API-Body: ", requestBody); 
@@ -69,11 +73,52 @@ export const useUserPostStore = defineStore ('adminPost', {
         }
       },
 
-
-      async getAllPosts() {
-        const response = await axios.get(`${API_URL}posts/allposts`);
-        this.userPosts = response.data;
+      async getBoardIdByHouseIdAndCategory(houseId, category) {
+        try {
+          console.log(`Lade boardId für houseId: ${houseId} und Kategorie: ${category}`);
+          this.loading = true;
+  
+          // API-Aufruf
+          const response = await axios.get(`${API_URL}posts/house/${houseId}/${category}`);
+          
+          //Prüfen, ob die Antwort eine boardId enthält
+          if (response.data && response.data.boardId) {
+              const boardId = response.data.boardId;
+              console.log(`Gefundene boardId: ${boardId}`);
+              return boardId; //Gibt die boardId zurück
+          } else {
+              console.warn("Keine boardId in der Antwort enthalten:", response.data);
+              return null; //Gibt null zurück wenn keine boardId vorhanden ist
+          }
+      } catch (error) {
+          console.error("Fehler beim Laden der boardId:", error);
+          throw error; //Fehler erneut werfen, damit der Aufrufer darauf reagieren kann
+      } finally {
+          this.loading = false; //Ladezustand zurücksetzen
+      }
       },
+
+
+      async getPostsByHouseId(houseId) {
+        try {
+            console.log(`Lade alle Posts für House ID: ${houseId}`);
+            this.loading = true;
+            const response = await axios.get(`${API_URL}posts/house/${houseId}`);
+            this.userPosts = response.data;
+            console.log("Posts für House ID geladen:", this.userPosts);
+        } catch (error) {
+            console.error("Fehler beim Laden der Posts für House ID:", error);
+        } finally {
+            this.loading = false;
+        }
+    },
+
+    setCategory(category) {
+        console.log(`Setze aktuelle Kategorie: ${category}`);
+        this.currentCategory = category;
+    },
+
+  
 
       async getHouseIdByUser() {
         const response = await axios.get(`${API_URL}user/home`); 
