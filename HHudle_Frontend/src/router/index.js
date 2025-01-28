@@ -19,12 +19,9 @@ import ChatListView from '@/views/User/ChatListView.vue';
 import ChatView from '@/views/User/ChatView.vue';
 import { useAuthStore } from '@/stores/authStore';
 import AHouseView from '@/views/Admin/AHouseView.vue';
-<<<<<<< HEAD
 import PasswordResetView from '@/views/PasswordResetView.vue';
 import SetNewPasswordView from '@/views/SetNewPasswordView.vue';
-=======
 import PostCard from '@/components/User/PostCard.vue';
->>>>>>> milly
 
 
 
