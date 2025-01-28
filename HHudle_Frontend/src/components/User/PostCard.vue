@@ -4,14 +4,28 @@ import { computed, onMounted, ref, watch } from "vue";
 import { useUserPostStore } from "@/stores/User/userPostStore";
 import { useRoute } from "vue-router";
 import { useAuthStore } from "@/stores/authStore";
+import DeleteButton from "@/components/Icons/DeleteButton.vue";
+import EditButton from "@/components/Icons/EditButton.vue";
 import ConfirmDeleteCheck from "@/components/ConfirmDeleteCheck.vue";
 
-
+const emits = defineEmits(['delete-userPost']);
 const userPostStore = useUserPostStore();
 const filteredUserPosts = computed(() => {
   return userPostStore.filteredPostsByCategory;
 });
 
+const showDropdown = ref({});
+
+// Umschalten des Dropdowns
+const toggleDropdown = (postId) => {
+  showDropdown.value[postId] = !showDropdown.value[postId];
+};
+
+
+// Methode, um den Zustand eines Dropdowns zu überprüfen
+const isDropdownOpen = (postId) => {
+  return !!showDropdown.value[postId]; // Rückgabe von `true` oder `false`
+};
 
 const authStore = useAuthStore();
 
@@ -22,7 +36,8 @@ const props = defineProps({
   category: {
     type: String, 
     required: true, 
-  }
+  },
+  postId: Number,
 })
 
 /*const normalizedCategory = computed(() => {
@@ -43,9 +58,23 @@ Category {
 
 }*/
 
-//Methode fehlend: getHouseIdByUserId, aktuell kann noch nich auf die houseId zugegriffen werden 
+
+
 const showDeleteChecker = ref(false);
 const postToDelete = ref(null); 
+
+//Öffnen des DeleteCheckers
+const openDeleteChecker = (userPost) => {
+  console.log("Post zum Löschen: ", userPost) //Debugging
+  postToDelete.value = {...userPost};
+  showDeleteChecker.value = true;
+}
+
+//Schließen des DeleteCheckers
+const closeDeleteChecker = (userPost) => {
+  postToDelete.value = null; 
+  showDeleteChecker.value = false;
+}
 
 
 console.log("Auth Store User:", authStore.user);
@@ -75,8 +104,29 @@ onMounted(async () => {
   }
 });
 
+//UserPost Löschen
+const confirmDelete = async () => {
+  if (postToDelete.value) {
+    try {
+      console.log(`Post mit ID ${postToDelete.value.id} wird gelöscht`);
+      await userPostStore.deletePost(postToDelete.value.id);
+
+      await userPostStore.getPostsByHouseId(authStore.user.houseId.value);
+
+      showDeleteChecker.value = false; 
+      postToDelete.value = null;
+    } catch (error) {
+      console.error("Folgender Fehler beim Löschen aufgetreten: ", error)
+    }
+  } 
+}
 
 
+
+//Sortiert userPosts nach Zeit und Erstellungsdatum 
+const sortedUserPostsByTimeCreated = computed(() => {
+  return [...userPosts.value].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+});
 </script>
 
 
@@ -93,11 +143,25 @@ onMounted(async () => {
           
 
           <!-- Titel -->
+          <v-card-item>
           <v-card-title>
             {{ filteredUserPost.title }}
-          </v-card-title>
+            </v-card-title>
+          
+
+            <template v-slot:append >
+                  <DeleteButton 
+                  v-if="filteredUserPost.user?.id === userId"
+                  @click="openDeleteChecker(userPost)" 
+                  @delete-success="$emit('userPost-deleted')" 
+                  class="delete-button"/> 
+                </template>
+             
+            </v-card-item>
+        
 
           <!-- Untertitel -->
+           <div v-if="!category === 'EVENTS'">
           <v-card-subtitle>
             Startzeit: {{ filteredUserPost.startTime }}
           </v-card-subtitle>
@@ -107,6 +171,7 @@ onMounted(async () => {
           <v-card-subtitle>
             Erstellungszeit: {{ filteredUserPost.timestamp }}
           </v-card-subtitle>
+          </div>
           <v-card-subtitle>
             Ersteller: {{ filteredUserPost.user?.username || 'Unbekannt' }} 
           </v-card-subtitle>
@@ -115,16 +180,21 @@ onMounted(async () => {
           <v-card-actions>
             <v-btn color="orange-lighten-2" text>Explore</v-btn>
             <v-spacer></v-spacer>
-            <v-btn :icon="show ? 'mdi-chevron-up' : 'mdi-chevron-down'" @click="show = !show"></v-btn>
+            <v-btn 
+            :icon="isDropdownOpen(filteredUserPost.id) ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+            @click="toggleDropdown(filteredUserPost.id)"></v-btn>
           </v-card-actions>
 
           <!-- Expandable Text -->
           <v-expand-transition>
-            <div v-show="show">
+            <div v-show="isDropdownOpen(filteredUserPost.id)">
               <v-divider></v-divider>
               <v-card-text>
                 {{ filteredUserPost.text }}
               </v-card-text>
+
+
+              
             </div>
           </v-expand-transition>
         </v-card>

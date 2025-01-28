@@ -129,10 +129,18 @@ const submitPost = handleSubmit(async (values) => {
       title: values.title,
       text: values.text,
       category: props.category,
+      timestamp: timestamp.value,
       photo: photo.value,
+      starttime: combinedStartDateTime.value || null,
+      endtime: combinedEndDateTime.value || null,
+      user: {
+        id: authStore.user.id,
+        username: authStore.user.username,
+      },
+      boardId,
       isPrivate: isPrivate.value,
       anonymous: anonymous.value,
-      boardId,
+      
     };
 
     console.log("Sende UserPost an Backend:", newUserPost);
@@ -150,18 +158,12 @@ const submitPost = handleSubmit(async (values) => {
 
 
 const form = ref(null);
-const formSubmit = (close) => {
-  console.log("Form submitted!");
-  close();
-};
 
 
 
 
 
-const postClick = () => {
-  console.log(2 + 2);
-};
+
 
 
 const anonymousCheckbox = ref(false);
