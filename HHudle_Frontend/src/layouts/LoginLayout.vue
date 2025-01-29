@@ -67,7 +67,7 @@ const credentials = ref({
 })
 
 
-async function submit() { 
+async function login() { 
   try {
     await authStore.login(credentials.value)
     await handleLogin();
@@ -99,7 +99,7 @@ async function submit() {
         <v-row justify="center">
           <v-col cols="12" md="6" lg="4">
             <!-- Login-Karte -->
-             <v-form @submit.prevent>
+             
             <v-card class="pa-4" elevation="3">
               <!-- Titel der Karte -->
               <v-card-title class="text-h5 text-center">
@@ -110,6 +110,7 @@ async function submit() {
                 Login
               </v-card-title>
               <!-- Login-Formular -->
+               <v-form @submit.prevent="login">
               <v-card-text>
                 <!-- Benutzername -->
                 <v-text-field
@@ -166,8 +167,9 @@ async function submit() {
                   Anmelden
                 </v-btn>
               </v-card-actions>
+            </v-form>
             </v-card>
-          </v-form>
+         
           </v-col>
   
       </v-row>
