@@ -20,11 +20,17 @@ const newResident = ref({
 });
 
 
+onMounted(async () => {
+    await userStore.getAllUsersByHouseId(houseId.value);
+});
+
 // new resident
 async function saveResident() {
     try {
         await userStore.createUser(newResident.value);
-        dialog.value = false; c
+        await userStore.getAllUsersByHouseId(houseId.value);
+
+        dialog.value = false;
         newResident.value = { mail: '', username: '', houseId: houseId.value }; // house Id bleibt erhalten
     } catch (error) {
         console.error('Error while saving resident:', error);
@@ -62,6 +68,15 @@ async function saveResident() {
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <!-- Residents-Liste anzeigen -->
+        <v-list>
+            <v-list-item v-for="resident in userStore.users" :key="resident.id">
+                <v-list-item-content>
+                    <v-list-item-title>{{ resident.username }}</v-list-item-title>
+                    <v-list-item-subtitle>{{ resident.mail }}</v-list-item-subtitle>
+                </v-list-item-content>
+            </v-list-item>
+        </v-list>
     </v-container>
 </template>
 
