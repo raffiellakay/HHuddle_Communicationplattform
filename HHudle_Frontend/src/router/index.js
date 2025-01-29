@@ -73,23 +73,23 @@ const routes = [
             component: SearchAndFindView,
             meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
           }]
-     
-    },
- {
-  path: 'chatlist',
-  name: 'ChatListView',
-  component: ChatListView,
-  meta: { requiresAuth: true },
- },
-    {
-      path: '/chats/:id',
-      name: 'ChatView',
-      component: ChatView,
-      meta: { requiresAuth: true },
-      props: true,
-    },
-  ],
-},
+
+      },
+      {
+        path: 'chatlist',
+        name: 'ChatListView',
+        component: ChatListView,
+        meta: { requiresAuth: true },
+      },
+      {
+        path: '/chats/:id',
+        name: 'ChatView',
+        component: ChatView,
+        meta: { requiresAuth: true },
+        props: true,
+      },
+    ],
+  },
 
   {
     path: '/admin',
@@ -113,14 +113,14 @@ const routes = [
       },
 
       {
-        path: 'user/ :userId',
+        path: 'house/:houseId/user',
         name: 'Residents',
         component: AResidentsView,
         meta: { requiresAuth: true, requiredRoles: ['ROLE_PMANAGEMENT'] },
       },
 
       {
-        path: 'facilities/ :facilityId',
+        path: 'facilities',
         name: 'Facilities',
         component: AFacilitiesView,
         meta: { requiresAuth: true, requiredRoles: ['ROLE_PMANAGEMENT'] },
@@ -157,13 +157,13 @@ const routes = [
     path: '/set-new-password',
     name: SetNewPasswordView,
     component: SetNewPasswordView,
-    meta: {requiresAuth: true}
+    meta: { requiresAuth: true }
   },
   {
     path: '/password-reset',
     name: PasswordResetView,
     component: PasswordResetView,
-    meta: {requiresAuth: false}
+    meta: { requiresAuth: false }
   }
 
 

@@ -10,8 +10,8 @@ import EditButton from '@/components/Icons/EditButton.vue';
 //Zugriffe auf ...
 const houseStore = useHouseStore();
 
-const dialog = ref(false); // (dialog is a reaktiver Boolean, also ob´s fürs hinzufügen eines neuen Hauses geöffnet oder geschlossen is). //Dialogfensterung mit v-dialog aus Vuetify. Is auf true gesetzt, Dialogfenster wird angezeigt, is false, bleibts geschlossen. Also, wirds eben angeklickt oder nicht
-//reaktive Variablen, sind Variablen die automatisch aktualisiert werden, wenn sich etwas an ihnen ändert (Ansict wird auto aktualisiert)
+const dialog = ref(false); // (dialog is a reaktiver Boolean, also ob´s fürs hinzufügen eines neuen Hauses geöffnet oder geschlossen is). 
+//reaktive Variablen, sind Variablen die automatisch aktualisiert werden, wenn sich etwas an ihnen ändert (Ansicht wird auto aktualisiert)
 
 const router = useRouter();
 
