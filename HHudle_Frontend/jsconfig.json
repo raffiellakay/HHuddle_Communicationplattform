@@ -2,7 +2,9 @@
   "compilerOptions": {
     "paths": {
       "@/*": ["./src/*"]
-    }
+
+    },
+    "types": ["estree"]
   },
   "exclude": ["node_modules", "dist"]
 }
