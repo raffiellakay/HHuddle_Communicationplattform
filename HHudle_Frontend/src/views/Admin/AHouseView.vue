@@ -1,7 +1,7 @@
 <script setup>
 import { computed, onMounted } from "vue";
 import { useHouseStore } from "@/stores/Admin/houseStore";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import AdminPostsView from '@/components/Admin/AdminPosts.vue';
 import { useAdminPostStore } from "@/stores/Admin/adminPostStore";
 import viennaHouseImage1 from '@/assets/Pictures/ViennaHouse1.jpg';
@@ -13,6 +13,8 @@ const props = defineProps({
 })
 
 const route = useRoute();
+const router = useRouter();
+
 const houseStore = useHouseStore();
 const adminPostStore = useAdminPostStore();
 
@@ -52,6 +54,13 @@ const houseImage = computed(() => {
   }
 });
 
+// Navigiere zur Residents-Seite
+const goToResidents = (houseId) => {
+  router.push(`/admin/house/${houseId}/user`);
+};
+
+// Navigiere zur Residents-Seite
+
 const goToFacilities = (houseId) => {
   router.push(`/admin/house/${houseId}/facilities`);
 };
@@ -69,8 +78,17 @@ const goToFacilities = (houseId) => {
       <v-card v-if="house" class="house-card">
         <div class="house-info-row">
           <p><strong>Adresse:</strong> {{ house.address }}</p>
-          <p><strong>Tops:</strong> {{ house.residents.length }}</p>
-          <div @click="goToFacilities(house.id)"><p><strong>Einrichtungen:</strong> {{ house.facilities.length }}</p></div>
+          
+         <!--Klickbare "Tops" (Residents) -->
+         <div @click="goToResidents(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
+            <p><strong>Tops:</strong> {{ house.residents.length }}</p>
+          </div>
+
+          <!--Klickbare "Einrichtungen" (Facilities) -->
+          <div @click="goToFacilities(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
+            <p><strong>Einrichtungen:</strong> {{ house.facilities.length }}</p>
+          </div>
+        
         </div>
       </v-card>
       <v-alert v-else type="warning">Haus nicht gefunden!</v-alert>

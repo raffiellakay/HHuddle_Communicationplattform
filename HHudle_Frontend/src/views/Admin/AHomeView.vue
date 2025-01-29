@@ -4,7 +4,6 @@ import { ref, onMounted, computed } from 'vue';
 import { useHouseStore } from '@/stores/Admin/houseStore';
 import { useRouter } from 'vue-router';
 import DeleteButton from '@/components/Icons/DeleteButton.vue';
-import EditButton from '@/components/Icons/EditButton.vue';
 
 
 //Zugriffe auf ...
@@ -69,8 +68,6 @@ const goToHouse = (houseId) => {
 </script>
 
 <template>
-  Ich bin die Admin Homeview
-
   <!-- Gesamtes Layout -->
   <v-container>
     <!-- Kachel-Layout: Zeige die Liste der Häuser -->
@@ -80,7 +77,6 @@ const goToHouse = (houseId) => {
           <v-card-item>
             <!-- Anzeige der Adresse des Hauses -->
             <v-card-title>{{ house.address }}</v-card-title>
-            <EditButton class="edit-button" />
             <DeleteButton class="delete-button" />
           </v-card-item>
         </v-card>
@@ -126,13 +122,6 @@ const goToHouse = (houseId) => {
   background-color: rgb(241, 102, 102);
   margin-left: 15px;
 
-}
-
-
-
-.edit-button {
-  background-color: rgb(168, 209, 252);
-  margin-right: 15px;
 }
 </style>
 
