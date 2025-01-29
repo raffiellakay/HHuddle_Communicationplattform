@@ -1,73 +1,116 @@
 <script setup>
-import { useRoute, useRouter } from 'vue-router'
-import { ref } from 'vue'
-import { computed } from 'vue';
-import PostForm from '@/components/User/PostForm.vue';
-import { useAuthStore } from '@/stores/authStore';
+import { useRoute, useRouter } from "vue-router";
+import { ref, computed } from "vue";
+import PostForm from "@/components/User/PostForm.vue";
+import { useAuthStore } from "@/stores/authStore";
+import { useChatStore } from "@/stores/User/chatStore";
 
-
-
-
-const router = useRouter(); //Gibt Router Instanz zurück
-const route = useRoute(); // Gibt aktuelle Route zurück 
+const router = useRouter();
+const route = useRoute();
 const authStore = useAuthStore();
+const chatStore = useChatStore();
 
-
-
-//showDrawer Konstante ist per default auf false
 const showDrawer = ref(false);
-//Zustand des aktiven Items im Untermenü von Boards 
 const activeItem = ref(null);
 const isBoardsOpen = ref(false);
-const showForm = ref(false); 
+const showForm = ref(false);
+const showNewChatModal = ref(false);
+const initialMessage = ref("");
 
-//Liste an Unteritems in Array
+// Dynamically get the current user ID
+const currentUserId = computed(() => authStore.user?.id);
+
+// List of board items
 const items = ref([
-  {title: "Gemeinschaftsräume", route: "/user/board/commonrooms"},
-  {title:"Schwarzes Brett", route: "/user/board/blackboard"},
-  {title: "Paketfinder", route: "/user/board/packagefinder"},
-  {title: "Suche - Biete - Tausche", route: "/user/board/search&find"}
+  { title: "Gemeinschaftsräume", route: "/user/board/commonrooms" },
+  { title: "Schwarzes Brett", route: "/user/board/blackboard" },
+  { title: "Paketfinder", route: "/user/board/packagefinder" },
+  { title: "Suche - Biete - Tausche", route: "/user/board/search&find" },
 ]);
 
-
-//Aufrufen der Methode setzt showDrawer value auf true, dadurch wird v-navigation drawer sichtbar
 const toggleDrawer = () => {
   showDrawer.value = !showDrawer.value;
-}
-
-// Boards-Titel wurde geklickt
-const handleBoardClick = () => {
-  router.push('/user/allboards'); 
-  showDrawer.value = false; //Drawer schließen
 };
 
-//Ruft setActiveItem Methode auf, und übernimmt item als Parameter, setzt den value von activeItem auf den Titel des übergebenen Items.
-//Navigiert danach zur entsprechenden route des Items auf @click
+const handleBoardClick = () => {
+  router.push("/user/allboards");
+  showDrawer.value = false;
+};
+
 const setActiveItem = (item) => {
   activeItem.value = item.title;
-  isBoardsOpen.value = true; //Hält Dropdown unter "Boards" offen, falls einer der Unterpunkte angeklickt wurde
+  isBoardsOpen.value = true;
   router.push(item.route);
   showDrawer.value = false;
-}
+};
 
-//Checkt ob die aktuelle Seite eine Board Seite ist indem es mit items im items array abgeglichen wird
-//Ist true wenn auf einer BoardSeite und false wenn nicht
-const isBoardPage = computed(() =>{
-  const boardRoutes = items.value.map(item => item.route);
+const isBoardPage = computed(() => {
+  const boardRoutes = items.value.map((item) => item.route);
   return boardRoutes.includes(route.path);
-})
-
+});
 
 const handleLogout = () => {
   authStore.logout();
-  router.push('/');
-}
+  router.push("/");
+};
 
+const handleCreateChat = async () => {
+  if (!initialMessage.value.trim()) {
+    console.warn("Leere Nachricht kann nicht gesendet werden.");
+    return;
+  }
 
+  if (!currentUserId.value) {
+    console.error("Kein gültiger Benutzer gefunden!");
+    return;
+  }
 
+  try {
+    const secondUserId = 2; // Replace with logic to get recipient's user ID
 
+    // Create the chat first
+    const newChat = await chatStore.createChat({
+      firstUserId: currentUserId.value,
+      secondUserId,
+    });
 
+    if (!newChat?.id) {
+      console.error("Fehler beim Erstellen des Chats: Keine Chat-ID zurückgegeben.");
+      return;
+    }
+
+    console.log("Neuer Chat erstellt:", newChat.id);
+
+    // Send the initial message **immediately** after chat creation
+    const messageResponse = await chatStore.sendMessage({
+      chatId: newChat.id,
+      text: initialMessage.value,
+      senderId: currentUserId.value,
+    });
+
+    if (!messageResponse) {
+      console.error("Fehler beim Senden der Nachricht.");
+      return;
+    }
+
+    console.log("Nachricht erfolgreich gesendet!");
+
+    // Navigate to the newly created chat
+    router.push({
+      name: "ChatView",
+      params: { id: newChat.id },
+      query: { senderId: currentUserId.value },
+    });
+
+    // Close the modal & reset input field
+    showNewChatModal.value = false;
+    initialMessage.value = "";
+  } catch (error) {
+    console.error("Fehler beim Erstellen des Chats oder beim Senden der Nachricht:", error);
+  }
+};
 </script>
+
 
 <template>
 
@@ -95,7 +138,34 @@ const handleLogout = () => {
     </v-dialog>
 
     </template>
-    
+
+    <v-btn icon @click="showNewChatModal = true">
+  <v-icon class="plus-icon">mdi-plus-circle</v-icon>
+</v-btn>
+
+<v-dialog v-model="showNewChatModal" max-width="500">
+  <v-card>
+    <v-card-title>
+      <span class="headline">Chat erstellen</span>
+    </v-card-title>
+    <v-card-text>
+      <v-form ref="form">
+        <v-text-field
+          v-model="initialMessage"
+          label="Nachricht"
+          required
+        ></v-text-field>
+      </v-form>
+    </v-card-text>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn color="blue darken-1" text @click="handleCreateChat">Erstellen</v-btn>
+      <v-btn color="grey darken-1" text @click="showNewChatModal = false">Abbrechen</v-btn>
+    </v-card-actions>
+  </v-card>
+</v-dialog>
+
+
 
 
   </v-app-bar>
