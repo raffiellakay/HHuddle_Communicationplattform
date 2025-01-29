@@ -5,9 +5,15 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const facilityStore = useFacilityStore();
+const houseId = ref(Number(router.params.houseId));
 
-
-
+const newFacility = ref({
+    id: null,
+    type: '',
+    description: '',
+    houseId: houseId.value,
+    postDtos: null
+})
 
 
 

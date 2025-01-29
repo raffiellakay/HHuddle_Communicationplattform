@@ -59,7 +59,7 @@ const goToResidents = (houseId) => {
   router.push(`/admin/house/${houseId}/user`);
 };
 
-// Navigiere zur Residents-Seite
+// Navigiere zur Facilities Seite
 
 const goToFacilities = (houseId) => {
   router.push(`/admin/house/${houseId}/facilities`);

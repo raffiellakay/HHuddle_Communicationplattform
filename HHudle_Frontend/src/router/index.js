@@ -117,7 +117,7 @@ const routes = [
       },
 
       {
-        path: 'facilities',
+        path: 'house/:houseId/facilities',
         name: 'Facilities',
         component: AFacilitiesView,
         meta: { requiresAuth: true, requiredRoles: ['ROLE_PMANAGEMENT'] },
