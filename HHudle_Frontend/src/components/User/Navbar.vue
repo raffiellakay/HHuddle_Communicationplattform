@@ -13,6 +13,7 @@ const currentCategory = computed(() => userPostStore.currentCategory);
 const router = useRouter(); //Gibt Router Instanz zurück
 const route = useRoute(); // Gibt aktuelle Route zurück 
 const authStore = useAuthStore();
+const showNewChatModal = ref(false);
 
 
 
