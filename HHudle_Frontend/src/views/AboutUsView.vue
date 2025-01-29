@@ -104,7 +104,7 @@ const isResident = userRoles.find((role) => role === "ROLE_RESIDENT" )
 </v-main>
 </template>
 
-<style>
+<style scoped>
 h1 {
   font-size: 3.5em;
   font-family: "Georgia";
