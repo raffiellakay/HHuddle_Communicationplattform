@@ -14,7 +14,6 @@
       class="success-message"
       icon="$success"
       type="success"
-  variant="tonal"
       title="Nachricht gesendet!"
       closable
       dismissible
@@ -131,7 +130,7 @@ const messageErrors = ref('');
 const consentErrors = ref([])
 
 
-const validateForm = () => {
+async function validateForm() {
     firstNameErrors.value = []
     lastNameErrors.value = []
     emailErrors.value = []
@@ -139,19 +138,19 @@ const validateForm = () => {
     messageErrors.value = []
     consentErrors.value = []
 
-    if (!contactmail.firstName.value) {
+    if (!contactmail.value.firstName) {
         firstNameErrors.value.push('First name is required')
     }
-    if (!contactmail.lastName) {
+    if (!contactmail.value.lastName) {
         lastNameErrors.value.push('Last name is required')
     }
-    if (!contactmail.mail) {
+    if (!contactmail.value.mail) {
         emailErrors.value.push('Email is required')
-    } else if (!/.+@.+\..+/.test(email.value)) {
+    } else if (!/.+@.+\..+/.test(contactmail.value.mail)) {
         emailErrors.value.push('Email must be valid')
     }
 
-    if (!contactmail.message) {
+    if (!contactmail.value.message) {
         messageErrors.value.push('Please write a message');
     }
 
@@ -166,21 +165,21 @@ const validateForm = () => {
 
 async function submitForm() {
   
-  try{
-  
-  await  useAuthStore().sendContactForm(contactmail.value)
+  try {
 
-  this.showSuccessMessage.value = true;
-    contactmail.firstName.value = '';
-  contactmail.lastName.value = '';
-  contactmail.message.value = '';
-contactmail.mail.value = '';
-  consent.value = false;
+    await useAuthStore().sendContactForm(contactmail.value)
+
+    showSuccessMessage.value = true;
+    contactmail.value.firstName = '';
+    contactmail.value.lastName = '';
+    contactmail.value.message= '';
+    contactmail.value.mail = '';
+    consent.value = false;
   }
- catch (error) {
-  console.log("Senden ist fehlgeschlagen.")
-
- }
+  catch (error) {
+    console.log("Senden ist Fehlgeschlagen.")
+    console.log(error)
+  }
 }
 
 const isMobile = ref(window.innerWidth < 600)

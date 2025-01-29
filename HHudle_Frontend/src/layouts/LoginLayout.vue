@@ -17,29 +17,7 @@ const handleLogin = async () => {
   const roleResident = roles.find(role => role === 'ROLE_RESIDENT')
 
 
-  const mailrules = [
-  value => {
-          if (value) return true
-
-          return 'Fülle das Feld bitte aus.'
-        },
-        value => {
-          if (value?.length <= 4) return true
-
-          return 'Deine E-Mail braucht mindestens 4 Zeichen.'
-        }]
-
-  const pwrules = [
-  value => {
-          if (value) return true
-
-          return 'Fülle das Feld bitte aus.'
-        },
-        value => {
-          if (value?.length <= 7) return true
-
-          return 'Dein Passwort braucht mindestens 7 Zeichen.'
-        }]
+  
 
   if(!hasChangedPW) {
     await router.push('/set-new-password')
@@ -114,7 +92,7 @@ async function login() {
               <v-card-text>
                 <!-- Benutzername -->
                 <v-text-field
-                :rules="mailrules"
+             
                   v-model="credentials.mail"
                   label="E-Mail"
                   type="email"
@@ -129,7 +107,6 @@ async function login() {
 
                 <v-text-field
            
-                 :rules="pwrules"
                   v-model="credentials.password"
                   label="Passwort"
                  type="password"
