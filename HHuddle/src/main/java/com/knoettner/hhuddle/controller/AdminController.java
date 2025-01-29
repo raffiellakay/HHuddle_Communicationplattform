@@ -134,7 +134,7 @@ public class AdminController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("house/{id}/residents")
+    @GetMapping("house/{id}/user")
     @PreAuthorize("hasRole('PMANAGEMENT')")
     Set<MyUserDto> getAllUsersByHouseId(@PathVariable("id") Long houseId) {
         return adminService.getAllUsersByHouseId(houseId);

@@ -52,6 +52,9 @@ const houseImage = computed(() => {
   }
 });
 
+const goToFacilities = (houseId) => {
+  router.push(`/admin/house/${houseId}/facilities`);
+};
 
 
 </script>
@@ -67,7 +70,7 @@ const houseImage = computed(() => {
         <div class="house-info-row">
           <p><strong>Adresse:</strong> {{ house.address }}</p>
           <p><strong>Tops:</strong> {{ house.residents.length }}</p>
-          <p><strong>Einrichtungen:</strong> {{ house.facilities.length }}</p>
+          <div @click="goToFacilities(house.id)"><p><strong>Einrichtungen:</strong> {{ house.facilities.length }}</p></div>
         </div>
       </v-card>
       <v-alert v-else type="warning">Haus nicht gefunden!</v-alert>
