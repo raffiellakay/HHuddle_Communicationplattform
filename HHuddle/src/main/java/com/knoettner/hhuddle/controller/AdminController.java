@@ -128,11 +128,19 @@ public class AdminController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("house/{id}/facility")
-    // Use hasRole for role-based access control
-   // @PreAuthorize("hasRole('PMANAGEMENT')")
+    // Not access restricted so it can be used in resident View as well
     Set<FacilityDto> getAllFacilitiesByHouseId(@PathVariable("id") Long houseId) {
         return adminService.getAllFacilitiesByHouseId(houseId);
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("house/{id}/residents")
+    @PreAuthorize("hasRole('PMANAGEMENT')")
+    Set<MyUserDto> getAllUsersByHouseId(@PathVariable("id") Long houseId) {
+        return adminService.getAllUsersByHouseId(houseId);
+    }
+
+
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/facility")

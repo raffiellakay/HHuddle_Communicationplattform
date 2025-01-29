@@ -39,6 +39,7 @@ public interface AdminService {
     MyUserDto createUser (MyUserDto userDto);
     CreateAdminDto createAdminUser (CreateAdminDto adminUser) throws Exception;
     MyUserDto updateUser( MyUserDto user);
+    Set<MyUserDto> getAllUsersByHouseId(Long houseId);
     //no delete necessary
     //no addFunction necessary bc HouseId is in MyUserDTO
 
