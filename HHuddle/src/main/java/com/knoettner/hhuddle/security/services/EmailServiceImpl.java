@@ -2,6 +2,7 @@ package com.knoettner.hhuddle.security.services;
 
 import com.knoettner.hhuddle.models.MyUser;
 import com.knoettner.hhuddle.repository.UserRepository;
+import com.knoettner.hhuddle.security.modelsDtos.ContactFormDetails;
 import com.knoettner.hhuddle.security.modelsDtos.EmailDetails;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,4 +65,25 @@ public class EmailServiceImpl implements EmailService {
 
     }
 
+    @Override
+    public void sendMailFromContactForm(ContactFormDetails details) {
+        try {
+            // Creating a simple mail message
+            SimpleMailMessage mailMessage
+                    = new SimpleMailMessage();
+
+            mailMessage.setFrom("hhuddle.welcome@gmail.com");
+            mailMessage.setTo("hhuddle.welcome@gmail.com");
+            mailMessage.setSubject(details.getFirstName() + details.getLastName() + details.getMail() + " hat folgende Nachricht hinterlassen: ");
+            mailMessage.setText(details.getMessage());
+
+            javaMailSender.send(mailMessage);
+          System.out.println("Mail Sent Successfully");
+        }
+        catch (Exception e) {
+            System.out.println(e);
+            System.out.println( "Error while Sending Mail");
+        }
+
+    }
 }
