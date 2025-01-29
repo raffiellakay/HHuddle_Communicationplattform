@@ -1,8 +1,24 @@
 <script setup>
+import PostCard from '@/components/User/PostCard.vue';
+import { useUserPostStore } from '@/stores/User/userPostStore';
+import { computed, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
+
+const category = "EXCHANGE"
+const userPostStore = useUserPostStore();
+
+onMounted(() => {
+  userPostStore.setCategory(category); // Setze die Kategorie im Store
+});
 </script>
 
 <template>
-Ich bin das Board für Suche Biete Tausche 
+Ich bin die Übersicht für Suche Biete Tausche 
+
+<v-container>
+    <PostCard :category="category"/>
+</v-container>
     
 </template>

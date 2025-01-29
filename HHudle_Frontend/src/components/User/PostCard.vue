@@ -6,14 +6,28 @@ import { useRoute } from "vue-router";
 import { useAuthStore } from "@/stores/authStore";
 import ConfirmDeleteCheck from "@/components/ConfirmDeleteCheck.vue";
 
-const route = useRoute();
+
 const userPostStore = useUserPostStore();
-const userPosts = computed (() => userPostStore.userPosts);
+const filteredUserPosts = computed(() => {
+  return userPostStore.filteredPostsByCategory;
+});
+
+
 const authStore = useAuthStore();
 
-const show = ref(false);
+const show = ref(false); 
 const userId = computed(() => authStore.user.id)
 
+const props = defineProps({
+  category: {
+    type: String, 
+    required: true, 
+  }
+})
+
+/*const normalizedCategory = computed(() => {
+  return category.value ? category.value.toUpperCase() : null;
+});*/
 /*
 Category {
   //Schwarzes Brett
@@ -33,23 +47,33 @@ Category {
 const showDeleteChecker = ref(false);
 const postToDelete = ref(null); 
 
-const props = defineProps({
-  postId: Number, 
-  userId: Number, 
-})
 
 console.log("Auth Store User:", authStore.user);
 console.log("User ID:", userId.value);
 console.log("Auth Token:", authStore.token);
 
+//Zeigt alle Posts eines Users an
+/*onMounted(async () => {
+  await userPostStore.getPostsByUserId(userId.value);
+});*/
 
 onMounted(async () => {
-  await userPostStore.getPostsByUserId(userId.value);
+  try {
+    const houseId = authStore.user.houseId; // Hole die House ID des Benutzers
+    if (!houseId) {
+      console.error("Keine House ID gefunden!");
+      return;
+    }
+
+    console.log("Lade Posts für House ID:", houseId);
+    await userPostStore.getPostsByHouseId(houseId);
+
+    console.log("Setze Kategorie:", props.category);
+    userPostStore.setCategory(props.category);
+  } catch (error) {
+    console.error("Fehler beim Laden der Posts:", error);
+  }
 });
-
-
-
-
 
 
 
@@ -61,29 +85,30 @@ onMounted(async () => {
 <!-- Dieser Teil beinhaltet das potenzielle Kartendesign für UserPosts-->
 
 <v-container>
-    <v-row>
-      <v-col v-for="userPost in userPosts" :key="userPost.id" cols="12" md="4" lg="3">
+  <h1> Zeige Beiträge für Kategorie: {{ category }}</h1>
+    <v-row v-if="filteredUserPosts.length > 0">
+      <v-col v-for="filteredUserPost in filteredUserPosts" :key="filteredUserPost.id" cols="12" md="4" lg="3">
         <v-card class="mx-auto" max-width="344">
           <!-- Photo als Header -->
           
 
           <!-- Titel -->
           <v-card-title>
-            {{ userPost.title }}
+            {{ filteredUserPost.title }}
           </v-card-title>
 
           <!-- Untertitel -->
           <v-card-subtitle>
-            Startzeit: {{ userPost.startTime }}
+            Startzeit: {{ filteredUserPost.startTime }}
           </v-card-subtitle>
           <v-card-subtitle>
-            Endzeit: {{ userPost.endTime }}
+            Endzeit: {{ filteredUserPost.endTime }}
           </v-card-subtitle>
           <v-card-subtitle>
-            Erstellungszeit: {{ userPost.timestamp }}
+            Erstellungszeit: {{ filteredUserPost.timestamp }}
           </v-card-subtitle>
           <v-card-subtitle>
-            Ersteller: {{ userPost.user?.username || 'Unbekannt' }} <!-- Checkt ob es einen username gibt, ansonsten "Unbekannt"-->
+            Ersteller: {{ filteredUserPost.user?.username || 'Unbekannt' }} 
           </v-card-subtitle>
 
           <!-- Aktionen -->
@@ -98,13 +123,16 @@ onMounted(async () => {
             <div v-show="show">
               <v-divider></v-divider>
               <v-card-text>
-                {{ userPost.description }}
+                {{ filteredUserPost.text }}
               </v-card-text>
             </div>
           </v-expand-transition>
         </v-card>
       </v-col>
     </v-row>
+    <v-container v-if="filteredUserPosts.length === 0">
+      <v-alert type="info">Keine Beiträge für diese Kategorie verfügbar.</v-alert>
+    </v-container>
   </v-container>
 
 </template>

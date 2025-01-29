@@ -13,6 +13,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -34,6 +35,8 @@ public class HHuddleApplication implements CommandLineRunner  {
     private UserPostRepository userPostRepository;
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    PasswordEncoder encoder;
 
 
     public static void main(String[] args) {
@@ -57,7 +60,7 @@ public class HHuddleApplication implements CommandLineRunner  {
         //Hardcoded Test Admin: Hausverwaltung_Mayer
         Optional<MyUser> maybeAdmin = userRepository.findByUsername("Hausverwaltung_Mayer");
         if (maybeAdmin.isEmpty()) {
-            CreateAdminDto createAdminDto = new CreateAdminDto(null, "admin", "test@hausverwaltungstest.at", "Hausverwaltung_Mayer", null, true);
+            CreateAdminDto createAdminDto = new CreateAdminDto(1L, "admin", "test@hausverwaltungstest.at", "Hausverwaltung_Mayer", null, true);
             try {
                 adminService.createAdminUser(createAdminDto);
             } catch (Exception e) {
@@ -71,13 +74,20 @@ public class HHuddleApplication implements CommandLineRunner  {
             Role residentRole = roleRepository.findById(1L).get();
             Set<Role> roleSet = new HashSet<>();
             roleSet.add(residentRole);
-           MyUserDto dto = new MyUserDto(null,  "residenttest@gmx.at", "Top_12",  1L);
+           MyUserDto dto = new MyUserDto(2L,  "residenttest@gmx.at", "Top_12",  1L);
             try {
                 adminService.createUser(dto);
+                Optional<MyUser> againMaybeResident = userRepository.findByMail("residenttest@gmx.at");
+                MyUser user = againMaybeResident.get();
+                user.setPassword(encoder.encode("test"));
+                user.setHasChangedPW(true);
+                userRepository.save(user);
             }
             catch (Exception e){
                 System.out.println(e);
             }
+
+
         }
 
         //Hardcoded Post:

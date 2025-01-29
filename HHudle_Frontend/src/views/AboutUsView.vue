@@ -17,11 +17,9 @@ const isResident = userRoles.find((role) => role === "ROLE_RESIDENT" )
 
 
 <template>
-
-
   <NavbarResident v-if="isResident"></NavbarResident>
   <NavbarPManagement v-if="isPManagement"></NavbarPManagement>
-  <NavbarDefault v-else></NavbarDefault>
+  <NavbarDefault v-if="!isResident && !isPManagement"></NavbarDefault>
 <v-main>
 
 
@@ -106,7 +104,7 @@ const isResident = userRoles.find((role) => role === "ROLE_RESIDENT" )
 </v-main>
 </template>
 
-<style>
+<style scoped>
 h1 {
   font-size: 3.5em;
   font-family: "Georgia";

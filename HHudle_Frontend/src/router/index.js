@@ -23,6 +23,7 @@ import PasswordResetView from '@/views/PasswordResetView.vue';
 import SetNewPasswordView from '@/views/SetNewPasswordView.vue';
 import AResidentsView from '@/views/Admin/AResidentsView.vue';
 import AFacilitiesView from '@/views/Admin/AFacilitiesView.vue';
+import PostCard from '@/components/User/PostCard.vue';
 
 
 
@@ -53,44 +54,40 @@ const routes = [
         component: BoardLayout,
         meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
         children: [
+          // Statische Routen zuerst definieren
           {
             path: 'commonrooms',
+            name: 'CommonRooms',
             component: CommonRoomsView,
+            props: true,
             meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
           },
           {
             path: 'blackboard',
+            name: 'BlackBoard',
             component: BlackBoardView,
+            props: true,
             meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
           },
           {
             path: 'packagefinder',
+            name: 'PackageFinder',
             component: PackageFinderView,
+            props: true,
             meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
           },
           {
             path: 'search&find',
+            name: 'SearchAndFind',
             component: SearchAndFindView,
+            props: true,
             meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
-          }]
-
-      },
-      {
-        path: 'chatlist',
-        name: 'ChatListView',
-        component: ChatListView,
-        meta: { requiresAuth: true },
-      },
-      {
-        path: '/chats/:id',
-        name: 'ChatView',
-        component: ChatView,
-        meta: { requiresAuth: true },
-        props: true,
-      },
-    ],
-  },
-
+          },
+  
+        ],
+      }]
+    },
+     
   {
     path: '/admin',
     name: 'admin',
@@ -147,12 +144,7 @@ const routes = [
     component: AboutUsView,
     meta: { requiresAuth: false }
   },
-  {
-    path: '/user/:id/passwordcheck"',
-    name: PasswordResetView,
-    component: PasswordResetView,
-    meta: { requiresAuth: false }
-  },
+ 
   {
     path: '/set-new-password',
     name: SetNewPasswordView,

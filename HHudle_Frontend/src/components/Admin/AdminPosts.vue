@@ -20,8 +20,6 @@ const addAdminPost = async (adminPost) => {
 
 
 
-const route = useRoute();
-const show = ref(false);
 
 const props = defineProps({
   houseId: Number
