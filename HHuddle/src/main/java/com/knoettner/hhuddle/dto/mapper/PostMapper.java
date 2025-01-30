@@ -55,13 +55,8 @@ public class PostMapper {
             postDto.setEndtime(post.getEndtime());
         }
 
-        if (post.getPathToPhoto() != null) {
-            try {
-
-                postDto.setPhoto(Files.readAllBytes(Paths.get(post.getPathToPhoto()))); // liest die Datei in ein Byte-Array und holt den Pfad
-            } catch (IOException e) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "photo not found");
-            }
+        if (post.getPathToImage() != null) {
+            postDto.setPathToImage(post.getPathToImage());
         }
         if (post.getFacility() != null) {
             postDto.setFacilityId(post.getFacility().getId());
@@ -93,30 +88,8 @@ public class PostMapper {
         if (postdto.getEndtime() != null) {
             post.setEndtime(postdto.getEndtime());
         }
-        if (postdto.getPhoto() != null) {
-
-
-            // Holt den Benutzer-Home-Ordner
-            String folderPath = ".\\files"; //saves in directory of the project
-
-            // Ordner prüfen und erstellen, falls er nicht existiert
-            File folder = new File(folderPath);
-            if (!folder.exists()) {
-                folder.mkdirs(); // Erstelle den Ordner, falls er nicht existiert
-            }
-
-            // Erstellt den Dateinamen
-            String fileName = folderPath + File.separator + "photo_" + LocalDateTime.now().toString().replace(":", "-") + ".jpg"; // Doppelpunkt kein gültiges Zeichen in vielen Betriebssystemen
-            try (OutputStream out = new FileOutputStream(fileName)) { // Stream, das Bytes in eine Datei schreiben kann.
-                // Schreibe das Bild in den Ordner
-                out.write(postdto.getPhoto());
-                out.flush();// leert den Stream  und stellt sicher dass alle Dateien geschreiben werden.
-            } catch (IOException e) {
-                throw new RuntimeException("Fehler beim Speichern des Bildes: " + e.getMessage());
-            }
-            // Setzt den Pfad in der Datenbank
-            post.setPathToPhoto(fileName);
-
+        if (postdto.getPathToImage() != null) {
+            post.setPathToImage(postdto.getPathToImage());
 
     }
         if (postdto.getFacilityId() != null) {

@@ -33,7 +33,7 @@ public class Post {
 
     private boolean isAnonymous;
 
-    private String pathToPhoto;
+    private String pathToImage;
 
     private LocalDateTime starttime;
     private LocalDateTime endtime;

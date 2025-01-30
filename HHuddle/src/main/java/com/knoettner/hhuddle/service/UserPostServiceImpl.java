@@ -55,8 +55,8 @@ public class UserPostServiceImpl implements UserPostService {
         }
 
         // Kategorie-Einschränkungen
-        if ((category == Category.EVENTS || category == Category.PACKAGE) && postDto.getPhoto() != null) {
-            postDto.setPhoto(null); // Kein Foto für EVENTS und PACKAGE erlaubt
+        if ((category == Category.EVENTS || category == Category.PACKAGE) && postDto.getPathToImage() != null) {
+            postDto.setPathToImage(null); // Kein Foto für EVENTS und PACKAGE erlaubt
         }
 
 
@@ -148,7 +148,7 @@ public class UserPostServiceImpl implements UserPostService {
                 post.getEndtime(),
                 post.isAnonymous(),
                 post.isPrivate(),
-                post.getPathToPhoto(),
+                post.getPathToImage(),
                 post.getStarttime(),
                 post.getText(),
                 post.getTitle(),
