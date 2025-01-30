@@ -20,7 +20,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query(value = "update Post  set endtime = ?2," +
             " isAnonymous = ?3," +
             " isPrivate = ?4," +
-            " pathToPhoto = ?5," +
+            " pathToImage = ?5," +
             " starttime = ?6," +
             " text = ?7," +
             " title = ?8," +
@@ -31,7 +31,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                     LocalDateTime endtime,
                     Boolean is_anonymous,
                     Boolean is_private,
-                    String path_to_photo,
+                    String path_to_image,
                     LocalDateTime starttime,
                     String text,
                     String post_title,

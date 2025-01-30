@@ -15,12 +15,16 @@ export const useChatStore = defineStore("chatStore", {
         const response = await axios.post(`${API_URL}chats/create`, null, {
           params: { firstUserId, secondUserId },
         });
-        this.chats.push(response.data); // Add the new chat to state
+    
+        const newChat = response.data;
+        this.chats.push(newChat); // Add chat to store
+        return newChat; // Return chat object for further use
       } catch (error) {
         console.error("Error creating chat:", error);
+        throw error;
       }
     },
-
+    
     // Send a message in a chat.
      
     async sendMessage(messageData) {
