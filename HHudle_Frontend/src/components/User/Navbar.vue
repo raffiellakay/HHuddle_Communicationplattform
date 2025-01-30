@@ -1,34 +1,64 @@
+<template>
+  <!-- Navbar -->
+  <v-app-bar :elevation="2" rounded color="primary">
+    <template v-slot:prepend>
+      <!-- Bei Klick auf bar-nav-icon wird toggleDrawer Methode aufgerufen -->
+      <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
+    </template>
+    <v-app-bar-title>Menü</v-app-bar-title>
+
+    <v-btn icon @click="showNewChatModal = true">
+      <v-icon class="plus-icon">mdi-plus-circle</v-icon>
+    </v-btn>
+    <v-dialog v-model="showNewChatModal" max-width="500">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Chat erstellen</span>
+        </v-card-title>
+        <v-card-text>
+          <v-form ref="form">
+            <v-text-field
+              v-model="initialMessage"
+              label="Nachricht"
+              required
+            ></v-text-field>
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="createChat">Erstellen</v-btn>
+          <v-btn color="grey darken-1" text @click="showNewChatModal = false">Abbrechen</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-app-bar>
+</template>
+
 <script setup>
-import { useRoute} from "vue-router";
-import { ref, computed, watch } from "vue";
-import PostForm from "@/components/User/PostForm.vue";
-import { useAuthStore } from "@/stores/authStore";
-import { useChatStore } from "@/stores/User/chatStore";
+import { ref, computed, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { useAuthStore } from '@/stores/authStore';
+import { useChatStore } from '@/stores/User/chatStore';
 import { useUserPostStore } from '@/stores/User/userPostStore';
 
-
-const userPostStore = useUserPostStore();
-const currentCategory = computed(() => userPostStore.currentCategory);
-
+const router = useRouter(); // Gibt Router Instanz zurück
 const route = useRoute(); // Gibt aktuelle Route zurück 
 const authStore = useAuthStore();
 const chatStore = useChatStore();
+const userPostStore = useUserPostStore();
 
-
-
-
-const showDrawer = ref(false);
-const activeItem = ref(null);
+const showDrawer = ref(false); // showDrawer Konstante ist per default auf false
+const activeItem = ref(null); // Zustand des aktiven Items im Untermenü von Boards 
 const isBoardsOpen = ref(false);
 const showForm = ref(false);
-const showNewChatModal = ref(false);
-const initialMessage = ref("");
+const showNewChatModal = ref(false); 
+const secondUserId = ref('');
+const initialMessage = ref('');
 
 // Dynamically get the current user ID
 const currentUserId = computed(() => authStore.user?.id);
 
-
-//Gibt aktuelle Kategorie an PostForm zurück um bestimmte Felder zu verstecken
+// Gibt aktuelle Kategorie an PostForm zurück um bestimmte Felder zu verstecken
 watch(
   () => route.path,
   () => {
@@ -57,229 +87,39 @@ const items = ref([
   { title: "Suche - Biete - Tausche", route: "/user/board/search&find" },
 ]);
 
-const toggleDrawer = () => {
-  showDrawer.value = !showDrawer.value;
-};
-
-const handleBoardClick = () => {
-  router.push("/user/allboards");
-  showDrawer.value = false;
-};
-
-const setActiveItem = (item) => {
-  activeItem.value = item.title;
-  isBoardsOpen.value = true;
-  router.push(item.route);
-  isBoardsOpen.value = true;
-  router.push({ path: item.route });
-  showDrawer.value = false;
-};
-
-
-//Checkt ob die aktuelle Seite eine Board Seite ist indem es mit items im items array abgeglichen wird
-//Ist true wenn auf einer BoardSeite und false wenn nicht
-const isBoardPage = computed(() =>{
-  const boardRoutes = items.value.map(item => item.route);
-  return boardRoutes.includes(route.path);
-});
-
-const handleLogout = () => {
-  authStore.logout();
-  router.push("/");
-};
-
-const handleCreateChat = async () => {
-  if (!initialMessage.value.trim()) {
-    console.warn("Leere Nachricht kann nicht gesendet werden.");
-    return;
-  }
-
-  if (!currentUserId.value) {
-    console.error("Kein gültiger Benutzer gefunden!");
+// Function to create a new chat
+const createChat = async () => {
+  if (!secondUserId.value || !initialMessage.value) {
+    alert('User ID und Nachricht sind erforderlich');
     return;
   }
 
   try {
-    const secondUserId = 2; // Replace with logic to get recipient's user ID
+    // Create a new chat
+    const newChat = await chatStore.createChat({ firstUserId: authStore.user.id, secondUserId: secondUserId.value });
 
-    // Create the chat first
-    const newChat = await chatStore.createChat({
-      firstUserId: currentUserId.value,
-      secondUserId,
-    });
-
-    if (!newChat?.id) {
-      console.error("Fehler beim Erstellen des Chats: Keine Chat-ID zurückgegeben.");
-      return;
-    }
-
-    console.log("Neuer Chat erstellt:", newChat.id);
-
-    // Send the initial message **immediately** after chat creation
-    const messageResponse = await chatStore.sendMessage({
+    // Send the initial message
+    await chatStore.sendMessage({
       chatId: newChat.id,
+      senderId: authStore.user.id,
       text: initialMessage.value,
-      senderId: currentUserId.value,
     });
 
-    if (!messageResponse) {
-      console.error("Fehler beim Senden der Nachricht.");
-      return;
-    }
-
-    console.log("Nachricht erfolgreich gesendet!");
-
-    // Navigate to the newly created chat
-    router.push({
-      name: "ChatView",
-      params: { id: newChat.id },
-      query: { senderId: currentUserId.value },
-    });
-
-    // Close the modal & reset input field
     showNewChatModal.value = false;
-    initialMessage.value = "";
+    secondUserId.value = '';
+    initialMessage.value = '';
+    alert('Chat erfolgreich erstellt');
   } catch (error) {
-    console.error("Fehler beim Erstellen des Chats oder beim Senden der Nachricht:", error);
+    console.error('Fehler beim Erstellen des Chats:', error);
+    alert('Fehler beim Erstellen des Chats');
   }
 };
-  router.push('/');
 
-
-console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
-
-
-
-
-
-
+// Function to toggle the drawer
+const toggleDrawer = () => {
+  showDrawer.value = !showDrawer.value;
+};
 </script>
-
-
-<template>
-
-  <!--Navbar-->
-  <v-app-bar :elevation="2" rounded color="primary">
-    <template v-slot:prepend>
-      <!--Bei Klick auf bar-nav-icon wird toggleDrawer Methode aufgerufen-->
-      <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
-    </template>
-    <v-app-bar-title>Menü</v-app-bar-title>
-    
-    <v-app-bar-title>{{ currentCategory || "Keine Kategorie"}}</v-app-bar-title>
-
-    <v-btn icon @click="showNewChatModal= true">
-        <v-icon class="plus-icon"> mdi-plus-circle</v-icon>
-      </v-btn>
-      <v-dialog v-model="showNewChatModal" max-width="500">
-        <template v-slot:default="{close}">
-         this is a modal Window
-        </template>
-      
-    </v-dialog>
-
-    <template v-if="isBoardPage">
-      <v-btn icon @click="showForm = true">
-        <v-icon class="plus-icon"> mdi-plus-circle</v-icon>
-      </v-btn>
-<!-- Öffnen der PostForm Komponent in einem Dialog -->
-   
-      <v-dialog v-model="showForm" max-width="500" scrollable>
-        <template v-slot:default="{close}">
-          <v-card style="max-height: 80vh; overflow-y: auto;">
-          <PostForm 
-          :category="currentCategory"
-          @close="close">
-        </PostForm>
-      </v-card>
-        </template>
-      
-    </v-dialog>
-
-    </template>
-
-    <v-btn icon @click="showNewChatModal = true">
-  <v-icon class="plus-icon">mdi-plus-circle</v-icon>
-</v-btn>
-
-<v-dialog v-model="showNewChatModal" max-width="500">
-  <v-card>
-    <v-card-title>
-      <span class="headline">Chat erstellen</span>
-    </v-card-title>
-    <v-card-text>
-      <v-form ref="form">
-        <v-text-field
-          v-model="initialMessage"
-          label="Nachricht"
-          required
-        ></v-text-field>
-      </v-form>
-    </v-card-text>
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn color="blue darken-1" text @click="handleCreateChat">Erstellen</v-btn>
-      <v-btn color="grey darken-1" text @click="showNewChatModal = false">Abbrechen</v-btn>
-    </v-card-actions>
-  </v-card>
-</v-dialog>
-
-
-
-
-  </v-app-bar>
-  <!--Linkes Seitenmenü ausklappbar-->
-  <v-navigation-drawer 
-    v-if="showDrawer" 
-    app
-    :style="{ width: width }" 
-    color="grey-darken-2" 
-    class="custom-drawer">
-
-
-
-    <!-- Inhalte des Navigation Drawers -->
-    <v-list class="drawer-content">
-      <v-list-item :to="{ path: '/user/home'}">
-        <v-list-item-title>Startseite</v-list-item-title>
-      </v-list-item>
-
-
-      <v-list-group v-model="isBoardsOpen">
-        <template v-slot:activator="{props}">
-        <v-list-item v-bind="props">
-          <v-list-item-title @click="handleBoardClick">
-            Boards
-          </v-list-item-title>
-        </v-list-item>
-        </template>
-
-
-        <template v-slot>
-          <v-list-item 
-          v-for="item in items"
-          :key="item.title"
-          :title="item.title"
-          :class="{'v-list-item--active': activeItem === item.title}"
-          @click="setActiveItem(item)">
-        </v-list-item>
-          
-        </template>
-      </v-list-group>
-      <v-list-item>Chat</v-list-item>
-      <v-list-item :to="{ path: '/aboutUs'}">Über Uns</v-list-item>
-      <v-list-item :to="{ path: '/contact'}">Kontakt</v-list-item>
-
-
-    </v-list>
-
-    <div class="logout-container">
-    <v-btn icon @click="handleLogout" >
-        <v-icon class="logout-icon" color="red">mdi-logout</v-icon>
-      </v-btn>
-    </div>
-  </v-navigation-drawer>
-</template>
 
 
 <style scoped>
