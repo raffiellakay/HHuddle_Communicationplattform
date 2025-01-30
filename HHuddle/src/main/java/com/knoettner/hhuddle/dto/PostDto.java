@@ -31,7 +31,8 @@ public class PostDto {
     //optionale Felder
 
     private boolean isAnonymous;
-    private byte[] photo;
+   // private byte[] photo;
+    private String pathToImage;
     private LocalDateTime starttime;
     private LocalDateTime endtime;
     @JsonProperty("isPrivate")
