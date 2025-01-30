@@ -10,18 +10,23 @@ import { useForm, Field} from "vee-validate";
 import * as yup from "yup";
 
 
-// Validierungsschema
+const emits = defineEmits(['userPost-added', 'close']); 
+const userPostStore = useAdminPostStore(); 
+const authStore = useAuthStore();
+
+
+// Validierung für Errormessages und Pflichtfelder
 const validationSchema = yup.object({
   title: yup.string().required("Titel ist erforderlich."),
   text: yup.string().required("Beschreibung ist erforderlich."),
 });
 
-// `useForm` Setup
+// handleSubmit wird eingebunden in useForm und nutzt das Validierungsschema
 const { handleSubmit, errors } = useForm({
   validationSchema,
 });
 
-
+//Props Defintion
 const props = defineProps({
   houseId: Number, 
   boardId: Number,
@@ -34,27 +39,32 @@ const props = defineProps({
 
 
 const innerValue = ref(props.value || "");
+//Kategorie als Computed property
 const category = computed(() => props.category);
 
+//Holt sich facilities Array aus dem Store
+const facilities = computed(() =>  userPostStore.facilities);
+
+//Facilities als wählbare Optionen im Select 
+const facilityOptions = computed(() =>
+  facilities.value ? facilities.value.map(facility => 
+  ({ title: facility.type, value: facility.id })) : []
+);
 
 
-const emits = defineEmits(['userPost-added', 'close']); 
-const userPostStore = useAdminPostStore(); 
-const authStore = useAuthStore();
+
+
+
 
 //Definition ref Instanzen
-const houseId = authStore.user.houseId;
-
 const title = ref(''); 
 const text = ref('');
-
 const timestamp = ref("2024-12-18T15:52:42"); 
 const photo = ref(null);
-
-const user = {};
 const boardId = ref(null);
 const isPrivate = ref(false); 
 const anonymous = ref(true); 
+const facilityId = ref(null);
 
 //Datum und Zeit 
 const startDate = ref(null);
@@ -74,14 +84,40 @@ const combinedEndDateTime = computed(() =>
 
 
 
+onMounted(async() => {
+
+  try{
+    const houseId = authStore.user.houseId; 
+    if(!houseId) {
+      console.error("Keine House ID gefunden!");
+      return;
+    }
+
+    console.log("Lade Facilities für House ID: ", houseId);
+    await userPostStore.getAllFacilitiesByHouseId(houseId);
+
+    //Erste Facility auswählen
+    if(facilities.value.length>0) {
+      facilityId.value = facilities.value[0].id;
+    }
+
+  } catch (error) {
+    console.error("Fehler beim Laden der Facilities: ", error)
+  }
+});
+
+
+
+
+
 // Validierung der Zeit (HH:mm)
-function validateTimeInput(event) {
+/*function validateTimeInput(event) {
   const value = event.target.value;
   const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)?$/;
   if (!timeRegex.test(value)) {
     event.target.value = value.slice(0, -1); // Ungültige Eingabe entfernen
   }
-}
+}*/
 
 // Kombiniere Datum und Zeit für das Backend
 function combineDateTime(date, time) {
@@ -90,10 +126,14 @@ function combineDateTime(date, time) {
   return `${isoDate}T${time}`;
 }
 
+//Debug Facility ID
+watch(facilityId, (newVal) => {
+  console.log("Aktuelle facilityId:", newVal);
+});
 
 
 
-// Beobachte Änderungen und aktualisiere die kombinierten Werte
+// Beobachte Änderungen und aktualisiere die kombinierten für Start und Endzeit 
 watch([startDate, startTime], () => {
   combinedStartDateTime.value = combineDateTime(startDate.value, startTime.value);
 });
@@ -107,6 +147,13 @@ console.log("UserPost wurde geöffnet mit boardId: ", boardId.value) //Debug
 //Die Form besitzt zwei Modi: Creation und Edit Mode
 const isEdit = ref(false);
 
+
+//Formatierung des Photo inputs   AUSGEKLAMMERT BIS API ENDPUNKT FÜR FILE UPLOAD EXISTIERT
+/*const handleFileUpload = (event) => {
+  if (event.target.files.length > 0) {
+    photo.value = event.target.files[0]; //Datei für Upload speichern
+  }
+}*/
 
 
 
@@ -133,6 +180,7 @@ const submitPost = handleSubmit(async (values) => {
       photo: photo.value,
       starttime: combinedStartDateTime.value || null,
       endtime: combinedEndDateTime.value || null,
+      facilityId: facilityId.value,
       user: {
         id: authStore.user.id,
         username: authStore.user.username,
@@ -178,7 +226,7 @@ const selectedEndDate = ref(new Date());
 
 //Formatiert Datum auf DD.MM.YYYY
 const formatToGermanDate = (date) => {
-  if (!date) return ""; // Rückgabe eines leeren Strings, wenn kein Datum vorhanden ist
+  if (!date) return ""; //Rückgabe eines leeren Strings, wenn kein Datum vorhanden ist
   const d = new Date(date);
   return d.toLocaleDateString("de-DE", {
     day: "2-digit",
@@ -187,13 +235,15 @@ const formatToGermanDate = (date) => {
   });
 };
 
+
+//Formatiert Zeit um die korrekte Struktur ans Backend zu senden 
 function formatTimeInput(field) {
   const time = field === "startTime" ? startTime.value : endTime.value;
 
   if (time) {
     const [hours, minutes] = time.split(":");
 
-    // Stelle sicher, dass Stunden und Minuten zwei Ziffern haben
+    //Stunden und Minuten haben zwei Stellen
     const formattedTime = `${hours?.padStart(2, "0") || "00"}:${
       minutes?.padStart(2, "0") || "00"
     }`;
@@ -207,9 +257,10 @@ function formatTimeInput(field) {
 }
 
 
+//Debug
 console.log("Empfangene Kategorie in PostForm:", props.category);
 console.log("Category in PostForm:", category.value);
-console.log("Empfangene Kategorie-Wert in PostForm:", category.value);
+
 
 
 //Formatierte Datumsvariablen
@@ -349,6 +400,26 @@ const formattedEndDate = computed(() =>
               </v-col>
             </v-row>
           </div>
+
+          <v-select 
+          v-if="facilityOptions.length > 0"
+          v-model="facilityId"
+          :items="facilityOptions" 
+          item-title="title"
+          item-value="value"
+          variant="outlined" 
+          label="Gemeinschaftsobjekt auswählen" 
+          density="default" 
+          :clearable="false" 
+          :multiple="false" 
+          placeholder="" 
+          hint="" 
+          :persistent-hint="false" 
+          class="" 
+          name="Gemeinschaftsraum">
+          
+        
+          </v-select>
          
           
 
@@ -395,15 +466,15 @@ const formattedEndDate = computed(() =>
                 <div style="">
                   <v-file-input
                     variant="outlined"
-                    label="Foto hochladen"
+                    label="Bild hochladen"
                     density="default"
                     :clearable="false"
                     v-model="photo"
-                    multiple=""
-                    hint=""
                     :persistent-hint="false"
-                    class=""
                     name="pictureupload"
+                    accept="image/*"
+                    @change="handleFileUpload"
+               
                   >
                   </v-file-input>
                 </div>

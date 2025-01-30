@@ -125,7 +125,7 @@ const confirmDelete = async () => {
 
 //Sortiert userPosts nach Zeit und Erstellungsdatum 
 const sortedUserPostsByTimeCreated = computed(() => {
-  return [...userPosts.value].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  return [...filteredUserPosts.value].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 });
 </script>
 
@@ -140,7 +140,14 @@ const sortedUserPostsByTimeCreated = computed(() => {
       <v-col v-for="filteredUserPost in filteredUserPosts" :key="filteredUserPost.id" cols="12" md="4" lg="3">
         <v-card class="mx-auto" max-width="344">
           <!-- Photo als Header -->
-          
+           <!-- Bild anzeigen, falls vorhanden -->
+           <v-img 
+            v-if="filteredUserPost.photo"
+            :src="filteredUserPost.photo" 
+            alt="Post Bild"
+            height="200"
+            contain
+          ></v-img>
 
           <!-- Titel -->
           <v-card-item>

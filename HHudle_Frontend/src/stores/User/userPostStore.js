@@ -10,6 +10,7 @@ export const useUserPostStore = defineStore ('adminPost', {
     state: () => ({
         userPosts: [], //Array für alle UserPosts
         currentCategory: null, //Noch ein State für das Filtern nach Kategorien
+        facilities: [],
         loading: false,
     }),
 
@@ -51,14 +52,32 @@ export const useUserPostStore = defineStore ('adminPost', {
            
           }
 
-          console.log("Zeig mir den API-Body: ", requestBody); 
+          //FormData für MultipartFile erstellen
+          //const formData = new FormData();
+
+          //Felder aus userPost in FormData übertragen außer photo und user, diese werden in anderen Formaten vom backend erwartet
+          /*for(const key in userPost) {
+            if (userPost[key] !== null && userPost[key] !== undefined && key !== "photo" && key!=="user") {
+              formData.append(key, userPost[key]);
+            }
+          }
+
+          //User Objekt muss als JSON Strin angehängt werden
+          formData.append("user", JSON.stringify(user));
+
+          //Wenn ein Bild geschickt wird, wird es als Datei angehängt 
+          if(userPost.photo) {
+            formData.append("photo", userPost.photo)
+          }*/
+
+          console.log("Zeig mir den API-Body: ", userPost); 
 
 
-          
-          const response = await axios.post(`${API_URL}posts/post`, requestBody, {
+          //API Request wird im JSON Format gesendet
+          const response = await axios.post(`${API_URL}posts/post`, userPost, {
             headers: {
               Authorization: token, //Token wird gesetzt im Header 
-              "Content-Type": "application/json" //Dem Backend muss mitgeteilt werden, dass wir Daten im JSON Format senden 
+              "Content-Type": "application/json" //Dem Backend muss mitgeteilt werden, dass wir Daten im Multipart-Format senden
             }
           });
       
@@ -202,11 +221,25 @@ export const useUserPostStore = defineStore ('adminPost', {
             throw error;
         }
     }, 
-  
 
-    }
+    async getAllFacilitiesByHouseId(houseId) {
+
+      try {
+        console.log(`Lade alle Facilities für House ID: ${houseId}`);
+        this.loading= true;
+        const response = await axios.get(API_URL + 'admin/house/' + houseId + '/facility')
+        this.facilities = response.data;
+        console.log("Facilties für House ID geladen:", this.facilities);
+      } catch (error) {
+        console.error("Fehler beim Laden der Facilties für House ID: ", error);
+      } finally {
+        this.loading = false; 
+      }
+      
+
+    },
 
 
-
+  }
 
 });
