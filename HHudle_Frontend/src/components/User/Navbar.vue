@@ -4,11 +4,24 @@ import { ref, computed } from "vue";
 import PostForm from "@/components/User/PostForm.vue";
 import { useAuthStore } from "@/stores/authStore";
 import { useChatStore } from "@/stores/User/chatStore";
+import { useRoute, useRouter } from 'vue-router'
+import { ref, watch } from 'vue'
+import { computed } from 'vue';
+import PostForm from '@/components/User/PostForm.vue';
+import { useAuthStore } from '@/stores/authStore';
+import { useUserPostStore } from '@/stores/User/userPostStore';
 
-const router = useRouter();
-const route = useRoute();
+
+const userPostStore = useUserPostStore();
+const currentCategory = computed(() => userPostStore.currentCategory);
+
+const router = useRouter(); //Gibt Router Instanz zurück
+const route = useRoute(); // Gibt aktuelle Route zurück 
 const authStore = useAuthStore();
 const chatStore = useChatStore();
+
+
+
 
 const showDrawer = ref(false);
 const activeItem = ref(null);
@@ -19,6 +32,28 @@ const initialMessage = ref("");
 
 // Dynamically get the current user ID
 const currentUserId = computed(() => authStore.user?.id);
+
+
+//Gibt aktuelle Kategorie an PostForm zurück um bestimmte Felder zu verstecken
+watch(
+  () => route.path,
+  () => {
+    // Definiere Kategorien basierend auf den Routen
+    const categoryMap = {
+      "user/home": "FRONTPAGE",
+      "/user/board/commonrooms": "EVENTS",
+      "/user/board/blackboard": "BLACKBOARD",
+      "/user/board/packagefinder": "PACKAGE",
+      "/user/board/search&find": "EXCHANGE",
+    };
+
+    // Setze die Kategorie im Store
+    const category = categoryMap[route.path] || null;
+    console.log("Setze Kategorie im Store:", category);
+    userPostStore.setCategory(category);
+  },
+  { immediate: true } // Sofort ausführen
+);
 
 // List of board items
 const items = ref([
@@ -41,11 +76,16 @@ const setActiveItem = (item) => {
   activeItem.value = item.title;
   isBoardsOpen.value = true;
   router.push(item.route);
+  isBoardsOpen.value = true;
+  router.push({ path: item.route });
   showDrawer.value = false;
 };
 
-const isBoardPage = computed(() => {
-  const boardRoutes = items.value.map((item) => item.route);
+
+//Checkt ob die aktuelle Seite eine Board Seite ist indem es mit items im items array abgeglichen wird
+//Ist true wenn auf einer BoardSeite und false wenn nicht
+const isBoardPage = computed(() =>{
+  const boardRoutes = items.value.map(item => item.route);
   return boardRoutes.includes(route.path);
 });
 
@@ -109,6 +149,16 @@ const handleCreateChat = async () => {
     console.error("Fehler beim Erstellen des Chats oder beim Senden der Nachricht:", error);
   }
 };
+  router.push('/');
+
+
+console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
+
+
+
+
+
+
 </script>
 
 
@@ -122,17 +172,32 @@ const handleCreateChat = async () => {
     </template>
     <v-app-bar-title>Menü</v-app-bar-title>
     
+    <v-app-bar-title>{{ currentCategory || "Keine Kategorie"}}</v-app-bar-title>
+
+    <v-btn icon @click="showNewChatModal= true">
+        <v-icon class="plus-icon"> mdi-plus-circle</v-icon>
+      </v-btn>
+      <v-dialog v-model="showNewChatModal" max-width="500">
+        <template v-slot:default="{close}">
+         this is a modal Window
+        </template>
+      
+    </v-dialog>
+
     <template v-if="isBoardPage">
       <v-btn icon @click="showForm = true">
         <v-icon class="plus-icon"> mdi-plus-circle</v-icon>
       </v-btn>
 <!-- Öffnen der PostForm Komponent in einem Dialog -->
    
-      <v-dialog v-model="showForm" max-width="500">
+      <v-dialog v-model="showForm" max-width="500" scrollable>
         <template v-slot:default="{close}">
+          <v-card style="max-height: 80vh; overflow-y: auto;">
           <PostForm 
+          :category="currentCategory"
           @close="close">
         </PostForm>
+      </v-card>
         </template>
       
     </v-dialog>

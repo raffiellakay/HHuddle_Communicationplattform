@@ -2,9 +2,10 @@
 import { useRoute, useRouter } from 'vue-router'
 import { ref,computed } from 'vue'
 import AdminPostForm from '@/components/Admin/AdminPostForm.vue';
+import { useAuthStore } from "@/stores/authStore";
 
 
-
+const authStore = useAuthStore();
 const router = useRouter(); //Gibt Router Instanz zurück
 const route = useRoute(); //Gibt aktuelle Route zurück 
 

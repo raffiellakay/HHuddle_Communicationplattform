@@ -269,11 +269,11 @@ public class UserPostServiceImpl implements UserPostService {
                    return currentBoard.getId();
                 }
             }
-            new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");
 
         }
-        new ResponseStatusException(HttpStatus.NOT_FOUND, "House not found");
-        return null;
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "House not found");
+
     }
 }
 
