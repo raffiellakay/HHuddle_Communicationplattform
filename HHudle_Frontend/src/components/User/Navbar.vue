@@ -1,8 +1,6 @@
 <script setup>
-import { useRoute, useRouter } from "vue-router";
-import { ref, computed } from "vue";
-import PostForm from "@/components/User/PostForm.vue";
-import { useAuthStore } from "@/stores/authStore";
+
+
 import { useChatStore } from "@/stores/User/chatStore";
 import { useRoute, useRouter } from 'vue-router'
 import { ref, watch } from 'vue'
@@ -149,7 +147,7 @@ const handleCreateChat = async () => {
     console.error("Fehler beim Erstellen des Chats oder beim Senden der Nachricht:", error);
   }
 };
-  router.push('/');
+
 
 
 console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
