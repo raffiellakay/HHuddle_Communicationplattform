@@ -1,21 +1,15 @@
 <script setup>
-import { useRoute, useRouter } from "vue-router";
-import { ref, computed } from "vue";
+import { useRoute} from "vue-router";
+import { ref, computed, watch } from "vue";
 import PostForm from "@/components/User/PostForm.vue";
 import { useAuthStore } from "@/stores/authStore";
 import { useChatStore } from "@/stores/User/chatStore";
-import { useRoute, useRouter } from 'vue-router'
-import { ref, watch } from 'vue'
-import { computed } from 'vue';
-import PostForm from '@/components/User/PostForm.vue';
-import { useAuthStore } from '@/stores/authStore';
 import { useUserPostStore } from '@/stores/User/userPostStore';
 
 
 const userPostStore = useUserPostStore();
 const currentCategory = computed(() => userPostStore.currentCategory);
 
-const router = useRouter(); //Gibt Router Instanz zurück
 const route = useRoute(); // Gibt aktuelle Route zurück 
 const authStore = useAuthStore();
 const chatStore = useChatStore();
