@@ -1,20 +1,25 @@
 <script setup>
 
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref} from "vue";
 import { useUserPostStore } from "@/stores/User/userPostStore";
 import { useRoute } from "vue-router";
 import { useAuthStore } from "@/stores/authStore";
 import ConfirmDeleteCheck from "@/components/ConfirmDeleteCheck.vue";
+import { useChatStore } from "@/stores/User/chatStore";
 
 
+
+const chatStore = useChatStore();
 const userPostStore = useUserPostStore();
+const authStore = useAuthStore();
 const filteredUserPosts = computed(() => {
   return userPostStore.filteredPostsByCategory;
 });
-
-
-const authStore = useAuthStore();
-
+const showDeleteChecker = ref(false);
+const postToDelete = ref(null); 
+const showNewChatModal = ref(false); 
+const text = ref('');
+const secondUserId = ref(null);
 const show = ref(false); 
 const userId = computed(() => authStore.user.id)
 
@@ -44,11 +49,7 @@ Category {
 }*/
 
 //Methode fehlend: getHouseIdByUserId, aktuell kann noch nich auf die houseId zugegriffen werden 
-const showDeleteChecker = ref(false);
-const postToDelete = ref(null); 
-const showNewChatModal = ref(false); 
-const initialMessage = ref('');
-const secondUserId = ref('');
+
 
 
 console.log("Auth Store User:", authStore.user);
@@ -78,35 +79,40 @@ onMounted(async () => {
   }
 });
 
+
+const openModal = (userId) => {
+  console.log("Öffne Chat Modal für User ID:", userId);
+  showNewChatModal.value = true;
+  secondUserId.value = userId;
+};
+
+
 // Function to create a new chat
 const createChat = async () => {
-  if (!secondUserId.value || !initialMessage.value) {;
+  if (!secondUserId.value || !text.value.trim) {;
     return;
   }
 
   try {
     // Create a new chat
-    const newChat = await chatStore.createChat({ firstUserId: userId.value, secondUserId: secondUserId.value });
+    const newChat = await chatStore.createChat({ 
+      firstUserId: userId.value, secondUserId: secondUserId.value, text: text.value });
     // Send the initial message
     await chatStore.sendMessage({
       chatId: newChat.id,
       senderId: authStore.user.id,
-      text: initialMessage.value,
+      text: text.value,
     });
 
     showNewChatModal.value = false;
-    initialMessage.value = '';
+    text.value = '';
     alert('Chat erfolgreich erstellt');
   } catch (error) {
     console.error('Fehler beim Erstellen des Chats:', error);
     alert('Fehler beim Erstellen des Chats');
   }
 };
-const openModal = (userId) => {
-  console.log("Öffne Chat Modal für User ID:", userId);
-  showNewChatModal.value = true;
-  secondUserId.value = userId;
-};
+
 
 
 
@@ -178,7 +184,7 @@ const openModal = (userId) => {
         <v-card-text>
           <v-form ref="form">
             <v-text-field
-              v-model="initialMessage"
+              v-model="text"
               label="Nachricht"
               required
             ></v-text-field>
