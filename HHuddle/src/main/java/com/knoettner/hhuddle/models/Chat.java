@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 
@@ -23,10 +24,10 @@ public class Chat {
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
-    @OneToMany(mappedBy = "chat", fetch = FetchType.EAGER)
-    Set<ChatMessage> messages;
+    @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL)
+    private List<ChatMessage> messages = new ArrayList<>();
 
-   @ManyToOne
+    @ManyToOne
    @JoinColumn( name = "first_participant_id")
     private MyUser firstParticipant;
 
