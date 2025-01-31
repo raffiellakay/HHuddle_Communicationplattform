@@ -10,8 +10,23 @@ import ConfirmDeleteCheck from "@/components/ConfirmDeleteCheck.vue";
 
 const emits = defineEmits(['delete-userPost']);
 const userPostStore = useUserPostStore();
+
+const props = defineProps({
+  category: {
+    type: String, 
+    required: true, 
+  },
+  postId: Number,
+  facilityId: Number,
+})
+
+
 const filteredUserPosts = computed(() => {
-  return userPostStore.filteredPostsByCategory;
+  if (!props.facilityId) return userPostStore.filteredPostsByCategory;
+  
+  return userPostStore.filteredPostsByCategory.filter(
+    post => post.facilityId === props.facilityId
+  );
 });
 
 const showDropdown = ref({});
@@ -32,13 +47,7 @@ const authStore = useAuthStore();
 const show = ref(false); 
 const userId = computed(() => authStore.user.id)
 
-const props = defineProps({
-  category: {
-    type: String, 
-    required: true, 
-  },
-  postId: Number,
-})
+
 
 /*const normalizedCategory = computed(() => {
   return category.value ? category.value.toUpperCase() : null;
@@ -127,6 +136,23 @@ const confirmDelete = async () => {
 const sortedUserPostsByTimeCreated = computed(() => {
   return [...filteredUserPosts.value].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 });
+
+//Formatiert Datum auf DD.MM.YYYY
+const formatToGermanDate = (dateTime) => {
+  if (!dateTime) return ""; //Rückgabe eines leeren Strings, wenn kein Datum vorhanden ist
+  const d = new Date(dateTime);
+  return d.toLocaleDateString("de-DE", {
+    weekday: "short",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
+
+
+
 </script>
 
 
@@ -142,8 +168,8 @@ const sortedUserPostsByTimeCreated = computed(() => {
           <!-- Photo als Header -->
            <!-- Bild anzeigen, falls vorhanden -->
            <v-img 
-            v-if="filteredUserPost.photo"
-            :src="filteredUserPost.photo" 
+            v-if="filteredUserPost.pathToImage"
+            :src="`http://localhost:8081/${filteredUserPost.pathToImage}`" 
             alt="Post Bild"
             height="200"
             contain
@@ -168,12 +194,12 @@ const sortedUserPostsByTimeCreated = computed(() => {
         
 
           <!-- Untertitel -->
-           <div v-if="!category === 'EVENTS'">
+           <div v-if="category === 'EVENTS'">
           <v-card-subtitle>
-            Startzeit: {{ filteredUserPost.startTime }}
+            Startzeit: {{ formatToGermanDate(filteredUserPost.starttime) }}
           </v-card-subtitle>
           <v-card-subtitle>
-            Endzeit: {{ filteredUserPost.endTime }}
+            Endzeit: {{ formatToGermanDate(filteredUserPost.endtime) }}
           </v-card-subtitle>
           <v-card-subtitle>
             Erstellungszeit: {{ filteredUserPost.timestamp }}

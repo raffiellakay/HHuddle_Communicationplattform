@@ -72,7 +72,7 @@ public class UserPostController {
     }
 
     @PostMapping(value = "/uploadImage", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @PreAuthorize("hasRole('Resident')")
+    @PreAuthorize("hasRole('RESIDENT')")
     @Operation(summary = "Upload an image", description = "Uploads an image file and returns the file path")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Image uploaded successfully",

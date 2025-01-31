@@ -1,7 +1,7 @@
 <script setup>
 import PostCard from '@/components/User/PostCard.vue';
 import { useUserPostStore } from '@/stores/User/userPostStore';
-import { computed, onMounted,ref } from 'vue';
+import { computed, onMounted,ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '@/stores/authStore';
 
@@ -11,12 +11,17 @@ const route = useRoute();
 const category = "EVENTS"
 const userPostStore = useUserPostStore();
 const authStore = useAuthStore();
-const tab =ref(null);
+const tab = ref(null);
+
+const selectedFacilityId = ref(null);
 const facilities = computed(() =>{
   return userPostStore.facilities;
 });
 
-
+//Synchronisierung von selectedFacilityId und userPostStore.selectedFacilityId
+watch(() => userPostStore.selectedFacilityId, (newValue) => {
+  selectedFacilityId.value = newValue;
+});
 
 
 
@@ -33,8 +38,8 @@ onMounted(async() => {
     await userPostStore.getAllFacilitiesByHouseId(houseId);
 
     //Erste Facility auswählen
-    if(facilities.value.length>0) {
-      tab.value = facilities.value[0].id;
+    if(userPostStore.facilities.length>0) {
+      userPostStore.setSelectedFacility(userPostStore.facilities[0].id);
     }
 
 
@@ -52,15 +57,19 @@ console.log("Aktuelle Kategorie: ", category)
 
 
 <v-card>
-  <v-tabs v-model="tab" bg-color="primary">
-  <v-tab v-for="facility in facilities" :key="facility.id" :value="facility.id">
+  <v-tabs v-model="selectedFacilityId" bg-color="primary">
+  <v-tab 
+  v-for="facility in facilities" 
+  :key="facility.id" 
+  :value="facility.id"
+  @click="userPostStore.setSelectedFacility(facility.id)">
    {{ facility.type }}
   </v-tab>
 </v-tabs>
 
   <v-card-text>
       
-      <v-tabs-window  v-model="tab" bg-color="primary">
+      <v-tabs-window  v-model="selectedFacilityId" bg-color="primary">
         <v-tabs-window-item v-for="facility in facilities" :key="facility.id" :value="facility.id"> 
           {{ facility.description }} 
         </v-tabs-window-item>
@@ -75,7 +84,10 @@ console.log("Aktuelle Kategorie: ", category)
 
 
 <v-container>
-    <PostCard :category="category"/>
+    <PostCard 
+    v-if="selectedFacilityId !== null"
+    :category="category"
+    :facilityId="selectedFacilityId"/>
 </v-container>
     
 </template>

@@ -6,11 +6,13 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 import { useAuthStore } from "@/stores/authStore";
 
-export const useUserPostStore = defineStore ('adminPost', {
+
+export const useUserPostStore = defineStore ('userPost', {
     state: () => ({
         userPosts: [], //Array für alle UserPosts
         currentCategory: null, //Noch ein State für das Filtern nach Kategorien
-        facilities: [],
+        facilities: [], //Array für alle Facilities
+        selectedFacilityId: null,
         loading: false,
     }),
 
@@ -26,6 +28,11 @@ export const useUserPostStore = defineStore ('adminPost', {
 
 
     actions: {
+      
+      setSelectedFacility(facilityId) {
+        this.selectedFacilityId = facilityId;
+      },
+
         async createUserPost(userPost) {
             try {
                 console.log("API Request wird gesendet mit Daten: ", userPost);
@@ -36,6 +43,10 @@ export const useUserPostStore = defineStore ('adminPost', {
             return;
           }
 
+          if (!userPost.photo) {
+            console.warn("Kein Foto vorhanden. Post wird ohne Bild erstellt.");
+        }
+
           //Wir rufen aus dem LocalStore das jwt Token ab, damit wir wissen ob der User überhaupt berechtigt ist, einen Post zu erstellen
           const token = localStorage.getItem("jwt");
 
@@ -45,36 +56,29 @@ export const useUserPostStore = defineStore ('adminPost', {
             username: authStore.user.username
           }; 
 
-          //API Request Body wird erstellt um den adminUser korrekt als user zu übergeben 
-          const requestBody = {
-            ...userPost, //Enthät alle anderen Post Daten (title, text etc.) 
-            user: user, //Eingeloggter Benutzer wird gesetzt 
-           
-          }
-
-          //FormData für MultipartFile erstellen
-          //const formData = new FormData();
-
-          //Felder aus userPost in FormData übertragen außer photo und user, diese werden in anderen Formaten vom backend erwartet
-          /*for(const key in userPost) {
-            if (userPost[key] !== null && userPost[key] !== undefined && key !== "photo" && key!=="user") {
-              formData.append(key, userPost[key]);
-            }
-          }
-
-          //User Objekt muss als JSON Strin angehängt werden
-          formData.append("user", JSON.stringify(user));
-
-          //Wenn ein Bild geschickt wird, wird es als Datei angehängt 
-          if(userPost.photo) {
-            formData.append("photo", userPost.photo)
-          }*/
 
           console.log("Zeig mir den API-Body: ", userPost); 
 
 
+          //Bild hochladen falls es existiert
+          let pathToImage = null; 
+          if(userPost.photo) {
+            console.log("Bild wird hochgeladen...");
+            pathToImage = await this.uploadImage(userPost.photo);
+          }
+
+
+          //API Request Body wird erstellt um den Resident korrekt als user zu übergeben 
+          const newUserPost = {
+            ...userPost, //Enthät alle anderen Post Daten (title, text etc.) 
+            pathToImage: pathToImage,
+            user: user, //Eingeloggter Benutzer wird gesetzt 
+            photo: null, 
+           
+          }
+
           //API Request wird im JSON Format gesendet
-          const response = await axios.post(`${API_URL}posts/post`, userPost, {
+          const response = await axios.post(`${API_URL}posts/post`, newUserPost, {
             headers: {
               Authorization: token, //Token wird gesetzt im Header 
               "Content-Type": "application/json" //Dem Backend muss mitgeteilt werden, dass wir Daten im Multipart-Format senden
@@ -91,6 +95,8 @@ export const useUserPostStore = defineStore ('adminPost', {
           console.error("Fehler beim Erstellen des UserPosts:", error); //Debugging
         }
       },
+
+     
 
       async getBoardIdByHouseIdAndCategory(houseId, category) {
         try {
@@ -239,7 +245,37 @@ export const useUserPostStore = defineStore ('adminPost', {
 
     },
 
+    async uploadImage(file) {
+      try {
 
+        if (!file) {
+          console.error("Datei ist null oder undefined");
+          return null;
+      }
+        console.log("Hochladen des Bildes:", file);
+
+        const formData = new FormData();
+        formData.append("file", file, file.name);
+
+        const token = localStorage.getItem("jwt");
+
+        console.log("FormData Inhalt:", formData.get("file"));//Debug
+
+        const response = await axios.post(`${API_URL}posts/uploadImage`, formData, {
+          headers: {
+              Authorization: token,
+              "Content-Type": "multipart/form-data",
+          },
+      });
+
+      console.log("Bild hochgeladen mit Pfad: ", response.data);
+      return response.data;
+    } catch (error) {
+      console.log("Fehler beim Hochladen des Bildes:", error);
+      throw error;
+    }
+
+  }
   }
 
 });

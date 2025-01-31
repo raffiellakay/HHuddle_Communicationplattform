@@ -198,7 +198,8 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
           <v-card style="max-height: 80vh; overflow-y: auto;">
           <PostForm 
           :category="currentCategory"
-          @close="handleClose">
+          @close="handleClose"
+          :facilityId="userPostStore.selectedFacilityId">
         </PostForm>
       </v-card>
         </template>

@@ -11,7 +11,7 @@ import * as yup from "yup";
 
 
 const emits = defineEmits(['userPost-added', 'close']); 
-const userPostStore = useAdminPostStore(); 
+const userPostStore = useUserPostStore(); 
 const authStore = useAuthStore();
 
 
@@ -30,6 +30,7 @@ const { handleSubmit, errors } = useForm({
 const props = defineProps({
   houseId: Number, 
   boardId: Number,
+  facilityId: Number,
   category: {
     type: String, 
     required: true, 
@@ -64,7 +65,7 @@ const photo = ref(null);
 const boardId = ref(null);
 const isPrivate = ref(false); 
 const anonymous = ref(true); 
-const facilityId = ref(null);
+const facilityId = ref(props.facilityId || userPostStore.selectedFacilityId || null);
 
 //Datum und Zeit 
 const startDate = ref(null);
@@ -97,8 +98,12 @@ onMounted(async() => {
     await userPostStore.getAllFacilitiesByHouseId(houseId);
 
     //Erste Facility auswählen
-    if(facilities.value.length>0) {
-      facilityId.value = facilities.value[0].id;
+    if (props.facilityId) {
+      console.log("Facility aus Props gesetzt:", props.facilityId);
+      facilityId.value = props.facilityId;
+    } else if (userPostStore.selectedFacilityId) {
+      console.log("Facility aus Store gesetzt:", userPostStore.selectedFacilityId);
+      facilityId.value = userPostStore.selectedFacilityId;
     }
 
   } catch (error) {
@@ -106,6 +111,11 @@ onMounted(async() => {
   }
 });
 
+//Checkt ob sich selectedFacilityId sich geändert hat 
+watch(() => userPostStore.selectedFacilityId, (newVal) => {
+  console.log("Watcher: Facility geändert:", newVal);
+  facilityId.value = newVal;
+});
 
 
 
@@ -148,12 +158,18 @@ console.log("UserPost wurde geöffnet mit boardId: ", boardId.value) //Debug
 const isEdit = ref(false);
 
 
-//Formatierung des Photo inputs   AUSGEKLAMMERT BIS API ENDPUNKT FÜR FILE UPLOAD EXISTIERT
-/*const handleFileUpload = (event) => {
-  if (event.target.files.length > 0) {
-    photo.value = event.target.files[0]; //Datei für Upload speichern
+//Formatierung des Photo inputs  
+const handleFileUpload = (event) => {
+  if (event) {
+    const file = event.target?.files?.[0] || event;
+    if (file instanceof File) {
+      console.log("Datei hochladen:", file);
+      photo.value = file;
+    } else {
+      console.error("Hochgeladene Datei ist ungültig:", file);
+    }
   }
-}*/
+};
 
 
 
@@ -176,11 +192,11 @@ const submitPost = handleSubmit(async (values) => {
       title: values.title,
       text: values.text,
       category: props.category,
-      timestamp: timestamp.value,
+      timestamp: new Date().toISOString(),
       photo: photo.value,
       starttime: combinedStartDateTime.value || null,
       endtime: combinedEndDateTime.value || null,
-      facilityId: facilityId.value,
+      facilityId: facilityId.value || null,
       user: {
         id: authStore.user.id,
         username: authStore.user.username,
@@ -263,13 +279,6 @@ console.log("Category in PostForm:", category.value);
 
 
 
-//Formatierte Datumsvariablen
-/*const formattedStartDate = computed(() =>
-  formatToGermanDate(selectedStartDate.value)
-);
-const formattedEndDate = computed(() =>
-  formatToGermanDate(selectedEndDate.value)
-);*/
 
 </script>
 
@@ -401,8 +410,9 @@ const formattedEndDate = computed(() =>
             </v-row>
           </div>
 
+          <!-- Facility Auswahl Dropdown Select -->
           <v-select 
-          v-if="facilityOptions.length > 0"
+          v-if="facilityOptions.length > 0 && category === 'EVENTS'"  
           v-model="facilityId"
           :items="facilityOptions" 
           item-title="title"
