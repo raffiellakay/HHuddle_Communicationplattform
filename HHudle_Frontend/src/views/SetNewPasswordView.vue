@@ -53,6 +53,7 @@ const rules = [
                   v-model="newPassword"
                    :rules="rules"
           label="Dein neues Passwort"
+                  type="password"
                   outlined
                   clearable
                   required
@@ -65,6 +66,7 @@ const rules = [
                   v-model="againNewPassword"
                    :rules="rules"
           label="Neues Passwort wiederholen"
+          type="password"
                   outlined
                   clearable
                   required

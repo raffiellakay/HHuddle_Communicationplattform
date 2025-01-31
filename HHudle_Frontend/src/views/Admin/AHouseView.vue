@@ -1,7 +1,7 @@
 <script setup>
 import { computed, onMounted } from "vue";
 import { useHouseStore } from "@/stores/Admin/houseStore";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import AdminPostsView from '@/components/Admin/AdminPosts.vue';
 import { useAdminPostStore } from "@/stores/Admin/adminPostStore";
 import viennaHouseImage1 from '@/assets/Pictures/ViennaHouse1.jpg';
@@ -9,10 +9,12 @@ import viennaHouseImage2 from '@/assets/Pictures/ViennaHouse2.jpg';
 import viennaHouseImage3 from '@/assets/Pictures/ViennaHouse3.jpg';
 
 const props = defineProps({
-    houseId: Number
+  houseId: Number
 })
 
 const route = useRoute();
+const router = useRouter();
+
 const houseStore = useHouseStore();
 const adminPostStore = useAdminPostStore();
 
@@ -52,41 +54,55 @@ const houseImage = computed(() => {
   }
 });
 
+// Navigiere zur Residents-Seite
+const goToResidents = (houseId) => {
+  router.push(`/admin/house/${houseId}/user`);
+};
+
+// Navigiere zur Facilities Seite
+
+const goToFacilities = (houseId) => {
+  router.push(`/admin/house/${houseId}/facilities`);
+};
 
 
 </script>
 
 <template>
-    <div class="header-container">
+  <div class="header-container">
     <!-- Hintergrundbild -->
-    <v-img 
-    class="header-image" 
-    :src="houseImage" 
-    cover></v-img>
+    <v-img class="header-image" :src="houseImage" cover></v-img>
 
     <!-- Hausdetails über dem Bild -->
     <div class="house-details">
       <v-card v-if="house" class="house-card">
         <div class="house-info-row">
           <p><strong>Adresse:</strong> {{ house.address }}</p>
-          <p><strong>Tops:</strong> {{ house.residents.length }}</p>
-          <p><strong>Einrichtungen:</strong> {{ house.facilities.length }}</p>
+          
+         <!--Klickbare "Tops" (Residents) -->
+         <div @click="goToResidents(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
+            <p><strong>Tops:</strong> {{ house.residents.length }}</p>
+          </div>
+
+          <!--Klickbare "Einrichtungen" (Facilities) -->
+          <div @click="goToFacilities(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
+            <p><strong>Einrichtungen:</strong> {{ house.facilities.length }}</p>
+          </div>
+        
         </div>
       </v-card>
       <v-alert v-else type="warning">Haus nicht gefunden!</v-alert>
     </div>
   </div>
-    
 
 
-<v-container>
-    <AdminPostsView :houseId="houseId" @adminPost-added="refreshPosts"/>
-</v-container>
 
+  <v-container>
+    <AdminPostsView :houseId="houseId" @adminPost-added="refreshPosts" />
+  </v-container>
 </template>
 
 <style scoped>
-
 .header-container {
   position: relative;
   width: 100vw;
@@ -124,16 +140,20 @@ const houseImage = computed(() => {
 
 .house-info-row {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 gleichmäßige Spalten */
-  gap: 300px; /* Abstand zwischen den Spalten */
+  grid-template-columns: repeat(3, 1fr);
+  /* 3 gleichmäßige Spalten */
+  gap: 300px;
+  /* Abstand zwischen den Spalten */
   text-align: center;
 }
 
 /*Anpassung für kleine Bildschirme */
 @media (max-width: 768px) {
   .house-info-row {
-    grid-template-columns: 1fr; /* Eine Spalte, um die Inhalte untereinander zu setzen */
-    gap: 16px; /* Weniger Abstand */
+    grid-template-columns: 1fr;
+    /* Eine Spalte, um die Inhalte untereinander zu setzen */
+    gap: 16px;
+    /* Weniger Abstand */
   }
 }
 
@@ -142,5 +162,4 @@ const houseImage = computed(() => {
   font-size: 16px;
   font-weight: 500;
 }
-
 </style>

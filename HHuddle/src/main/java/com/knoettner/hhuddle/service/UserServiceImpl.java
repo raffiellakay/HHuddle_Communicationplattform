@@ -71,6 +71,7 @@ public class UserServiceImpl implements UserService {
             EmailDetails details = new EmailDetails(user.getMail(), user.getId());
             emailService.sendMailToResetPw(details);
             user.setHasChangedPW(false);
+            userRepository.save(user);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no account connected to this mail");
         }

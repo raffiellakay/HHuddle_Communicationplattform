@@ -72,6 +72,10 @@ export const useAuthStore = defineStore('auth', {
         async getNewPassword(mail) {
             await axios.put(API_URL + 'user/getNewPw', { mail })
             
+        },
+        async sendContactForm(contactmail) {
+            await axios.post(API_URL + 'mail/contact', contactmail )
+            
         }
     }
 })
