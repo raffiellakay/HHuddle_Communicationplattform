@@ -6,31 +6,6 @@
       <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
     </template>
     <v-app-bar-title>Menü</v-app-bar-title>
-
-    <v-btn icon @click="showNewChatModal = true">
-      <v-icon class="plus-icon">mdi-plus-circle</v-icon>
-    </v-btn>
-    <v-dialog v-model="showNewChatModal" max-width="500">
-      <v-card>
-        <v-card-title>
-          <span class="headline">Chat erstellen</span>
-        </v-card-title>
-        <v-card-text>
-          <v-form ref="form">
-            <v-text-field
-              v-model="initialMessage"
-              label="Nachricht"
-              required
-            ></v-text-field>
-          </v-form>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="createChat">Erstellen</v-btn>
-          <v-btn color="grey darken-1" text @click="showNewChatModal = false">Abbrechen</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-app-bar>
 </template>
 
@@ -51,9 +26,8 @@ const showDrawer = ref(false); // showDrawer Konstante ist per default auf false
 const activeItem = ref(null); // Zustand des aktiven Items im Untermenü von Boards 
 const isBoardsOpen = ref(false);
 const showForm = ref(false);
-const showNewChatModal = ref(false); 
-const secondUserId = ref('');
-const initialMessage = ref('');
+
+
 
 // Dynamically get the current user ID
 const currentUserId = computed(() => authStore.user?.id);
@@ -87,33 +61,7 @@ const items = ref([
   { title: "Suche - Biete - Tausche", route: "/user/board/search&find" },
 ]);
 
-// Function to create a new chat
-const createChat = async () => {
-  if (!secondUserId.value || !initialMessage.value) {
-    alert('User ID und Nachricht sind erforderlich');
-    return;
-  }
 
-  try {
-    // Create a new chat
-    const newChat = await chatStore.createChat({ firstUserId: authStore.user.id, secondUserId: secondUserId.value });
-
-    // Send the initial message
-    await chatStore.sendMessage({
-      chatId: newChat.id,
-      senderId: authStore.user.id,
-      text: initialMessage.value,
-    });
-
-    showNewChatModal.value = false;
-    secondUserId.value = '';
-    initialMessage.value = '';
-    alert('Chat erfolgreich erstellt');
-  } catch (error) {
-    console.error('Fehler beim Erstellen des Chats:', error);
-    alert('Fehler beim Erstellen des Chats');
-  }
-};
 
 // Function to toggle the drawer
 const toggleDrawer = () => {

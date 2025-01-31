@@ -46,6 +46,9 @@ Category {
 //Methode fehlend: getHouseIdByUserId, aktuell kann noch nich auf die houseId zugegriffen werden 
 const showDeleteChecker = ref(false);
 const postToDelete = ref(null); 
+const showNewChatModal = ref(false); 
+const initialMessage = ref('');
+const secondUserId = ref('');
 
 
 console.log("Auth Store User:", authStore.user);
@@ -75,6 +78,36 @@ onMounted(async () => {
   }
 });
 
+// Function to create a new chat
+const createChat = async () => {
+  if (!secondUserId.value || !initialMessage.value) {;
+    return;
+  }
+
+  try {
+    // Create a new chat
+    const newChat = await chatStore.createChat({ firstUserId: userId.value, secondUserId: secondUserId.value });
+    // Send the initial message
+    await chatStore.sendMessage({
+      chatId: newChat.id,
+      senderId: authStore.user.id,
+      text: initialMessage.value,
+    });
+
+    showNewChatModal.value = false;
+    initialMessage.value = '';
+    alert('Chat erfolgreich erstellt');
+  } catch (error) {
+    console.error('Fehler beim Erstellen des Chats:', error);
+    alert('Fehler beim Erstellen des Chats');
+  }
+};
+const openModal = (userId) => {
+  console.log("Öffne Chat Modal für User ID:", userId);
+  showNewChatModal.value = true;
+  secondUserId.value = userId;
+};
+
 
 
 </script>
@@ -90,7 +123,9 @@ onMounted(async () => {
       <v-col v-for="filteredUserPost in filteredUserPosts" :key="filteredUserPost.id" cols="12" md="4" lg="3">
         <v-card class="mx-auto" max-width="344">
           <!-- Photo als Header -->
-          
+          <v-btn v-if="userId !== filteredUserPost.user?.id" icon @click="openModal(filteredUserPost.user?.id)">
+            <v-icon class="plus-icon">mdi-plus-circle</v-icon>
+          </v-btn>
 
           <!-- Titel -->
           <v-card-title>
@@ -133,6 +168,29 @@ onMounted(async () => {
     <v-container v-if="filteredUserPosts.length === 0">
       <v-alert type="info">Keine Beiträge für diese Kategorie verfügbar.</v-alert>
     </v-container>
+
+    
+    <v-dialog v-model="showNewChatModal" max-width="500">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Chat erstellen</span>
+        </v-card-title>
+        <v-card-text>
+          <v-form ref="form">
+            <v-text-field
+              v-model="initialMessage"
+              label="Nachricht"
+              required
+            ></v-text-field>
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="createChat">Erstellen</v-btn>
+          <v-btn color="grey darken-1" text @click="showNewChatModal = false">Abbrechen</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 
 </template>

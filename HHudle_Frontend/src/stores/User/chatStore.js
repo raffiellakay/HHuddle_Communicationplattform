@@ -10,7 +10,7 @@ export const useChatStore = defineStore("chatStore", {
   actions: {
     // Create a new chat between two users.
      
-    async createChat({ firstUserId, secondUserId }) {
+    async createChat({ firstUserId, secondUserId, initialMessage }) {
       try {
         const response = await axios.post(`${API_URL}chats/create`, null, {
           params: { firstUserId, secondUserId },
