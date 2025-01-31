@@ -35,8 +35,13 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+
+
+import { useChatStore } from "@/stores/User/chatStore";
+import { useRoute, useRouter } from 'vue-router'
+import { ref, watch } from 'vue'
+import { computed } from 'vue';
+import PostForm from '@/components/User/PostForm.vue';
 import { useAuthStore } from '@/stores/authStore';
 import { useChatStore } from '@/stores/User/chatStore';
 import { useUserPostStore } from '@/stores/User/userPostStore';
@@ -115,10 +120,15 @@ const createChat = async () => {
   }
 };
 
-// Function to toggle the drawer
-const toggleDrawer = () => {
-  showDrawer.value = !showDrawer.value;
-};
+
+
+console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
+
+
+
+
+
+
 </script>
 
 
