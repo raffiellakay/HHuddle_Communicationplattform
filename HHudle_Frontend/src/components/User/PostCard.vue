@@ -11,6 +11,7 @@ import ConfirmDeleteCheck from "@/components/ConfirmDeleteCheck.vue";
 const emits = defineEmits(['delete-userPost']);
 const userPostStore = useUserPostStore();
 
+//Prop Definition
 const props = defineProps({
   category: {
     type: String, 
@@ -20,7 +21,10 @@ const props = defineProps({
   facilityId: Number,
 })
 
+const showDeleteChecker = ref(false);
+const postToDelete = ref(null); 
 
+//Gibt wenn es eine Facility ID gibt nach Kategorie gefilterte Posts aus Store zurück und filtert sie nach Facility
 const filteredUserPosts = computed(() => {
   if (!props.facilityId) return userPostStore.filteredPostsByCategory;
   
@@ -28,6 +32,11 @@ const filteredUserPosts = computed(() => {
     post => post.facilityId === props.facilityId
   );
 });
+
+//Backslashes in Dateipfad für Photo korrigieren 
+/*const getImageUrl = (path) => {
+  return `http://localhost:8081${path.replace(/\\/g, '/')}`;
+};*/
 
 const showDropdown = ref({});
 
@@ -69,18 +78,17 @@ Category {
 
 
 
-const showDeleteChecker = ref(false);
-const postToDelete = ref(null); 
+
 
 //Öffnen des DeleteCheckers
-const openDeleteChecker = (userPost) => {
-  console.log("Post zum Löschen: ", userPost) //Debugging
-  postToDelete.value = {...userPost};
+const openDeleteChecker = (filteredUserPost) => {
+  console.log("Post zum Löschen: ", filteredUserPost) //Debugging
+  postToDelete.value = {...filteredUserPost};
   showDeleteChecker.value = true;
 }
 
 //Schließen des DeleteCheckers
-const closeDeleteChecker = (userPost) => {
+const closeDeleteChecker = (filteredUserPost) => {
   postToDelete.value = null; 
   showDeleteChecker.value = false;
 }
@@ -120,7 +128,7 @@ const confirmDelete = async () => {
       console.log(`Post mit ID ${postToDelete.value.id} wird gelöscht`);
       await userPostStore.deletePost(postToDelete.value.id);
 
-      await userPostStore.getPostsByHouseId(authStore.user.houseId.value);
+      await userPostStore.getPostsByHouseId(authStore.user.houseId);
 
       showDeleteChecker.value = false; 
       postToDelete.value = null;
@@ -185,7 +193,7 @@ const formatToGermanDate = (dateTime) => {
             <template v-slot:append >
                   <DeleteButton 
                   v-if="filteredUserPost.user?.id === userId"
-                  @click="openDeleteChecker(userPost)" 
+                  @click="openDeleteChecker(filteredUserPost)" 
                   @delete-success="$emit('userPost-deleted')" 
                   class="delete-button"/> 
                 </template>
@@ -236,6 +244,14 @@ const formatToGermanDate = (dateTime) => {
     <v-container v-if="filteredUserPosts.length === 0">
       <v-alert type="info">Keine Beiträge für diese Kategorie verfügbar.</v-alert>
     </v-container>
+
+    <ConfirmDeleteCheck
+    :show="showDeleteChecker"
+    :itemName="'den Post'"
+    @confirm="confirmDelete"
+    @close="closeDeleteChecker">
+
+    </ConfirmDeleteCheck>
   </v-container>
 
 </template>

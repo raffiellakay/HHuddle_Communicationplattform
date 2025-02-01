@@ -97,6 +97,7 @@ export const useAdminPostStore = defineStore('adminPost', {
 
 
         async deleteAdminPost(postId) {
+          
             await axios.delete(API_URL + 'admin/adminpost/' + postId);
             const index = this.adminPosts.findIndex(p => p.postId === postId);
             this.adminPosts.splice(index, 1);

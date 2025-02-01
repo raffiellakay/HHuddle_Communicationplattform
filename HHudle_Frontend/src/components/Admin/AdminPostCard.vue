@@ -105,7 +105,10 @@ const formatToDateTime = (date) => {
          <v-card-item>
           <v-card-title>{{ adminPost.title }}</v-card-title> 
           <template v-slot:append >
-            <DeleteButton @click="openDeleteChecker(adminPost)" @delete-success="$emit('adminPost-deleted')" class="delete-button"/> 
+            <DeleteButton 
+            @click="openDeleteChecker(adminPost)" 
+            @delete-success="$emit('adminPost-deleted')" 
+            class="delete-button"/> 
           </template>
             
           <v-card-subtitle> {{ formatToDateTime(adminPost.timestamp) }}</v-card-subtitle>
