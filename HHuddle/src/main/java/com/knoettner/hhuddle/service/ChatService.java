@@ -3,16 +3,13 @@ package com.knoettner.hhuddle.service;
 import com.knoettner.hhuddle.dto.ChatDto;
 import com.knoettner.hhuddle.dto.ChatMessageRequestDto;
 import com.knoettner.hhuddle.dto.ChatMessageResponseDto;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 public interface ChatService {
 
 
-
-    @Transactional
-    ChatDto createChat(Long firstUserId, Long secondUserId, String text);
+    ChatDto createChat(Long firstUserId, Long secondUserId);
 
     ChatMessageResponseDto sendMessage(ChatMessageRequestDto chatMessageRequestDto);
 

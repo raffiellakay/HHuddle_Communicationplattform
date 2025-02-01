@@ -3,7 +3,7 @@
     <v-row class="chat-list-view" align-items="stretch">
       <!-- List of user chats -->
       <v-col>
-        <div v-if="sortedChats.length" class="dialogs">
+        <div class="dialogs">
           <div
             v-for="(chat, index) in sortedChats"
             :key="chat.id"
@@ -21,14 +21,6 @@
             </div>
           </div>
         </div>
-        <div v-else> 
-         <div> 
-          No chats
-         </div>
-         <div>
-          <v-btn @click="navigateToHome()">go home</v-btn>
-         </div>
-        </div>
 
         <ConfirmDeleteCheck :show="showDeleteDialog" @confirm="deleteChatById(currentChatId)" @close="showDeleteDialog = false"/>
         
@@ -42,12 +34,10 @@ import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useChatStore } from "@/stores/User/chatStore";
 import ConfirmDeleteCheck from "@/components/ConfirmDeleteCheck.vue";
-import { useAuthStore } from '@/stores/authStore'
-const authStore = useAuthStore();
 
 const chatStore = useChatStore();
 const router = useRouter();
-const userId = authStore.user?.id;
+const userId = 52; // Replace with dynamic user ID as needed
 // Reactive data for chats
 const userChats = ref([]);
 const showDeleteDialog = ref(false);
@@ -70,23 +60,17 @@ onMounted(async () => {
   
   try {
     await chatStore.fetchChatsByUserId(userId);
-    userChats.value = chatStore.chats.filter((chat) => {
-      if(chat.first_participant && chat.first_participant.id === userId) {
-        return chat.visibleToFirstParticipant;
-      } else {
-        return chat.visibleToSecondParticipant;
-      }
-     
+    userChats.value = chatStore.chats.filter((chat) => { 
+      return chat.visibleToFirstParticipant;
     }) // Sync chats from the store
   } catch (error) {
     console.error("Error fetching user chats:", error);
   }
 });
 
-
 // Navigate to a specific chat
 function navigateToChat(chatId) {
-  router.push({ name: 'ChatView', params: { id: chatId }, query: { senderId: userId } });;
+  router.push({ name: 'ChatView', params: { id: chatId }, query: { senderId: 52 } });;
 }
 
 const sortArrayByProperty = (array, property) => {
@@ -109,10 +93,6 @@ async function deleteChatById(chatId) {
 const showModalWindow = (chatId) => {
   showDeleteDialog.value = true;
   currentChatId.value = chatId;
-};
-
-const navigateToHome = () => {
-  router.push({ path: '/user' });
 };
 
 

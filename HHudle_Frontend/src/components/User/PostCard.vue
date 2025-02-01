@@ -1,27 +1,59 @@
 <script setup>
 
-import { computed, onMounted, ref} from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useUserPostStore } from "@/stores/User/userPostStore";
 import { useRoute } from "vue-router";
 import { useAuthStore } from "@/stores/authStore";
 import DeleteButton from "@/components/Icons/DeleteButton.vue";
 import EditButton from "@/components/Icons/EditButton.vue";
 import ConfirmDeleteCheck from "@/components/ConfirmDeleteCheck.vue";
-import { useChatStore } from "@/stores/User/chatStore";
+import UserIconRound from "../Icons/UserIconRound.vue";
 
-
-
-const chatStore = useChatStore();
+const emits = defineEmits(['delete-userPost']);
 const userPostStore = useUserPostStore();
-const authStore = useAuthStore();
-const filteredUserPosts = computed(() => {
-  return userPostStore.filteredPostsByCategory;
-});
+
+//Prop Definition
+const props = defineProps({
+  category: {
+    type: String, 
+    required: true, 
+  },
+  postId: Number,
+  facilityId: Number,
+})
+
 const showDeleteChecker = ref(false);
 const postToDelete = ref(null); 
-const showNewChatModal = ref(false); 
-const text = ref('');
-const secondUserId = ref(null);
+
+//Gibt wenn es eine Facility ID gibt nach Kategorie gefilterte Posts aus Store zurück und filtert sie nach Facility
+const filteredUserPosts = computed(() => {
+  if (!props.facilityId) return userPostStore.filteredPostsByCategory;
+  
+  return userPostStore.filteredPostsByCategory.filter(
+    post => post.facilityId === props.facilityId
+  );
+});
+
+//Backslashes in Dateipfad für Photo korrigieren 
+/*const getImageUrl = (path) => {
+  return `http://localhost:8081${path.replace(/\\/g, '/')}`;
+};*/
+
+const showDropdown = ref({});
+
+// Umschalten des Dropdowns
+const toggleDropdown = (postId) => {
+  showDropdown.value[postId] = !showDropdown.value[postId];
+};
+
+
+// Methode, um den Zustand eines Dropdowns zu überprüfen
+const isDropdownOpen = (postId) => {
+  return !!showDropdown.value[postId]; // Rückgabe von `true` oder `false`
+};
+
+const authStore = useAuthStore();
+
 const show = ref(false); 
 const userId = computed(() => authStore.user.id)
 
@@ -45,8 +77,22 @@ Category {
 
 }*/
 
-//Methode fehlend: getHouseIdByUserId, aktuell kann noch nich auf die houseId zugegriffen werden 
 
+
+
+
+//Öffnen des DeleteCheckers
+const openDeleteChecker = (filteredUserPost) => {
+  console.log("Post zum Löschen: ", filteredUserPost) //Debugging
+  postToDelete.value = {...filteredUserPost};
+  showDeleteChecker.value = true;
+}
+
+//Schließen des DeleteCheckers
+const closeDeleteChecker = (filteredUserPost) => {
+  postToDelete.value = null; 
+  showDeleteChecker.value = false;
+}
 
 
 console.log("Auth Store User:", authStore.user);
@@ -76,40 +122,43 @@ onMounted(async () => {
   }
 });
 
+//UserPost Löschen
+const confirmDelete = async () => {
+  if (postToDelete.value) {
+    try {
+      console.log(`Post mit ID ${postToDelete.value.id} wird gelöscht`);
+      await userPostStore.deletePost(postToDelete.value.id);
 
-const openModal = (userId) => {
-  console.log("Öffne Chat Modal für User ID:", userId);
-  showNewChatModal.value = true;
-  secondUserId.value = userId;
+      await userPostStore.getPostsByHouseId(authStore.user.houseId);
+
+      showDeleteChecker.value = false; 
+      postToDelete.value = null;
+    } catch (error) {
+      console.error("Folgender Fehler beim Löschen aufgetreten: ", error)
+    }
+  } 
+}
+
+
+
+//Sortiert userPosts nach Zeit und Erstellungsdatum 
+const sortedUserPostsByTimeCreated = computed(() => {
+  return [...filteredUserPosts.value].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+});
+
+//Formatiert Datum auf DD.MM.YYYY
+const formatToGermanDate = (dateTime) => {
+  if (!dateTime) return ""; //Rückgabe eines leeren Strings, wenn kein Datum vorhanden ist
+  const d = new Date(dateTime);
+  return d.toLocaleDateString("de-DE", {
+    weekday: "short",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 };
-
-
-// Function to create a new chat
-const createChat = async () => {
-  if (!secondUserId.value || !text.value.trim) {;
-    return;
-  }
-
-  try {
-    // Create a new chat
-    const newChat = await chatStore.createChat({ 
-      firstUserId: userId.value, secondUserId: secondUserId.value, text: text.value });
-    // Send the initial message
-    await chatStore.sendMessage({
-      chatId: newChat.id,
-      senderId: authStore.user.id,
-      text: text.value,
-    });
-
-    showNewChatModal.value = false;
-    text.value = '';
-    alert('Chat erfolgreich erstellt');
-  } catch (error) {
-    console.error('Fehler beim Erstellen des Chats:', error);
-    alert('Fehler beim Erstellen des Chats');
-  }
-};
-
 
 
 
@@ -126,9 +175,14 @@ const createChat = async () => {
       <v-col v-for="filteredUserPost in filteredUserPosts" :key="filteredUserPost.id" cols="12" md="4" lg="3">
         <v-card class="mx-auto" max-width="344">
           <!-- Photo als Header -->
-          <v-btn v-if="userId !== filteredUserPost.user?.id" icon @click="openModal(filteredUserPost.user?.id)">
-            <v-icon class="plus-icon">mdi-plus-circle</v-icon>
-          </v-btn>
+           <!-- Bild anzeigen, falls vorhanden -->
+           <v-img 
+            v-if="filteredUserPost.pathToImage"
+            :src="`http://localhost:8081/${filteredUserPost.pathToImage}`" 
+            alt="Post Bild"
+            height="200"
+            contain
+          ></v-img>
 
           <!-- Titel -->
           <v-card-item>
@@ -200,28 +254,13 @@ const createChat = async () => {
       <v-alert type="info">Keine Beiträge für diese Kategorie verfügbar.</v-alert>
     </v-container>
 
-    
-    <v-dialog v-model="showNewChatModal" max-width="500">
-      <v-card>
-        <v-card-title>
-          <span class="headline">Chat erstellen</span>
-        </v-card-title>
-        <v-card-text>
-          <v-form ref="form">
-            <v-text-field
-              v-model="text"
-              label="Nachricht"
-              required
-            ></v-text-field>
-          </v-form>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="createChat">Erstellen</v-btn>
-          <v-btn color="grey darken-1" text @click="showNewChatModal = false">Abbrechen</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <ConfirmDeleteCheck
+    :show="showDeleteChecker"
+    :itemName="'den Post'"
+    @confirm="confirmDelete"
+    @close="closeDeleteChecker">
+
+    </ConfirmDeleteCheck>
   </v-container>
 
 </template>
