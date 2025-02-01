@@ -1,14 +1,20 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
+import { useHouseStore } from "@/stores/Admin/houseStore";
 import { useFacilityStore } from '@/stores/Admin/facilityStore';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import DeleteButton from "@/components/Icons/DeleteButton.vue";
 import ConfirmDeleteCheck from "@/components/ConfirmDeleteCheck.vue";
+import EditButton from '@/components/Icons/EditButton.vue';
+import viennaHouseImage1 from '@/assets/Pictures/ViennaHouse1.jpg';
+import viennaHouseImage2 from '@/assets/Pictures/ViennaHouse2.jpg';
+import viennaHouseImage3 from '@/assets/Pictures/ViennaHouse3.jpg';
 
-const router = useRoute();
+const router = useRouter();
+const route = useRoute();
 
 const facilityStore = useFacilityStore();
-const houseId = Number(router.params.houseId);
+const houseId = computed(() => Number(route.params.houseId));
 
 const newFacility = ref({
     type: '',
@@ -52,6 +58,32 @@ const confirmDelete = async () => {
 const dialog = ref(false);
 
 
+//Update Facility
+const editDialog = ref(false);
+const updatedFacility = ref({
+    type: '',
+    description: '',
+    houseId: houseId
+})
+const handleEdit =  (facility) => {
+  console.log("Einrichtung zum Bearbeiten: ", facility) //Debugging
+  updatedFacility.value = {...facility};
+  editDialog.value = true;
+}
+async function updateFacility(){
+  try {
+        await facilityStore.updateFacility(updatedFacility.value);
+        await facilityStore.getAllFacilitiesByHouseId(houseId);
+
+        editDialog.value = false;
+        updatedFacility.value = { type: '', description: '', houseId }; // house Id bleibt erhalten
+    } catch (error) {
+        console.error('Error while updating Facility:', error);
+    }
+}
+
+
+
 onMounted(async () => {
     await facilityStore.getAllFacilitiesByHouseId(houseId);
 });
@@ -64,16 +96,82 @@ async function saveNewFacility(){
         dialog.value = false;
         newFacility.value = { type: '', description: '', houseId }; // house Id bleibt erhalten
     } catch (error) {
-        console.error('Error while saving resident:', error);
+        console.error('Error while saving facility:', error);
     }
 }
+
+//Header
+//Das aktuelle Haus abrufen
+const houseStore = useHouseStore();
+
+const house = computed(() => houseStore.houses.find(h => h.id == houseId.value));
+
+
+//Bilder setzen je nach Haus
+const houseImage = computed(() => {
+  switch (houseId.value) {
+    case 1:
+      return viennaHouseImage1;
+    case 2:
+      return viennaHouseImage2;
+    case 3:
+      return viennaHouseImage3;
+    default:
+      return viennaHouseImage1;
+  }
+});
+
+// Navigiere zur Residents-Seite
+const goToResidents = (houseId) => {
+  router.push(`/admin/house/${houseId}/user`);
+};
+
+// Navigiere zur Facilities Seite
+
+const goToFacilities = (houseId) => {
+  router.push(`/admin/house/${houseId}/facilities`);
+};
+
+// zu Post/startseite
+
+const goToOverview = (houseId) => {
+  router.push(`/admin/house/${houseId}`)
+};
 
 </script>
 
 <template>
-<v-container>
-   
+  <!--Header-->
+  <div class="header-container">
+    <!-- Hintergrundbild -->
+    <v-img class="header-image" :src="houseImage" cover></v-img>
 
+    <!-- Hausdetails über dem Bild -->
+    <div class="house-details">
+      <v-card v-if="house" class="house-card">
+        <div class="house-info-row">
+          <div @click="goToOverview(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
+          <p><strong>Adresse:</strong> {{ house.address }}</p>
+        </div>
+
+         <!--Klickbare "Tops" (Residents) -->
+         <div @click="goToResidents(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
+            <p><strong>Tops:</strong> {{ house.residents.length }}</p>
+          </div>
+
+          <!--Klickbare "Einrichtungen" (Facilities) -->
+          <div @click="goToFacilities(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
+            <p><strong>Einrichtungen:</strong> {{ house.facilities.length }}</p>
+          </div>
+        
+        </div>
+      </v-card>
+      <v-alert v-else type="warning">Haus nicht gefunden!</v-alert>
+    </div>
+  </div>
+
+<v-container>
+  
     <!-- Dialog zum Hinzufügen Facility -->
     <v-dialog v-model="dialog" max-width="500px">
         <v-card>
@@ -86,7 +184,7 @@ async function saveNewFacility(){
                 </v-form>
             </v-card-text>
             <v-card-actions>
-                <v-btn text @click="dialog = false">Cancel</v-btn>
+                <v-btn text @click="dialog = false">Abbrechen</v-btn>
                 <v-btn text color="primary" @click="saveNewFacility">Speichern</v-btn>
             </v-card-actions>
         </v-card>
@@ -95,8 +193,26 @@ async function saveNewFacility(){
     <v-list>
         <v-list-item v-for="facility in facilityStore.facilities" :key="facility.id">
             <v-list-item-content>
-                <v-list-item-title>{{ facility.type }}  <DeleteButton @click="openDeleteChecker(facility)" @delete-success="$emit('adminPost-deleted')" class="delete-button"/> </v-list-item-title>
-                <v-list-item-subtitle>{{ facility.description }}</v-list-item-subtitle>
+                <v-list-item-title>{{ facility.type }}  <DeleteButton @click="openDeleteChecker(facility)" class="delete-button"/> </v-list-item-title>
+                <v-list-item-subtitle>{{ facility.description }}</v-list-item-subtitle> <EditButton @click="handleEdit(facility)"/>
+
+                <!-- Editing Facility-->
+                <v-dialog v-model="editDialog" max-width="500px">
+        <v-card>
+            <v-card-title>Einrichtung bearbeiten</v-card-title>
+            <v-card-text>
+                <!-- Felder zum Editieren-->
+                <v-form @submit.prevent="updateFacility">
+                    <v-text-field v-model="updatedFacility.type" label="Art der Einrichtung" required></v-text-field>
+                    <v-text-field v-model="updatedFacility.description" label="Beschreibung der Einrichtung" required></v-text-field>
+                </v-form>
+            </v-card-text>
+            <v-card-actions>
+                <v-btn text @click="editDialog = false">Abbrechen</v-btn>
+                <v-btn text color="primary" @click="updateFacility">Speichern</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
             
             </v-list-item-content>
         </v-list-item>
@@ -122,5 +238,65 @@ async function saveNewFacility(){
   background-color: rgb(237, 79, 79);
   
   font-size: 16px;
+}
+
+.header-container {
+  position: relative;
+  width: 100vw;
+  height: 400px;
+}
+
+.header-image {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.house-details {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 95%;
+  max-width: 100vw;
+}
+
+.house-card {
+  background: rgba(255, 255, 255, 0.7);
+  padding: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+
+.house-info-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  /* 3 gleichmäßige Spalten */
+  gap: 300px;
+  /* Abstand zwischen den Spalten */
+  text-align: center;
+}
+
+/*Anpassung für kleine Bildschirme */
+@media (max-width: 768px) {
+  .house-info-row {
+    grid-template-columns: 1fr;
+    /* Eine Spalte, um die Inhalte untereinander zu setzen */
+    gap: 16px;
+    /* Weniger Abstand */
+  }
+}
+
+.house-info-row p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
 }
   </style>
