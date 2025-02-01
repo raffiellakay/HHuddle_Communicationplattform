@@ -21,4 +21,5 @@ public interface ChatService {
 
     List<ChatDto> getChatsByUserId(Long userId);
 
+    void deleteChatById(Long chatId);
 }

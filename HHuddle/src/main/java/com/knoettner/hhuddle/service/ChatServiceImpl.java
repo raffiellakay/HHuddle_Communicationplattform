@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -151,5 +152,18 @@ public class ChatServiceImpl implements ChatService {
         return chats.stream()
                 .map(chatMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    //to delete Chats when user is updated
+
+    @Override
+    public void deleteChatById(Long chatId) {
+        Optional<Chat> maybeChat = chatRepository.findById(chatId);
+        if(maybeChat.isPresent()) {
+            chatRepository.deleteById(chatId);
+        }
+        if(maybeChat.isEmpty()) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Chat not found");
+        }
     }
 }

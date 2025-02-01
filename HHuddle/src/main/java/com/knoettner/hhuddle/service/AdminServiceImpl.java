@@ -62,6 +62,15 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     EmailService emailService;
 
+    @Autowired
+    private ChatRepository chatRepository;
+
+    @Autowired
+    private ChatServiceImpl chatServiceImpl;
+
+    @Autowired
+    private ChatService chatService;
+
     //////////////////////// HOUSE ////////////////////
 
     @Override
@@ -334,10 +343,17 @@ public class AdminServiceImpl implements AdminService {
             MyUser userEntity = maybeUser.get();
             userEntity.setId(user.getId());
             userEntity.setMail(user.getMail());
+            //reset Posts, Messages etc.
             userEntity.setUserPosts(new HashSet<>());
             userEntity.setMessages(new HashSet<>());
             userEntity.setSecond_participantInChat(new HashSet<>());
             userEntity.setFirst_participantInChat(new HashSet<>());
+            //deletes existing chats where user is participant
+            List<Chat> allChats = chatRepository.findAllByFirstParticipantOrSecondParticipant(userEntity, userEntity);
+            for (Chat currentChat : allChats) {
+               chatService.deleteChatById(currentChat.getId());
+
+            }
 
             userRepository.save(userEntity);
             //new temp PW is sent to new user mail
