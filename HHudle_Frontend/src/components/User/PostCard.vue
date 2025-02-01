@@ -7,6 +7,7 @@ import { useAuthStore } from "@/stores/authStore";
 import DeleteButton from "@/components/Icons/DeleteButton.vue";
 import EditButton from "@/components/Icons/EditButton.vue";
 import ConfirmDeleteCheck from "@/components/ConfirmDeleteCheck.vue";
+import UserIconRound from "../Icons/UserIconRound.vue";
 
 const emits = defineEmits(['delete-userPost']);
 const userPostStore = useUserPostStore();
@@ -187,16 +188,7 @@ const formatToGermanDate = (dateTime) => {
           <v-card-item>
           <v-card-title>
             {{ filteredUserPost.title }}
-            </v-card-title>
-          
-
-            <template v-slot:append >
-                  <DeleteButton 
-                  v-if="filteredUserPost.user?.id === userId"
-                  @click="openDeleteChecker(filteredUserPost)" 
-                  @delete-success="$emit('userPost-deleted')" 
-                  class="delete-button"/> 
-                </template>
+          </v-card-title>
              
             </v-card-item>
         
@@ -213,9 +205,26 @@ const formatToGermanDate = (dateTime) => {
             Erstellungszeit: {{ filteredUserPost.timestamp }}
           </v-card-subtitle>
           </div>
-          <v-card-subtitle>
+          <template v-slot:prepend>
+            <v-avatar>
+    
+            <UserIconRound
+            class="UserIcon">
+
+            </UserIconRound>
+            
+         
+          </v-avatar>
             Ersteller: {{ filteredUserPost.user?.username || 'Unbekannt' }} 
-          </v-card-subtitle>
+          
+            <DeleteButton 
+                  v-if="filteredUserPost.user?.id === userId"
+                  @click="openDeleteChecker(filteredUserPost)" 
+                  @delete-success="$emit('userPost-deleted')" 
+                  class="delete-button"/> 
+               
+          </template>
+  
 
           <!-- Aktionen -->
           <v-card-actions>
