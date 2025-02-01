@@ -6,6 +6,13 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 import { useAuthStore } from "@/stores/authStore";
 
+function blobToData(blob) {
+  return new Promise((resolve) => {
+    const reader = new FileReader()
+    reader.onloadend = () => resolve(reader.result)
+    reader.readAsDataURL(blob)
+  })
+}
 
 export const useUserPostStore = defineStore ('userPost', {
     state: () => ({
@@ -87,6 +94,11 @@ export const useUserPostStore = defineStore ('userPost', {
       
           if (response.data) {
             console.log("UserPost erfolgreich erstellt:", response.data);
+            if (response.data.pathToImage != null && response.data.pathToImage != "") {
+              const imageResponse = await axios.get(`${API_URL}posts/get-image-dynamic-type?filePath=${response.data.pathToImage}`, { responseType: "blob" });
+              const base64data = await blobToData(imageResponse.data);
+              response.data.image = base64data;
+            }
             this.userPosts.push(response.data); //Direkt in den Store einfügen
           } else {
             console.error("API hat keine gültige Antwort zurückgegeben:", response); //Debugging
@@ -133,6 +145,13 @@ export const useUserPostStore = defineStore ('userPost', {
             this.loading = true;
             const response = await axios.get(`${API_URL}posts/house/${houseId}`);
             this.userPosts = response.data;
+            for (const userPost of this.userPosts) {
+              if (userPost.pathToImage != null && userPost.pathToImage != "") {
+                const imageResponse = await axios.get(`${API_URL}posts/get-image-dynamic-type?filePath=${userPost.pathToImage}`, { responseType: "blob" });
+                const base64data = await blobToData(imageResponse.data);
+                userPost.image = base64data;
+              }
+            }
             console.log("Posts für House ID geladen:", this.userPosts);
         } catch (error) {
             console.error("Fehler beim Laden der Posts für House ID:", error);

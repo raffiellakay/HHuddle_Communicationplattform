@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +20,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import static org.hibernate.id.SequenceMismatchStrategy.LOG;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -98,7 +102,7 @@ public class UserPostController {
 
         // Generate a unique file name
         String fileName = "photo_" + LocalDateTime.now().toString().replace(":", "-") + ".jpg";
-        String filePath = folderPath + File.separator + fileName;
+        String filePath = folderPath + "/" + fileName;
 
         // Save the file
         try (OutputStream out = new FileOutputStream(filePath)) {
@@ -109,6 +113,22 @@ public class UserPostController {
         }
 
         return ResponseEntity.ok(filePath);
+    }
+
+
+    @GetMapping("/get-image-dynamic-type")
+    @ResponseBody
+    public ResponseEntity<InputStreamResource> getImageDynamicType(@RequestParam("filePath") String filePath) {
+        try {
+            InputStream inputStream = Files.newInputStream(Paths.get(filePath));
+            InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_PNG)
+                    .body(inputStreamResource);
+        } catch (Exception e) {
+            System.out.println(e);
+            return null;
+        }
     }
 
 
