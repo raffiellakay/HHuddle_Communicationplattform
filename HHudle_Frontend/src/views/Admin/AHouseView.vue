@@ -65,6 +65,12 @@ const goToFacilities = (houseId) => {
   router.push(`/admin/house/${houseId}/facilities`);
 };
 
+// zu Post/startseite
+
+const goToOverview = (houseId) => {
+  router.push(`/admin/house/${houseId}`)
+};
+
 
 </script>
 
@@ -77,8 +83,10 @@ const goToFacilities = (houseId) => {
     <div class="house-details">
       <v-card v-if="house" class="house-card">
         <div class="house-info-row">
+          <div @click="goToOverview(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
           <p><strong>Adresse:</strong> {{ house.address }}</p>
-          
+        </div>
+
          <!--Klickbare "Tops" (Residents) -->
          <div @click="goToResidents(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
             <p><strong>Tops:</strong> {{ house.residents.length }}</p>
