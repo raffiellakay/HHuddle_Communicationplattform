@@ -33,7 +33,6 @@ public class MyUser {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     Set<ChatMessage> messages;
 
-    //unklar ob chatParticipants so stimmt
     @OneToMany(mappedBy =  "firstParticipant", fetch = FetchType.EAGER)
     Set<Chat> first_participantInChat;// nach dem User schauen in welchen Chats er ist
 

@@ -334,6 +334,11 @@ public class AdminServiceImpl implements AdminService {
             MyUser userEntity = maybeUser.get();
             userEntity.setId(user.getId());
             userEntity.setMail(user.getMail());
+            userEntity.setUserPosts(new HashSet<>());
+            userEntity.setMessages(new HashSet<>());
+            userEntity.setSecond_participantInChat(new HashSet<>());
+            userEntity.setFirst_participantInChat(new HashSet<>());
+
             userRepository.save(userEntity);
             //new temp PW is sent to new user mail
             EmailDetails details = new EmailDetails( userEntity.getMail(),user.getId());
