@@ -27,6 +27,13 @@ export const useFacilityStore = defineStore('facility', {
             await axios.delete(API_URL + 'admin/facility/' + facilityId);
             const index = this.facilities.findIndex(p => p.id === facilityId);
             this.facilities.splice(index, 1);
+        },
+
+        async updateFacility(facility) {
+           
+          const response =  await axios.put(API_URL + 'admin/facility', facility)
+            console.log("Attempting to update userPost:", response.data);
+            this.facilities.push(response.data);
         }
     }
 })
