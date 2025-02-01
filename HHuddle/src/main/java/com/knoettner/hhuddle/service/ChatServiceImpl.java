@@ -37,7 +37,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Transactional
     @Override
-    public ChatDto createChat(Long firstUserId, Long secondUserId) {
+    public ChatDto createChat(Long firstUserId, Long secondUserId, String text) {
         MyUser firstUser = userRepository.findById(firstUserId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "First user not found"));
         MyUser secondUser = userRepository.findById(secondUserId)
@@ -70,6 +70,18 @@ public class ChatServiceImpl implements ChatService {
 
         // Save the chat
         Chat savedChat = chatRepository.save(chat);
+
+        // Create the first chat message
+        ChatMessage chatMessage = new ChatMessage();
+        chatMessage.setChat(chat);
+        chatMessage.setUser(firstUser);  // Set sender as the first user
+        chatMessage.setText(text);
+        chatMessage.setTimestamp(LocalDateTime.now());
+
+        savedChat.getMessages().add(chatMessage);
+        chatMessageRepository.save(chatMessage);
+
+
         return chatMapper.toDto(savedChat);
     }
 
@@ -118,6 +130,14 @@ public class ChatServiceImpl implements ChatService {
         Chat chat = chatRepository.findById(chatId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Chat not found"));
 
+        if (!chat.getFirstParticipant().getId().equals(userId) && !chat.getSecondParticipant().getId().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User is not a participant of the chat");
+        }
+
+        // Chat direkt aus der Datenbank löschen
+        chatRepository.deleteById(chatId);
+      /*  Chat chat = chatRepository.findById(chatId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Chat not found"));
         if (chat.getFirstParticipant().getId().equals(userId)) {
             chat.setVisibleToFirstParticipant(false);
         } else if (chat.getSecondParticipant().getId().equals(userId)) {
@@ -131,7 +151,9 @@ public class ChatServiceImpl implements ChatService {
             chatRepository.deleteById(chat.getId());
         } else {
             chatRepository.save(chat);
-        }
+        }*/
+
+
     }
 
 

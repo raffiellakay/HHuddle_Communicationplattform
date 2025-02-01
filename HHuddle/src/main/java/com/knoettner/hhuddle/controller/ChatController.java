@@ -12,6 +12,8 @@ import com.knoettner.hhuddle.service.ChatService;
 
 import java.util.List;
 
+import static java.awt.SystemColor.text;
+
 @RestController
 @RequestMapping("/api/chats")
 
@@ -29,8 +31,9 @@ public class ChatController {
     @PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity<ChatDto> createChat(
             @RequestParam Long firstUserId,
-            @RequestParam Long secondUserId) {
-        ChatDto createdChat = chatService.createChat(firstUserId, secondUserId);
+            @RequestParam Long secondUserId,
+            @RequestParam String text) {
+        ChatDto createdChat = chatService.createChat(firstUserId, secondUserId, text);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdChat);
     }
 

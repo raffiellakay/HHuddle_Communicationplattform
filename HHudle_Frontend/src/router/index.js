@@ -1,4 +1,5 @@
 // src/router/index.js
+
 import { createRouter, createWebHistory } from 'vue-router';
 import { ref } from "vue";
 
@@ -23,216 +24,84 @@ import PasswordResetView from '@/views/PasswordResetView.vue';
 import SetNewPasswordView from '@/views/SetNewPasswordView.vue';
 import AResidentsView from '@/views/Admin/AResidentsView.vue';
 import AFacilitiesView from '@/views/Admin/AFacilitiesView.vue';
-import PostCard from '@/components/User/PostCard.vue';
-
-
-
 
 const routes = [
-
-  {
-    path: '/user',
-    name: 'Home',
-    component: UHomeLayout,
-    meta: { requiresAuth: true },
-    children: [
-      {
-        path: 'home',
-        name: 'UserHome',  //Achtung! Name muss unique sein
-        component: UHomeView,
-        meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
-      },
-      {
-        path: 'allboards',
-        name: 'AllBoards',
-        component: AllBoardsView,
-        meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] }
-      },
-      {
-        path: 'board',
-        name: 'Board',
-        component: BoardLayout,
-        meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
-        children: [
-          // Statische Routen zuerst definieren
-          {
-            path: 'commonrooms',
-            name: 'CommonRooms',
-            component: CommonRoomsView,
-            props: true,
-            meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
-          },
-          {
-            path: 'blackboard',
-            name: 'BlackBoard',
-            component: BlackBoardView,
-            props: true,
-            meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
-          },
-          {
-            path: 'packagefinder',
-            name: 'PackageFinder',
-            component: PackageFinderView,
-            props: true,
-            meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
-          },
-          {
-            path: 'search&find',
-            name: 'SearchAndFind',
-            component: SearchAndFindView,
-            props: true,
-            meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
-          },
-  
-        ],
-      }]
-    },
-     
-  {
-    path: '/admin',
-    name: 'admin',
-    component: AHomeLayout,
-    meta: { requiresAuth: true, requiredRoles: ['ROLE_PMANAGEMENT'] },
-    children: [
-      {
-        path: 'home',
-        name: 'AdminHome',
-        component: AHomeView,
-        meta: { requiresAuth: true, requiredRoles: ['ROLE_PMANAGEMENT'] },
-      },
-
-      {
-        path: 'house/:houseId',
-        name: 'House',
-        component: AHouseView,
-        props: true,
-        meta: { requiresAuth: true, requiredRoles: ['ROLE_PMANAGEMENT'] },
-      },
-
-      {
-        path: 'house/:houseId/user',
-        name: 'Residents',
-        component: AResidentsView,
-        meta: { requiresAuth: true, requiredRoles: ['ROLE_PMANAGEMENT'] },
-      },
-
-      {
-        path: 'house/:houseId/facilities',
-        name: 'Facilities',
-        component: AFacilitiesView,
-        meta: { requiresAuth: true, requiredRoles: ['ROLE_PMANAGEMENT'] },
-      },
-    ]
-  },
-
+  //  LOGIN PAGE
   {
     path: '/',
     name: 'Login',
     component: LoginLayout,
     meta: { requiresAuth: false },
-
   },
+
+  //  USER PAGES
   {
-    path: '/contact',
-    name: 'Contact',
-    component: ContactView,
-    meta: { requiresAuth: false }
+    path: '/user',
+    component: UHomeLayout,
+    meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
+    children: [
+      { path: 'home', name: 'UserHome', component: UHomeView },
+      { path: 'allboards', name: 'AllBoards', component: AllBoardsView },
+      {
+        path: 'board',
+        name: 'Board',
+        component: BoardLayout,
+        children: [
+          { path: 'commonrooms', name: 'CommonRooms', component: CommonRoomsView },
+          { path: 'blackboard', name: 'BlackBoard', component: BlackBoardView },
+          { path: 'packagefinder', name: 'PackageFinder', component: PackageFinderView },
+          { path: 'search&find', name: 'SearchAndFind', component: SearchAndFindView },
+        ],
+      },
+      { path: 'chatlist', name: 'ChatList', component: ChatListView },
+      { path: 'chats/:id', name: 'ChatView', component: ChatView, props: true },
+    ],
   },
+
+  //  ADMIN PAGES
   {
-    path: '/aboutUs',
-    name: 'AboutUs',
-    component: AboutUsView,
-    meta: { requiresAuth: false }
+    path: '/admin',
+    component: AHomeLayout,
+    meta: { requiresAuth: true, requiredRoles: ['ROLE_PMANAGEMENT'] },
+    children: [
+      { path: 'home', name: 'AdminHome', component: AHomeView },
+      { path: 'house/:houseId', name: 'House', component: AHouseView, props: true },
+      { path: 'house/:houseId/user', name: 'Residents', component: AResidentsView },
+      { path: 'house/:houseId/facilities', name: 'Facilities', component: AFacilitiesView },
+    ],
   },
- 
-  {
-    path: '/set-new-password',
-    name: SetNewPasswordView,
-    component: SetNewPasswordView,
-    meta: { requiresAuth: true }
-  },
-  {
-    path: '/password-reset',
-    name: PasswordResetView,
-    component: PasswordResetView,
-    meta: { requiresAuth: false }
-  }
 
+  //  PUBLIC PAGES
+  { path: '/contact', name: 'Contact', component: ContactView },
+  { path: '/aboutUs', name: 'AboutUs', component: AboutUsView },
+  { path: '/password-reset', name: 'PasswordReset', component: PasswordResetView },
+  { path: '/set-new-password', name: 'SetNewPassword', component: SetNewPasswordView, meta: { requiresAuth: false } },
+];
 
-
-]
-
-
-
-
-
-// Weitere Routen können hier hinzugefügt werden
-
-
+// Create router
 const router = createRouter({
   history: createWebHistory(),
   routes,
 });
 
 
-
 router.beforeEach(async (to, from, next) => {
   await useAuthStore().initialize();
-  //secures Websites from not logged in ppl
+
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
-  const requiresPMRole = to.matched.some((record) =>
-    record.meta.requiredRoles?.includes("ROLE_PMANAGEMENT")
-  );
-  const requiresResidentRole = to.matched.some((record) =>
-    record.meta.requiredRoles?.includes("ROLE_RESIDENT")
-  );
-  let userRoles = [];
-  if (useAuthStore().user) {
-    userRoles = useAuthStore().user.roles;
-  }
+  const requiredRoles = to.meta.requiredRoles || [];
   const loggedIn = useAuthStore().user;
+  let userRoles = loggedIn ? useAuthStore().user.roles : [];
+
   if (requiresAuth && !loggedIn) {
-    next("/");
-  } else {
-    if (!requiresPMRole && !requiresResidentRole) {
-      next();
-      return;
-    }
-
-    if (
-      requiresPMRole &&
-      userRoles.find((role) => role === "ROLE_PMANAGEMENT")
-    ) {
-      next();
-      return;
-    }
-    if (
-      requiresResidentRole &&
-      userRoles.find((role) => role === "ROLE_RESIDENT")
-    ) {
-      next();
-      return;
-    }
-
-    const rolePmanagement = userRoles.find(
-      (role) => role === "ROLE_PMANAGEMENT"
-    );
-    const roleResident = userRoles.find((role) => role === "ROLE_RESIDENT");
-    console.log(rolePmanagement);
-    console.log(roleResident);
-
-    if (rolePmanagement) {
-      next("/admin/home");
-      return;
-    }
-    if (roleResident) {
-      next("/user/home");
-      return;
-    }
-    next();
+    return next('/');
   }
 
+  if (requiredRoles.length > 0 && !userRoles.some(role => requiredRoles.includes(role))) {
+    return next(loggedIn && userRoles.includes("ROLE_PMANAGEMENT") ? "/admin/home" : "/user/home");
+  }
 
+  next();
 });
 
 export default router;
