@@ -177,8 +177,8 @@ const formatToGermanDate = (dateTime) => {
           <!-- Photo als Header -->
            <!-- Bild anzeigen, falls vorhanden -->
            <v-img 
-            v-if="filteredUserPost.pathToImage"
-            :src="`http://localhost:8081/${filteredUserPost.pathToImage}`" 
+            v-if="filteredUserPost.image"
+            :src="filteredUserPost.image" 
             alt="Post Bild"
             height="200"
             contain
