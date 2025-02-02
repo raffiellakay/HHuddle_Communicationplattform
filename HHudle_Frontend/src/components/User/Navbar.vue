@@ -97,8 +97,63 @@ const handleLogout = () => {
   router.push("/");
 };
 
+const handleCreateChat = async () => {
+  if (!initialMessage.value.trim()) {
+    console.warn("Leere Nachricht kann nicht gesendet werden.");
+    return;
+  }
 
-    
+  if (!currentUserId.value) {
+    console.error("Kein gültiger Benutzer gefunden!");
+    return;
+  }
+
+  try {
+    const secondUserId = 2; // Replace with logic to get recipient's user ID
+
+    // Create the chat first
+    const newChat = await chatStore.createChat({
+      firstUserId: currentUserId.value,
+      secondUserId,
+    });
+
+    if (!newChat?.id) {
+      console.error("Fehler beim Erstellen des Chats: Keine Chat-ID zurückgegeben.");
+      return;
+    }
+
+    console.log("Neuer Chat erstellt:", newChat.id);
+
+    // Send the initial message **immediately** after chat creation
+    const messageResponse = await chatStore.sendMessage({
+      chatId: newChat.id,
+      text: initialMessage.value,
+      senderId: currentUserId.value,
+    });
+
+    if (!messageResponse) {
+      console.error("Fehler beim Senden der Nachricht.");
+      return;
+    }
+
+    console.log("Nachricht erfolgreich gesendet!");
+
+    // Navigate to the newly created chat
+    router.push({
+      name: "ChatView",
+      params: { id: newChat.id },
+      query: { senderId: currentUserId.value },
+    });
+
+    // Close the modal & reset input field
+    showNewChatModal.value = false;
+    initialMessage.value = "";
+  } catch (error) {
+    console.error("Fehler beim Erstellen des Chats oder beim Senden der Nachricht:", error);
+  }
+};
+
+
 
 console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
 
@@ -122,7 +177,15 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
     
     <v-app-bar-title>{{ currentCategory || "Keine Kategorie"}}</v-app-bar-title>
 
-    
+    <v-btn icon @click="showNewChatModal= true">
+        <v-icon class="plus-icon"> mdi-plus-circle</v-icon>
+      </v-btn>
+      <v-dialog v-model="showNewChatModal" max-width="500">
+        <template v-slot:default="{close}">
+         this is a modal Window
+        </template>
+      
+    </v-dialog>
 
     <template v-if="isBoardPage">
       <v-btn icon @click="showForm = true">
@@ -145,7 +208,31 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
 
     </template>
 
-    
+    <v-btn icon @click="showNewChatModal = true">
+  <v-icon class="plus-icon">mdi-plus-circle</v-icon>
+</v-btn>
+
+<v-dialog v-model="showNewChatModal" max-width="500">
+  <v-card>
+    <v-card-title>
+      <span class="headline">Chat erstellen</span>
+    </v-card-title>
+    <v-card-text>
+      <v-form ref="form">
+        <v-text-field
+          v-model="initialMessage"
+          label="Nachricht"
+          required
+        ></v-text-field>
+      </v-form>
+    </v-card-text>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn color="blue darken-1" text @click="handleCreateChat">Erstellen</v-btn>
+      <v-btn color="grey darken-1" text @click="showNewChatModal = false">Abbrechen</v-btn>
+    </v-card-actions>
+  </v-card>
+</v-dialog>
 
 
 
