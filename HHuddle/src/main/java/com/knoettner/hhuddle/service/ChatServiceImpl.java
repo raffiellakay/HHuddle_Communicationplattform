@@ -130,14 +130,6 @@ public class ChatServiceImpl implements ChatService {
         Chat chat = chatRepository.findById(chatId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Chat not found"));
 
-        if (!chat.getFirstParticipant().getId().equals(userId) && !chat.getSecondParticipant().getId().equals(userId)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User is not a participant of the chat");
-        }
-
-        // Chat direkt aus der Datenbank löschen
-        chatRepository.deleteById(chatId);
-      /*  Chat chat = chatRepository.findById(chatId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Chat not found"));
         if (chat.getFirstParticipant().getId().equals(userId)) {
             chat.setVisibleToFirstParticipant(false);
         } else if (chat.getSecondParticipant().getId().equals(userId)) {
@@ -151,9 +143,7 @@ public class ChatServiceImpl implements ChatService {
             chatRepository.deleteById(chat.getId());
         } else {
             chatRepository.save(chat);
-        }*/
-
-
+        }
     }
 
 
