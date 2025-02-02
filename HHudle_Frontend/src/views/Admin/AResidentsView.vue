@@ -80,6 +80,12 @@ const goToOverview = (houseId) => {
   router.push(`/admin/house/${houseId}`)
 };
 
+const headers = [
+    { title: 'Benutzername', key: 'username' },
+    { title: 'E-Mail', key: 'mail' },
+    { title: 'Aktionen', key: 'actions' },
+ ];
+
 </script>
 
 
@@ -138,15 +144,31 @@ const goToOverview = (houseId) => {
                 </v-card-actions>
             </v-card>
         </v-dialog>
+      <v-data-table 
+      :items="userStore.users"
+      :headers="headers"
+
+      >
+    <template v-slot:item.actions="{ item }">
+        <v-icon
+        size="small"
+        color="error"
+        >
+        mdi-pencil
+    </v-icon>
+    </template>   
+
+    </v-data-table>
+    
         <!-- Residents-Liste anzeigen -->
-        <v-list>
+       <!--  <v-list>
             <v-list-item v-for="resident in userStore.users" :key="resident.id">
                 <v-list-item-content>
                     <v-list-item-title>{{ resident.username }}</v-list-item-title>
                     <v-list-item-subtitle>{{ resident.mail }}</v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
-        </v-list>
+        </v-list> -->
     </v-container>
 </template>
 
