@@ -4,6 +4,7 @@ import { ref, onMounted, computed } from 'vue';
 import { useHouseStore } from '@/stores/Admin/houseStore';
 import { useRouter } from 'vue-router';
 import DeleteButton from '@/components/Icons/DeleteButton.vue';
+import ConfirmDeleteCheck from "@/components/ConfirmDeleteCheck.vue";
 
 
 //Zugriffe auf ...
@@ -63,6 +64,38 @@ const goToHouse = (houseId) => {
   router.push(`/admin/house/${houseId}`);
 };
 
+const showDeleteChecker = ref(false);
+const houseToDelete = ref(null);
+
+//Öffnen des DeleteCheckers
+const openDeleteChecker = (house) => {
+  console.log("Haus zum Löschen: ", house) //Debugging
+  houseToDelete.value = { ...house };
+  showDeleteChecker.value = true;
+}
+
+//Schließen des DeleteCheckers
+const closeDeleteChecker = (house) => {
+  houseToDelete.value = null;
+  showDeleteChecker.value = false;
+}
+//Haus Löschen
+const confirmDelete = async () => {
+  if (houseToDelete.value) {
+    try {
+      console.log(`Haus mit ID ${houseToDelete.value.id} wird gelöscht`);
+      await houseStore.deleteHouseById(houseToDelete.value.id);
+
+      await houseStore.getAllHouses();
+
+      showDeleteChecker.value = false;
+      houseToDelete.value = null;
+    } catch (error) {
+      console.error("Folgender Fehler beim Löschen aufgetreten: ", error)
+    }
+  }
+}
+
 
 
 </script>
@@ -70,24 +103,34 @@ const goToHouse = (houseId) => {
 <template>
   <!-- Gesamtes Layout -->
   <v-container>
-    <!-- Kachel-Layout: Zeige die Liste der Häuser -->
-    <v-row>
-      <v-col v-for="house in sortedHouses" :key="house.id" cols="12" sm="6" md="4">
-        <v-card class="d-flex flex-column align-center" outlined @click="goToHouse(house.id)">
-          <v-card-item>
-            <!-- Anzeige der Adresse des Hauses -->
-            <v-card-title>{{ house.address }}</v-card-title>
-            <DeleteButton class="delete-button" />
-          </v-card-item>
-        </v-card>
-      </v-col>
-    </v-row>
-
-    <!-- Button zum Hinzufügen eines neuen Hauses -->
     <v-btn @click="dialog = true" class="mt-4" color="primary">
       + Neues Haus hinzufügen
     </v-btn>
 
+    <!-- Kachel-Layout: Zeige die Liste der Häuser -->
+    <v-row>
+      <v-col v-for="house in sortedHouses" :key="house.id" cols="12" sm="6" md="4">
+        <v-card class="d-flex flex-column align-center" outlined>
+          <!-- Nur der v-card-item Bereich soll klickbar sein für die Navigation -->
+          <v-card-item @click="goToHouse(house.id)">
+            <!-- Anzeige der Adresse des Hauses -->
+            <v-card-title>{{ house.address }}</v-card-title>
+          </v-card-item>
+
+          <!-- Separater Bereich für den Delete-Button -->
+          <v-card-actions>
+            <v-btn class="delete-button" @click.stop="openDeleteChecker(house)">
+              <DeleteButton />
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+  </v-row>
+
+    <ConfirmDeleteCheck :show="showDeleteChecker" :itemName="'das Haus'" @confirm="confirmDelete"
+      @close="closeDeleteChecker" />
+
+    <!-- Button zum Hinzufügen eines neuen Hauses -->
     <!-- Dialog zum Hinzufügen eines neuen Hauses -->
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
@@ -114,6 +157,8 @@ const goToHouse = (houseId) => {
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+
   </v-container>
 </template>
 
