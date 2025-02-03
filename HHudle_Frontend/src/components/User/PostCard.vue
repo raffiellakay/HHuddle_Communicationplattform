@@ -8,9 +8,12 @@ import DeleteButton from "@/components/Icons/DeleteButton.vue";
 import EditButton from "@/components/Icons/EditButton.vue";
 import ConfirmDeleteCheck from "@/components/ConfirmDeleteCheck.vue";
 import UserIconRound from "../Icons/UserIconRound.vue";
+import { useChatStore } from "@/stores/User/chatStore";
 
 const emits = defineEmits(['delete-userPost']);
 const userPostStore = useUserPostStore();
+const chatStore = useChatStore();
+
 
 //Prop Definition
 const props = defineProps({
@@ -24,6 +27,10 @@ const props = defineProps({
 
 const showDeleteChecker = ref(false);
 const postToDelete = ref(null); 
+const showNewChatModal = ref(false);
+const text = ref('');
+const secondUserId = ref(null);
+
 
 //Gibt wenn es eine Facility ID gibt nach Kategorie gefilterte Posts aus Store zurück und filtert sie nach Facility
 const filteredUserPosts = computed(() => {
@@ -146,6 +153,32 @@ const sortedUserPostsByTimeCreated = computed(() => {
   return [...filteredUserPosts.value].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 });
 
+
+// Öffnen des Chat-Modals
+const openModal = (userId) => {
+  console.log("Öffne Chat Modal für User ID:", userId);
+  showNewChatModal.value = true;
+  secondUserId.value = userId;
+};
+
+// Chat erstellen
+const createChat = async () => {
+  if (!secondUserId.value || !text.value.trim()) {
+    return;
+  }
+  try {
+    const newChat = await chatStore.createChat({ firstUserId: userId.value, secondUserId: secondUserId.value, text: text.value });
+    await chatStore.sendMessage({ chatId: newChat.id, senderId: authStore.user.id, text: text.value });
+    showNewChatModal.value = false;
+    text.value = '';
+    alert('Chat erfolgreich erstellt');
+  } catch (error) {
+    console.error('Fehler beim Erstellen des Chats:', error);
+    alert('Fehler beim Erstellen des Chats');
+  }
+};
+
+
 //Formatiert Datum auf DD.MM.YYYY
 const formatToGermanDate = (dateTime) => {
   if (!dateTime) return ""; //Rückgabe eines leeren Strings, wenn kein Datum vorhanden ist
@@ -174,6 +207,7 @@ const formatToGermanDate = (dateTime) => {
     <v-row v-if="filteredUserPosts.length > 0">
       <v-col v-for="filteredUserPost in filteredUserPosts" :key="filteredUserPost.id" cols="12" md="4" lg="3">
         <v-card class="mx-auto" max-width="344">
+          
           <!-- Photo als Header -->
            <!-- Bild anzeigen, falls vorhanden -->
            <v-img 
@@ -183,6 +217,7 @@ const formatToGermanDate = (dateTime) => {
             height="200"
             contain
           ></v-img>
+          
 
           <!-- Titel -->
           <v-card-item>
@@ -191,6 +226,10 @@ const formatToGermanDate = (dateTime) => {
           </v-card-title>
              
             </v-card-item>
+
+            <v-btn v-if="userId !== filteredUserPost.user?.id" icon @click="openModal(filteredUserPost.user?.id)">
+            <v-icon class="plus-icon">mdi-plus-circle</v-icon>
+          </v-btn>
         
 
           <!-- Untertitel -->
@@ -253,6 +292,26 @@ const formatToGermanDate = (dateTime) => {
     <v-container v-if="filteredUserPosts.length === 0">
       <v-alert type="info">Keine Beiträge für diese Kategorie verfügbar.</v-alert>
     </v-container>
+
+    <v-dialog v-model="showNewChatModal" max-width="500">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Chat erstellen</span>
+        </v-card-title>
+        <v-card-text>
+          <v-form ref="form">
+            <v-text-field v-model="text" label="Nachricht" required></v-text-field>
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="createChat">Erstellen</v-btn>
+          <v-btn color="grey darken-1" text @click="showNewChatModal = false">Abbrechen</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+
 
     <ConfirmDeleteCheck
     :show="showDeleteChecker"
