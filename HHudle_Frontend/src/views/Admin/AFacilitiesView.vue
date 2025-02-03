@@ -16,16 +16,18 @@ const route = useRoute();
 const facilityStore = useFacilityStore();
 const houseId = computed(() => Number(route.params.houseId));
 
+
+
 const newFacility = ref({
     type: '',
     description: '',
-    houseId: houseId
+    houseId: houseId.value
 })
+
+
 
 const showDeleteChecker = ref(false);
 const facilityToDelete = ref(null);
-
-
 
 //Öffnen des DeleteCheckers
 const openDeleteChecker = (facility) => {
@@ -46,7 +48,7 @@ const confirmDelete = async () => {
       console.log(`Facility mit ID ${facilityToDelete.value.id} wird gelöscht`);
       await facilityStore.deleteFacilityById(facilityToDelete.value.id);
 
-      await facilityStore.getAllFacilitiesByHouseId(houseId);
+      await facilityStore.getAllFacilitiesByHouseId(houseId.value);
 
       showDeleteChecker.value = false; 
       facilityToDelete.value = null;
@@ -63,7 +65,7 @@ const editDialog = ref(false);
 const updatedFacility = ref({
     type: '',
     description: '',
-    houseId: houseId
+    houseId: houseId.value
 })
 const handleEdit =  (facility) => {
   console.log("Einrichtung zum Bearbeiten: ", facility) //Debugging
@@ -73,10 +75,10 @@ const handleEdit =  (facility) => {
 async function updateFacility(){
   try {
         await facilityStore.updateFacility(updatedFacility.value);
-        await facilityStore.getAllFacilitiesByHouseId(houseId);
+        await facilityStore.getAllFacilitiesByHouseId(houseId.value);
 
         editDialog.value = false;
-        updatedFacility.value = { type: '', description: '', houseId }; // house Id bleibt erhalten
+        updatedFacility.value = { type: '', description: '', houseId: houseId.value }; // house Id bleibt erhalten
     } catch (error) {
         console.error('Error while updating Facility:', error);
     }
@@ -85,16 +87,17 @@ async function updateFacility(){
 
 
 onMounted(async () => {
-    await facilityStore.getAllFacilitiesByHouseId(houseId);
+    await facilityStore.getAllFacilitiesByHouseId(houseId.value);
+    await houseStore.getAllHouses();
 });
 
 async function saveNewFacility(){
     try {
         await facilityStore.createFacility(newFacility.value);
-        await facilityStore.getAllFacilitiesByHouseId(houseId);
+        await facilityStore.getAllFacilitiesByHouseId(houseId.value);
 
         dialog.value = false;
-        newFacility.value = { type: '', description: '', houseId }; // house Id bleibt erhalten
+        newFacility.value = { type: '', description: '', houseId: houseId.value }; // house Id bleibt erhalten
     } catch (error) {
         console.error('Error while saving facility:', error);
     }
@@ -192,7 +195,7 @@ const goToOverview = (houseId) => {
     <!-- Facilities anzeigen -->
     <v-list>
         <v-list-item v-for="facility in facilityStore.facilities" :key="facility.id">
-            <v-list-item-content>
+            <div>
                 <v-list-item-title>{{ facility.type }}  <DeleteButton @click="openDeleteChecker(facility)" class="delete-button"/> </v-list-item-title>
                 <v-list-item-subtitle>{{ facility.description }}</v-list-item-subtitle> <EditButton @click="handleEdit(facility)"/>
 
@@ -214,7 +217,7 @@ const goToOverview = (houseId) => {
         </v-card>
     </v-dialog>
             
-            </v-list-item-content>
+            </div>
         </v-list-item>
     </v-list>
 

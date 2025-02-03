@@ -16,7 +16,7 @@ const router = useRouter();
 
 const newHouse = ref({
   address: '',
-
+  residents: [],
   facilities: [
 
 

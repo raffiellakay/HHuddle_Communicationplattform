@@ -4,6 +4,7 @@ import NavbarResident from '@/components/User/Navbar.vue';
 import NavbarPManagement from '@/components/Admin/Navbar.vue';
 import NavbarDefault from '@/components/DefaultNavbar.vue';
 import avatarraffy from '@/assets/Pictures/avatar_raffy.png';
+import avatarhuda from '@/assets/Pictures/avatar_huda.png';
 import { useAuthStore } from '@/stores/authStore';
 
 let userRoles = [];
@@ -20,18 +21,18 @@ const isResident = userRoles.find((role) => role === "ROLE_RESIDENT" )
   <NavbarResident v-if="isResident"></NavbarResident>
   <NavbarPManagement v-if="isPManagement"></NavbarPManagement>
   <NavbarDefault v-if="!isResident && !isPManagement"></NavbarDefault>
-<v-main>
 
 
+<v-card>
   <v-card-title
     class=" bg-blue-lighten-5 text-center  "
     variant="text"    
   >
     <v-row  align="center"
-    justify="center" class="bg-blue-lighten-5 px-0">
+    justify="center" >
     <v-col cols="1">
       <v-img
-   :src= avatarraffy
+   :src= avatarhuda
   />
       </v-col>
     <v-col cols="1">
@@ -43,10 +44,9 @@ const isResident = userRoles.find((role) => role === "ROLE_RESIDENT" )
       <v-img
    :src= avatarraffy
    />
+  </v-col>
+   <v-col cols="1">
    <v-img
-   class="d-inline pa-2 "
- 
-
    :src= avatarraffy
   />
       </v-col>
@@ -57,7 +57,7 @@ const isResident = userRoles.find((role) => role === "ROLE_RESIDENT" )
 
     </v-card-title>
 
-<v-card-subtitle class=" text-center pb-4 "  color="gray">
+<v-card-subtitle  >
     <h2>Wer wir sind, wieso es diese Seite gibt & was eine Briefwahlkarte damit zu tun hat </h2>
 </v-card-subtitle>
 
@@ -95,13 +95,13 @@ const isResident = userRoles.find((role) => role === "ROLE_RESIDENT" )
 <br>
 <br>
 </v-card-text>
-<v-card-text class="text-body-1 text-blue-grey-darken-2">
+<v-card-text >
  Sie haben bis hierher gelesen und fragen sich immernoch was jetzt eine Briefwahlkarte damit zu tun hat?
   Diese Frage ist leicht beantwortet: Die Idee kam, nachdem die Post einer der Gründerinnen eine Briefwahlkarte zugestellt hatte, die Briefwahlkarte aber nie in der Wohnung ankam.
 </v-card-text>
 </v-container>
+</v-card>
 
-</v-main>
 </template>
 
 <style scoped>
