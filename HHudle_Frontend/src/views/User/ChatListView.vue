@@ -1,3 +1,6 @@
+
+
+
 <template>
   <v-container class="chat-container" fluid>
     <v-row class="chat-list-view" align-items="stretch">
@@ -211,11 +214,3 @@ const navigateToHome = () => {
   color: #666;
 }
 </style>
-
-
-
-
-
-
-
-    

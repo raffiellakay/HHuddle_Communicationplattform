@@ -1,3 +1,4 @@
+
 <template>
   <v-container class="chat-container" fluid>
     <v-row class="chat-view" align-items="stretch">
