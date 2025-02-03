@@ -26,6 +26,7 @@ const newResident = ref({
 
 onMounted(async () => {
     await userStore.getAllUsersByHouseId(houseId.value);
+    await houseStore.getAllHouses();
 });
 
 // new resident
@@ -141,10 +142,10 @@ const goToOverview = (houseId) => {
         <!-- Residents-Liste anzeigen -->
         <v-list>
             <v-list-item v-for="resident in userStore.users" :key="resident.id">
-                <v-list-item-content>
+                <div>
                     <v-list-item-title>{{ resident.username }}</v-list-item-title>
                     <v-list-item-subtitle>{{ resident.mail }}</v-list-item-subtitle>
-                </v-list-item-content>
+                </div>
             </v-list-item>
         </v-list>
     </v-container>
