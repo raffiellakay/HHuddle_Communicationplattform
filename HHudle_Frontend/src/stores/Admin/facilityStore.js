@@ -32,8 +32,15 @@ export const useFacilityStore = defineStore('facility', {
         async updateFacility(facility) {
            
           const response =  await axios.put(API_URL + 'admin/facility', facility)
-            console.log("Attempting to update userPost:", response.data);
-            this.facilities.push(response.data);
+          console.log("Attempting to update Facility:", response.data);
+          //updating the array
+          for (const currentFacility of this.facilities) {
+            if(currentFacility.id = facility.id) {
+                currentFacility.type = facility.type;
+                currentFacility.description = facility.description
+            }
+
+          } 
         }
     }
 })
