@@ -247,7 +247,7 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
           
         </template>
       </v-list-group>
-      <v-list-item>Chat</v-list-item>
+      <v-list-item :to="{ path: '/user/board/chatlist'}">Chats</v-list-item>
       <v-list-item :to="{ path: '/aboutUs'}">Über Uns</v-list-item>
       <v-list-item :to="{ path: '/contact'}">Kontakt</v-list-item>
 
