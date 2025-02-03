@@ -41,6 +41,35 @@ async function saveResident() {
     }
 }
 
+// Editieren-Dialog für Benutzer
+const editDialog = ref(false);
+const updatedUser = ref({
+    id: null,
+    mail: '',
+    username: null,
+    houseId: null
+});
+
+// Öffnet das Bearbeitungs-Dialogfenster mit den aktuellen Daten des Users
+const handleEdit = (user) => {
+    console.log("Benutzer zum Bearbeiten:", user); // Debugging
+    updatedUser.value = { ...user }; // Kopie der Daten für Bearbeitung
+    editDialog.value = true;
+};
+
+// Speichert die Änderungen des Benutzers
+async function updateUser() {
+    try {
+        await userStore.updateUser(updatedUser.value.id, updatedUser.value);
+        await userStore.getAllUsersByHouseId(houseId.value); // Datenliste aktualisieren
+
+        editDialog.value = false; // Dialog schließen
+        updatedUser.value = { id: null, mail: '', username: null, houseId: null }; // Eingaben zurücksetzen
+    } catch (error) {
+        console.error("Fehler beim Speichern der Benutzeränderung:", error);
+    }
+}
+
 
 //Header
 //Das aktuelle Haus abrufen
@@ -51,81 +80,98 @@ const house = computed(() => houseStore.houses.find(h => h.id == houseId.value))
 
 //Bilder setzen je nach Haus
 const houseImage = computed(() => {
-  switch (houseId.value) {
-    case 1:
-      return viennaHouseImage1;
-    case 2:
-      return viennaHouseImage2;
-    case 3:
-      return viennaHouseImage3;
-    default:
-      return viennaHouseImage1;
-  }
+    switch (houseId.value) {
+        case 1:
+            return viennaHouseImage1;
+        case 2:
+            return viennaHouseImage2;
+        case 3:
+            return viennaHouseImage3;
+        default:
+            return viennaHouseImage1;
+    }
 });
 
 // Navigiere zur Residents-Seite
 const goToResidents = (houseId) => {
-  router.push(`/admin/house/${houseId}/user`);
+    router.push(`/admin/house/${houseId}/user`);
 };
 
 // Navigiere zur Facilities Seite
 
 const goToFacilities = (houseId) => {
-  router.push(`/admin/house/${houseId}/facilities`);
+    router.push(`/admin/house/${houseId}/facilities`);
 };
 
 // zu Post/startseite
 
 const goToOverview = (houseId) => {
-  router.push(`/admin/house/${houseId}`)
+    router.push(`/admin/house/${houseId}`)
 };
 
 const headers = [
     { title: 'Benutzername', key: 'username' },
     { title: 'E-Mail', key: 'mail' },
-    { title: 'Aktionen', key: 'actions' },
- ];
+    { title: 'Bearbeiten', key: 'actions' },
+];
+
+
 
 </script>
 
 
 
 <template>
+    <!--Header-->
+    <div class="header-container">
+        <!-- Hintergrundbild -->
+        <v-img class="header-image" :src="houseImage" cover></v-img>
 
- <!--Header-->
- <div class="header-container">
-    <!-- Hintergrundbild -->
-    <v-img class="header-image" :src="houseImage" cover></v-img>
+        <!-- Hausdetails über dem Bild -->
+        <div class="house-details">
+            <v-card v-if="house" class="house-card">
+                <div class="house-info-row">
+                    <div @click="goToOverview(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
+                        <p><strong>Adresse:</strong> {{ house.address }}</p>
+                    </div>
 
-    <!-- Hausdetails über dem Bild -->
-    <div class="house-details">
-      <v-card v-if="house" class="house-card">
-        <div class="house-info-row">
-          <div @click="goToOverview(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
-          <p><strong>Adresse:</strong> {{ house.address }}</p>
+                    <!--Klickbare "Tops" (Residents) -->
+                    <div @click="goToResidents(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
+                        <p><strong>Tops:</strong> {{ house.residents.length }}</p>
+                    </div>
+
+                    <!--Klickbare "Einrichtungen" (Facilities) -->
+                    <div @click="goToFacilities(house.id)"
+                        style="cursor: pointer; text-decoration: underline; color: blue;">
+                        <p><strong>Einrichtungen:</strong> {{ house.facilities.length }}</p>
+                    </div>
+
+                </div>
+            </v-card>
+            <v-alert v-else type="warning">Haus nicht gefunden!</v-alert>
         </div>
-
-         <!--Klickbare "Tops" (Residents) -->
-         <div @click="goToResidents(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
-            <p><strong>Tops:</strong> {{ house.residents.length }}</p>
-          </div>
-
-          <!--Klickbare "Einrichtungen" (Facilities) -->
-          <div @click="goToFacilities(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
-            <p><strong>Einrichtungen:</strong> {{ house.facilities.length }}</p>
-          </div>
-        
-        </div>
-      </v-card>
-      <v-alert v-else type="warning">Haus nicht gefunden!</v-alert>
     </div>
-  </div>
 
     <v-container>
         <!-- Button: Add Resident -->
         <v-btn @click="dialog = true" class="mt-4" color="primary">
             + Bewohner*in hinzufügen
         </v-btn>
+        <!-- Bearbeiten-Dialog für Residents -->
+        <v-dialog v-model="editDialog" max-width="500px">
+            <v-card v-if="updatedUser.id !== null"> <!-- Sicherstellen, dass ein User geladen ist -->
+                <v-card-title>Bearbeite Benutzer</v-card-title>
+                <v-card-text>
+                    <v-form @submit.prevent="updateUser">
+                        <v-text-field v-model="updatedUser.mail" label="E-Mail"></v-text-field>
+                    </v-form>
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn text @click="editDialog = false">Abbrechen</v-btn>
+                    <v-btn text color="primary" @click="updateUser">Speichern</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
 
         <!-- Dialog zum Hinzufügen eines Residents -->
         <v-dialog v-model="dialog" max-width="500px">
@@ -144,24 +190,17 @@ const headers = [
                 </v-card-actions>
             </v-card>
         </v-dialog>
-      <v-data-table 
-      :items="userStore.users"
-      :headers="headers"
+        <v-data-table :items="userStore.users" :headers="headers">
+            <template v-slot:item.actions="{ item }">
+                <v-icon size="small" color="error" @click="handleEdit(item)">
+                    mdi-pencil
+                </v-icon>
+            </template>
 
-      >
-    <template v-slot:item.actions="{ item }">
-        <v-icon
-        size="small"
-        color="error"
-        >
-        mdi-pencil
-    </v-icon>
-    </template>   
+        </v-data-table>
 
-    </v-data-table>
-    
         <!-- Residents-Liste anzeigen -->
-       <!--  <v-list>
+        <!--  <v-list>
             <v-list-item v-for="resident in userStore.users" :key="resident.id">
                 <v-list-item-content>
                     <v-list-item-title>{{ resident.username }}</v-list-item-title>
@@ -175,69 +214,69 @@ const headers = [
 
 
 <style scoped>
-.delete-button{
-  background-color: rgb(237, 79, 79);
-  
-  font-size: 16px;
+.delete-button {
+    background-color: rgb(237, 79, 79);
+
+    font-size: 16px;
 }
 
 .header-container {
-  position: relative;
-  width: 100vw;
-  height: 400px;
+    position: relative;
+    width: 100vw;
+    height: 400px;
 }
 
 .header-image {
-  position: relative;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .house-details {
-  position: absolute;
-  bottom: 15px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 95%;
-  max-width: 100vw;
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95%;
+    max-width: 100vw;
 }
 
 .house-card {
-  background: rgba(255, 255, 255, 0.7);
-  padding: 16px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 16px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
 }
 
 
 .house-info-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  /* 3 gleichmäßige Spalten */
-  gap: 300px;
-  /* Abstand zwischen den Spalten */
-  text-align: center;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* 3 gleichmäßige Spalten */
+    gap: 300px;
+    /* Abstand zwischen den Spalten */
+    text-align: center;
 }
 
 /*Anpassung für kleine Bildschirme */
 @media (max-width: 768px) {
-  .house-info-row {
-    grid-template-columns: 1fr;
-    /* Eine Spalte, um die Inhalte untereinander zu setzen */
-    gap: 16px;
-    /* Weniger Abstand */
-  }
+    .house-info-row {
+        grid-template-columns: 1fr;
+        /* Eine Spalte, um die Inhalte untereinander zu setzen */
+        gap: 16px;
+        /* Weniger Abstand */
+    }
 }
 
 .house-info-row p {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 500;
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
 }
 </style>
