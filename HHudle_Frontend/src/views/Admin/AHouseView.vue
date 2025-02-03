@@ -84,11 +84,11 @@ const goToOverview = (houseId) => {
       <v-card v-if="house" class="house-card">
         <div class="house-info-row">
           <div @click="goToOverview(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
-          <p><strong>Adresse:</strong> {{ house.address }}</p>
-        </div>
+            <p><strong>Adresse:</strong> {{ house.address }}</p>
+          </div>
 
-         <!--Klickbare "Tops" (Residents) -->
-         <div @click="goToResidents(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
+          <!--Klickbare "Tops" (Residents) -->
+          <div @click="goToResidents(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
             <p><strong>Tops:</strong> {{ house.residents.length }}</p>
           </div>
 
@@ -96,7 +96,7 @@ const goToOverview = (houseId) => {
           <div @click="goToFacilities(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
             <p><strong>Einrichtungen:</strong> {{ house.facilities.length }}</p>
           </div>
-        
+
         </div>
       </v-card>
       <v-alert v-else type="warning">Haus nicht gefunden!</v-alert>
