@@ -1,7 +1,7 @@
 <script setup>
 
 
-
+import { useChatStore } from "@/stores/User/chatStore";
 import { useRoute, useRouter } from 'vue-router'
 import { ref, watch } from 'vue'
 import { computed } from 'vue';
@@ -16,7 +16,7 @@ const currentCategory = computed(() => userPostStore.currentCategory);
 const router = useRouter(); //Gibt Router Instanz zurück
 const route = useRoute(); // Gibt aktuelle Route zurück 
 const authStore = useAuthStore();
-
+const chatStore = useChatStore();
 
 
 
@@ -25,7 +25,8 @@ const showDrawer = ref(false);
 const activeItem = ref(null);
 const isBoardsOpen = ref(false);
 const showForm = ref(false); 
-
+const showNewChatModal = ref(false);
+const initialMessage = ref("");
 
 // Dynamically get the current user ID
 const currentUserId = computed(() => authStore.user?.id);
@@ -96,12 +97,6 @@ const handleLogout = () => {
   router.push("/");
 };
 
-
-
-
-
-console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
-
 const handleCreateChat = async () => {
   if (!initialMessage.value.trim()) {
     console.warn("Leere Nachricht kann nicht gesendet werden.");
@@ -115,7 +110,7 @@ const handleCreateChat = async () => {
 
   try {
     const secondUserId = 2; // Replace with logic to get recipient's user ID
- 
+
     // Create the chat first
     const newChat = await chatStore.createChat({
       firstUserId: currentUserId.value,
@@ -157,16 +152,11 @@ const handleCreateChat = async () => {
     console.error("Fehler beim Erstellen des Chats oder beim Senden der Nachricht:", error);
   }
 };
- 
- 
- 
+
+
+
 console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
- 
- 
- 
- 
- 
- 
+
 
 
 
@@ -186,6 +176,10 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
     <v-app-bar-title>Menü</v-app-bar-title>
     
     <v-app-bar-title>{{ currentCategory || "Keine Kategorie"}}</v-app-bar-title>
+
+    
+      
+
 
     <template v-if="isBoardPage">
       <v-btn icon @click="showForm = true">
@@ -209,6 +203,7 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
     </template>
 
     
+
 
 
 
