@@ -45,10 +45,9 @@ async function saveResident() {
 // Editieren-Dialog für Benutzer
 const editDialog = ref(false);
 const updatedUser = ref({
-    id: null,
     mail: '',
-    username: null,
-    houseId: null
+    username: '',
+    houseId: houseId.value
 });
 
 // Öffnet das Bearbeitungs-Dialogfenster mit den aktuellen Daten des Users
@@ -61,7 +60,7 @@ const handleEdit = (user) => {
 // Speichert die Änderungen des Benutzers
 async function updateUser() {
     try {
-        await userStore.updateUser(updatedUser.value.id, updatedUser.value);
+        await userStore.updateUser(updatedUser.value);
         await userStore.getAllUsersByHouseId(houseId.value); // Datenliste aktualisieren
 
         editDialog.value = false; // Dialog schließen

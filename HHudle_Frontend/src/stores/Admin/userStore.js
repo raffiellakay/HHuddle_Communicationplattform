@@ -21,11 +21,11 @@ export const useUserStore = defineStore('user', {
 
         //It is unclear, whether the put request needs to explicitly send the userId or if the userId is sent when sending the User.
         //Has to be tested
-        async updateUser(userId, user) {
+        async updateUser(user) {
             try {
         
-                const response = await axios.put(`${API_URL}admin/user/${userId}`, updatedUser);
-                const index = this.users.findIndex(p => p.id === userId);
+                const response = await axios.put(API_URL + 'admin/user', user);
+                const index = this.users.findIndex(p => p.id === user.id);
         
                 if (index !== -1) {
                     this.users[index] = response.data;
