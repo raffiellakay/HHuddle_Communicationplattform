@@ -46,6 +46,7 @@ import { useRouter } from "vue-router";
 import { useChatStore } from "@/stores/User/chatStore";
 import ConfirmDeleteCheck from "@/components/ConfirmDeleteCheck.vue";
 import { useAuthStore } from '@/stores/authStore'
+
 const authStore = useAuthStore();
 
 const chatStore = useChatStore();
@@ -89,7 +90,7 @@ onMounted(async () => {
 
 // Navigate to a specific chat
 function navigateToChat(chatId) {
-  router.push({ name: 'ChatView', params: { id: chatId }, query: { senderId: userId } });;
+  router.push({ name: 'ChatView', params: { chatId }, query: { senderId: userId } });;
 }
 
 const sortArrayByProperty = (array, property) => {
