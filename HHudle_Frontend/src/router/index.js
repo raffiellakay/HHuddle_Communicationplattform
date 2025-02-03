@@ -28,6 +28,7 @@ import PostCard from '@/components/User/PostCard.vue';
 
 
 
+
 const routes = [
 
   {
@@ -80,6 +81,20 @@ const routes = [
             path: 'search&find',
             name: 'SearchAndFind',
             component: SearchAndFindView,
+            props: true,
+            meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
+          },
+          {
+            path: 'chatlist',
+            name: 'ChatListView',
+            component: ChatListView,
+            props: true,
+            meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
+          },
+          {
+            path: 'chat/:chatId',
+            name: 'ChatView',
+            component: ChatView,
             props: true,
             meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
           },

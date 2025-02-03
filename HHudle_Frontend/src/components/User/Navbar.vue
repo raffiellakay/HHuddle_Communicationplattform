@@ -102,6 +102,71 @@ const handleLogout = () => {
 
 console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
 
+const handleCreateChat = async () => {
+  if (!initialMessage.value.trim()) {
+    console.warn("Leere Nachricht kann nicht gesendet werden.");
+    return;
+  }
+
+  if (!currentUserId.value) {
+    console.error("Kein gültiger Benutzer gefunden!");
+    return;
+  }
+
+  try {
+    const secondUserId = 2; // Replace with logic to get recipient's user ID
+ 
+    // Create the chat first
+    const newChat = await chatStore.createChat({
+      firstUserId: currentUserId.value,
+      secondUserId,
+    });
+
+    if (!newChat?.id) {
+      console.error("Fehler beim Erstellen des Chats: Keine Chat-ID zurückgegeben.");
+      return;
+    }
+
+    console.log("Neuer Chat erstellt:", newChat.id);
+
+    // Send the initial message **immediately** after chat creation
+    const messageResponse = await chatStore.sendMessage({
+      chatId: newChat.id,
+      text: initialMessage.value,
+      senderId: currentUserId.value,
+    });
+
+    if (!messageResponse) {
+      console.error("Fehler beim Senden der Nachricht.");
+      return;
+    }
+
+    console.log("Nachricht erfolgreich gesendet!");
+
+    // Navigate to the newly created chat
+    router.push({
+      name: "ChatView",
+      params: { id: newChat.id },
+      query: { senderId: currentUserId.value },
+    });
+
+    // Close the modal & reset input field
+    showNewChatModal.value = false;
+    initialMessage.value = "";
+  } catch (error) {
+    console.error("Fehler beim Erstellen des Chats oder beim Senden der Nachricht:", error);
+  }
+};
+ 
+ 
+ 
+console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
+ 
+ 
+ 
+ 
+ 
+ 
 
 
 
