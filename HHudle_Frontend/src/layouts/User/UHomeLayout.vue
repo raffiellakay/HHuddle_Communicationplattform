@@ -49,6 +49,9 @@ const items = ref([
   { title: "Paketfinder", route: "/user/board/packagefinder" },
   { title: "Suche - Biete - Tausche", route: "/user/board/search&find" },
   { title: "Chats", route: "/user/board/chatlist" },
+  { title: "Kontakt", route: "/contact" },
+  { title: "Über Uns", route: "/aboutUs" },
+
 ]);
 
 // Responsives Verhalten
@@ -122,7 +125,7 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
         <template v-slot:prepend>
           <v-app-bar-nav-icon v-if="isMobile" @click="toggleDrawer"></v-app-bar-nav-icon>
         </template>
-        <v-toolbar-title class="text-white">BLACKBOARD</v-toolbar-title>
+        <v-toolbar-title class="text-white"> Kategorie </v-toolbar-title>
 
         <template v-if="isBoardPage">
           <v-btn icon @click="showForm = true">
@@ -208,7 +211,7 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
   flex-grow: 1;
   overflow-y: auto;
   padding: 20px; /* Kann je nach Design angepasst werden */
-  background-color: #d4d1c8;
+  background-color: #faf8f2;
 }
 
 /* Inhalt weiter nach links schieben */
