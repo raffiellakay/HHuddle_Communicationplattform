@@ -227,7 +227,7 @@ const formatToGermanDate = (dateTime) => {
              
             </v-card-item>
 
-            <v-btn v-if="userId !== filteredUserPost.user?.id" icon @click="openModal(filteredUserPost.user?.id)">
+            <v-btn v-if="userId !== filteredUserPost.user?.id && category !== `FRONTPAGE` " icon @click="openModal(filteredUserPost.user?.id)">
             <v-icon class="plus-icon">mdi-plus-circle</v-icon>
           </v-btn>
         
