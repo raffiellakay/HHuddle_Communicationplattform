@@ -116,7 +116,7 @@ const showModalWindow = (chatId) => {
 };
 
 const navigateToHome = () => {
-  router.push({ path: '/user' });
+  router.push({ path: '/user/home' });
 };
 
 
