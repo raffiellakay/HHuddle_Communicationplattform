@@ -174,7 +174,7 @@ const createChat = async () => {
     alert('Chat erfolgreich erstellt');
   } catch (error) {
     console.error('Fehler beim Erstellen des Chats:', error);
-    alert('Fehler beim Erstellen des Chats');
+    alert('Chat bereits existiert');
   }
 };
 
