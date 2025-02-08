@@ -118,38 +118,33 @@ const getHouseImage = (houseId) => {
     </v-btn>
 
     <!-- Kachel-Layout: Zeige die Liste der Häuser -->
-        <v-row>
-          <v-col v-for="house in sortedHouses" :key="house.id" cols="12" sm="6" md="4">
-            <v-card class="mx-auto" max-width="400">
-      <!-- Hausbild mit Overlay-Text -->
-      <v-img
-  class="align-end text-white"
-  height="200"
-  :src="house.imageUrl || getHouseImage(house.id)" 
-  cover
->
-  <v-card-title>{{ house.address }}</v-card-title>
-</v-img>
+    <v-row>
+      <v-col v-for="house in sortedHouses" :key="house.id" cols="12" sm="6" md="3">
+        <v-card class="mx-auto" max-width="400">
+          <!-- Hausbild mit Overlay-Text -->
+          <v-img class="align-end text-white" height="200" :src="house.imageUrl || getHouseImage(house.id)" cover>
+            <v-card-title>{{ house.address }}</v-card-title>
+          </v-img>
 
-      <!-- Untertitel mit Anzahl der Einrichtungen -->
-      <v-card-subtitle class="pt-4">
+          <!-- Untertitel mit Anzahl der Einrichtungen -->
+          <!--       <v-card-subtitle class="pt-4">
         {{ house.facilities.length }} Einrichtungen
-      </v-card-subtitle>
+        </v-card-subtitle>
+                                -->
+          <!-- Hausbeschreibung -->
+          <!-- <v-card-text> -->
+            <!-- <div v-if="house.description">{{ house.description }}</div> -->
+            <!-- <div v-else>Keine Beschreibung vorhanden</div> -->
+          <!-- </v-card-text> -->
 
-      <!-- Hausbeschreibung -->
-      <v-card-text>
-        <div v-if="house.description">{{ house.description }}</div>
-        <div v-else>Keine Beschreibung vorhanden</div>
-      </v-card-text>
-
-      <!-- Aktionen: Details & Löschen -->
-      <v-card-actions>
-        <v-btn color="primary" @click="goToHouse(house.id)">Details</v-btn>
-        <v-btn color="red" @click.stop="openDeleteChecker(house)">Löschen</v-btn>
-      </v-card-actions>
-      </v-card>
+          <!-- Aktionen: Details & Löschen -->
+          <v-card-actions>
+            <v-btn color="primary" @click="goToHouse(house.id)">Details</v-btn>
+            <v-btn color="red" @click.stop="openDeleteChecker(house)">Löschen</v-btn>
+          </v-card-actions>
+        </v-card>
       </v-col>
-      </v-row>
+    </v-row>
 
     <ConfirmDeleteCheck :show="showDeleteChecker" :itemName="'das Haus'" @confirm="confirmDelete"
       @close="closeDeleteChecker" />
