@@ -4,6 +4,8 @@
 import { API_URL } from "@/api";
 import { defineStore } from 'pinia';
 import axios from 'axios';
+import { getHouseImageById } from '@/utils/helpers';
+
 
 export const useHouseStore = defineStore('house', {
     state: () => ({
@@ -18,7 +20,10 @@ export const useHouseStore = defineStore('house', {
 
         async getAllHouses() {
             const response = await axios.get(API_URL + 'admin/houses');
-            this.houses = response.data;
+            this.houses = response.data.map(house => ({
+              ...house,
+              imageUrl: house.imageUrl || getHouseImageById(house.id) // Bild basierend auf ID setzen
+          }));
         },
 
         async getHouseById(houseId) {
@@ -36,6 +41,9 @@ export const useHouseStore = defineStore('house', {
               const response = await axios.get(`${API_URL}admin/house/${houseId}`);
           
               if (response.data) {
+                  // 🔥 Hier das Bild setzen, falls es nicht existiert!
+                response.data.imageUrl = response.data.imageUrl || getHouseImageById(response.data.id);
+
                 this.houses.push(response.data); // ✅ Haus zum Store hinzufügen
                 console.log(`✅ Haus ${houseId} aus der API geladen.`);
                 return response.data;

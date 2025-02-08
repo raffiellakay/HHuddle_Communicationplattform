@@ -8,6 +8,8 @@ import ConfirmDeleteCheck from "@/components/ConfirmDeleteCheck.vue";
 import viennaHouseImage1 from '@/assets/Pictures/ViennaHouse1.jpg';
 import viennaHouseImage2 from '@/assets/Pictures/ViennaHouse2.jpg';
 import viennaHouseImage3 from '@/assets/Pictures/ViennaHouse3.jpg';
+import { getHouseImageById } from '@/utils/helpers';
+
 
 
 //Zugriffe auf ...
@@ -99,13 +101,16 @@ const confirmDelete = async () => {
   }
 }
 
-const getHouseImage = (houseId) => {
+/* const getHouseImage = (houseId) => {
   const images = {
     1: viennaHouseImage1,
     2: viennaHouseImage2,
     3: viennaHouseImage3,
   };
   return images[houseId] || viennaHouseImage1; // Standardbild, falls kein Hausbild existiert
+}; */
+const getHouseImage = (houseId) => {
+  return getHouseImageById(houseId);
 };
 
 </script>
@@ -122,7 +127,7 @@ const getHouseImage = (houseId) => {
       <v-col v-for="house in sortedHouses" :key="house.id" cols="12" sm="6" md="3">
         <v-card class="mx-auto" max-width="400">
           <!-- Hausbild mit Overlay-Text -->
-          <v-img class="align-end text-white" height="200" :src="house.imageUrl || getHouseImage(house.id)" cover>
+          <v-img class="align-end text-white" height="200" :src="house.imageUrl || getHouseImageById(house.id)" cover>
             <v-card-title>{{ house.address }}</v-card-title>
           </v-img>
 
