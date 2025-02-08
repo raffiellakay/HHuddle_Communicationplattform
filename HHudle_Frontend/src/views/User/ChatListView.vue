@@ -119,54 +119,6 @@ const navigateToHome = () => {
   router.push({ path: '/user/home' });
 };
 
-
-
-
-
-
-/*
-   temporary hardcoded data 
-  name: "ChatListView",
-  setup() {
-    const chats = ref([
-      {
-        id: 1,
-        name: "John Doe",
-        lastMessage: "Hey, how are you?",
-        lastMessageTime: "10:30 AM",
-      },
-      {
-        id: 2,
-        name: "Jane Smith",
-        lastMessage: "Let's catch up later.",
-        lastMessageTime: "11:00 AM",
-      },
-      {
-        id: 3,
-        name: "Alice Johnson",
-        lastMessage: "See you tomorrow!",
-        lastMessageTime: "12:15 PM",
-      },
-    ]);
-    const router = useRouter();
-   /* const chats = ref([]);
-    const router = useRouter();
-    const userId = 1; // Replace with the actual user ID
-
-    // Fetch chats from backend
-    const fetchChats = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8080/api/chats/user/${userId}`);
-        chats.value = response.data;
-      } catch (error) {
-        console.error("Error fetching chats:", error);
-      }
-    };
-
-    // Load chats on mount
-    onMounted(() => {
-      fetchChats();
-    }); */
 </script>
 
 <style>
