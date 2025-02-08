@@ -109,9 +109,9 @@ const confirmDelete = async () => {
   };
   return images[houseId] || viennaHouseImage1; // Standardbild, falls kein Hausbild existiert
 }; */
-const getHouseImage = (houseId) => {
+/* const getHouseImage = (houseId) => {
   return getHouseImageById(houseId);
-};
+}; */
 
 </script>
 

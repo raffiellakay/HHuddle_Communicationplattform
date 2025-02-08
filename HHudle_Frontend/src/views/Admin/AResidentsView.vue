@@ -6,6 +6,7 @@ import { useRoute, useRouter } from 'vue-router';
 import viennaHouseImage1 from '@/assets/Pictures/ViennaHouse1.jpg';
 import viennaHouseImage2 from '@/assets/Pictures/ViennaHouse2.jpg';
 import viennaHouseImage3 from '@/assets/Pictures/ViennaHouse3.jpg';
+import { getHouseImageById } from '@/utils/helpers';
 
 const router = useRouter();
 const route = useRoute();
@@ -79,7 +80,7 @@ const house = computed(() => houseStore.houses.find(h => h.id == houseId.value))
 
 
 //Bilder setzen je nach Haus
-const houseImage = computed(() => {
+/* const houseImage = computed(() => {
     switch (houseId.value) {
         case 1:
             return viennaHouseImage1;
@@ -90,6 +91,9 @@ const houseImage = computed(() => {
         default:
             return viennaHouseImage1;
     }
+}); */
+const houseImage = computed(() => {
+    return house.value?.imageUrl || getHouseImageById(houseId.value);
 });
 
 // Navigiere zur Residents-Seite
