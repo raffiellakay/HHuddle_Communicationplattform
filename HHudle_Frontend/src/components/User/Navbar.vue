@@ -177,15 +177,9 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
     
     <v-app-bar-title>{{ currentCategory || "Keine Kategorie"}}</v-app-bar-title>
 
-    <v-btn icon @click="showNewChatModal= true">
-        <v-icon class="plus-icon"> mdi-plus-circle</v-icon>
-      </v-btn>
-      <v-dialog v-model="showNewChatModal" max-width="500">
-        <template v-slot:default="{close}">
-         this is a modal Window
-        </template>
+    
       
-    </v-dialog>
+
 
     <template v-if="isBoardPage">
       <v-btn icon @click="showForm = true">
@@ -208,31 +202,8 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
 
     </template>
 
-    <v-btn icon @click="showNewChatModal = true">
-  <v-icon class="plus-icon">mdi-plus-circle</v-icon>
-</v-btn>
+    
 
-<v-dialog v-model="showNewChatModal" max-width="500">
-  <v-card>
-    <v-card-title>
-      <span class="headline">Chat erstellen</span>
-    </v-card-title>
-    <v-card-text>
-      <v-form ref="form">
-        <v-text-field
-          v-model="initialMessage"
-          label="Nachricht"
-          required
-        ></v-text-field>
-      </v-form>
-    </v-card-text>
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn color="blue darken-1" text @click="handleCreateChat">Erstellen</v-btn>
-      <v-btn color="grey darken-1" text @click="showNewChatModal = false">Abbrechen</v-btn>
-    </v-card-actions>
-  </v-card>
-</v-dialog>
 
 
 
@@ -276,7 +247,7 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
           
         </template>
       </v-list-group>
-      <v-list-item>Chat</v-list-item>
+      <v-list-item :to="{ path: '/user/board/chatlist'}">Chats</v-list-item>
       <v-list-item :to="{ path: '/aboutUs'}">Über Uns</v-list-item>
       <v-list-item :to="{ path: '/contact'}">Kontakt</v-list-item>
 

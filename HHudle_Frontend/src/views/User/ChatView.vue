@@ -1,3 +1,4 @@
+
 <template>
   <v-container class="chat-container" fluid>
     <v-row class="chat-view" align-items="stretch">
@@ -37,7 +38,7 @@ import { useChatStore } from "@/stores/User/chatStore";
 const chatStore = useChatStore();
 const route = useRoute();
 
-const chatId = route.params.id;
+const chatId = route.params.chatId;
 const senderId = route.query.senderId;
 const chatMessages = ref([]);
 const newMessage = ref("");

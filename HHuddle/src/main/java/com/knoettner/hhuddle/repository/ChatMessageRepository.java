@@ -14,4 +14,6 @@ import java.util.List;
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> {
     @Query("SELECT cm FROM ChatMessage cm WHERE cm.chat.id = :chatId ORDER BY cm.timestamp ASC")
     List<ChatMessage> findAllMessagesByChatId(@Param("chatId") Long chatId);
+
+    void deleteByChatId(Long chatId);
 }

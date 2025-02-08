@@ -113,14 +113,15 @@ public class ChatServiceImpl implements ChatService {
                 }
         chatRepository.delete(chat);
     }*/
-
+@Transactional
     @Override
     public void deleteChatForUser(Long chatId, Long userId) {
         Chat chat = chatRepository.findById(chatId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Chat not found"));
-
-        if (chat.getFirstParticipant().getId().equals(userId)) {
-            chat.setVisibleToFirstParticipant(false);
+        if (!chat.getFirstParticipant().getId().equals(userId) && !chat.getSecondParticipant().getId().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User is not a participant of the chat");
+        }
+      /*  if (chat.getFirstParticipant().getId().equals(userId)) {
         } else if (chat.getSecondParticipant().getId().equals(userId)) {
             chat.setVisibleToSecondParticipant(false);
         } else {
@@ -128,11 +129,17 @@ public class ChatServiceImpl implements ChatService {
         }
 
         // delete chat if both have deleted
-        if (!chat.isVisibleToFirstParticipant() && !chat.isVisibleToSecondParticipant()) {
-            chatRepository.deleteById(chat.getId());
-        } else {
+        if (!chat.isVisibleToFirstParticipant() && !chat.isVisibleToSecondParticipant()) {*/
+
+        // Delete messages associated with this chat first
+        chatMessageRepository.deleteByChatId(chatId);
+
+        // Now delete the chat
+        chatRepository.deleteById(chatId);
+
+     /*   } else {
             chatRepository.save(chat);
-        }
+        }*/
     }
 
 
