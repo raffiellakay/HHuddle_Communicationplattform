@@ -28,10 +28,10 @@
         <!-- Input field to write new messages -->
         <v-text-field
           v-model="newMessage"
-          label="Write a message"
+          label="Schreiben Sie eine Nachricht"
           @keyup.enter="sendMessage"
         ></v-text-field>
-        <v-btn @click="sendMessage">Send</v-btn>
+        <v-btn @click="sendMessage">Absenden</v-btn>
       </v-col>
     </v-row>
   </v-container>

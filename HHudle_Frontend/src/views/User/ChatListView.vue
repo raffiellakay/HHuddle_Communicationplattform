@@ -20,7 +20,7 @@
               <span>{{sortArrayByProperty(chat.messages, "timestamp")[0]?.text }}</span>
             </div>
             <div class="delete-chat">
-              <v-btn @click.stop="showModalWindow(chat.id)">Delete</v-btn>
+              <v-btn @click.stop="showModalWindow(chat.id)">Löschen</v-btn>
             </div>
           </div>
         </div>
