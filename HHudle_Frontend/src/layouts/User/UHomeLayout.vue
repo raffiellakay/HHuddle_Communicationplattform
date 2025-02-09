@@ -222,7 +222,7 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
   flex-grow: 1;
   overflow-y: auto;
   padding: 20px; 
-  background-color: #faf8f2;
+  background-color: white;
 }
 
 
