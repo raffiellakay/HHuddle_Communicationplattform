@@ -24,3 +24,4 @@ import Navbar from '@/components/Admin/Navbar.vue';
 
 <style scoped>
 </style>
+

@@ -5,9 +5,6 @@ import { useHouseStore } from '@/stores/Admin/houseStore';
 import { useRouter } from 'vue-router';
 import DeleteButton from '@/components/Icons/DeleteButton.vue';
 import ConfirmDeleteCheck from "@/components/ConfirmDeleteCheck.vue";
-import viennaHouseImage1 from '@/assets/Pictures/ViennaHouse1.jpg';
-import viennaHouseImage2 from '@/assets/Pictures/ViennaHouse2.jpg';
-import viennaHouseImage3 from '@/assets/Pictures/ViennaHouse3.jpg';
 import { getHouseImageById } from '@/utils/helpers';
 
 
@@ -100,15 +97,6 @@ const confirmDelete = async () => {
     }
   }
 }
-
-/* const getHouseImage = (houseId) => {
-  const images = {
-    1: viennaHouseImage1,
-    2: viennaHouseImage2,
-    3: viennaHouseImage3,
-  };
-  return images[houseId] || viennaHouseImage1; // Standardbild, falls kein Hausbild existiert
-}; */
 /* const getHouseImage = (houseId) => {
   return getHouseImageById(houseId);
 }; */
@@ -128,8 +116,9 @@ const confirmDelete = async () => {
         <v-card class="mx-auto" max-width="400">
           <!-- Hausbild mit Overlay-Text -->
           <v-img class="align-end text-white" height="200" :src="house.imageUrl || getHouseImageById(house.id)" cover>
-            <v-card-title>{{ house.address }}</v-card-title>
+            <v-card-title class="text-shadow ">{{ house.address }}</v-card-title>
           </v-img>
+          
 
           <!-- Untertitel mit Anzahl der Einrichtungen -->
           <!--       <v-card-subtitle class="pt-4">
@@ -191,6 +180,12 @@ const confirmDelete = async () => {
   background-color: rgb(241, 102, 102);
   margin-left: 15px;
 
+}
+.text-shadow {
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 1);
+}
+.text-underline {
+  text-decoration: underline;
 }
 </style>
 
