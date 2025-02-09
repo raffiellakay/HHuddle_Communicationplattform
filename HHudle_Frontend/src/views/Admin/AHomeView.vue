@@ -4,6 +4,9 @@ import { ref, onMounted, computed } from 'vue';
 import { useHouseStore } from '@/stores/Admin/houseStore';
 import { useRouter } from 'vue-router';
 import DeleteButton from '@/components/Icons/DeleteButton.vue';
+import ConfirmDeleteCheck from "@/components/ConfirmDeleteCheck.vue";
+import { getHouseImageById } from '@/utils/helpers';
+
 
 
 //Zugriffe auf ...
@@ -63,31 +66,84 @@ const goToHouse = (houseId) => {
   router.push(`/admin/house/${houseId}`);
 };
 
+const showDeleteChecker = ref(false);
+const houseToDelete = ref(null);
 
+//Öffnen des DeleteCheckers
+const openDeleteChecker = (house) => {
+  console.log("Haus zum Löschen: ", house) //Debugging
+  houseToDelete.value = { ...house };
+  showDeleteChecker.value = true;
+}
+
+//Schließen des DeleteCheckers
+const closeDeleteChecker = (house) => {
+  houseToDelete.value = null;
+  showDeleteChecker.value = false;
+}
+//Haus Löschen
+const confirmDelete = async () => {
+  if (houseToDelete.value) {
+    try {
+      console.log(`Haus mit ID ${houseToDelete.value.id} wird gelöscht`);
+      await houseStore.deleteHouseById(houseToDelete.value.id);
+
+      await houseStore.getAllHouses();
+
+      showDeleteChecker.value = false;
+      houseToDelete.value = null;
+    } catch (error) {
+      console.error("Folgender Fehler beim Löschen aufgetreten: ", error)
+    }
+  }
+}
+/* const getHouseImage = (houseId) => {
+  return getHouseImageById(houseId);
+}; */
 
 </script>
 
 <template>
   <!-- Gesamtes Layout -->
   <v-container>
-    <!-- Kachel-Layout: Zeige die Liste der Häuser -->
-    <v-row>
-      <v-col v-for="house in sortedHouses" :key="house.id" cols="12" sm="6" md="4">
-        <v-card class="d-flex flex-column align-center" outlined @click="goToHouse(house.id)">
-          <v-card-item>
-            <!-- Anzeige der Adresse des Hauses -->
-            <v-card-title>{{ house.address }}</v-card-title>
-            <DeleteButton class="delete-button" />
-          </v-card-item>
-        </v-card>
-      </v-col>
-    </v-row>
-
-    <!-- Button zum Hinzufügen eines neuen Hauses -->
     <v-btn @click="dialog = true" class="mt-4" color="primary">
       + Neues Haus hinzufügen
     </v-btn>
 
+    <!-- Kachel-Layout: Zeige die Liste der Häuser -->
+    <v-row>
+      <v-col v-for="house in sortedHouses" :key="house.id" cols="12" sm="6" md="3">
+        <v-card class="mx-auto" max-width="400">
+          <!-- Hausbild mit Overlay-Text -->
+          <v-img class="align-end text-white" height="200" :src="house.imageUrl || getHouseImageById(house.id)" cover>
+            <v-card-title class="text-shadow ">{{ house.address }}</v-card-title>
+          </v-img>
+          
+
+          <!-- Untertitel mit Anzahl der Einrichtungen -->
+          <!--       <v-card-subtitle class="pt-4">
+        {{ house.facilities.length }} Einrichtungen
+        </v-card-subtitle>
+                                -->
+          <!-- Hausbeschreibung -->
+          <!-- <v-card-text> -->
+            <!-- <div v-if="house.description">{{ house.description }}</div> -->
+            <!-- <div v-else>Keine Beschreibung vorhanden</div> -->
+          <!-- </v-card-text> -->
+
+          <!-- Aktionen: Details & Löschen -->
+          <v-card-actions>
+            <v-btn color="primary" @click="goToHouse(house.id)">Details</v-btn>
+            <v-btn color="red" @click.stop="openDeleteChecker(house)">Löschen</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <ConfirmDeleteCheck :show="showDeleteChecker" :itemName="'das Haus'" @confirm="confirmDelete"
+      @close="closeDeleteChecker" />
+
+    <!-- Button zum Hinzufügen eines neuen Hauses -->
     <!-- Dialog zum Hinzufügen eines neuen Hauses -->
     <v-dialog v-model="dialog" max-width="500px">
       <v-card>
@@ -114,6 +170,8 @@ const goToHouse = (houseId) => {
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+
   </v-container>
 </template>
 
@@ -122,6 +180,12 @@ const goToHouse = (houseId) => {
   background-color: rgb(241, 102, 102);
   margin-left: 15px;
 
+}
+.text-shadow {
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 1);
+}
+.text-underline {
+  text-decoration: underline;
 }
 </style>
 

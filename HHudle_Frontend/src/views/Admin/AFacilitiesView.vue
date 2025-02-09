@@ -9,6 +9,7 @@ import EditButton from '@/components/Icons/EditButton.vue';
 import viennaHouseImage1 from '@/assets/Pictures/ViennaHouse1.jpg';
 import viennaHouseImage2 from '@/assets/Pictures/ViennaHouse2.jpg';
 import viennaHouseImage3 from '@/assets/Pictures/ViennaHouse3.jpg';
+import { getHouseImageById } from '@/utils/helpers';
 
 const router = useRouter();
 const route = useRoute();
@@ -19,9 +20,9 @@ const houseId = computed(() => Number(route.params.houseId));
 
 
 const newFacility = ref({
-    type: '',
-    description: '',
-    houseId: houseId.value
+  type: '',
+  description: '',
+  houseId: houseId.value
 })
 
 
@@ -32,13 +33,13 @@ const facilityToDelete = ref(null);
 //Öffnen des DeleteCheckers
 const openDeleteChecker = (facility) => {
   console.log("Einrichtung zum Löschen: ", facility) //Debugging
-  facilityToDelete.value = {...facility};
+  facilityToDelete.value = { ...facility };
   showDeleteChecker.value = true;
 }
 
 //Schließen des DeleteCheckers
 const closeDeleteChecker = (facility) => {
-    facilityToDelete.value = null; 
+  facilityToDelete.value = null;
   showDeleteChecker.value = false;
 }
 //Facility Löschen
@@ -50,12 +51,12 @@ const confirmDelete = async () => {
 
       await facilityStore.getAllFacilitiesByHouseId(houseId.value);
 
-      showDeleteChecker.value = false; 
+      showDeleteChecker.value = false;
       facilityToDelete.value = null;
     } catch (error) {
       console.error("Folgender Fehler beim Löschen aufgetreten: ", error)
     }
-  } 
+  }
 }
 const dialog = ref(false);
 
@@ -63,44 +64,44 @@ const dialog = ref(false);
 //Update Facility
 const editDialog = ref(false);
 const updatedFacility = ref({
-    type: '',
-    description: '',
-    houseId: houseId.value
+  type: '',
+  description: '',
+  houseId: houseId.value
 })
-const handleEdit =  (facility) => {
+const handleEdit = (facility) => {
   console.log("Einrichtung zum Bearbeiten: ", facility) //Debugging
-  updatedFacility.value = {...facility};
+  updatedFacility.value = { ...facility };
   editDialog.value = true;
 }
-async function updateFacility(){
+async function updateFacility() {
   try {
-        await facilityStore.updateFacility(updatedFacility.value);
-        await facilityStore.getAllFacilitiesByHouseId(houseId.value);
+    await facilityStore.updateFacility(updatedFacility.value);
+    await facilityStore.getAllFacilitiesByHouseId(houseId.value);
 
-        editDialog.value = false;
-        updatedFacility.value = { type: '', description: '', houseId: houseId.value }; // house Id bleibt erhalten
-    } catch (error) {
-        console.error('Error while updating Facility:', error);
-    }
+    editDialog.value = false;
+    updatedFacility.value = { type: '', description: '', houseId: houseId.value }; // house Id bleibt erhalten
+  } catch (error) {
+    console.error('Error while updating Facility:', error);
+  }
 }
 
 
 
 onMounted(async () => {
-    await facilityStore.getAllFacilitiesByHouseId(houseId.value);
-    await houseStore.getAllHouses();
+  await facilityStore.getAllFacilitiesByHouseId(houseId.value);
+  await houseStore.getAllHouses();
 });
 
-async function saveNewFacility(){
-    try {
-        await facilityStore.createFacility(newFacility.value);
-        await facilityStore.getAllFacilitiesByHouseId(houseId.value);
+async function saveNewFacility() {
+  try {
+    await facilityStore.createFacility(newFacility.value);
+    await facilityStore.getAllFacilitiesByHouseId(houseId.value);
 
-        dialog.value = false;
-        newFacility.value = { type: '', description: '', houseId: houseId.value }; // house Id bleibt erhalten
-    } catch (error) {
-        console.error('Error while saving facility:', error);
-    }
+    dialog.value = false;
+    newFacility.value = { type: '', description: '', houseId: houseId.value }; // house Id bleibt erhalten
+  } catch (error) {
+    console.error('Error while saving facility:', error);
+  }
 }
 
 //Header
@@ -111,7 +112,7 @@ const house = computed(() => houseStore.houses.find(h => h.id == houseId.value))
 
 
 //Bilder setzen je nach Haus
-const houseImage = computed(() => {
+/* const houseImage = computed(() => {
   switch (houseId.value) {
     case 1:
       return viennaHouseImage1;
@@ -122,6 +123,10 @@ const houseImage = computed(() => {
     default:
       return viennaHouseImage1;
   }
+}); */
+
+const houseImage = computed(() => {
+  return house.value?.imageUrl || getHouseImageById(houseId.value);
 });
 
 // Navigiere zur Residents-Seite
@@ -154,11 +159,11 @@ const goToOverview = (houseId) => {
       <v-card v-if="house" class="house-card">
         <div class="house-info-row">
           <div @click="goToOverview(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
-          <p><strong>Adresse:</strong> {{ house.address }}</p>
-        </div>
+            <p><strong>Adresse:</strong> {{ house.address }}</p>
+          </div>
 
-         <!--Klickbare "Tops" (Residents) -->
-         <div @click="goToResidents(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
+          <!--Klickbare "Tops" (Residents) -->
+          <div @click="goToResidents(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
             <p><strong>Tops:</strong> {{ house.residents.length }}</p>
           </div>
 
@@ -166,80 +171,81 @@ const goToOverview = (houseId) => {
           <div @click="goToFacilities(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
             <p><strong>Einrichtungen:</strong> {{ house.facilities.length }}</p>
           </div>
-        
+
         </div>
       </v-card>
       <v-alert v-else type="warning">Haus nicht gefunden!</v-alert>
     </div>
   </div>
 
-<v-container>
-  
+  <v-container>
+
     <!-- Dialog zum Hinzufügen Facility -->
     <v-dialog v-model="dialog" max-width="500px">
-        <v-card>
-            <v-card-title>Einrichtung hinzufügen</v-card-title>
-            <v-card-text>
-                <!-- Formularfelder -->
-                <v-form @submit.prevent="saveNewFacility">
-                    <v-text-field v-model="newFacility.type" label="Art der Einrichtung" required></v-text-field>
-                    <v-text-field v-model="newFacility.description" label="Beschreibung der Einrichtung" required></v-text-field>
-                </v-form>
-            </v-card-text>
-            <v-card-actions>
-                <v-btn text @click="dialog = false">Abbrechen</v-btn>
-                <v-btn text color="primary" @click="saveNewFacility">Speichern</v-btn>
-            </v-card-actions>
-        </v-card>
+      <v-card>
+        <v-card-title>Einrichtung hinzufügen</v-card-title>
+        <v-card-text>
+          <!-- Formularfelder -->
+          <v-form @submit.prevent="saveNewFacility">
+            <v-text-field v-model="newFacility.type" label="Art der Einrichtung" required></v-text-field>
+            <v-text-field v-model="newFacility.description" label="Beschreibung der Einrichtung" required></v-text-field>
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn text @click="dialog = false">Abbrechen</v-btn>
+          <v-btn text color="primary" @click="saveNewFacility">Speichern</v-btn>
+        </v-card-actions>
+      </v-card>
     </v-dialog>
     <!-- Facilities anzeigen -->
     <v-list>
-        <v-list-item v-for="facility in facilityStore.facilities" :key="facility.id">
-            <div>
-                <v-list-item-title>{{ facility.type }}  <DeleteButton @click="openDeleteChecker(facility)" class="delete-button"/> </v-list-item-title>
-                <v-list-item-subtitle>{{ facility.description }}</v-list-item-subtitle> <EditButton @click="handleEdit(facility)"/>
+      <v-list-item v-for="facility in facilityStore.facilities" :key="facility.id">
+        <div>
+          <v-list-item-title>{{ facility.type }}
+            <DeleteButton @click="openDeleteChecker(facility)" class="delete-button" />
+          </v-list-item-title>
+          <v-list-item-subtitle>{{ facility.description }}</v-list-item-subtitle>
+          <EditButton @click="handleEdit(facility)" />
 
-                <!-- Editing Facility-->
-                <v-dialog v-model="editDialog" max-width="500px">
-        <v-card>
-            <v-card-title>Einrichtung bearbeiten</v-card-title>
-            <v-card-text>
+          <!-- Editing Facility-->
+          <v-dialog v-model="editDialog" max-width="500px">
+            <v-card>
+              <v-card-title>Einrichtung bearbeiten</v-card-title>
+              <v-card-text>
                 <!-- Felder zum Editieren-->
                 <v-form @submit.prevent="updateFacility">
-                    <v-text-field v-model="updatedFacility.type" label="Art der Einrichtung" required></v-text-field>
-                    <v-text-field v-model="updatedFacility.description" label="Beschreibung der Einrichtung" required></v-text-field>
+                  <v-text-field v-model="updatedFacility.type" label="Art der Einrichtung" required></v-text-field>
+                  <v-text-field v-model="updatedFacility.description" label="Beschreibung der Einrichtung"
+                    required></v-text-field>
                 </v-form>
-            </v-card-text>
-            <v-card-actions>
+              </v-card-text>
+              <v-card-actions>
                 <v-btn text @click="editDialog = false">Abbrechen</v-btn>
                 <v-btn text color="primary" @click="updateFacility">Speichern</v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
-            
-            </div>
-        </v-list-item>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+
+        </div>
+      </v-list-item>
     </v-list>
 
-     <!-- Button: Add Facility -->
-     <v-btn @click="dialog = true" class="mt-4" color="primary">
-        + Einrichtung hinzufügen
+    <!-- Button: Add Facility -->
+    <v-btn @click="dialog = true" class="mt-4" color="primary">
+      + Einrichtung hinzufügen
     </v-btn>
 
-    <ConfirmDeleteCheck
-    :show="showDeleteChecker"
-    :itemName="'die Einrichtung'"
-    @confirm="confirmDelete"
-    @close="closeDeleteChecker"/>
-</v-container>
+    <ConfirmDeleteCheck :show="showDeleteChecker" :itemName="'die Einrichtung'" @confirm="confirmDelete"
+      @close="closeDeleteChecker" />
+  </v-container>
 </template>
 
 
 
 <style scoped>
-.delete-button{
+.delete-button {
   background-color: rgb(237, 79, 79);
-  
+
   font-size: 16px;
 }
 
@@ -302,4 +308,4 @@ const goToOverview = (houseId) => {
   font-size: 16px;
   font-weight: 500;
 }
-  </style>
+</style>
