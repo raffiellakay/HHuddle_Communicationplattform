@@ -249,12 +249,21 @@ const goToOverview = (houseId) => {
   font-size: 16px;
 }
 
+
 .header-container {
   position: relative;
   width: 100vw;
   height: 400px;
 }
-
+/* .header-container {
+  position: relative;
+  width: 100vw;
+  max-width: 100%;
+  min-height: 400px; 
+  overflow: hidden;
+  
+}
+ */
 .header-image {
   position: relative;
   top: 0;

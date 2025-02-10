@@ -200,7 +200,7 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
 <style scoped>
 
 .navbar {
-  background-color: #8E8D8A
+  background-color: #8E8D8A 
 }
 
 .v-layout {
