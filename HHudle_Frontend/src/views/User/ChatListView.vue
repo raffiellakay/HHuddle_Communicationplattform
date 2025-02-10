@@ -11,11 +11,10 @@
             v-for="(chat, index) in sortedChats"
             :key="chat.id"
             class="dialog"
-            :class="{ 'new-message': chat.isNewChat }"
             @click="navigateToChat(chat.id)"
           >
             <div class="dialog-header">
-              <span class="chat-time">{{formatDate(chat.messages[0]?.timestamp) }}</span>
+              <span class="chat-time">{{formatDate(chat.timestamp) }}</span>
             </div>
             <div class="dialog-preview">
               <span>{{sortArrayByProperty(chat.messages, "timestamp")[0]?.text }}</span>
@@ -55,45 +54,24 @@ const router = useRouter();
 const userId = authStore.user?.id;
 // Reactive data for chats
 const userChats = ref([]);
-const sourceUserChats = ref([]);
 const showDeleteDialog = ref(false);
 const currentChatId = ref(null);
 
 // Computed property to sort chats by last message time
 const sortedChats = computed(() => {
   return [...userChats.value].sort((a, b) =>
-    new Date(a.timestamp) - new Date(b.timestamp)
+    new Date(b.timestamp) - new Date(a.timestamp)
   );
 });
 
 //date format
 const formatDate = (date) => {
-  console.log("date", date);
-  console.log("new date", new Date(date));
   return new Date(date).toLocaleDateString() +  " " + new Date(date).toLocaleTimeString();
 };
 
-const getChats = () => {
-  console.log("userChats", userChats.value);
-  console.log("sourceUserChats", sourceUserChats.value);
+// Fetch chats on component mount
+onMounted(async () => {
   
-  setInterval(async () => {
-    console.log("userChats", userChats.value);
-    await fetchUserChats();
-
-     
-      
-      userChats.value = userChats.value.map((chat, index) => {
-        chat.isNewChat = sourceUserChats.value[index]?.id === chat.id ? false : true;
-
-        return chat;
-      });
-   
-  }, 3000);
-};
-
-// Fetch user chats
-const fetchUserChats = async () => {
   try {
     await chatStore.fetchChatsByUserId(userId);
     userChats.value = chatStore.chats.filter((chat) => {
@@ -104,28 +82,6 @@ const fetchUserChats = async () => {
       }
      
     }) // Sync chats from the store
-  } catch (error) {
-    console.error("Error fetching user chats:", error);
-  }
-};
-// Fetch chats on component mount
-onMounted(async () => {
-  
-  try {
-    await fetchUserChats();
-    console.log("userChats", userChats.value);
-    sourceUserChats.value = JSON.parse(JSON.stringify(userChats.value));
-    userChats.value = userChats.value.map((chat, index) => {
-      if (index === 0) {
-        chat.isNewChat = true;
-      } else {
-        chat.isNewChat = false;
-}
-
-      return chat;
-    });
-
-   // getChats();
   } catch (error) {
     console.error("Error fetching user chats:", error);
   }
@@ -184,21 +140,10 @@ const navigateToHome = () => {
   overflow-y: auto;
 }
 
-.dialogs {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 10px;
-}
-
 .dialog {
   padding: 10px;
-  border-radius: 5px;
+  border-bottom: 1px solid #eee;
   cursor: pointer;
-}
-
-.dialog.new-message {
-  border: 1px solid red;
 }
 
 .dialog:hover {
