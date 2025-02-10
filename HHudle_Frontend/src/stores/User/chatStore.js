@@ -69,7 +69,7 @@ export const useChatStore = defineStore("chatStore", {
         throw err;
       }
     },
-.
+
     async deleteChat(chatId, userId) {
       try {
         await axios.delete(`${API_URL}chats/${chatId}`, {
