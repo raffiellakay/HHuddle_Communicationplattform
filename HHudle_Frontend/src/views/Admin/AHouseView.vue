@@ -4,9 +4,7 @@ import { useHouseStore } from "@/stores/Admin/houseStore";
 import { useRoute, useRouter } from "vue-router";
 import AdminPostsView from '@/components/Admin/AdminPosts.vue';
 import { useAdminPostStore } from "@/stores/Admin/adminPostStore";
-import viennaHouseImage1 from '@/assets/Pictures/ViennaHouse1.jpg';
-import viennaHouseImage2 from '@/assets/Pictures/ViennaHouse2.jpg';
-import viennaHouseImage3 from '@/assets/Pictures/ViennaHouse3.jpg';
+
 import { getHouseImageById } from '@/utils/helpers';
 
 const props = defineProps({
@@ -80,8 +78,14 @@ const goToOverview = (houseId) => {
 
 <template>
   <div class="header-container">
+ 
     <!-- Hintergrundbild -->
-    <v-img class="header-image" :src="houseImage" cover></v-img>
+    <v-img 
+    class="header-image" 
+    :src="houseImage" 
+    cover
+    height="400px"></v-img>
+
 
     <!-- Hausdetails über dem Bild -->
     <div class="house-details">
@@ -118,16 +122,18 @@ const goToOverview = (houseId) => {
 .header-container {
   position: relative;
   width: 100vw;
-  height: 400px;
+  max-width: 100%;
+  min-height: 400px; 
+  overflow: hidden;
+  
 }
 
 .header-image {
-  position: relative;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  width: auto;
+  height: auto;
   object-fit: cover;
+  display:block;
+
 }
 
 .house-details {
@@ -151,11 +157,9 @@ const goToOverview = (houseId) => {
 
 
 .house-info-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  /* 3 gleichmäßige Spalten */
+  display: flex;
+  justify-content: space-around;
   gap: 300px;
-  /* Abstand zwischen den Spalten */
   text-align: center;
 }
 
@@ -163,9 +167,8 @@ const goToOverview = (houseId) => {
 @media (max-width: 768px) {
   .house-info-row {
     grid-template-columns: 1fr;
-    /* Eine Spalte, um die Inhalte untereinander zu setzen */
     gap: 16px;
-    /* Weniger Abstand */
+    
   }
 }
 

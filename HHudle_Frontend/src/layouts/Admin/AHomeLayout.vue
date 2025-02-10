@@ -116,12 +116,13 @@ const handleLogout = () => { authStore.logout(); router.push('/'); };
             </v-navigation-drawer>
 
             <!--Hauptinhalt -->
-            <div class="main-content">
-                <v-container>
+            <v-main class="main-content">
+                <v-container fluid>
                     <RouterView />
                 </v-container>
+            </v-main>
             </div>
-        </div>
+        
     </v-app>
 </template>
 
@@ -141,8 +142,8 @@ const handleLogout = () => { authStore.logout(); router.push('/'); };
 /*Flexbox für Sidebar + Hauptinhalt */
 .layout-container {
     display: flex;
-    height: 100vh;
-    padding-top: 64px;
+    min-height: calc(100vh - 64px); 
+    width: 100%;
 }
 
 /*Sidebar */
@@ -163,10 +164,11 @@ const handleLogout = () => { authStore.logout(); router.push('/'); };
 /*Hauptinhalt */
 .main-content {
     flex-grow: 1;
-    margin-left: 250px;
-    height: calc(100vh - 64px);
-    overflow-y: auto;
     background-color: #F8F4E3;
+    overflow: auto; /* Verhindert abgeschnittenen Inhalt */
+    min-height: 100%; /* Stellt sicher, dass es die gesamte Höhe füllt */
+    display: flex;
+    flex-direction: column; /* Ermöglicht flexibles Layout */
 }
 
 /* Sidebar-Text */
