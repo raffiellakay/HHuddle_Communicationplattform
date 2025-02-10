@@ -44,6 +44,9 @@ public class AuthController {
     @GetMapping()
     public ResponseEntity<?> loadUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.badRequest().body("No valid token");
+        }
         String jwt = jwtUtils.generateJwtToken(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         //necessary to interate over a Collection of Authorities (with each Authorities has a field String role)(== roles) to make them a list of Strings
