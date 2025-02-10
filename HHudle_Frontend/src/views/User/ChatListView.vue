@@ -65,7 +65,9 @@ const currentChatId = ref(null);
  * Sort by newest message on top
  */
 const sortedChats = computed(() => {
-  return [...userChats.value].sort((a, b) => {
+  return [...userChats.value]
+  .filter(chat => chat.messages && chat.messages.length > 0)
+  .sort((a, b) => {
     const timestampA = a.messages?.length
       ? new Date(a.messages[a.messages.length - 1].timestamp)
       : 0;
