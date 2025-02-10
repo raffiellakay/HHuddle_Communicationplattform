@@ -190,9 +190,9 @@ const router = createRouter({
 });
 
 
-
 router.beforeEach(async (to, from, next) => {
   await useAuthStore().initialize();
+
   //secures Websites from not logged in ppl
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
   const requiresPMRole = to.matched.some((record) =>
@@ -206,10 +206,16 @@ router.beforeEach(async (to, from, next) => {
     userRoles = useAuthStore().user.roles;
   }
   const loggedIn = useAuthStore().user;
+
   if (requiresAuth && !loggedIn) {
     next("/");
   } else {
     if (!requiresPMRole && !requiresResidentRole) {
+      if(loggedIn && to.path=="/") {
+        if(nagivateToUserpage(userRoles)) {
+          return;
+        }
+      }
       next();
       return;
     }
@@ -228,23 +234,28 @@ router.beforeEach(async (to, from, next) => {
       next();
       return;
     }
+  
+    if(nagivateToUserpage(userRoles)) {
+      return;
+    }
+    next();
+  }
 
+  function nagivateToUserpage(userRoles) {
     const rolePmanagement = userRoles.find(
       (role) => role === "ROLE_PMANAGEMENT"
     );
     const roleResident = userRoles.find((role) => role === "ROLE_RESIDENT");
-    console.log(rolePmanagement);
-    console.log(roleResident);
 
     if (rolePmanagement) {
       next("/admin/home");
-      return;
+      return true;
     }
     if (roleResident) {
       next("/user/home");
-      return;
+      return true;
     }
-    next();
+    return false;
   }
 
 
