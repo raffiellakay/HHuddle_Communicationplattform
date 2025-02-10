@@ -140,12 +140,10 @@ public class AdminController {
         return adminService.getAllUsersByHouseId(houseId);
     }
 
-
-
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/facility")
     // Use hasRole for role-based access control
-   @PreAuthorize("hasRole('PMANAGEMENT')")
+    @PreAuthorize("hasRole('PMANAGEMENT')")
     FacilityDto updateFacility(@RequestBody FacilityDto facility) {
     return adminService.updateFacility(facility);
     }
@@ -157,6 +155,5 @@ public class AdminController {
     MyUserDto updateUser(@RequestBody MyUserDto user) {
     return adminService.updateUser(user);
     }
-
 
 }

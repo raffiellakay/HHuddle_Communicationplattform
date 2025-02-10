@@ -60,6 +60,12 @@ const confirmDelete = async () => {
 }
 const dialog = ref(false);
 
+const headers = [
+    { title: 'Einrichtung', key: 'type' },
+    { title: 'Beschreibung', key: 'description' },
+    { title: 'Bearbeiten', key: 'actions' },
+    { title: 'Löschen', key: 'action'}
+];
 
 //Update Facility
 const editDialog = ref(false);
@@ -110,20 +116,6 @@ const houseStore = useHouseStore();
 
 const house = computed(() => houseStore.houses.find(h => h.id == houseId.value));
 
-
-//Bilder setzen je nach Haus
-/* const houseImage = computed(() => {
-  switch (houseId.value) {
-    case 1:
-      return viennaHouseImage1;
-    case 2:
-      return viennaHouseImage2;
-    case 3:
-      return viennaHouseImage3;
-    default:
-      return viennaHouseImage1;
-  }
-}); */
 
 const houseImage = computed(() => {
   return house.value?.imageUrl || getHouseImageById(houseId.value);
@@ -197,18 +189,9 @@ const goToOverview = (houseId) => {
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <!-- Facilities anzeigen -->
-    <v-list>
-      <v-list-item v-for="facility in facilityStore.facilities" :key="facility.id">
-        <div>
-          <v-list-item-title>{{ facility.type }}
-            <DeleteButton @click="openDeleteChecker(facility)" class="delete-button" />
-          </v-list-item-title>
-          <v-list-item-subtitle>{{ facility.description }}</v-list-item-subtitle>
-          <EditButton @click="handleEdit(facility)" />
 
-          <!-- Editing Facility-->
-          <v-dialog v-model="editDialog" max-width="500px">
+     <!-- Editing Facility-->
+     <v-dialog v-model="editDialog" max-width="500px">
             <v-card>
               <v-card-title>Einrichtung bearbeiten</v-card-title>
               <v-card-text>
@@ -226,9 +209,22 @@ const goToOverview = (houseId) => {
             </v-card>
           </v-dialog>
 
-        </div>
-      </v-list-item>
-    </v-list>
+    <!-- Facilities anzeigen -->
+   
+          <v-data-table :items="facilityStore.facilities" :headers="headers">
+            <template v-slot:item.actions="{ item }">
+                <v-icon size="small" color="error" @click="handleEdit(item)">
+                    mdi-pencil
+                </v-icon>
+            </template>
+            <template v-slot:item.action="{ item }">
+                <v-icon size="small" color="error" @click="openDeleteChecker(item)">
+                 mdi-delete
+                </v-icon>
+            </template>
+
+        </v-data-table>
+
 
     <!-- Button: Add Facility -->
     <v-btn @click="dialog = true" class="mt-4" color="primary">
