@@ -4,9 +4,7 @@ import { useHouseStore } from "@/stores/Admin/houseStore";
 import { useRoute, useRouter } from "vue-router";
 import AdminPostsView from '@/components/Admin/AdminPosts.vue';
 import { useAdminPostStore } from "@/stores/Admin/adminPostStore";
-import viennaHouseImage1 from '@/assets/Pictures/ViennaHouse1.jpg';
-import viennaHouseImage2 from '@/assets/Pictures/ViennaHouse2.jpg';
-import viennaHouseImage3 from '@/assets/Pictures/ViennaHouse3.jpg';
+
 import { getHouseImageById } from '@/utils/helpers';
 
 const props = defineProps({
@@ -80,24 +78,31 @@ const goToOverview = (houseId) => {
 
 <template>
   <div class="header-container">
+ 
     <!-- Hintergrundbild -->
-    <v-img class="header-image" :src="houseImage" cover></v-img>
+   <v-img 
+    class="header-image" 
+    :src="houseImage" 
+    cover
+    height="400px">
+  </v-img>
+
 
     <!-- Hausdetails über dem Bild -->
     <div class="house-details">
       <v-card v-if="house" class="house-card">
         <div class="house-info-row">
-          <div @click="goToOverview(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
+          <div @click="goToOverview(house.id)" class="clickable-text">
             <p><strong>Adresse:</strong> {{ house.address }}</p>
           </div>
 
           <!--Klickbare "Tops" (Residents) -->
-          <div @click="goToResidents(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
+          <div @click="goToResidents(house.id)" class="clickable-text">
             <p><strong>Tops:</strong> {{ house.residents.length }}</p>
           </div>
 
           <!--Klickbare "Einrichtungen" (Facilities) -->
-          <div @click="goToFacilities(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
+          <div @click="goToFacilities(house.id)" class="clickable-text">
             <p><strong>Einrichtungen:</strong> {{ house.facilities.length }}</p>
           </div>
 
@@ -118,16 +123,18 @@ const goToOverview = (houseId) => {
 .header-container {
   position: relative;
   width: 100vw;
-  height: 400px;
+  max-width: 100%;
+  min-height: 400px; 
+  overflow: hidden;
+  
 }
 
 .header-image {
-  position: relative;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  width: auto;
+  height: auto;
   object-fit: cover;
+  display:block;
+
 }
 
 .house-details {
@@ -151,11 +158,9 @@ const goToOverview = (houseId) => {
 
 
 .house-info-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  /* 3 gleichmäßige Spalten */
+  display: flex;
+  justify-content: space-around;
   gap: 300px;
-  /* Abstand zwischen den Spalten */
   text-align: center;
 }
 
@@ -163,9 +168,8 @@ const goToOverview = (houseId) => {
 @media (max-width: 768px) {
   .house-info-row {
     grid-template-columns: 1fr;
-    /* Eine Spalte, um die Inhalte untereinander zu setzen */
     gap: 16px;
-    /* Weniger Abstand */
+    
   }
 }
 
@@ -173,5 +177,16 @@ const goToOverview = (houseId) => {
   margin: 0;
   font-size: 16px;
   font-weight: 500;
+}
+
+.clickable-text {
+  color: black; /* Standardfarbe */
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out; /* Weiche Farbänderung beim Hover */
+}
+
+.clickable-text:hover {
+  color: blue; /* Farbe beim Hover */
 }
 </style>

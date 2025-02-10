@@ -133,7 +133,7 @@ const confirmDelete = async () => {
 
           <!-- Aktionen: Details & Löschen -->
           <v-card-actions>
-            <v-btn color="primary" @click="goToHouse(house.id)">Details</v-btn>
+            <v-btn color="black" @click="goToHouse(house.id)">Details</v-btn>
             <v-btn color="red" @click.stop="openDeleteChecker(house)">Löschen</v-btn>
           </v-card-actions>
         </v-card>
@@ -156,7 +156,7 @@ const confirmDelete = async () => {
             <v-card-subtitle>Einrichtungen hinzufügen</v-card-subtitle>
             <v-text-field v-model="newFacility.type" label="Art der Einrichtung" required></v-text-field>
             <v-text-field v-model="newFacility.description" label="Beschreibung" required></v-text-field>
-            <v-btn color="secondary" @click="addFacility">Einrichtung hinzufügen</v-btn>
+            <v-btn color="#E98074" @click="addFacility">Einrichtung hinzufügen</v-btn>
 
             <v-divider></v-divider>
             <div v-for="(facility, index) in newHouse.facilities" :key="index">
@@ -166,7 +166,7 @@ const confirmDelete = async () => {
         </v-card-text>
         <v-card-actions>
           <v-btn text @click="dialog = false">Abbrechen</v-btn>
-          <v-btn text color="primary" @click="saveHouse">Speichern</v-btn>
+          <v-btn text color="#E98074" @click="saveHouse">Speichern</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -181,11 +181,22 @@ const confirmDelete = async () => {
   margin-left: 15px;
 
 }
-.text-shadow {
+/* .text-shadow {
   text-shadow: 3px 3px 6px rgba(0, 0, 0, 1);
+} */
+.text-shadow {
+  text-shadow: 4px 4px 8px rgba(0, 0, 0, 1), 
+               2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 .text-underline {
   text-decoration: underline;
+}
+.v-card {
+  transition: transform 0.3s ease-in-out; /* Weiche Animation */
+}
+
+.v-card:hover {
+  transform: scale(1.05); /* Kachel wird um 5% größer */
 }
 </style>
 
