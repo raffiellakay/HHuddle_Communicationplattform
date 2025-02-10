@@ -70,4 +70,13 @@ public class ChatController {
         return ResponseEntity.ok(chats);
     }
 
+    @PutMapping("/{chatId}/markRead")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('RESIDENT')")
+    public void markChatAsRead(@PathVariable Long chatId) {
+        chatService.markChatAsRead(chatId);
+    }
+
+
+
 }

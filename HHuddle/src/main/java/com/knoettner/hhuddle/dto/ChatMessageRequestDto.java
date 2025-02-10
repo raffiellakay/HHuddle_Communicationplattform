@@ -8,5 +8,6 @@ public class ChatMessageRequestDto { //unterscheidet sich von response denn der 
     private Long senderId;
     private Long chatId;
     private String text;
+    private boolean isRead = false;
 
 }
