@@ -66,7 +66,7 @@ const handleLogout = () => { authStore.logout(); router.push('/'); };
                 <v-app-bar-nav-icon v-if="isMobile" @click="toggleDrawer"></v-app-bar-nav-icon>
             </template>
 
-            <v-toolbar-title class="text-white">
+            <v-toolbar-title class="text-black">
                 {{ currentCategory || 'Admin Dashboard' }}
             </v-toolbar-title>
 

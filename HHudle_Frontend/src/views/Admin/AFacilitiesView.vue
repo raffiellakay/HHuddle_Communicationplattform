@@ -150,17 +150,17 @@ const goToOverview = (houseId) => {
     <div class="house-details">
       <v-card v-if="house" class="house-card">
         <div class="house-info-row">
-          <div @click="goToOverview(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
+          <div @click="goToOverview(house.id)" class="clickable-text">
             <p><strong>Adresse:</strong> {{ house.address }}</p>
           </div>
 
           <!--Klickbare "Tops" (Residents) -->
-          <div @click="goToResidents(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
+          <div @click="goToResidents(house.id)" class="clickable-text">
             <p><strong>Tops:</strong> {{ house.residents.length }}</p>
           </div>
 
           <!--Klickbare "Einrichtungen" (Facilities) -->
-          <div @click="goToFacilities(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
+          <div @click="goToFacilities(house.id)" class="clickable-text">
             <p><strong>Einrichtungen:</strong> {{ house.facilities.length }}</p>
           </div>
 
@@ -249,17 +249,12 @@ const goToOverview = (houseId) => {
 .header-container {
   position: relative;
   width: 100vw;
-  height: 400px;
-}
-/* .header-container {
-  position: relative;
-  width: 100vw;
   max-width: 100%;
-  min-height: 400px; 
+  height: 400px; 
   overflow: hidden;
   
 }
- */
+
 .header-image {
   position: relative;
   top: 0;
@@ -312,5 +307,16 @@ const goToOverview = (houseId) => {
   margin: 0;
   font-size: 16px;
   font-weight: 500;
+}
+
+.clickable-text {
+  color: black; /* Standardfarbe */
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out; /* Weiche Farbänderung beim Hover */
+}
+
+.clickable-text:hover {
+  color: blue; /* Farbe beim Hover */
 }
 </style>
