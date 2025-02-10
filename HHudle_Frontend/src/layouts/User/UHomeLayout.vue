@@ -26,7 +26,11 @@ const showForm = ref(false);
 const currentUserId = computed(() => authStore.user?.id);
 
 
-
+//Aktueller Seitenname
+const currentPageTitle = computed(() => {
+  const currentItem = items.value.find(item => item.route === route.path);
+  return currentItem ? currentItem.title : "Seite unbekannt";
+})
 
 
 // Kategorien für die Routen
@@ -121,11 +125,11 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
   <v-app>
     <v-layout>
       <!-- Navbar -->
-      <v-app-bar app class="navbar" fixed>
+      <v-app-bar app class="navbar" fixed elevation="0">
         <template v-slot:prepend>
           <v-app-bar-nav-icon v-if="isMobile" @click="toggleDrawer"></v-app-bar-nav-icon>
         </template>
-        <v-toolbar-title class="text-white"> Kategorie </v-toolbar-title>
+        <v-toolbar-title class="category-text"> {{ currentPageTitle }} </v-toolbar-title>
 
         <template v-if="isBoardPage">
           <v-btn icon @click="showForm = true">
@@ -189,7 +193,7 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
 
       <!--BoardViews-->
       <v-main class="main-content">
-        <v-container class="content">
+        <v-container fluid class="full-height full-width pa-0">
           <RouterView />
         </v-container>
       </v-main>
@@ -200,7 +204,9 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
 <style scoped>
 
 .navbar {
-  background-color: #8E8D8A
+  background-color: white;
+  color: black;
+  
 }
 
 .v-layout {
@@ -214,29 +220,41 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #EAE7DC ;
+  background-color: #EAE7DC;
+  color: black;
 }
 
 
 .main-content {
+  display: flex;
   flex-grow: 1;
-  overflow-y: auto;
-  padding: 20px; 
-  background-color: white;
+  height: calc(100vh - 64px);
+  width: calc(100vw - 250px);
+  background-color: #f1f0ef;
+ 
 }
 
+.full-height {
+  height: 100%;
+}
 
-.content {
+.full-width {
   max-width: 100%;
-  margin-left: 0; 
-  padding-left: 0;
 }
+
+
 
 /* Logout-Button am unteren Rand */
 .logout-container {
   align-self: flex-end;
   width: 100%;
   padding-bottom: 10px;
+}
+
+.plus-icon {
+  color: #E85A4F;
+  font-size: 30px;
+  padding-right: 20px;
 }
 
 .logout-icon {

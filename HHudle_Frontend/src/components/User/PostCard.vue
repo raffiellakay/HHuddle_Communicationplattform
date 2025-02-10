@@ -202,14 +202,14 @@ const formatToGermanDate = (dateTime) => {
   <!-- Dieser Teil beinhaltet das Kartendesign für UserPosts-->
 
   <v-container class="postcards-container">
-    <v-row v-if="filteredUserPosts.length > 0" justify="space-evenly" >
+    <v-row v-if="filteredUserPosts.length > 0" justify="start" no-gutters>
       <v-col
         v-for="filteredUserPost in filteredUserPostsByTimeCreated"
         :key="filteredUserPost.id"
         cols="12"
         sm="6"
-        md="4"
-        lg="3"
+        md="3"
+        lg="2"
         xl="2"
       >
         <v-card class="mx-auto post-card">
@@ -353,15 +353,18 @@ const formatToGermanDate = (dateTime) => {
 <style scoped>
 /* Maximale Größe und Positionierung */
 .postcards-container {
-  margin: 0 auto; 
-  max-width: 1400px;
-  padding: 16px;
+  margin: 0; 
+  max-width: 100%;
+  width: 100%;
+  padding: 20px 16px;
+
   
 }
 .post-card {
   position: relative;
-  max-width: 344px;
-  min-height: 250px;
+  min-width: 250px;
+  max-width: 100%;
+  min-height: 320px;
   display: flex;
   flex-direction: column;
   border-radius: 15px;
@@ -369,6 +372,8 @@ const formatToGermanDate = (dateTime) => {
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
   margin: 0;
   padding: 0;
+  justify-content: space-between;
+  background-color: white;
 }
 
 .post-card:hover {
@@ -377,12 +382,8 @@ const formatToGermanDate = (dateTime) => {
 }
 
 .v-row {
-  gap: 16px;
+  gap: 40px;
 
-}
-
-.v-col {
-  padding: 8px;
 }
 
 
