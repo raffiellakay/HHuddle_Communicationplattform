@@ -441,10 +441,7 @@ const formatToGermanDate = (dateTime) => {
   top: 8px;
   right: 8px;
   z-index: 10;
-  font-size: 15px;
-  min-width: 40px; 
-  height: 32px;
-  padding: 4px;
+ 
 
 }
 
