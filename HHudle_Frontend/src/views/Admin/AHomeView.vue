@@ -97,9 +97,7 @@ const confirmDelete = async () => {
     }
   }
 }
-/* const getHouseImage = (houseId) => {
-  return getHouseImageById(houseId);
-}; */
+
 
 </script>
 
@@ -119,17 +117,6 @@ const confirmDelete = async () => {
             <v-card-title class="text-shadow ">{{ house.address }}</v-card-title>
           </v-img>
           
-
-          <!-- Untertitel mit Anzahl der Einrichtungen -->
-          <!--       <v-card-subtitle class="pt-4">
-        {{ house.facilities.length }} Einrichtungen
-        </v-card-subtitle>
-                                -->
-          <!-- Hausbeschreibung -->
-          <!-- <v-card-text> -->
-            <!-- <div v-if="house.description">{{ house.description }}</div> -->
-            <!-- <div v-else>Keine Beschreibung vorhanden</div> -->
-          <!-- </v-card-text> -->
 
           <!-- Aktionen: Details & Löschen -->
           <v-card-actions>
@@ -198,6 +185,7 @@ const confirmDelete = async () => {
 .v-card:hover {
   transform: scale(1.05); /* Kachel wird um 5% größer */
 }
+
 </style>
 
 
