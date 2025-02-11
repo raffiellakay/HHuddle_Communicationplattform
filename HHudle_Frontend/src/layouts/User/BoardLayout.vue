@@ -16,8 +16,6 @@ const router = useRouter();
 
 
 
-  </v-app>
-
 </template>
 
 
