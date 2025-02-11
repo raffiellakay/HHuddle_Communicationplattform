@@ -6,7 +6,7 @@ import { isAxiosError } from 'axios';
 import NavbarDefault from '@/components/DefaultNavbar.vue';
 
 
-const errorMessage = ref('');
+
 
 const router = useRouter();
 const handleLogin = async () => {
@@ -33,6 +33,17 @@ const handleLogin = async () => {
   }
 }
 
+const rulesPw = [
+  value => {
+    if (value) return true
+    return 'Gib bitte dein Passwort an.'
+  }]
+
+const rulesMail = [
+  value => {
+    if (value) return true
+    return 'Gib bitte eine E-Mail Adresse an.'
+  }]
 
 //Authentification
 const authStore = useAuthStore()
@@ -52,7 +63,7 @@ async function login() {
     
 
   } catch (err) {
-    if (isAxiosError(err) && err.response?.status === 401) {
+    if ( err.response?.status === 401) {
       return showInvalidCredentialsWarning.value = true
     }
     console.error(err)
@@ -96,6 +107,7 @@ async function login() {
                   v-model="credentials.mail"
                   label="E-Mail"
                   type="email"
+                 :rules="rulesMail"
                   hint="Gib hier deine E-Mail ein."
                   outlined
                   clearable
@@ -113,6 +125,7 @@ async function login() {
                  hint="Gib hier dein Passwort ein."
                   outlined
                   clearable
+                  :rules="rulesPw"
                   required
                   
                 ></v-text-field>
@@ -122,15 +135,7 @@ async function login() {
                   <a href="/password-reset" class="text-decoration-none">Passwort vergessen?</a>
                 </div>
 
-                <!-- Fehleranzeige -->
-                <v-alert
-                  v-if="errorMessage"
-                  type="error"
-                  class="mt-2"
-                  dismissible
-                >
-                  {{ errorMessage }}
-                </v-alert>
+                
               </v-card-text>
 
               <!-- Aktionen -->
@@ -144,6 +149,14 @@ async function login() {
                   Anmelden
                 </v-btn>
               </v-card-actions>
+              <v-alert v-model="showUnknownError" >
+                Ein unbekannter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.
+            </v-alert>
+            <!-- Fehleranzeige -->
+            <v-alert
+            color="error" type="error" class="mb-4" closable v-model="showInvalidCredentialsWarning">
+                <p>Falsche E-Mail-Adresse oder Password</p>
+            </v-alert>
             </v-form>
             </v-card>
          
