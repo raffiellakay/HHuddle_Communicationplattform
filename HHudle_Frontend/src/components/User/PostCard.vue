@@ -182,8 +182,6 @@ const filteredUserPostsByTimeCreated = computed(() => {
 
 
 
-
-
 //Formatiert Datum auf DD.MM.YYYY
 const formatToGermanDate = (dateTime) => {
   if (!dateTime) return ""; //Rückgabe eines leeren Strings, wenn kein Datum vorhanden ist
@@ -245,13 +243,15 @@ const formatToGermanDate = (dateTime) => {
           
 
           <!-- Untertitel -->
-          <div v-if="category === 'EVENTS'">
-            <v-card-subtitle>
+          <div v-if="category === 'EVENTS'" >
+            <v-container class="pa-0 time-subtitles" >
+            <v-card-subtitle >
               Startzeit: {{ formatToGermanDate(filteredUserPost.starttime) }}
             </v-card-subtitle>
             <v-card-subtitle>
               Endzeit: {{ formatToGermanDate(filteredUserPost.endtime) }}
             </v-card-subtitle>
+          </v-container>
             <v-container class="divider-container">
             <v-divider class="border-opacity-50 divider"></v-divider>
           </v-container>
@@ -300,13 +300,6 @@ const formatToGermanDate = (dateTime) => {
         >Keine Beiträge für diese Kategorie verfügbar.</v-alert
       >
     </v-container>
-
-
-
-
-
-
-
 
 
 
@@ -399,6 +392,14 @@ const formatToGermanDate = (dateTime) => {
   font-weight: bold;
   color: #333;
 }
+
+.time-subtitles {
+
+  margin: 10px;
+
+}
+
+
 
 .footer {
   padding: 0;

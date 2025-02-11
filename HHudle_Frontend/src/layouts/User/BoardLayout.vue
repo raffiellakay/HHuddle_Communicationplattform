@@ -13,14 +13,7 @@ const router = useRouter();
 <template>
 
   <RouterView></RouterView>
-  <v-app>
-    <b-btn icon>
 
-
-      <v-icon>mdi-plus-circle</v-icon>
-    </b-btn>
-
-  </v-app>
 
 </template>
 
