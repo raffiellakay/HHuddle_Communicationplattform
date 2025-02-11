@@ -6,7 +6,8 @@
 
   const router = useRouter();
 const authStore = useAuthStore();
-const mailAddress = ref('')
+const mailAddress = ref('');
+const showError = ref(false);
 
 const rules = [
   value => {
@@ -23,9 +24,10 @@ const rules = [
       catch (error) {
         console.log(error)
           console.error("Fehler beim Zürücksetzen des Passwort ");
-         return null;
+         return showError.value = true;
+         
       }
-    return }
+ }
   
 </script>
 
@@ -66,6 +68,9 @@ const rules = [
                   Passwort zurücksetzen
                 </v-btn>
               </v-card-actions>
+              <v-alert color="error" type="error" class="mb-4" closable  v-model="showError" >
+                Ein unbekannter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.
+            </v-alert>
             </v-card>
           </v-col>
         </v-row>
