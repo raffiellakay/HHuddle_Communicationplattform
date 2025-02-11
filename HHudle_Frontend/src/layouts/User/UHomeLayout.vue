@@ -283,6 +283,7 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
   background-color: #dc796e;
   color: white;
 }
+
 .main-content {
   display: flex;
   flex-grow: 1;
