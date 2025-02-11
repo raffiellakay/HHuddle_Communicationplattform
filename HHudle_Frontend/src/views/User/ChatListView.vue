@@ -7,23 +7,23 @@
             v-for="(chat, index) in sortedChats"
             :key="chat.id"
             class="dialog"
-            :class="{ 'new-message': isChatUnread(chat) }"
             @click="navigateToChat(chat.id)"
+            
           >
-            <div class="dialog-header">
-              <!-- Show the partner's name -->
-              <span class="chat-name">{{ getChatPartnerName(chat) }}</span>
-              <!-- Timestamp on the right -->
-              <span class="chat-time">{{ formatDate(getLastMessageTimestamp(chat)) }}</span>
-            </div>
-            <div class="dialog-preview">
-              <span>{{ getLastMessageText(chat) }}</span>
-            </div>
-            <div class="delete-chat">
+          <div class="dialog-header">
+          <span class="chat-name">{{ getChatPartnerName(chat) }}</span>
+           <v-badge v-if="getUnreadMessageCount(chat) > 0"
+           color="red"
+           :content="getUnreadMessageCount(chat)"
+            floating
+             />
+            <span class="chat-time">{{ formatDate(getLastMessageTimestamp(chat)) }}</span>
+              </div>
+
               <v-btn @click.stop="showModalWindow(chat.id)">Löschen</v-btn>
             </div>
           </div>
-        </div>
+       
         <div v-else>
           <div>No chats</div>
           <div>
@@ -97,11 +97,9 @@ function getLastMessageText(chat) {
   return chat.messages[chat.messages.length - 1].text || '(No text)';
 }
 
-
-function isChatUnread(chat) {
-  return chat.messages?.some(m => m.read === false);
+function getUnreadMessageCount(chat) {
+  return chat?.messages?.filter(m => m.read === false).length || 0;
 }
-
 
 function getChatPartnerName(chat) {
   if (!chat.first_participant || !chat.second_participant) {
@@ -205,14 +203,12 @@ function navigateToHome() {
 }
 
 .dialog {
+  position: relative; 
   padding: 10px;
   border-radius: 5px;
   cursor: pointer;
 }
 
-.dialog.new-message {
-  border: 1px solid red;
-}
 
 .dialog:hover {
   background-color: #f0f0f0;
@@ -235,4 +231,11 @@ function navigateToHome() {
 .dialog-preview {
   color: #666;
 }
+
+.unread-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
 </style>
