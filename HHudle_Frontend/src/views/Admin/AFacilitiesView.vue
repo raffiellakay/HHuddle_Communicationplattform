@@ -213,7 +213,7 @@ const goToOverview = (houseId) => {
    
           <v-data-table :items="facilityStore.facilities" :headers="headers">
             <template v-slot:item.actions="{ item }">
-                <v-icon size="small" color="error" @click="handleEdit(item)">
+                <v-icon size="small" color="blue" @click="handleEdit(item)">
                     mdi-pencil
                 </v-icon>
             </template>
