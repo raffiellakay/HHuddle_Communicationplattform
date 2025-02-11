@@ -278,7 +278,12 @@ const formatToGermanDate = (dateTime) => {
                 <UserIconRound class="user-icon" />
               </v-avatar>
             </template>
+            <div v-if="filteredUserPost.anonymous">
+              <v-list-item-title class="username-text wrap-text">Anonym gepostet</v-list-item-title>
+            </div>
+            <div v-if="!filteredUserPost.anonymous">
               <v-list-item-title class="username-text wrap-text">{{ filteredUserPost.user?.username || "Unbekannt" }}</v-list-item-title>
+            </div>  
               <v-list-item-subtitle class="username-subtitle"> {{ formatToGermanDate(filteredUserPost.timestamp) }}</v-list-item-subtitle>
               <template v-slot:append>
               <v-icon
