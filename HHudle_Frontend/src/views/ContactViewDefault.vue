@@ -206,7 +206,7 @@ span {
 }
 
 button {
-    background-color: hsl(169, 82%, 27%);
+    background-color: #fc8779;
     color: white;
 }
 

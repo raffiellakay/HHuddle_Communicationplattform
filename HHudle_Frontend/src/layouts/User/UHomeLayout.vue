@@ -93,8 +93,8 @@ const items = ref([
   route: "/user/board/chatlist", 
   icon: "mdi-message" },
 
-  { title: "Kontakt", route: "/contact", icon: "mdi-mail" },
-  { title: "Über Uns", route: "/aboutUs", icon: "mdi-information" },
+  { title: "Kontakt", route: "/user/contact", icon: "mdi-mail" },
+  { title: "Über Uns", route: "/user/about", icon: "mdi-information" },
 ]);
 
 // Responsives Verhalten
