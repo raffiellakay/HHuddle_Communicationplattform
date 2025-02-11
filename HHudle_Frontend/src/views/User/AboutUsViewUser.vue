@@ -1,27 +1,15 @@
-<script setup>
-
-import NavbarResident from '@/components/User/Navbar.vue';
-import NavbarPManagement from '@/components/Admin/Navbar.vue';
-import NavbarDefault from '@/components/DefaultNavbar.vue';
+<script>
 import avatarraffy from '@/assets/Pictures/avatar_raffy.png';
 import avatarhuda from '@/assets/Pictures/avatar_huda.png';
-import { useAuthStore } from '@/stores/authStore';
 
-let userRoles = [];
-  if (useAuthStore().user) {
-    userRoles = useAuthStore().user.roles;
-  }
-const isPManagement = userRoles.find((role) => role === "ROLE_PMANAGEMENT");
-const isResident = userRoles.find((role) => role === "ROLE_RESIDENT" )
 
 </script>
 
 
 <template>
 <v-container>
-  <NavbarResident v-if="isResident"></NavbarResident>
-  <NavbarPManagement v-if="isPManagement"></NavbarPManagement>
-  <NavbarDefault v-if="!isResident && !isPManagement"></NavbarDefault>
+ 
+  
 </v-container>
 
 <v-card>

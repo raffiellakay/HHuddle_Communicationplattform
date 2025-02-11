@@ -149,10 +149,11 @@ async function login() {
                   Anmelden
                 </v-btn>
               </v-card-actions>
+           <!-- Fehleranzeige -->
               <v-alert v-model="showUnknownError" >
                 Ein unbekannter Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.
             </v-alert>
-            <!-- Fehleranzeige -->
+          
             <v-alert
             color="error" type="error" class="mb-4" closable v-model="showInvalidCredentialsWarning">
                 <p>Falsche E-Mail-Adresse oder Password</p>
