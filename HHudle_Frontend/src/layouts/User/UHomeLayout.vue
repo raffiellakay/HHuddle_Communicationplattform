@@ -41,7 +41,7 @@ const currentPageTitle = computed(() => {
 });
 
 const currentPageDescription = computed (() => {
-  const currentItem = items.value.find((item) => item.description === route.path);
+  const currentItem = items.value.find((item) => item.route === route.path);
   return currentItem ? currentItem.description : "Keine Beschreibung";
 })
 
@@ -63,19 +63,19 @@ const items = ref([
   { title: "Startseite", 
     route: "/user/home", 
     icon: "mdi-home",
-    description: "Akündigungen der Hausverwaltung", 
+    description: "Ankündigungen der Hausverwaltung", 
   },
   {
     title: "Gemeinschaftsräume",
     route: "/user/board/commonrooms",
     icon: "mdi-account-group",
-    description: "Akündigungen für verschiedene Events",
+    description: "Ankündigungen für verschiedene Events",
   },
   {
     title: "Schwarzes Brett",
     route: "/user/board/blackboard",
     icon: "mdi-bulletin-board",
-    description: "Akündigungen für Verschiedenes",
+    description: "Ankündigungen für Verschiedenes",
   },
   {
     title: "Paketfinder",
@@ -89,7 +89,10 @@ const items = ref([
     icon: "mdi-swap-horizontal",
     description: "Tauschbörse",
   },
-  { title: "Chats", route: "/user/board/chatlist", icon: "mdi-message" },
+  { title: "Chats", 
+  route: "/user/board/chatlist", 
+  icon: "mdi-message" },
+
   { title: "Kontakt", route: "/contact", icon: "mdi-mail" },
   { title: "Über Uns", route: "/aboutUs", icon: "mdi-information" },
 ]);
@@ -241,7 +244,7 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
       <v-main class="main-content">
         <v-container fluid class="full-height full-width pa-0">
           <v-img class="house-image" :src="houseImage" cover> </v-img>
-          <v-toolbar>
+          <v-toolbar class="description-bar">
             <v-toolbar-title> {{ currentPageDescription }}</v-toolbar-title>
           </v-toolbar>
           <RouterView />
@@ -274,6 +277,12 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
   color: black;
 }
 
+
+
+.description-bar {
+  background-color: #dc796e;
+  color: white;
+}
 .main-content {
   display: flex;
   flex-grow: 1;

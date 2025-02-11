@@ -15,7 +15,7 @@ onMounted(() => {
 </script>
 
 <template>
-Ich bin die Übersicht für Suche Biete Tausche 
+
 
 <v-container>
     <PostCard :category="category"/>
