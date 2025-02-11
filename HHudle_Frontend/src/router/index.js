@@ -15,6 +15,10 @@ import LoginLayout from '@/layouts/LoginLayout.vue';
 import AllBoardsView from '@/views/User/AllBoardsView.vue';
 import AboutUsView from '@/views/AboutUsViewDefault.vue';
 import ContactView from '@/views/ContactViewDefault.vue';
+import AboutUsViewAdmin from '@/views/Admin/AboutUsViewAdmin.vue';
+import AboutUsViewUser from '@/views/User/AboutUsViewUser.vue';
+import ContactViewAdmin from '@/views/Admin/ContactViewAdmin.vue';
+import ContactViewUser from '@/views/User/ContactViewUser.vue';
 import ChatListView from '@/views/User/ChatListView.vue';
 import ChatView from '@/views/User/ChatView.vue';
 import { useAuthStore } from '@/stores/authStore';
@@ -42,6 +46,18 @@ const routes = [
         name: 'UserHome',  //Achtung! Name muss unique sein
         component: UHomeView,
         meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
+      },
+      {
+        path: 'about',
+        name: 'AboutUser',
+        component: AboutUsViewUser,
+        meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] }
+      },
+      {
+        path: 'contact',
+        name: 'ContactUser',
+        component: ContactViewUser,
+        meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] }
       },
       {
         path: 'allboards',
@@ -98,9 +114,11 @@ const routes = [
             props: true,
             meta: { requiresAuth: true, requiredRoles: ['ROLE_RESIDENT'] },
           },
+          
   
         ],
-      }]
+      }],
+      
     },
      
   {
@@ -137,6 +155,18 @@ const routes = [
         component: AFacilitiesView,
         meta: { requiresAuth: true, requiredRoles: ['ROLE_PMANAGEMENT'] },
       },
+      {
+        path: 'about',
+        name: 'AboutAdmin',
+        component: AboutUsViewAdmin,
+        meta:{ requiresAuth: true, requiredRoles: ['ROLE_PMANAGEMENT'] },
+      },
+      {
+        path: 'contact',
+        name: 'ContactAdmin',
+        component: ContactViewAdmin,
+        meta: { requiresAuth: true, requiredRoles: ['ROLE_PMANAGEMENT'] },
+      }
     ]
   },
 

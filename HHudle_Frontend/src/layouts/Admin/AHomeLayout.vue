@@ -32,12 +32,12 @@ const adminItems = ref([
     icon: "mdi-home" },
 
     { title: "Über Uns", 
-    route: "/aboutUs", 
+    route: "/admin/about", 
     icon: "mdi-information" 
     },
 
     { title: "Kontakt", 
-    route: "/contact", 
+    route: "/admin/contact", 
     icon: "mdi-mail" 
     },
 ]);

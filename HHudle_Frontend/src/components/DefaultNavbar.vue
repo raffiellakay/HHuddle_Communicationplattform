@@ -19,7 +19,7 @@ const toggleDrawer = () => {
 <template>
 
   <!--Navbar-->
-  <v-app-bar :elevation="2" rounded color="secondary">
+  <v-app-bar class="nav" :elevation="2" >
     <template v-slot:prepend>
       <!--Bei Klick auf bar-nav-icon wird toggleDrawer Methode aufgerufen-->
       <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
@@ -30,7 +30,7 @@ const toggleDrawer = () => {
 
 
   <!--Linkes Seitenmenü ausklappbar-->
-  <v-navigation-drawer v-if="showDrawer" style="width:100%" app color="grey-darken-2" temporary width="100%">
+  <v-navigation-drawer class="drawer" v-if="showDrawer"  >
 
   <!-- Inhalte des Navigation Drawers -->
     <v-list>
@@ -42,4 +42,12 @@ const toggleDrawer = () => {
 </template>
 
 
-<style scoped></style>
+<style scoped>
+.nav {
+  background-color: #D8C3A5;
+}
+
+.drawer {
+  background-color:#fff0db;
+}
+</style>
