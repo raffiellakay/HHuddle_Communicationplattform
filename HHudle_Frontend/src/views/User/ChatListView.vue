@@ -84,7 +84,12 @@ const sortedChats = computed(() => {
 
 function formatDate(date) {
   return date
-    ? new Date(date).toLocaleDateString() + ' ' + new Date(date).toLocaleTimeString()
+    ? new Date(date).toLocaleDateString('de-DE', { 
+        day: '2-digit', 
+        month: '2-digit', 
+        year: '2-digit' 
+      }) + ' ' 
+      + new Date(date).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })
     : 'No Date';
 }
 
