@@ -119,6 +119,15 @@ const currentNavbarTitle = computed(() => {
             return "Einrichtungen";
         return houseAddress.value; 
     }
+
+    else if (route.path.startsWith("/admin")) {
+        if(route.path.includes("/home"))
+            return "Häuser";
+        if(route.path.includes("/about"))
+            return "Über Uns";
+        if(route.path.includes("/contact"))
+            return "Kontakt";
+    }
     return "Dashboard"; //Standardwert
 });
 

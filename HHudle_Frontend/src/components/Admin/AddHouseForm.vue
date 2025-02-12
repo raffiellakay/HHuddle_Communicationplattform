@@ -1,9 +1,10 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, defineEmits } from 'vue';
 import { useHouseStore } from '@/stores/Admin/houseStore';
 
 const houseStore = useHouseStore();
 
+const emit = defineEmits(["close"]);
 const newHouse = ref({
   address: '',
   residents: [],
@@ -29,7 +30,7 @@ async function saveHouse() {
 
 // Einrichtung hinzufügen
 function addFacility() {
-  if (newFacility.value.type && newFacility.value.description) {
+  if (newFacility.value.type) {
     newHouse.value.facilities.push({ ...newFacility.value });
     newFacility.value = { type: '', description: '' };
   }
