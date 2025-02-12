@@ -17,36 +17,13 @@ const dialog = ref(false); // (dialog is a reaktiver Boolean, also ob´s fürs h
 
 const router = useRouter();
 
-const newHouse = ref({
-  address: '',
-  residents: [],
-  facilities: [
-
-
-  ]
-});
-const newFacility = ref({
-  type: '',
-  description: '',
-})
-
 
 //beim Seitenstart werden alle Häuser geladen
 onMounted(async () => {
   await houseStore.getAllHouses();
 });
 
-//neues Haus anlegen
-async function saveHouse() {
-  try {
-    await houseStore.createHouse(newHouse.value);
-    dialog.value = false;
-    newHouse.value = { address: '', facilities: [] }; // Reset fields
-    newFacility.value = { type: '', description: '' }; // Reset temporary facility
-  } catch (error) {
-    console.error('Error while saving house:', error);
-  }
-}
+
 
 // Add a new facility to the facilities array
 function addFacility() {
@@ -106,10 +83,7 @@ const confirmDelete = async () => {
 <template>
   <!-- Gesamtes Layout -->
   <v-container>
-    <v-btn @click="dialog = true" class="mt-4" color="primary">
-      + Neues Haus hinzufügen
-    </v-btn>
-
+  
     <!-- Kachel-Layout: Zeige die Liste der Häuser -->
     <v-row>
       <v-col v-for="house in sortedHouses" :key="house.id" cols="12" sm="6" md="3">

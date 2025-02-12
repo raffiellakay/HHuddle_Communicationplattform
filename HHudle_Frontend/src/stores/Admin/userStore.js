@@ -39,23 +39,13 @@ export const useUserStore = defineStore('user', {
         },
 
         async getAllUsersByHouseId(houseId) {
-            const usersInStore = this.users.filter(user => user.houseId === houseId);
-
-            if (usersInStore.length > 0) {
-                return usersInStore;  // Falls Daten bereits existieren, direkt zurückgeben
-            }
-
             try {
                 const response = await axios.get(API_URL + 'admin/house/' + houseId + '/user');
-
-                this.users = response.data;
-
+                this.users = response.data; // Liste neu setzen
                 return response.data;
             } catch (error) {
                 console.error("Fehler beim Laden der Benutzer:", error.response?.data || error.message);
-                throw error;
             }
         }
-
     },
 });
