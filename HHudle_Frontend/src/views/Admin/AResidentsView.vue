@@ -16,13 +16,6 @@ const dialog = ref(false);
 
 const houseId = computed(() => Number(route.params.houseId));
 
-const newResident = ref({
-
-    mail: '',
-    username: '',
-    houseId: houseId.value,
-
-});
 
 
 onMounted(async () => {
@@ -30,18 +23,10 @@ onMounted(async () => {
     await houseStore.getAllHouses();
 });
 
-// new resident
-async function saveResident() {
-    try {
-        await userStore.createUser(newResident.value);
-        await userStore.getAllUsersByHouseId(houseId.value);
+onMounted(() => {
+    userStore.getAllUsersByHouseId(houseId.value);
+});
 
-        dialog.value = false;
-        newResident.value = { mail: '', username: '', houseId: houseId.value }; // house Id bleibt erhalten
-    } catch (error) {
-        console.error('Error while saving resident:', error);
-    }
-}
 
 // Editieren-Dialog für Benutzer
 const editDialog = ref(false);
@@ -79,19 +64,6 @@ const houseStore = useHouseStore();
 const house = computed(() => houseStore.houses.find(h => h.id == houseId.value));
 
 
-//Bilder setzen je nach Haus
-/* const houseImage = computed(() => {
-    switch (houseId.value) {
-        case 1:
-            return viennaHouseImage1;
-        case 2:
-            return viennaHouseImage2;
-        case 3:
-            return viennaHouseImage3;
-        default:
-            return viennaHouseImage1;
-    }
-}); */
 const houseImage = computed(() => {
     return house.value?.imageUrl || getHouseImageById(houseId.value);
 });
@@ -157,10 +129,7 @@ const headers = [
     </div>
 
     <v-container>
-        <!-- Button: Add Resident -->
-        <v-btn @click="dialog = true" class="mt-4" color="primary">
-            + Bewohner*in hinzufügen
-        </v-btn>
+
         <!-- Bearbeiten-Dialog für Residents -->
         <v-dialog v-model="editDialog" max-width="500px">
             <v-card v-if="updatedUser.id !== null"> <!-- Sicherstellen, dass ein User geladen ist -->

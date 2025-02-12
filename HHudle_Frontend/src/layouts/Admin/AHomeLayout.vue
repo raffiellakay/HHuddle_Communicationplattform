@@ -2,19 +2,66 @@
 import { useRoute, useRouter } from 'vue-router';
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { useAuthStore } from '@/stores/authStore';
-import AdminPostForm from '@/components/Admin/AdminPostForm.vue';
+import AdminPostForm from '@/components/Admin/AddAdminPostForm.vue';
 import { useHouseStore } from '@/stores/Admin/houseStore';
+import AddFacilityForm from '@/components/Admin/AddFacilityForm.vue';
+import AddHouseForm from '@/components/Admin/AddHouseForm.vue';
+import AddAdminPostForm from '@/components/Admin/AddAdminPostForm.vue';
+import AddResidentForm from '@/components/Admin/AddResidentForm.vue';
 
 const authStore = useAuthStore();
+const houseStore = useHouseStore();
 const router = useRouter();
 const route = useRoute();
 
 const showDrawer = ref(false);
-const showAdminPostForm = ref(false);
+
 const houseId = computed(() => Number(route.params.houseId) || null);
+const houseAddress = ref("Hausadresse");
 
 const isMobile = computed(() => window.innerWidth < 960);
 const updateDrawerState = () => { showDrawer.value = !isMobile.value; };
+
+//Refs für Forms
+const showAdminPostForm = ref(false);
+const showHouseForm = ref(false);
+const showResidentsForm = ref(false);
+const showFacilitiesForm = ref(false);
+
+
+//Icons je nach Seite auf Basis der Route 
+
+
+const currentIcon = computed(() => {
+    if (route.path === "/admin/home") 
+        return { icon: "mdi-home-plus", form: "house", tooltip: "Neues Haus hinzufügen" };
+    if (route.path.startsWith("/admin/house") && !route.path.includes("/user") && !route.path.includes("/facilities")) 
+        return { icon: "mdi-post", form: "adminPost", tooltip: "Neue Ankündigung erstellen" };
+    if (route.path.includes("/user")) 
+        return { icon: "mdi-account-plus", form: "residents", tooltip: "Neuen Bewohner*in hinzufügen" };
+    if (route.path.includes("/facilities")) 
+        return { icon: "mdi-domain", form: "facilities", tooltip: "Neue Einrichtung hinzufügen" };
+    return null;
+});
+
+//Öffnet richtiges Formular wenn Icon angeklickt wird
+const openForm = () => {
+    if (!currentIcon.value) return;
+    switch (currentIcon.value.form) {
+        case "house":
+            showHouseForm.value = true;
+            break;
+        case "adminPost":
+            showAdminPostForm.value = true;
+            break;
+        case "residents":
+            showResidentsForm.value = true;
+            break;
+        case "facilities":
+            showFacilitiesForm.value = true;
+            break;
+    }
+};
 
 onMounted(() => {
     updateDrawerState();
@@ -43,20 +90,40 @@ const adminItems = ref([
 ]);
 
 
+/*Lädt die Adresse des Hauses, wenn sich houseId ändert und lädt die Adresse asynchron aus Store*/
+const loadHouseAddress = async () => {
+    if (houseId.value) {
+        try {
+            const house = await houseStore.getHouseById(houseId.value); // Falls asynchron
+            houseAddress.value = house?.address || "Hausadresse";
+        } catch (error) {
+            console.error("Fehler beim Laden der Hausadresse:", error);
+        }
+    } else {
+        houseAddress.value = "Hausadresse";
+    }
+};
 
-const navbarTitles = ref([
-    { title: "Hier muss addresse stehen", 
-    route: "/admin/house/:houseId", 
-    },
+/* Beobachte houseId, um die Adresse zu aktualisieren. Lädt immer neu wenn sich Haus ändert*/
+watch(houseId, () => {
+    loadHouseAddress();
+}, { immediate: true });
 
-    { title: "Tops", 
-    route: "/admin/house/:houseId/user", 
-    },
 
-    { title: "Einrichtungen", 
-    route: "/admin/house/:houseId/facilities", 
-    },
-]);
+/* Berechnung der aktuellen Navbartitle */
+const currentNavbarTitle = computed(() => {
+    if (route.path.startsWith("/admin/house")) {
+        if (route.path.includes("/user")) 
+            return "Tops";
+        if (route.path.includes("/facilities")) 
+            return "Einrichtungen";
+        return houseAddress.value; 
+    }
+    return "Dashboard"; //Standardwert
+});
+
+
+
 
 /*Post-Formular nur auf Admin-Hausseiten sichtbar */
 const isPostPage = computed(() => route.path.includes('/admin/house'));
@@ -64,7 +131,6 @@ const isPostPage = computed(() => route.path.includes('/admin/house'));
 /*Kategorien für die Routen */
 const categoryMap = {
     "/admin/home": "HÄUSER",
-    "/admin/house": "HAUSVERWALTUNG",
     "/aboutUs": "ÜBER UNS",
     "/contact": "KONTAKT",
 };
@@ -94,22 +160,55 @@ const handleLogout = () => { authStore.logout(); router.push('/'); };
             </template>
 
             <v-toolbar-title class="text-black">
-                {{ currentCategory || 'Admin Dashboard' }}
+                {{ currentNavbarTitle}}
             </v-toolbar-title>
 
             <!--Post-Formular nur auf bestimmten Seiten sichtbar -->
-            <template v-if="isPostPage">
-                <v-btn icon class="add-btn" @click="showAdminPostForm = true">
-                    <v-icon>mdi-plus-circle</v-icon>
-                </v-btn>
+            <template v-if="currentIcon">
+                <v-tooltip left>
+                    <template v-slot:activator="{ props }">
+                        <v-btn icon class="add-btn" v-bind="props" @click="openForm()">
+                            <v-icon>{{ currentIcon.icon }}</v-icon>
+                        </v-btn>
+                    </template>
+                    <span>{{ currentIcon.tooltip }}</span>
+                </v-tooltip>
             </template>
 
             <!--Dialog für AdminPostForm -->
             <v-dialog v-model="showAdminPostForm" max-width="500">
                 <v-card>
-                    <AdminPostForm :houseId="houseId" @close="showAdminPostForm = false" />
+                    <AddAdminPostForm :houseId="houseId" @close="showAdminPostForm = false" />
                 </v-card>
             </v-dialog>
+      
+
+        <!--Dialog für HousePostForm -->
+        <v-dialog v-model="showHouseForm" max-width="500">
+                <v-card>
+                    <AddHouseForm @close="showHouseForm = false" />
+                </v-card>
+            </v-dialog>
+
+
+             <!--Dialog für FacilityPostForm -->
+        <v-dialog v-model="showFacilitiesForm" max-width="500">
+                <v-card>
+                    <AddFacilityForm @close="showFacilitiesForm = false" />
+                </v-card>
+            </v-dialog>
+
+            
+
+                <!--Dialog für ResidentPostForm -->
+        <v-dialog v-model="showResidentsForm" max-width="500">
+                <v-card>
+                    <AddResidentForm @close="showResidentsForm = false" />
+                </v-card>
+            </v-dialog>
+
+
+
         </v-app-bar>
 
         <!--Sidebar + Hauptinhalt -->
