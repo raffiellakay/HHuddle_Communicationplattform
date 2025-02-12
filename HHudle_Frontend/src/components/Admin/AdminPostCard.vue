@@ -4,7 +4,6 @@ import { computed, onMounted, ref, watch } from "vue";
 import { useAdminPostStore } from "@/stores/Admin/adminPostStore";
 import { useRoute } from "vue-router";
 import DeleteButton from "@/components/Icons/DeleteButton.vue";
-import EditButton from "@/components/Icons/EditButton.vue";
 import ConfirmDeleteCheck from "@/components/ConfirmDeleteCheck.vue";
 
 
@@ -65,7 +64,7 @@ const confirmDelete = async () => {
       console.error("Folgender Fehler beim Löschen aufgetreten: ", error)
     }
   }
-}
+};
 
 //Sortiert adminPosts nach Zeit und Erstellungsdatum 
 const sortedAdminPostsByTimeCreated = computed(() => {
@@ -103,6 +102,9 @@ const formatToDateTime = (date) => {
             <v-card-title class="font-weight-bold text-start">
               {{ adminPost.title }}
             </v-card-title>
+            
+            <!-- Delete-Button oben rechts -->
+            <DeleteButton @click="openDeleteChecker(adminPost)" />
           </v-card-item>
 
           <!-- ERSTE TRENNLINIE -->
@@ -132,9 +134,10 @@ const formatToDateTime = (date) => {
             </div>
 
             <!-- Delete-Button mit besserer Sichtbarkeit -->
-            <v-btn variant="outlined" class="delete-button" size="large" @click="openDeleteChecker(adminPost)">
+            <!--             <v-btn variant="outlined" class="delete-button" size="large" @click="openDeleteChecker(adminPost)">
               <v-icon size="24">mdi-delete</v-icon>
-            </v-btn>
+            </v-btn> -->
+           
           </v-card-actions>
 
         </v-card>
@@ -172,6 +175,17 @@ const formatToDateTime = (date) => {
 
 .delete-button:hover {
   background-color: rgba(237, 79, 79, 0.1);
+}
+.title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;     
+}
+
+.delete-button {
+  margin-left: auto; /* Schiebt den Button nach rechts */
+  padding: 4px 8px; 
 }
 </style>
 
