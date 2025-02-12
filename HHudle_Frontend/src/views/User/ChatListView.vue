@@ -19,6 +19,9 @@
              />
             <span class="chat-time">{{ formatDate(getLastMessageTimestamp(chat)) }}</span>
               </div>
+              <div class="dialog-preview">
+              <span>{{ getLastMessageText(chat) }}</span>
+            </div>
 
               <v-btn @click.stop="showModalWindow(chat.id)">Löschen</v-btn>
             </div>
