@@ -106,7 +106,7 @@ function getLastMessageText(chat) {
 }
 
 function getUnreadMessageCount(chat) {
-  return chat?.messages?.filter(m => m.read === false).length || 0;
+  return chat?.messages?.filter((m) => !m.read && m.user.id !== chat.first_participant.id).length || 0;
 }
 
 function getChatPartnerName(chat) {
