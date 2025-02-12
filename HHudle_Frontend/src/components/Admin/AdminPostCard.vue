@@ -100,10 +100,12 @@ const formatToDateTime = (date) => {
 
           <!-- POST TITEL -->
           <v-card-item>
+            <DeleteButton @click="openDeleteChecker(adminPost)" />
+
             <v-card-title class="font-weight-bold text-start">
               {{ adminPost.title }}
             </v-card-title>
-          </v-card-item> 
+          </v-card-item>
 
           <!-- ERSTE TRENNLINIE -->
           <div class="divider-container">
@@ -151,7 +153,7 @@ const formatToDateTime = (date) => {
 .card-size {
   min-height: 250px;
   max-width: 100%;
-  width:100%;
+  width: 100%;
 }
 
 /* Kürzere Trennlinien */
@@ -180,5 +182,14 @@ const formatToDateTime = (date) => {
   overflow: hidden;
   text-overflow: ellipsis;
   /* Falls Titel zu lang ist, werden "..." angezeigt */
+}
+
+.delete-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 10;
+
+
 }
 </style>
