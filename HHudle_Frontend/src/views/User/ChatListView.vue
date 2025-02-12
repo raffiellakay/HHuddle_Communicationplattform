@@ -22,8 +22,7 @@
               <div class="dialog-preview">
               <span>{{ getLastMessageText(chat) }}</span>
             </div>
-
-              <v-btn @click.stop="showModalWindow(chat.id)">Löschen</v-btn>
+            <DeleteButton @click.stop="showModalWindow(chat.id)" />  
             </div>
           </div>
        
@@ -50,6 +49,7 @@ import { useRouter } from 'vue-router';
 import { useChatStore } from '@/stores/User/chatStore';
 import ConfirmDeleteCheck from '@/components/ConfirmDeleteCheck.vue';
 import { useAuthStore } from '@/stores/authStore';
+import DeleteButton from "@/components/Icons/DeleteButton.vue";
 
 // Auth + store + router
 const authStore = useAuthStore();
@@ -90,8 +90,8 @@ function formatDate (date) {
   yesterday.setDate(today.getDate() - 1);
   const timeString = messageDate.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
 
-  return messageDate.toDateString() === today.toDateString() ? "Today" + " " + timeString : 
-    messageDate.toDateString() === yesterday.toDateString() ? "Yesterday" + " " + timeString :
+  return messageDate.toDateString() === today.toDateString() ? "heute" + " " + timeString : 
+    messageDate.toDateString() === yesterday.toDateString() ? "gestern" + " " + timeString :
     messageDate.toLocaleString('de-DE', {  day: '2-digit',  month: '2-digit',  year: '2-digit' 
       }) ;
        
@@ -212,11 +212,13 @@ function navigateToHome() {
   flex-direction: column;
   gap: 10px;
   padding: 10px;
+  
 }
 
 .dialog {
   position: relative; 
   padding: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 5px;
   cursor: pointer;
 }
