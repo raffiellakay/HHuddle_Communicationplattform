@@ -7,6 +7,10 @@ const route = useRoute();
 const facilityStore = useFacilityStore();
 const houseId = computed(() => Number(route.params.houseId));
 
+
+const emit = defineEmits(["close"]);
+
+
 const newFacility = ref({
   type: '',
   description: '',

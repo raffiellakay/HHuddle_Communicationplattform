@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, defineEmits } from 'vue';
 import { useHouseStore } from "@/stores/Admin/houseStore";
 import { useFacilityStore } from '@/stores/Admin/facilityStore';
 import { useRoute, useRouter } from 'vue-router';
@@ -21,6 +21,8 @@ const houseId = computed(() => Number(route.params.houseId));
 
 const showDeleteChecker = ref(false);
 const facilityToDelete = ref(null);
+
+
 
 //Öffnen des DeleteCheckers
 const openDeleteChecker = (facility) => {
