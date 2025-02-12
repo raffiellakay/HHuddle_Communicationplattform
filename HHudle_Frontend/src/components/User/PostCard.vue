@@ -8,10 +8,12 @@ import EditButton from "@/components/Icons/EditButton.vue";
 import ConfirmDeleteCheck from "@/components/ConfirmDeleteCheck.vue";
 import UserIconRound from "../Icons/UserIconRound.vue";
 import { useChatStore } from "@/stores/User/chatStore";
+import { useRouter } from "vue-router";
 
 const emits = defineEmits(["delete-userPost"]);
 const userPostStore = useUserPostStore();
 const chatStore = useChatStore();
+const router = useRouter();
 
 //Prop Definition
 const props = defineProps({
@@ -167,10 +169,13 @@ const createChat = async () => {
     });
     showNewChatModal.value = false;
     text.value = "";
-    alert("Chat erfolgreich erstellt");
+
+    console.log("🔀 Navigiere zu /user/board/chatlist...");
+    router.push('/user/board/chatlist');
+
   } catch (error) {
     console.error("Fehler beim Erstellen des Chats:", error);
-    alert("Fehler beim Erstellen des Chats");
+    alert("Chat mit diesem Benutzer bereits vohanden!");
   }
 };
 
