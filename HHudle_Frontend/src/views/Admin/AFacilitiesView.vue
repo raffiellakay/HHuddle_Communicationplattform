@@ -19,14 +19,6 @@ const houseId = computed(() => Number(route.params.houseId));
 
 
 
-const newFacility = ref({
-  type: '',
-  description: '',
-  houseId: houseId.value
-})
-
-
-
 const showDeleteChecker = ref(false);
 const facilityToDelete = ref(null);
 
@@ -98,17 +90,7 @@ onMounted(async () => {
   await houseStore.getAllHouses();
 });
 
-async function saveNewFacility() {
-  try {
-    await facilityStore.createFacility(newFacility.value);
-    await facilityStore.getAllFacilitiesByHouseId(houseId.value);
 
-    dialog.value = false;
-    newFacility.value = { type: '', description: '', houseId: houseId.value }; // house Id bleibt erhalten
-  } catch (error) {
-    console.error('Error while saving facility:', error);
-  }
-}
 
 //Header
 //Das aktuelle Haus abrufen
@@ -172,24 +154,6 @@ const goToOverview = (houseId) => {
 
   <v-container>
 
-    <!-- Dialog zum Hinzufügen Facility -->
-    <v-dialog v-model="dialog" max-width="500px">
-      <v-card>
-        <v-card-title>Einrichtung hinzufügen</v-card-title>
-        <v-card-text>
-          <!-- Formularfelder -->
-          <v-form @submit.prevent="saveNewFacility">
-            <v-text-field v-model="newFacility.type" label="Art der Einrichtung" required></v-text-field>
-            <v-text-field v-model="newFacility.description" label="Beschreibung der Einrichtung" required></v-text-field>
-          </v-form>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn text @click="dialog = false">Abbrechen</v-btn>
-          <v-btn text color="primary" @click="saveNewFacility">Speichern</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
      <!-- Editing Facility-->
      <v-dialog v-model="editDialog" max-width="500px">
             <v-card>
@@ -225,11 +189,6 @@ const goToOverview = (houseId) => {
 
         </v-data-table>
 
-
-    <!-- Button: Add Facility -->
-    <v-btn @click="dialog = true" class="mt-4" color="primary">
-      + Einrichtung hinzufügen
-    </v-btn>
 
     <ConfirmDeleteCheck :show="showDeleteChecker" :itemName="'die Einrichtung'" @confirm="confirmDelete"
       @close="closeDeleteChecker" />

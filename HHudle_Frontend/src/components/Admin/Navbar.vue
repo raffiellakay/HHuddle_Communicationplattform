@@ -1,7 +1,7 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router'
 import { ref,computed } from 'vue'
-import AdminPostForm from '@/components/Admin/AdminPostForm.vue';
+import AdminPostForm from '@/components/Admin/AddAdminPostForm.vue';
 import { useAuthStore } from "@/stores/authStore";
 
 
