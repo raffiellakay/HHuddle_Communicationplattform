@@ -97,15 +97,13 @@ const formatToDateTime = (date) => {
         <!-- 2 pro Reihe auf kleinen Bildschirmen, 3 auf großen -->
 
         <v-card class="mx-auto card-size" elevation="5">
-          <!-- TITEL (Fett, links ausgerichtet) -->
+
+          <!-- POST TITEL -->
           <v-card-item>
             <v-card-title class="font-weight-bold text-start">
               {{ adminPost.title }}
             </v-card-title>
-            
-            <!-- Delete-Button oben rechts -->
-            <DeleteButton @click="openDeleteChecker(adminPost)" />
-          </v-card-item>
+          </v-card-item> 
 
           <!-- ERSTE TRENNLINIE -->
           <div class="divider-container">
@@ -133,11 +131,9 @@ const formatToDateTime = (date) => {
               </v-card-subtitle>
             </div>
 
-            <!-- Delete-Button mit besserer Sichtbarkeit -->
-            <!--             <v-btn variant="outlined" class="delete-button" size="large" @click="openDeleteChecker(adminPost)">
-              <v-icon size="24">mdi-delete</v-icon>
-            </v-btn> -->
-           
+            <!-- DELETE-BUTTON  -->
+            <DeleteButton @click="openDeleteChecker(adminPost)" />
+
           </v-card-actions>
 
         </v-card>
@@ -154,9 +150,8 @@ const formatToDateTime = (date) => {
 /* Kartenhöhe anpassen, um Inhalte gut darzustellen */
 .card-size {
   min-height: 250px;
-  /* Genug Platz für Inhalte */
-  max-width: 400px;
-  /* Passt sich an, damit 3 pro Reihe passen */
+  max-width: 100%;
+  width:100%;
 }
 
 /* Kürzere Trennlinien */
@@ -165,81 +160,25 @@ const formatToDateTime = (date) => {
   margin: 8px auto;
 }
 
-/* Delete-Button sichtbarer machen */
-.delete-button {
-  border: 1px solid rgba(237, 79, 79, 0.5);
-  color: rgb(237, 79, 79);
-  box-shadow: 0px 2px 5px rgba(237, 79, 79, 0.3);
-  transition: all 0.2s ease-in-out;
-}
-
-.delete-button:hover {
-  background-color: rgba(237, 79, 79, 0.1);
-}
 .title-row {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
+  /* justify-content: space-between; */
   align-items: center;
-  width: 100%;     
+  gap: 8px;
+  width: 100%;
 }
 
-.delete-button {
-  margin-left: auto; /* Schiebt den Button nach rechts */
-  padding: 4px 8px; 
-}
-</style>
-
-<!-- <template>
-
-  <v-container>
-
-    <v-row align="center" justify="center">
-      <v-col v-for="adminPost in sortedAdminPostsByTimeCreated" :key="adminPost.id" cols="12" md="6">
-        <v-card 
-        class="mx-auto"
-        elevation="5"
-        >
-         <v-card-item>
-          <v-card-title>{{ adminPost.title }}</v-card-title> 
-          <template v-slot:append >
-            <DeleteButton 
-            @click="openDeleteChecker(adminPost)" 
-            @delete-success="$emit('adminPost-deleted')" 
-            class="delete-button"/> 
-          </template>
-            
-          <v-card-subtitle> {{ formatToDateTime(adminPost.timestamp) }}</v-card-subtitle>
-        </v-card-item>
-          <v-card-text> {{ adminPost.text }}</v-card-text>
-          <v-row>
-            
-            <v-card-text> {{ adminPost.user.username }}</v-card-text>
-          </v-row>
-        </v-card>
-      </v-col>
-    </v-row>
-
-    <ConfirmDeleteCheck
-    :show="showDeleteChecker"
-    :itemName="'den Post'"
-    @confirm="confirmDelete"
-    @close="closeDeleteChecker"/>
-  </v-container>
-
-</template>
-
-<style scoped>
-
-.delete-button {
-  background-color: rgb(237, 79, 79);
-  color: white;
+.title-text {
+  flex-grow: 1;
+  /* Lässt den Titel den gesamten verfügbaren Platz nutzen */
   font-size: 18px;
-
-
+  font-weight: bold;
+  color: #333;
+  white-space: nowrap;
+  /* Verhindert Zeilenumbruch */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* Falls Titel zu lang ist, werden "..." angezeigt */
 }
-
-
-
-
 </style>
- -->
