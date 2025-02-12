@@ -82,16 +82,20 @@ const sortedChats = computed(() => {
 });
 
 
-function formatDate(date) {
-  return date
-    ? new Date(date).toLocaleDateString('de-DE', { 
-        day: '2-digit', 
-        month: '2-digit', 
-        year: '2-digit' 
-      }) + ' ' 
-      + new Date(date).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })
-    : 'No Date';
-}
+function formatDate (date) {
+ 
+  const messageDate = new Date(date);
+  const today = new Date();
+  const yesterday = new Date();
+  yesterday.setDate(today.getDate() - 1);
+  const timeString = messageDate.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+
+  return messageDate.toDateString() === today.toDateString() ? "Today" + " " + timeString : 
+    messageDate.toDateString() === yesterday.toDateString() ? "Yesterday" + " " + timeString :
+    messageDate.toLocaleString('de-DE', {  day: '2-digit',  month: '2-digit',  year: '2-digit' 
+      }) ;
+       
+};
 
 
 function getLastMessageTimestamp(chat) {
