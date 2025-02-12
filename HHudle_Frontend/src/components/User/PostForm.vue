@@ -206,6 +206,7 @@ const submitPost = handleSubmit(async (values) => {
       anonymous: anonymous.value,
       
     };
+  
 
     console.log("Sende UserPost an Backend:", newUserPost);
     await userPostStore.createUserPost(newUserPost);
@@ -494,7 +495,7 @@ console.log("Category in PostForm:", category.value);
 
 
             <!--Checkbox für anonymes Posten-->
-            <v-row>
+            <v-row v-if="category === 'BLACKBOARD'">
               <v-col>
                 <div>
                   <div>

@@ -39,13 +39,13 @@ onMounted(async () => {
 //Öffnen des DeleteCheckers
 const openDeleteChecker = (adminPost) => {
   console.log("Post zum Löschen: ", adminPost) //Debugging
-  postToDelete.value = {...adminPost};
+  postToDelete.value = { ...adminPost };
   showDeleteChecker.value = true;
 }
 
 //Schließen des DeleteCheckers
 const closeDeleteChecker = (adminPost) => {
-  postToDelete.value = null; 
+  postToDelete.value = null;
   showDeleteChecker.value = false;
 }
 
@@ -59,12 +59,12 @@ const confirmDelete = async () => {
 
       await adminPostStore.getAdminPostsByHouseId(houseId.value);
 
-      showDeleteChecker.value = false; 
+      showDeleteChecker.value = false;
       postToDelete.value = null;
     } catch (error) {
       console.error("Folgender Fehler beim Löschen aufgetreten: ", error)
     }
-  } 
+  }
 }
 
 //Sortiert adminPosts nach Zeit und Erstellungsdatum 
@@ -91,8 +91,91 @@ const formatToDateTime = (date) => {
 
 </script>
 
-
 <template>
+  <v-container>
+    <v-row align="center" justify="center">
+      <v-col v-for="adminPost in sortedAdminPostsByTimeCreated" :key="adminPost.id" cols="12" sm="6" md="4">
+        <!-- 2 pro Reihe auf kleinen Bildschirmen, 3 auf großen -->
+
+        <v-card class="mx-auto card-size" elevation="5">
+          <!-- TITEL (Fett, links ausgerichtet) -->
+          <v-card-item>
+            <v-card-title class="font-weight-bold text-start">
+              {{ adminPost.title }}
+            </v-card-title>
+          </v-card-item>
+
+          <!-- ERSTE TRENNLINIE -->
+          <div class="divider-container">
+            <v-divider></v-divider>
+          </div>
+
+          <!-- BESCHREIBUNG -->
+          <v-card-text class="text-start">
+            {{ adminPost.text }}
+          </v-card-text>
+
+          <!-- ZWEITE TRENNLINIE (Kurz, über den unteren Bereich) -->
+          <div class="divider-container">
+            <v-divider></v-divider>
+          </div>
+
+          <!-- HAUSVERWALTUNG, TIMESTAMP & DELETE-BUTTON IN EINER ZEILE -->
+          <v-card-actions class="d-flex align-center justify-space-between">
+            <div>
+              <v-card-subtitle class="text-grey-darken-1">
+                {{ adminPost.user.username }}
+              </v-card-subtitle>
+              <v-card-subtitle class="text-grey-darken-1">
+                {{ formatToDateTime(adminPost.timestamp) }}
+              </v-card-subtitle>
+            </div>
+
+            <!-- Delete-Button mit besserer Sichtbarkeit -->
+            <v-btn variant="outlined" class="delete-button" size="large" @click="openDeleteChecker(adminPost)">
+              <v-icon size="24">mdi-delete</v-icon>
+            </v-btn>
+          </v-card-actions>
+
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <!-- DELETE BESTÄTIGUNG -->
+    <ConfirmDeleteCheck :show="showDeleteChecker" :itemName="'den Post'" @confirm="confirmDelete"
+      @close="closeDeleteChecker" />
+  </v-container>
+</template>
+
+<style scoped>
+/* Kartenhöhe anpassen, um Inhalte gut darzustellen */
+.card-size {
+  min-height: 250px;
+  /* Genug Platz für Inhalte */
+  max-width: 400px;
+  /* Passt sich an, damit 3 pro Reihe passen */
+}
+
+/* Kürzere Trennlinien */
+.divider-container {
+  width: 80%;
+  margin: 8px auto;
+}
+
+/* Delete-Button sichtbarer machen */
+.delete-button {
+  border: 1px solid rgba(237, 79, 79, 0.5);
+  color: rgb(237, 79, 79);
+  box-shadow: 0px 2px 5px rgba(237, 79, 79, 0.3);
+  transition: all 0.2s ease-in-out;
+}
+
+.delete-button:hover {
+  background-color: rgba(237, 79, 79, 0.1);
+}
+</style>
+
+<!-- <template>
 
   <v-container>
 
@@ -145,3 +228,4 @@ const formatToDateTime = (date) => {
 
 
 </style>
+ -->

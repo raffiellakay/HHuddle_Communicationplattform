@@ -132,9 +132,6 @@ public class UserPostServiceImpl implements UserPostService {
 
 
 
-    //funktioniert nicht? löscht nur alten Post erstellt keinen neuen
-
-
 
     @Override
     public PostDto updateUserPost( PostDto updatedPost) {//TODO einzelne Felder updaten

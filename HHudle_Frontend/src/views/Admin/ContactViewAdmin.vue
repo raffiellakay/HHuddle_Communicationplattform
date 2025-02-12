@@ -1,17 +1,9 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import NavbarResident from '@/components/User/Navbar.vue';
-import NavbarPManagement from '@/components/Admin/Navbar.vue';
-import NavbarDefault from '@/components/DefaultNavbar.vue';
+
 import { useAuthStore } from '@/stores/authStore';
 
-// for matching navbar
-let userRoles = [];
-  if (useAuthStore().user) {
-    userRoles = useAuthStore().user.roles;
-  }
-const isPManagement = userRoles.find((role) => role === "ROLE_PMANAGEMENT");
-const isResident = userRoles.find((role) => role === "ROLE_RESIDENT" )
+
 
 const contactmail = ref({
     firstName: '',
@@ -106,9 +98,8 @@ const form = ref(null);
 </script>
 <template>
     
-<NavbarResident v-if="isResident"></NavbarResident>
-<NavbarPManagement v-if="isPManagement"></NavbarPManagement>
-<NavbarDefault v-if="!isResident && !isPManagement"></NavbarDefault>
+
+
   
     <v-container class="container" style="margin-top: 3rem;" :class="isMobile ? 'mobile-style' : ''">
 
@@ -215,7 +206,7 @@ span {
 }
 
 button {
-    background-color: hsl(169, 82%, 27%);
+    background-color: #fc8779;
     color: white;
 }
 

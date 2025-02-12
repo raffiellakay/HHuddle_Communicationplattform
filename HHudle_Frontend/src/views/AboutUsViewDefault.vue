@@ -1,33 +1,28 @@
 <script setup>
 
-import NavbarResident from '@/components/User/Navbar.vue';
-import NavbarPManagement from '@/components/Admin/Navbar.vue';
+
 import NavbarDefault from '@/components/DefaultNavbar.vue';
 import avatarraffy from '@/assets/Pictures/avatar_raffy.png';
 import avatarhuda from '@/assets/Pictures/avatar_huda.png';
-import { useAuthStore } from '@/stores/authStore';
 
-let userRoles = [];
-  if (useAuthStore().user) {
-    userRoles = useAuthStore().user.roles;
-  }
-const isPManagement = userRoles.find((role) => role === "ROLE_PMANAGEMENT");
-const isResident = userRoles.find((role) => role === "ROLE_RESIDENT" )
 
 </script>
 
 
 <template>
-  <NavbarResident v-if="isResident"></NavbarResident>
-  <NavbarPManagement v-if="isPManagement"></NavbarPManagement>
-  <NavbarDefault v-if="!isResident && !isPManagement"></NavbarDefault>
-
+<v-container>
+ 
+  <NavbarDefault/>
+</v-container>
 
 <v-card>
-  <v-card-title
-    class=" bg-blue-lighten-5 text-center  "
-    variant="text"    
-  >
+  <v-container class="header">
+  
+    
+    <v-row  align="center"
+  justify="center" >
+  <h1>Über uns</h1>
+</v-row>
     <v-row  align="center"
     justify="center" >
     <v-col cols="1">
@@ -52,16 +47,21 @@ const isResident = userRoles.find((role) => role === "ROLE_RESIDENT" )
       </v-col>
   </v-row>
 
-
-  <h1>Über uns</h1>
-
-    </v-card-title>
-
+  
+  <v-row  align="center"
+    justify="center" >
 <v-card-subtitle  >
     <h2>Wer wir sind, wieso es diese Seite gibt & was eine Briefwahlkarte damit zu tun hat </h2>
 </v-card-subtitle>
+</v-row>
 
+   
+  
+   
+</v-container>
 <v-container>
+
+  
 <v-card-text><p>   Jeder Person, die in einem größeren Wohnhaus wohnt, kennt mindestens eines der folgenden Szenarien:</p>
   <br>
   <p>
@@ -86,7 +86,7 @@ const isResident = userRoles.find((role) => role === "ROLE_RESIDENT" )
   auf die Briefkästen zu stellen online stellen, anbieten mit dem Hund Gassi zu gehen, der regelmäßig das ganze Haus beschallt, und sich am Schwarzen Brett bezüglich weiterer Anliegen Gehör verschaffen.
 </p>
 <br>
-<p> Und all das ohne Zettelchaos oder chaotische Chatgruppe!</p>
+<p> Und all das ohne Zettelwirtschaft oder chaotische Chatgruppe!</p>
 <p>
   Gleichzeitig müssen Sie als Hausverwaltung auch keine Zettel mehr an die Tür hängen, die der Wind dann wegweht, um Ankündigungen zu machen.
 </p>
@@ -99,7 +99,9 @@ const isResident = userRoles.find((role) => role === "ROLE_RESIDENT" )
  Sie haben bis hierher gelesen und fragen sich immernoch was jetzt eine Briefwahlkarte damit zu tun hat?
   Diese Frage ist leicht beantwortet: Die Idee kam, nachdem die Post einer der Gründerinnen eine Briefwahlkarte zugestellt hatte, die Briefwahlkarte aber nie in der Wohnung ankam.
 </v-card-text>
+
 </v-container>
+
 </v-card>
 
 </template>
@@ -128,5 +130,9 @@ p {
     font-family: "Verdana";
     font-weight: lighter;
 }
-
+.header {
+  background-color: #E98074;
+  padding-top: 3rem;
+  width: 100%;
+}
 </style>

@@ -15,7 +15,7 @@ onMounted(() => {
 </script>
 
 <template>
-Ich bin die Übersicht für Paketfinder 
+
 
 <v-container>
     <PostCard :category="category"/>

@@ -15,10 +15,19 @@ onMounted(() => {
 </script>
 
 <template>
-Ich bin die User Home View
 
-<v-container>
+<v-container fluid class="pa-0">
     <PostCard :category="category"/>
 </v-container>
     
 </template>
+
+
+<style scoped>
+
+
+
+
+
+
+</style>

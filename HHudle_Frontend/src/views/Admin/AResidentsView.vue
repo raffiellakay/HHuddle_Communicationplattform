@@ -6,6 +6,7 @@ import { useRoute, useRouter } from 'vue-router';
 import viennaHouseImage1 from '@/assets/Pictures/ViennaHouse1.jpg';
 import viennaHouseImage2 from '@/assets/Pictures/ViennaHouse2.jpg';
 import viennaHouseImage3 from '@/assets/Pictures/ViennaHouse3.jpg';
+import { getHouseImageById } from '@/utils/helpers';
 
 const router = useRouter();
 const route = useRoute();
@@ -79,7 +80,7 @@ const house = computed(() => houseStore.houses.find(h => h.id == houseId.value))
 
 
 //Bilder setzen je nach Haus
-const houseImage = computed(() => {
+/* const houseImage = computed(() => {
     switch (houseId.value) {
         case 1:
             return viennaHouseImage1;
@@ -90,6 +91,9 @@ const houseImage = computed(() => {
         default:
             return viennaHouseImage1;
     }
+}); */
+const houseImage = computed(() => {
+    return house.value?.imageUrl || getHouseImageById(houseId.value);
 });
 
 // Navigiere zur Residents-Seite
@@ -131,18 +135,18 @@ const headers = [
         <div class="house-details">
             <v-card v-if="house" class="house-card">
                 <div class="house-info-row">
-                    <div @click="goToOverview(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
+                    <div @click="goToOverview(house.id)" class="clickable-text">
                         <p><strong>Adresse:</strong> {{ house.address }}</p>
                     </div>
 
                     <!--Klickbare "Tops" (Residents) -->
-                    <div @click="goToResidents(house.id)" style="cursor: pointer; text-decoration: underline; color: blue;">
+                    <div @click="goToResidents(house.id)" class="clickable-text">
                         <p><strong>Tops:</strong> {{ house.residents.length }}</p>
                     </div>
 
                     <!--Klickbare "Einrichtungen" (Facilities) -->
                     <div @click="goToFacilities(house.id)"
-                        style="cursor: pointer; text-decoration: underline; color: blue;">
+                    class="clickable-text">
                         <p><strong>Einrichtungen:</strong> {{ house.facilities.length }}</p>
                     </div>
 
@@ -186,7 +190,7 @@ const headers = [
                 </v-card-text>
                 <v-card-actions>
                     <v-btn text @click="dialog = false">Abbrechen</v-btn>
-                    <v-btn text color="primary" @click="saveResident">Speichern</v-btn>
+                    <v-btn text color="#E98074" @click="saveResident">Speichern</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -226,15 +230,15 @@ const headers = [
     height: 400px;
 }
 
-.header-image {
-    position: relative;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
 
+.header-container {
+  position: relative;
+  width: 100vw;
+  max-width: 100%;
+  min-height: 400px; 
+  overflow: hidden;
+  
+}
 .house-details {
     position: absolute;
     bottom: 15px;
@@ -278,5 +282,15 @@ const headers = [
     margin: 0;
     font-size: 16px;
     font-weight: 500;
+}
+.clickable-text {
+  color: black; /* Standardfarbe */
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out; /* Weiche Farbänderung beim Hover */
+}
+
+.clickable-text:hover {
+  color: blue; /* Farbe beim Hover */
 }
 </style>

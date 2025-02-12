@@ -56,8 +56,8 @@ console.log("Aktuelle Kategorie: ", category)
 <template>
 
 
-<v-card>
-  <v-tabs v-model="selectedFacilityId" bg-color="primary">
+<v-card class="facility-card">
+  <v-tabs v-model="selectedFacilityId" class="facility-bar">
   <v-tab 
   v-for="facility in facilities" 
   :key="facility.id" 
@@ -67,7 +67,7 @@ console.log("Aktuelle Kategorie: ", category)
   </v-tab>
 </v-tabs>
 
-  <v-card-text>
+  <v-card-text class="facility-text-card">
       
       <v-tabs-window  v-model="selectedFacilityId" bg-color="primary">
         <v-tabs-window-item v-for="facility in facilities" :key="facility.id" :value="facility.id"> 
@@ -91,3 +91,23 @@ console.log("Aktuelle Kategorie: ", category)
 </v-container>
     
 </template>
+
+<style scoped>
+
+
+.facility-card {
+  border-radius: 0;
+}
+.facility-bar {
+
+  background-color: #E98074;
+  color: white;
+}
+
+.facility-text-card {
+  background-color: #8E8D8A ;
+  color: white;
+}
+
+
+</style>

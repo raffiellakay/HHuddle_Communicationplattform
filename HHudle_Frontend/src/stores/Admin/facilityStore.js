@@ -35,7 +35,7 @@ export const useFacilityStore = defineStore('facility', {
           console.log("Attempting to update Facility:", response.data);
           //updating the array
           for (const currentFacility of this.facilities) {
-            if(currentFacility.id = facility.id) {
+            if(currentFacility.id == facility.id) {
                 currentFacility.type = facility.type;
                 currentFacility.description = facility.description
             }
