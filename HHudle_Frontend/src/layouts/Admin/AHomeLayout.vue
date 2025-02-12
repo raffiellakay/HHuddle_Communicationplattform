@@ -3,6 +3,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { useAuthStore } from '@/stores/authStore';
 import AdminPostForm from '@/components/Admin/AdminPostForm.vue';
+import { useHouseStore } from '@/stores/Admin/houseStore';
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -24,11 +25,37 @@ onUnmounted(() => {
     window.removeEventListener("resize", updateDrawerState);
 });
 
-/*idebar-Menüpunkte */
+/*Sidebar-Menüpunkte */
 const adminItems = ref([
-    { title: "Häuser", route: "/admin/home", icon: "mdi-home" },
-    { title: "Über Uns", route: "/aboutUs", icon: "mdi-information" },
-    { title: "Kontakt", route: "/contact", icon: "mdi-mail" },
+    { title: "Häuser", 
+    route: "/admin/home", 
+    icon: "mdi-home" },
+
+    { title: "Über Uns", 
+    route: "/admin/about", 
+    icon: "mdi-information" 
+    },
+
+    { title: "Kontakt", 
+    route: "/admin/contact", 
+    icon: "mdi-mail" 
+    },
+]);
+
+
+
+const navbarTitles = ref([
+    { title: "Hier muss addresse stehen", 
+    route: "/admin/house/:houseId", 
+    },
+
+    { title: "Tops", 
+    route: "/admin/house/:houseId/user", 
+    },
+
+    { title: "Einrichtungen", 
+    route: "/admin/house/:houseId/facilities", 
+    },
 ]);
 
 /*Post-Formular nur auf Admin-Hausseiten sichtbar */

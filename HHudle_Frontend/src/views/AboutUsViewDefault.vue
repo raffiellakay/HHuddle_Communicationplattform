@@ -16,12 +16,13 @@ import avatarhuda from '@/assets/Pictures/avatar_huda.png';
 </v-container>
 
 <v-card>
-  <v-container>
-  <div>
-    <v-card-title
-    class=" bg-blue-lighten-5 text-center  "
-    variant="text"    
-  >
+  <v-container class="header">
+  
+    
+    <v-row  align="center"
+  justify="center" >
+  <h1>Über uns</h1>
+</v-row>
     <v-row  align="center"
     justify="center" >
     <v-col cols="1">
@@ -47,16 +48,20 @@ import avatarhuda from '@/assets/Pictures/avatar_huda.png';
   </v-row>
 
   
-  <h1>Über uns</h1>
-
-    </v-card-title>
-  </div>
-  
+  <v-row  align="center"
+    justify="center" >
 <v-card-subtitle  >
     <h2>Wer wir sind, wieso es diese Seite gibt & was eine Briefwahlkarte damit zu tun hat </h2>
 </v-card-subtitle>
+</v-row>
+
+   
+  
+   
 </v-container>
 <v-container>
+
+  
 <v-card-text><p>   Jeder Person, die in einem größeren Wohnhaus wohnt, kennt mindestens eines der folgenden Szenarien:</p>
   <br>
   <p>
@@ -94,7 +99,9 @@ import avatarhuda from '@/assets/Pictures/avatar_huda.png';
  Sie haben bis hierher gelesen und fragen sich immernoch was jetzt eine Briefwahlkarte damit zu tun hat?
   Diese Frage ist leicht beantwortet: Die Idee kam, nachdem die Post einer der Gründerinnen eine Briefwahlkarte zugestellt hatte, die Briefwahlkarte aber nie in der Wohnung ankam.
 </v-card-text>
+
 </v-container>
+
 </v-card>
 
 </template>
@@ -123,5 +130,9 @@ p {
     font-family: "Verdana";
     font-weight: lighter;
 }
-
+.header {
+  background-color: #E98074;
+  padding-top: 3rem;
+  width: 100%;
+}
 </style>

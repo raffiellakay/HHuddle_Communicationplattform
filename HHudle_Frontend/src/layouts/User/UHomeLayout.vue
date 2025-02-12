@@ -93,8 +93,8 @@ const items = ref([
   route: "/user/board/chatlist", 
   icon: "mdi-message" },
 
-  { title: "Kontakt", route: "/contact", icon: "mdi-mail" },
-  { title: "Über Uns", route: "/aboutUs", icon: "mdi-information" },
+  { title: "Kontakt", route: "/user/contact", icon: "mdi-mail" },
+  { title: "Über Uns", route: "/user/about", icon: "mdi-information" },
 ]);
 
 // Responsives Verhalten
@@ -283,6 +283,7 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
   background-color: #dc796e;
   color: white;
 }
+
 .main-content {
   display: flex;
   flex-grow: 1;
