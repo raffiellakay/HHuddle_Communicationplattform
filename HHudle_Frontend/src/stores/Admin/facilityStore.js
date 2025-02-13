@@ -18,6 +18,7 @@ export const useFacilityStore = defineStore('facility', {
         },
 
         async getAllFacilitiesByHouseId(houseId) {
+            this.facilities = [];
             const response = await axios.get(API_URL + 'admin/house/' + houseId + '/facility')
             this.facilities = response.data
             return response.data

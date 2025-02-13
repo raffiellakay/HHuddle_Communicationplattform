@@ -2,9 +2,11 @@
 import { ref, computed, defineEmits } from 'vue';
 import { useUserStore } from '@/stores/Admin/userStore';
 import { useRoute } from 'vue-router';
+import { useHouseStore } from '@/stores/Admin/houseStore';
 
 const route = useRoute();
 const userStore = useUserStore();
+const houseStore = useHouseStore();
 const houseId = computed(() => Number(route.params.houseId));
 
 const emit = defineEmits(["close"]);
@@ -19,6 +21,7 @@ const newResident = ref({
 async function saveResident() {
   try {
     await userStore.createUser(newResident.value);
+    await houseStore.getAllHouses();
     await userStore.getAllUsersByHouseId(houseId.value);
     emit("close"); // Dialog schließen
     newResident.value = { mail: '', username: '', houseId: houseId.value };

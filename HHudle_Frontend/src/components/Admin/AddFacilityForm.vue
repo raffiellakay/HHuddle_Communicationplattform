@@ -2,11 +2,12 @@
 import { ref, computed } from 'vue';
 import { useFacilityStore } from '@/stores/Admin/facilityStore';
 import { useRoute } from 'vue-router';
+import { useHouseStore } from '@/stores/Admin/houseStore';
 
 const route = useRoute();
 const facilityStore = useFacilityStore();
 const houseId = computed(() => Number(route.params.houseId));
-
+const houseStore = useHouseStore();
 
 const emit = defineEmits(["close"]);
 
@@ -21,6 +22,7 @@ async function saveNewFacility() {
   try {
     await facilityStore.createFacility(newFacility.value);
     await facilityStore.getAllFacilitiesByHouseId(houseId.value);
+    await houseStore.getAllHouses();
     emit("close"); // Dialog schließen
     newFacility.value = { type: '', description: '', houseId: houseId.value };
   } catch (error) {

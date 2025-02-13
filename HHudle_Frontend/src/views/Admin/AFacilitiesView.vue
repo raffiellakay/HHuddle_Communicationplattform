@@ -40,7 +40,7 @@ const confirmDelete = async () => {
     try {
       console.log(`Facility mit ID ${facilityToDelete.value.id} wird gelöscht`);
       await facilityStore.deleteFacilityById(facilityToDelete.value.id);
-
+      await houseStore.getAllHouses();
       await facilityStore.getAllFacilitiesByHouseId(houseId.value);
 
       showDeleteChecker.value = false;
