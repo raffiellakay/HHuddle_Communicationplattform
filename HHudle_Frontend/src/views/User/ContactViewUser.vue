@@ -197,7 +197,10 @@ const form = ref(null);
 .container {
     max-width: 700px;
     background-color: white;
-    border-radius: 20px
+    border-radius: 20px;
+    border-color: #faa59b;
+    border: 8px solid #faa59b
+   
 }
 
 
@@ -220,13 +223,7 @@ button {
     
 }
 
-.success-message{
-    position: absolute;
-    top: 4rem;
-    left: 0rem;
-  
 
-}
 
 
 </style>

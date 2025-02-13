@@ -4,18 +4,19 @@
 import NavbarDefault from '@/components/DefaultNavbar.vue';
 import avatarraffy from '@/assets/Pictures/avatar_raffy.png';
 import avatarhuda from '@/assets/Pictures/avatar_huda.png';
+import avatarmilly from '@/assets/Pictures/avatar_milly.png';
 
 
 </script>
 
 
 <template>
-<v-container>
+<v-container class="side">
  
   <NavbarDefault/>
 </v-container>
 
-<v-card>
+<v-card class="container">
   <v-container class="header">
   
     
@@ -27,12 +28,12 @@ import avatarhuda from '@/assets/Pictures/avatar_huda.png';
     justify="center" >
     <v-col cols="1">
       <v-img
-   :src= avatarhuda
+   :src= avatarmilly
   />
       </v-col>
     <v-col cols="1">
       <v-img
-   :src= avatarraffy
+   :src= avatarhuda
   />
       </v-col>
       <v-col cols="1">
@@ -59,7 +60,7 @@ import avatarhuda from '@/assets/Pictures/avatar_huda.png';
   
    
 </v-container>
-<v-container>
+<v-container class="text">
 
   
 <v-card-text><p>   Jeder Person, die in einem größeren Wohnhaus wohnt, kennt mindestens eines der folgenden Szenarien:</p>
@@ -69,18 +70,24 @@ import avatarhuda from '@/assets/Pictures/avatar_huda.png';
   <v-list-item>  • das eigene Paket ist irgendwo im Haus abgegeben worden, aber man kann nicht genau entziffern bei welcher Tür </v-list-item>
     <v-list-item>  • im Haus bellt die ganze Zeit ein Hund/bohrt jemand zu Unzeiten Löcher in die Wand/passiert etwas anderes über das man sich aufregen möchte </v-list-item>
       <v-list-item>  • man möchte unbedingt den Kindergeburtstag im Gemeinschaftsraum feiern, aber der analoge Kalender zum Eintragen von Terminen ist irgendwie verschwunden</v-list-item>
-        <v-list-item>  • man hat wegen einem der drei Themen einen handschriftlichen Zettel über die Briefkästen gehängt, aber das Putzpersonal hat den nach einem Tag schon abgenommen</v-list-item>
+        
 </v-list>
 </p>
 <br>
 <p>
-  Es ist klar, dass  Kommunikation, der Schlüssel ist, der all diese Themen löst, bevor sie zu einem wirklich großen Problem werden, das das nachbarschaftliche Miteinander stört.
+ Was braucht es um diese Probleme zu lösen? K-O-M-M-U-N-I-K-A-T-I-O-N.
   Aber wie nachhaltig die Person(en) addressieren, die man erreichen möchte, wenn man sich kaum kennt? Und sind wir ehrlich: eigentlich auch nicht kennen lernen will.
 </p>
 <br>
 <br>
 <p>
-  Da kommt HHuddle ins Spiel! Als Hausverwaltung können Sie Ihren Bewohner*innen mit HHuddle eine online Plattform bieten, die die Kommunikation mittels Schmierzetteln über den Briefkästen 
+  Was braucht es um diese Problem zu lösen?
+ </p>
+ <br> 
+ <h3> HHUDDLE</h3>
+  <br>
+  <p>
+   Als Hausverwaltung können Sie Ihren Bewohner*innen mit HHuddle eine Onlineplattform bieten, die die Kommunikation mittels Schmierzetteln über den Briefkästen 
   in das digitale Zeitalter hebt und gleichzeitig im Gegensatz zu selbsterstellten Chatgruppen sensible mit den Daten Ihrer Bewohner*innen umgeht.
   Auf mehreren nutzerfreundlichen Pinnwänden können Bewohner*innen Events in Gemeinschaftsräumen planen, ihre verschwundenen Pakete suchen, statt Gegenstände zur freien Entnahme einfach 
   auf die Briefkästen zu stellen online stellen, anbieten mit dem Hund Gassi zu gehen, der regelmäßig das ganze Haus beschallt, und sich am Schwarzen Brett bezüglich weiterer Anliegen Gehör verschaffen.
@@ -107,6 +114,19 @@ import avatarhuda from '@/assets/Pictures/avatar_huda.png';
 </template>
 
 <style scoped>
+.container {
+  margin-right: 20rem;
+  margin-left: 20rem;
+}
+
+.side {
+  max-width: 1200;
+}
+
+.text {
+  max-width: 900px;
+}
+
 h1 {
   font-size: 3.5em;
   font-family: "Georgia";
@@ -131,7 +151,7 @@ p {
     font-weight: lighter;
 }
 .header {
-  background-color: #E98074;
+  background-color: #fac0b9;
   padding-top: 3rem;
   width: 100%;
 }

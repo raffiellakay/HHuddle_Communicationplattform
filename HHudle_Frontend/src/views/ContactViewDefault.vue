@@ -101,7 +101,7 @@ const form = ref(null);
 
 <NavbarDefault />
   
-    <v-container class="container" style="margin-top: 3rem;" :class="isMobile ? 'mobile-style' : ''">
+    <v-container class="container"  :class="isMobile ? 'mobile-style' : ''">
 
         <v-form ref="form" v-model="valid" @submit.prevent="submitForm" class="px-5 py-3" style="font-size: 16px;">
            
@@ -195,9 +195,13 @@ const form = ref(null);
 
 <style scoped>
 .container {
+    margin-top: 6rem;
     max-width: 700px;
     background-color: white;
-    border-radius: 20px
+    border-radius: 20px;
+    border-color: #faa59b;
+    border: 8px solid #faa59b
+   
 }
 
 
@@ -220,13 +224,7 @@ button {
     
 }
 
-.success-message{
-    position: absolute;
-    top: 4rem;
-    left: 0rem;
-  
 
-}
 
 
 </style>
