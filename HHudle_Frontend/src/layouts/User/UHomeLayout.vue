@@ -214,7 +214,7 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
         </v-container>
 
         <v-list dense>
-          <v-list-item-group>
+         
             <v-list-item
               v-for="item in items"
               :key="item.title"
@@ -229,7 +229,7 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
 
               <v-list-item-content> </v-list-item-content>
             </v-list-item>
-          </v-list-item-group>
+         
         </v-list>
 
         <v-spacer></v-spacer>
@@ -237,9 +237,9 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
         <!--Logout-->
         <div class="logout-container">
           <v-list-item link @click="handleLogout">
-            <v-list-item-icon>
+           
               <v-icon class="logout-icon">mdi-logout</v-icon>
-            </v-list-item-icon>
+            
           </v-list-item>
         </div>
       </v-navigation-drawer>

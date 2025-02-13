@@ -236,13 +236,13 @@ const handleLogout = () => { authStore.logout(); router.push('/'); };
                 </v-container>
 
                 <v-list dense>
-                    <v-list-item-group>
+                  
                         <v-list-item v-for="item in adminItems" :key="item.title" :title="item.title" :to="item.route">
                             <template v-slot:prepend>
                                 <v-icon class="sidebar-icons">{{ item.icon }}</v-icon>
                             </template>
                         </v-list-item>
-                    </v-list-item-group>
+                    
                 </v-list>
 
                 <v-spacer></v-spacer>
@@ -250,9 +250,9 @@ const handleLogout = () => { authStore.logout(); router.push('/'); };
                 <!--Logout Button -->
                 <div class="logout-container">
                     <v-list-item link @click="handleLogout">
-                        <v-list-item-icon>
+                     
                             <v-icon class="logout-icon">mdi-logout</v-icon>
-                        </v-list-item-icon>
+                     
                     </v-list-item>
                 </div>
             </v-navigation-drawer>
