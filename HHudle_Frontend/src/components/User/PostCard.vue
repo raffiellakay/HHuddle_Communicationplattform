@@ -292,7 +292,7 @@ const formatToGermanDate = (dateTime) => {
               <v-list-item-subtitle class="username-subtitle"> {{ formatToGermanDate(filteredUserPost.timestamp) }}</v-list-item-subtitle>
               <template v-slot:append>
               <v-icon
-              v-if="userId !== filteredUserPost.user?.id"
+              v-if="userId !== filteredUserPost.user?.id && category !== 'FRONTPAGE' && !filteredUserPost.anonymous"
               variant="elevated"
               class="chat-button"
               @click="openModal(filteredUserPost.user?.id)"
