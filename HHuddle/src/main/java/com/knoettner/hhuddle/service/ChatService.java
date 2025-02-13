@@ -3,6 +3,7 @@ package com.knoettner.hhuddle.service;
 import com.knoettner.hhuddle.dto.ChatDto;
 import com.knoettner.hhuddle.dto.ChatMessageRequestDto;
 import com.knoettner.hhuddle.dto.ChatMessageResponseDto;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,4 +23,7 @@ public interface ChatService {
     List<ChatDto> getChatsByUserId(Long userId);
 
     void deleteChatById(Long chatId);
+
+    @Transactional
+    void markChatAsRead(Long chatId);
 }

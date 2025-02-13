@@ -173,4 +173,23 @@ public class ChatServiceImpl implements ChatService {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Chat not found");
         }
     }
+
+    @Transactional
+    @Override
+    public void markChatAsRead(Long chatId) {
+        // 1) Check that chat exists
+        Chat chat = chatRepository.findById(chatId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Chat not found"));
+
+        // 2) Fetch all messages for this chat
+        List<ChatMessage> messages = chatMessageRepository.findAllMessagesByChatId(chatId);
+
+        // 3) Set isRead = true for each message
+        for (ChatMessage msg : messages) {
+            msg.setRead(true);
+        }
+
+        // 4) Save updated messages
+        chatMessageRepository.saveAll(messages);
+    }
 }

@@ -49,6 +49,7 @@ public class  ChatMessageMapper {
         );
         chatMessage.setTimestamp(LocalDateTime.now());
         chatMessage.setText(chatMessageRequestDto.getText());
+        chatMessage.setRead(false);
         return chatMessage;
     }
 
@@ -60,6 +61,9 @@ public class  ChatMessageMapper {
         chatMessageResponseDto.setUser(basicUserMapper.toDto(chatMessage.getUser()));
         chatMessageResponseDto.setTimestamp(chatMessage.getTimestamp());
         chatMessageResponseDto.setText(chatMessage.getText());
+        chatMessageResponseDto.setRead(chatMessage.isRead());
+
+
         return chatMessageResponseDto;
 
     }

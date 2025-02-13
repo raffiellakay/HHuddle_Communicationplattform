@@ -9,22 +9,31 @@
             v-for="(message, index) in chatMessages"
             :key="index"
             class="message"
+            :class="{ owner: Number(message.user.id) === Number(senderId), opponent: Number(message.user.id) !== Number(senderId) }"
+          
           >
-            <div class="message-header">
+         
+            <div class="wrapper" >
+              <div class="message-header">
               <span class="message-time">{{ formatDate(message.timestamp) }}</span>
+            
+              
             </div>
             <div class="message-content">
               <span>{{ message.text }}</span>
+            </div>
             </div>
           </div>
         </div>
         <!-- Input field to write new messages -->
         <v-text-field
           v-model="newMessage"
-          label="Write a message"
+          label="Schreiben Sie eine Nachricht"
           @keyup.enter="sendMessage"
         ></v-text-field>
-        <v-btn @click="sendMessage">Send</v-btn>
+        <v-btn icon size="small" style="opacity: 0.6;" @click="deleteItem">
+        <v-icon size="18" color="rgba(255, 0, 0, 0.6)">mdi-send</v-icon>
+        </v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -34,6 +43,7 @@
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useChatStore } from "@/stores/User/chatStore";
+
 
 const chatStore = useChatStore();
 const route = useRoute();
@@ -94,15 +104,45 @@ function formatDate(date) {
   padding: 20px;
 }
 
+.owner .wrapper {
+  background-color: #dfebe0;
+  display: flex;
+  align-items: flex-end;
+}
+
+.owner  {
+  justify-content: flex-end;
+  display: flex;
+}
+
+.wrapper {
+  padding: 10px 15px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: 15px;
+  width: 90%;
+
+}
+
+.opponent .wrapper {  
+  align-items: flex-start;
+  background-color: #ffffff;
+ 
+}
 .messages {
   max-height: 400px;
   overflow-y: auto;
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
+
 .message {
-  padding: 10px;
-  border-bottom: 1px solid #ccc;
+  
+  width: 100%;
 }
 
 .message-header {

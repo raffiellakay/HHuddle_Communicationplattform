@@ -16,6 +16,7 @@ public class ChatMessageResponseDto {
     private Long chatId;
     private LocalDateTime timestamp;
     private String text;
+    private boolean isRead = false;
 
 
 }
