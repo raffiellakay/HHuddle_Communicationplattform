@@ -271,6 +271,13 @@ const formatToGermanDate = (dateTime) => {
 
           <v-card-text>
             {{ filteredUserPost.text }}
+            <v-container class="divider-container" v-if="category === 'EVENTS' && !filteredUserPost.isPrivate"> 
+              <br>
+            
+              <v-divider class="border-opacity-50 divider"></v-divider>
+              <br>
+              Alle herzlich Willkommen!
+            </v-container>
           </v-card-text>
           <v-container class="divider-container">
             <v-divider class="border-opacity-50 divider"></v-divider>
