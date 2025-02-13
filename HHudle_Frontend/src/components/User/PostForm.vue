@@ -333,16 +333,27 @@ console.log("Category in PostForm:", category.value);
                       prepend-inner-icon="mdi-calendar-blank"
                       readonly
                       @click="showStartDatePicker = true"
-                      
                     ></v-text-field>
                   </template>
 
                   <!-- Date Picker -->
-                  <v-date-picker
+                   <div class="position-relative">
+                    <v-locale-provider locale="de">
+                    <v-date-picker
                     v-model="startDate"
                     @input="showStartDatePicker = false"
                     locale="de"
                   ></v-date-picker>
+                </v-locale-provider>
+                  <v-btn
+                    class="position-absolute top-0 right-0"
+                    color="black"
+                    icon="mdi-close"
+                    size="small"
+                    variant="text"
+                    @click="showStartDatePicker = false"
+                  ></v-btn>
+                   </div>
                 </v-menu>
               </v-col>
               <v-col>
@@ -387,11 +398,23 @@ console.log("Category in PostForm:", category.value);
                   </template>
 
                   <!-- Date Picker -->
-                  <v-date-picker
+                  <div class="position-relative">
+                    <v-locale-provider locale="de">
+                    <v-date-picker
                     v-model="endDate"
                     @input="showEndDatePicker = false"
                     locale="de"
                   ></v-date-picker>
+                </v-locale-provider>
+                  <v-btn
+                    class="position-absolute top-0 right-0"
+                    color="black"
+                    icon="mdi-close"
+                    size="small"
+                    variant="text"
+                    @click="showEndDatePicker = false"
+                  ></v-btn>
+                  </div>
                 </v-menu>
               </v-col>
               <v-col>

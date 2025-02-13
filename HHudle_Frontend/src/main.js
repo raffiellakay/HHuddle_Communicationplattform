@@ -7,7 +7,10 @@ import router from './router'
 import { defineRule, configure} from "vee-validate";
 import { required, email, min, max } from '@vee-validate/rules';
 
+import DateFnsAdapter from '@date-io/date-fns'
+import { de as deDate } from 'date-fns/locale'
 
+import { en, de } from 'vuetify/locale'
 
 import 'vuetify/styles'
 import '@mdi/font/css/materialdesignicons.css'
@@ -42,8 +45,17 @@ configure({
 
 const vuetify = createVuetify({
     components, 
+    date: {
+      adapter: DateFnsAdapter,
+      locale: {
+        de: deDate
+      },
+    },
     directives,
-    locale: 'de',
+    locale: {
+      locale: 'de',
+      messages: { de, en },
+    },
     icons: {
       defaultSet: 'mdi',
     }
