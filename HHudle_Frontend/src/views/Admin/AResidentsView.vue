@@ -7,6 +7,7 @@ import viennaHouseImage1 from '@/assets/Pictures/ViennaHouse1.jpg';
 import viennaHouseImage2 from '@/assets/Pictures/ViennaHouse2.jpg';
 import viennaHouseImage3 from '@/assets/Pictures/ViennaHouse3.jpg';
 import { getHouseImageById } from '@/utils/helpers';
+import EditButton from '@/components/Icons/EditButton.vue';
 
 const router = useRouter();
 const route = useRoute();
@@ -86,7 +87,7 @@ const goToOverview = (houseId) => {
 };
 
 const headers = [
-    { title: 'Benutzername', key: 'username' },
+    { title: 'Top', key: 'username' },
     { title: 'E-Mail', key: 'mail' },
     { title: 'Bearbeiten', key: 'actions' },
 ];
@@ -133,7 +134,7 @@ const headers = [
         <!-- Bearbeiten-Dialog für Residents -->
         <v-dialog v-model="editDialog" max-width="500px">
             <v-card v-if="updatedUser.id !== null"> <!-- Sicherstellen, dass ein User geladen ist -->
-                <v-card-title>Bearbeite Benutzer</v-card-title>
+                <v-card-title>Bearbeite Benutzer*in</v-card-title>
                 <v-card-text>
                     <v-form @submit.prevent="updateUser">
                         <v-text-field v-model="updatedUser.mail" label="E-Mail"></v-text-field>
@@ -165,9 +166,8 @@ const headers = [
         </v-dialog>
         <v-data-table :items="userStore.users" :headers="headers">
             <template v-slot:item.actions="{ item }">
-                <v-icon size="small" color="error" @click="handleEdit(item)">
-                    mdi-pencil
-                </v-icon>
+                <EditButton @click="handleEdit(item)"/>
+                
             </template>
 
         </v-data-table>

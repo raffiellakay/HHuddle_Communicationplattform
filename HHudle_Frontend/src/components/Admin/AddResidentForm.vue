@@ -30,7 +30,7 @@ async function saveResident() {
 
 <template>
   <v-card>
-    <v-card-title>Bewohner hinzufügen</v-card-title>
+    <v-card-title>Bewohner*in hinzufügen</v-card-title>
     <v-card-text>
       <v-form @submit.prevent="saveResident">
         <v-text-field v-model="newResident.mail" label="E-Mail" required></v-text-field>

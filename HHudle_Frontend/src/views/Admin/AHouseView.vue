@@ -39,19 +39,6 @@ const refreshPosts = async () => {
 const house = computed(() => houseStore.houses.find(h => h.id == houseId.value));
 
 
-//Bilder setzen je nach Haus
-/* const houseImage = computed(() => {
-  switch (houseId.value) {
-    case 1:
-      return viennaHouseImage1;
-    case 2:
-      return viennaHouseImage2;
-    case 3:
-      return viennaHouseImage3;
-    default:
-      return viennaHouseImage1;
-  }
-}); */
 const houseImage = computed(() => {
   return house.value?.imageUrl || getHouseImageById(houseId.value);
 });

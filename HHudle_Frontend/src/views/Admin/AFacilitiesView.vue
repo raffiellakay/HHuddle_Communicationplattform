@@ -6,9 +6,7 @@ import { useRoute, useRouter } from 'vue-router';
 import DeleteButton from "@/components/Icons/DeleteButton.vue";
 import ConfirmDeleteCheck from "@/components/ConfirmDeleteCheck.vue";
 import EditButton from '@/components/Icons/EditButton.vue';
-import viennaHouseImage1 from '@/assets/Pictures/ViennaHouse1.jpg';
-import viennaHouseImage2 from '@/assets/Pictures/ViennaHouse2.jpg';
-import viennaHouseImage3 from '@/assets/Pictures/ViennaHouse3.jpg';
+
 import { getHouseImageById } from '@/utils/helpers';
 
 const router = useRouter();
@@ -179,14 +177,12 @@ const goToOverview = (houseId) => {
    
           <v-data-table :items="facilityStore.facilities" :headers="headers">
             <template v-slot:item.actions="{ item }">
-                <v-icon size="small" color="blue" @click="handleEdit(item)">
-                    mdi-pencil
-                </v-icon>
+                <EditButton @click="handleEdit(item)"/>
+                    
             </template>
             <template v-slot:item.action="{ item }">
-                <v-icon size="small" color="error" @click="openDeleteChecker(item)">
-                 mdi-delete
-                </v-icon>
+                <DeleteButton @click="openDeleteChecker(item)"/>
+                
             </template>
 
         </v-data-table>
@@ -201,9 +197,9 @@ const goToOverview = (houseId) => {
 
 <style scoped>
 .delete-button {
-  background-color: rgb(237, 79, 79);
-
-  font-size: 16px;
+  border-color:none;
+  box-shadow: none;
+  border: none;
 }
 
 

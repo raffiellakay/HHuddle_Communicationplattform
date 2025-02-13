@@ -44,7 +44,7 @@ const refreshPosts = async() => {
 <template>
 
 
-    <h1>Admin Posts für Haus {{ houseId }}</h1>
+    <h1> Geteilte Ankündigungen & Informationen:</h1>
 
 <v-container>
 <AdminPostCard 

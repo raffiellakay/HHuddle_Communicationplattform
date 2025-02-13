@@ -7,9 +7,8 @@
 
 <template>
 
-    <v-btn>
-        <v-icon class="edit-icon">mdi-pencil</v-icon>
-    </v-btn>
+        <v-icon size="small"  color="#ba9a6c" >mdi-pencil</v-icon>
+       
 
 
 </template>

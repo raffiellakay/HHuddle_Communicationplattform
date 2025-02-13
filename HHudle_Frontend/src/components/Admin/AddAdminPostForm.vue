@@ -148,7 +148,7 @@ const handleSubmit = async () => {
                     elevation="0"
                     :ripple="true"
                   >
-                  Add Post 
+                  Ankündigung abschicken
                  
                   </v-btn>
              

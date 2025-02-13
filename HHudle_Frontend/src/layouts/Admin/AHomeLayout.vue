@@ -38,7 +38,7 @@ const currentIcon = computed(() => {
     if (route.path.startsWith("/admin/house") && !route.path.includes("/user") && !route.path.includes("/facilities")) 
         return { icon: "mdi-post", form: "adminPost", tooltip: "Neue Ankündigung erstellen" };
     if (route.path.includes("/user")) 
-        return { icon: "mdi-account-plus", form: "residents", tooltip: "Neuen Bewohner*in hinzufügen" };
+        return { icon: "mdi-account-plus", form: "residents", tooltip: "Bewohner*in hinzufügen" };
     if (route.path.includes("/facilities")) 
         return { icon: "mdi-domain", form: "facilities", tooltip: "Neue Einrichtung hinzufügen" };
     return null;
@@ -114,7 +114,7 @@ watch(houseId, () => {
 const currentNavbarTitle = computed(() => {
     if (route.path.startsWith("/admin/house")) {
         if (route.path.includes("/user")) 
-            return "Tops";
+            return "Bewohner*innen";
         if (route.path.includes("/facilities")) 
             return "Einrichtungen";
         return houseAddress.value; 

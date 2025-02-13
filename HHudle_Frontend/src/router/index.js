@@ -211,8 +211,6 @@ const routes = [
 
 
 
-// Weitere Routen können hier hinzugefügt werden
-
 
 const router = createRouter({
   history: createWebHistory(),
