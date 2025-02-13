@@ -64,39 +64,46 @@ const items = ref([
   { title: "Startseite", 
     route: "/user/home", 
     icon: "mdi-home",
-    description: "Ankündigungen der Hausverwaltung", 
+    description: "Ankündigungen der Hausverwaltung",
+    isBoardPage: false,
   },
   {
     title: "Gemeinschaftsräume",
     route: "/user/board/commonrooms",
     icon: "mdi-account-group",
     description: "Nutzung der Gemeinschaftsräume",
+    isBoardPage: true,
   },
   {
     title: "Schwarzes Brett",
     route: "/user/board/blackboard",
     icon: "mdi-bulletin-board",
     description: "Verschiedene Ankündigungen",
+    isBoardPage: true,
   },
   {
     title: "Paketfinder",
     route: "/user/board/packagefinder",
     icon: "mdi-package-variant-closed",
     description: "Wo ist mein Paket?",
+    isBoardPage: true,
   },
   {
     title: "Suche & Biete",
     route: "/user/board/search&find",
     icon: "mdi-swap-horizontal",
     description: "Suche - Biete- Tausche - Verschenke",
+    isBoardPage: true,
   },
-  { title: "Deine Chats", 
-  route: "/user/board/chatlist", 
-  icon: "mdi-message",
-  description: "Deine Chats" },
-  
-  { title: "Kontakt", route: "/user/contact", icon: "mdi-mail" },
-  { title: "Über Uns", route: "/user/about", icon: "mdi-information" },
+  { 
+    title: "Deine Chats", 
+    route: "/user/board/chatlist", 
+    icon: "mdi-message",
+    description: "Deine Chats",
+    isBoardPage: false,
+  },
+  { title: "Kontakt", route: "/user/contact", icon: "mdi-mail", isBoardPage: false },
+  { title: "Über Uns", route: "/user/about", icon: "mdi-information", isBoardPage: false },
 ]);
 
 // Responsives Verhalten
@@ -119,7 +126,7 @@ onUnmounted(() => {
 
 // Prüft, ob die aktuelle Route eine Board-Seite ist
 const isBoardPage = computed(() =>
-  items.value.some((item) => item.route === route.path)
+  items.value.some((item) => item.route === route.path && item.isBoardPage)
 );
 
 // Drawer umschalten (Nur für Mobile!)
