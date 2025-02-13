@@ -1,7 +1,7 @@
 <script setup>
 
 import { ref } from 'vue'
-
+import hhuddle from '@/assets/Pictures/hhuddle.png';
 
 
 
@@ -24,7 +24,10 @@ const toggleDrawer = () => {
       <!--Bei Klick auf bar-nav-icon wird toggleDrawer Methode aufgerufen-->
       <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
     </template>
-    <v-app-bar-title>Willkommen bei HHuddle</v-app-bar-title>
+    <v-app-bar-title >Willkommen bei </v-app-bar-title>
+    <v-img
+     :src= hhuddle
+     />
       </v-app-bar>
 
 

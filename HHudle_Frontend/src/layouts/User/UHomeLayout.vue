@@ -8,6 +8,7 @@ import { useAuthStore } from "@/stores/authStore";
 import { useUserPostStore } from "@/stores/User/userPostStore";
 import { getHouseImageById } from "@/utils/helpers";
 import { useHouseStore } from "@/stores/Admin/houseStore";
+import hhuddle from '@/assets/Pictures/hhuddle.png';
 
 const userPostStore = useUserPostStore();
 const router = useRouter(); //Gibt Router Instanz zurück
@@ -37,12 +38,12 @@ const currentUserId = computed(() => authStore.user?.id);
 //Aktueller Seitenname
 const currentPageTitle = computed(() => {
   const currentItem = items.value.find((item) => item.route === route.path);
-  return currentItem ? currentItem.title : "Seite unbekannt";
+  return currentItem ? currentItem.title : "Deine Chats";
 });
 
 const currentPageDescription = computed (() => {
   const currentItem = items.value.find((item) => item.route === route.path);
-  return currentItem ? currentItem.description : "Keine Beschreibung";
+  return currentItem ? currentItem.description : "Chatverlauf";
 })
 
 
@@ -69,13 +70,13 @@ const items = ref([
     title: "Gemeinschaftsräume",
     route: "/user/board/commonrooms",
     icon: "mdi-account-group",
-    description: "Ankündigungen für verschiedene Events",
+    description: "Nutzung der Gemeinschaftsräume",
   },
   {
     title: "Schwarzes Brett",
     route: "/user/board/blackboard",
     icon: "mdi-bulletin-board",
-    description: "Ankündigungen für Verschiedenes",
+    description: "Verschiedene Ankündigungen",
   },
   {
     title: "Paketfinder",
@@ -87,12 +88,13 @@ const items = ref([
     title: "Suche & Biete",
     route: "/user/board/search&find",
     icon: "mdi-swap-horizontal",
-    description: "Tauschbörse",
+    description: "Suche - Biete- Tausche - Verschenke",
   },
-  { title: "Chats", 
+  { title: "Deine Chats", 
   route: "/user/board/chatlist", 
-  icon: "mdi-message" },
-
+  icon: "mdi-message",
+  description: "Deine Chats" },
+  
   { title: "Kontakt", route: "/user/contact", icon: "mdi-mail" },
   { title: "Über Uns", route: "/user/about", icon: "mdi-information" },
 ]);
@@ -173,7 +175,9 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
         <v-toolbar-title class="category-text">
           {{ currentPageTitle }}
         </v-toolbar-title>
-
+        <v-img
+     :src= hhuddle
+     />
         <template v-if="isBoardPage">
           <v-tooltip text="Neuen Post Erstellen">
             <template v-slot:activator="{ props }">

@@ -172,6 +172,7 @@ const formatToDateTime = (date) => {
 }
 
 .title-text {
+  margin-right: 2rem;
   flex-grow: 1;
   /* Lässt den Titel den gesamten verfügbaren Platz nutzen */
   font-size: 18px;
@@ -187,7 +188,7 @@ const formatToDateTime = (date) => {
 .delete-button {
   position: absolute;
   top: 8px;
-  right: 8px;
+  right: 4px;
   z-index: 10;
 
 

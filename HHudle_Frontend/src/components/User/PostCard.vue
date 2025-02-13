@@ -286,8 +286,8 @@ const formatToGermanDate = (dateTime) => {
             <div v-if="filteredUserPost.anonymous">
               <v-list-item-title class="username-text wrap-text">Anonym gepostet</v-list-item-title>
             </div>
-            <div v-if="!filteredUserPost.anonymous">
-              <v-list-item-title class="username-text wrap-text">{{ filteredUserPost.user?.username || "Unbekannt" }}</v-list-item-title>
+            <div v-if="filteredUserPost.anonymous==false">
+              <v-list-item-title class="username-text wrap-text">{{ filteredUserPost.user?.username }}</v-list-item-title>
             </div>  
               <v-list-item-subtitle class="username-subtitle"> {{ formatToGermanDate(filteredUserPost.timestamp) }}</v-list-item-subtitle>
               <template v-slot:append>
@@ -331,8 +331,8 @@ const formatToGermanDate = (dateTime) => {
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="createChat"
-            >Erstellen</v-btn
-          >
+            >Erstellen</v-btn >
+            <v-container/>
           <v-btn color="grey darken-1" text @click="showNewChatModal = false"
             >Abbrechen</v-btn
           >

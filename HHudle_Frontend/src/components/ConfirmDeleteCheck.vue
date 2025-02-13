@@ -21,6 +21,7 @@ const emit = defineEmits(["confirm", "close"]);
       </v-card-text>
       <v-card-actions>
         <v-btn color="red darken-1" text @click="emit('confirm')">Löschen</v-btn>
+        <v-container/>
         <v-btn color="grey darken-1" text @click="emit('close')">Abbrechen</v-btn>
       </v-card-actions>
     </v-card>

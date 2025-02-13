@@ -64,7 +64,7 @@ const timestamp = ref("2024-12-18T15:52:42");
 const photo = ref(null);
 const boardId = ref(null);
 const isPrivate = ref(false); 
-const anonymous = ref(true); 
+const anonymous = ref(false); 
 const facilityId = ref(props.facilityId || userPostStore.selectedFacilityId || null);
 
 //Datum und Zeit 
@@ -534,7 +534,7 @@ console.log("Category in PostForm:", category.value);
 
                   >
                     <span>
-                      {{ "Post" }}
+                      {{ "Abschicken" }}
                     </span>
                   </v-btn>
              

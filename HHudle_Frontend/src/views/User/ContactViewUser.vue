@@ -143,7 +143,7 @@ const form = ref(null);
             </v-row>
             <v-row style="margin-top: -20px;">
                 <v-col cols="12">
-                    <label>E-mail Adresse <span>*</span></label>
+                    <label>E-Mail Adresse <span>*</span></label>
                     <v-text-field color="hsl(169, 82%, 27%)" base-color="hsl(170, 80%, 27%)" class="custom-inputs" v-model="contactmail.mail" style="margin-top: 8px;" variant="outlined" density="comfortable"
                         required></v-text-field>
                     <div style=" margin-top: -8px;margin-bottom: 10px ; font-size: 14px; color:hsl(0, 67%, 59%);"

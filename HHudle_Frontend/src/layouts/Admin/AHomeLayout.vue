@@ -8,6 +8,7 @@ import AddFacilityForm from '@/components/Admin/AddFacilityForm.vue';
 import AddHouseForm from '@/components/Admin/AddHouseForm.vue';
 import AddAdminPostForm from '@/components/Admin/AddAdminPostForm.vue';
 import AddResidentForm from '@/components/Admin/AddResidentForm.vue';
+import hhuddle from '@/assets/Pictures/hhuddle.png';
 
 const authStore = useAuthStore();
 const houseStore = useHouseStore();
@@ -168,9 +169,15 @@ const handleLogout = () => { authStore.logout(); router.push('/'); };
                 <v-app-bar-nav-icon v-if="isMobile" @click="toggleDrawer"></v-app-bar-nav-icon>
             </template>
 
-            <v-toolbar-title class="text-black">
+            <v-toolbar-title class="toolbar">
                 {{ currentNavbarTitle}}
+                
             </v-toolbar-title>
+          
+            <v-img
+     :src= hhuddle
+     />
+   
 
             <!--Post-Formular nur auf bestimmten Seiten sichtbar -->
             <template v-if="currentIcon">
@@ -333,6 +340,8 @@ const handleLogout = () => { authStore.logout(); router.push('/'); };
     color: #E85A4F;
 }
 
+
+
 /*Mobile Ansicht */
 @media (max-width: 960px) {
     .sidebar {
@@ -344,4 +353,5 @@ const handleLogout = () => { authStore.logout(); router.push('/'); };
         width: 100%;
     }
 }
+
 </style>
