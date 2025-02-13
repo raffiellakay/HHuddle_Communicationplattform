@@ -23,6 +23,7 @@ public class Post {
     private Long id;
     @Column(name = "post_title",nullable = false)
     private String title;
+    @Column(length=1000000)
     private String text;
     private Category category;
     @Column(nullable = false)
