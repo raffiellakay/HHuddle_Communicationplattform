@@ -39,6 +39,7 @@ async function saveResident() {
     </v-card-text>
     <v-card-actions>
       <v-btn text @click="$emit('close')">Abbrechen</v-btn>
+      <v-container/>
       <v-btn text color="#E98074" @click="saveResident">Speichern</v-btn>
     </v-card-actions>
   </v-card>

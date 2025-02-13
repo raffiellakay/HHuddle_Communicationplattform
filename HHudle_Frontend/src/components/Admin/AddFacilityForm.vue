@@ -40,6 +40,7 @@ async function saveNewFacility() {
     </v-card-text>
     <v-card-actions>
       <v-btn text @click="$emit('close')">Abbrechen</v-btn>
+      <v-container/>
       <v-btn text color="primary" @click="saveNewFacility">Speichern</v-btn>
     </v-card-actions>
   </v-card>
