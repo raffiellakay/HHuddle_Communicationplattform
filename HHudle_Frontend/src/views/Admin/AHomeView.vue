@@ -95,6 +95,7 @@ const confirmDelete = async () => {
           <!-- Aktionen: Details & Löschen -->
           <v-card-actions>
             <v-btn color="black" @click="goToHouse(house.id)">Details</v-btn>
+            <v-container/>
             <v-btn color="red" @click.stop="openDeleteChecker(house)">Löschen</v-btn>
           </v-card-actions>
         </v-card>
