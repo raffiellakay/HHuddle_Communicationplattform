@@ -17,20 +17,20 @@
            :content="getUnreadMessageCount(chat)"
             floating
              />
-            <span class="chat-time">{{ formatDate(getLastMessageTimestamp(chat)) }}</span>
+             <DeleteButton @click.stop="showModalWindow(chat.id)" />  
+            
               </div>
               <div class="dialog-preview">
               <span>{{ getLastMessageText(chat) }}</span>
+              <div class="chat-time">{{ formatDate(getLastMessageTimestamp(chat)) }}</div>
             </div>
-            <DeleteButton @click.stop="showModalWindow(chat.id)" />  
+           
             </div>
           </div>
        
         <div v-else>
-          <div>No chats</div>
-          <div>
-            <v-btn @click="navigateToHome()">go home</v-btn>
-          </div>
+          <div>Du hast noch keine Unterhaltung gestartet!</div>
+          
         </div>
 
         <ConfirmDeleteCheck
