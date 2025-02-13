@@ -174,8 +174,26 @@ const createChat = async () => {
     router.push('/user/board/chatlist');
 
   } catch (error) {
+   
+
+    const existingChats = await chatStore.fetchChatsByUserId(userId.value);
+    const chat = existingChats.find(c => c.first_participant.id == secondUserId.value || c.second_participant.id == secondUserId.value )
+    if(chat) {
+      await chatStore.sendMessage({
+      chatId: chat.id,
+      senderId: authStore.user.id,
+      text: text.value,
+    });
+    showNewChatModal.value = false;
+    text.value = "";
+
+    console.log("🔀 Navigiere zu /user/board/chatlist...");
+    router.push('/user/board/chatlist');
+    return  
+  }
+
     console.error("Fehler beim Erstellen des Chats:", error);
-    alert("Chat mit diesem Benutzer bereits vohanden!");
+    alert("Fehler beim Erstellen");
   }
 };
 
@@ -324,7 +342,7 @@ const formatToGermanDate = (dateTime) => {
     <v-dialog v-model="showNewChatModal" max-width="500">
       <v-card>
         <v-card-title>
-          <span class="headline">Chat erstellen</span>
+          <span class="headline">Chatnachricht schicken</span>
         </v-card-title>
         <v-card-text>
           <v-form ref="form">
@@ -338,7 +356,7 @@ const formatToGermanDate = (dateTime) => {
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="createChat"
-            >Erstellen</v-btn >
+            >Absenden</v-btn >
             <v-container/>
           <v-btn color="grey darken-1" text @click="showNewChatModal = false"
             >Abbrechen</v-btn
