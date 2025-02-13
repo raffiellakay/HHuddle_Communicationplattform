@@ -31,7 +31,7 @@
           label="Schreiben Sie eine Nachricht"
           @keyup.enter="sendMessage"
         ></v-text-field>
-        <v-btn icon size="small" style="opacity: 0.6;" @click="deleteItem">
+        <v-btn icon size="small" style="opacity: 0.6;" @click="sendMessage">
         <v-icon size="18" color="rgba(255, 0, 0, 0.6)">mdi-send</v-icon>
         </v-btn>
       </v-col>
