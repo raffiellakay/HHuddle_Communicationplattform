@@ -111,9 +111,7 @@ onMounted(() => {
   window.addEventListener("resize", updateDrawerState);
 });
 
-onMounted(async () => {
-  await houseStore.getAllHouses();
-});
+
 
 onUnmounted(() => {
   window.removeEventListener("resize", updateDrawerState);
@@ -227,7 +225,7 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
                 </v-icon>
               </template>
 
-              <v-list-item-content> </v-list-item-content>
+           
             </v-list-item>
          
         </v-list>
