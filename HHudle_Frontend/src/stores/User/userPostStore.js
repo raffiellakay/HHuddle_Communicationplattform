@@ -13,6 +13,7 @@ function blobToData(blob) {
     reader.readAsDataURL(blob)
   })
 }
+////////////////////////////CODE SNIPPET /////////////////////////////////
 
 export const useUserPostStore = defineStore ('userPost', {
     state: () => ({
