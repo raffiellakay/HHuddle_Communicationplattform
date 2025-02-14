@@ -9,6 +9,8 @@ import AddHouseForm from '@/components/Admin/AddHouseForm.vue';
 import AddAdminPostForm from '@/components/Admin/AddAdminPostForm.vue';
 import AddResidentForm from '@/components/Admin/AddResidentForm.vue';
 import hhuddle from '@/assets/Pictures/hhuddle.png';
+import HouseGif from '@/assets/HouseGif.gif';
+import Frame1Gif from '@/assets/Frame1Gif.png';
 
 const authStore = useAuthStore();
 const houseStore = useHouseStore();
@@ -28,6 +30,15 @@ const showAdminPostForm = ref(false);
 const showHouseForm = ref(false);
 const showResidentsForm = ref(false);
 const showFacilitiesForm = ref(false);
+
+const currentImage = ref(HouseGif);
+
+
+const switchToStaticImage = () => {
+  setTimeout(() => {
+    currentImage.value = Frame1Gif; // Wechselt zum statischen Bild nach dem GIF
+  }, 1166.5); //Delay für Gif Dauer
+};
 
 
 //Icons je nach Seite auf Basis der Route 
@@ -66,6 +77,7 @@ const openForm = () => {
 
 onMounted(() => {
     updateDrawerState();
+    switchToStaticImage();
     window.addEventListener("resize", updateDrawerState);
 });
 
@@ -174,9 +186,19 @@ const handleLogout = () => { authStore.logout(); router.push('/'); };
                 
             </v-toolbar-title>
           
-            <v-img
-     :src= hhuddle
-     />
+            <v-spacer></v-spacer>
+
+                <!-- Zentriertes Bild -->
+                <div class="navbar-image-container">
+                <v-img 
+                :src="hhuddle" 
+                class="navbar-image"
+                width="200"
+                height="50"
+                ></v-img>
+                </div>
+
+            <v-spacer></v-spacer>
    
 
             <!--Post-Formular nur auf bestimmten Seiten sichtbar -->
@@ -232,8 +254,12 @@ const handleLogout = () => { authStore.logout(); router.push('/'); };
             <!--Sidebar -->
             <v-navigation-drawer class="sidebar" :permanent="!isMobile" v-if="!isMobile || showDrawer">
                 <v-container class="text-center mt-5">
-                    <h3 class="font-weight-bold sidebar-title">HHuddle</h3>
-                </v-container>
+                <v-img 
+                  :src="currentImage" 
+                  class="house-gif"
+                  @load="switchToStaticImage"
+                />
+              </v-container>
 
                 <v-list dense>
                   
@@ -281,12 +307,26 @@ const handleLogout = () => { authStore.logout(); router.push('/'); };
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+
+.navbar-image-container {
+  position: absolute;
+  margin-left: 50%;
+  transform: translateX(-50%);
+        
+}
+
 /*Flexbox für Sidebar + Hauptinhalt */
 .layout-container {
     display: flex;
     min-height: calc(100vh - 64px); 
     width: 100%;
 }
+
+.house-gif {
+  height: 50px;
+  width: auto;
+}
+
 
 /*Sidebar */
 .sidebar {

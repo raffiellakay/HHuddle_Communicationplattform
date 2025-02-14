@@ -12,3 +12,8 @@ COLOR CODES Farboptionen
 #E85A4F – Rostrot / Dunkles Korallrot
 
 */
+
+html, body {
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 400;
+  }

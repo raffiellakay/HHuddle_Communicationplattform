@@ -1,14 +1,30 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useAuthStore } from '@/stores/authStore';
 import { useRouter } from 'vue-router';
 import { isAxiosError } from 'axios';
 import NavbarDefault from '@/components/DefaultNavbar.vue';
+import HouseGif from '@/assets/HouseGif.gif';
+import Frame1Gif from '@/assets/Frame1Gif.png';
 
 
 
 
 const router = useRouter();
+
+
+const currentImage = ref(HouseGif);
+
+
+const switchToStaticImage = () => {
+  setTimeout(() => {
+    currentImage.value = Frame1Gif; // Wechselt zum statischen Bild nach dem GIF
+  }, 1166.5); //Delay für Gif Dauer
+};
+
+
+
+
 const handleLogin = async () => {
   const userId = useAuthStore().user.id;
   const hasChangedPW = await useAuthStore().hasUserChangedTempPW(userId);
@@ -71,6 +87,11 @@ async function login() {
   }
 }
 
+onMounted(() => {
+   
+    switchToStaticImage();
+
+});
 
 
 
@@ -93,9 +114,13 @@ async function login() {
               <!-- Titel der Karte -->
               <v-card-title class="text-h5 text-center">
                 <!-- Oberüberschrift -->
-              <div class="text-center text-h6 mb-3">
-                HUDDLE
-              </div>
+                <v-container class="text-center mt-5 pa-0">
+                <v-img 
+                  :src="currentImage" 
+                  class="house-gif"
+                  @load="switchToStaticImage"
+                />
+              </v-container>
                 Login
               </v-card-title>
               <!-- Login-Formular -->
@@ -178,6 +203,14 @@ async function login() {
 body {
   background-color: #f5f5f5;
 }
+
+.house-gif {
+  height: 50px;
+  width: auto;
+ 
+  margin-bottom: 20px;
+}
+
 </style>
 
 

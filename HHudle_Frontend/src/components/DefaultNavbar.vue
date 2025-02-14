@@ -25,9 +25,20 @@ const toggleDrawer = () => {
       <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
     </template>
     <v-app-bar-title >Willkommen bei </v-app-bar-title>
-    <v-img
-     :src= hhuddle
-     />
+    <v-spacer></v-spacer>
+
+                <!-- Zentriertes Bild -->
+                <div class="navbar-image-container">
+                <v-img 
+                :src="hhuddle" 
+                class="navbar-image"
+                width="200"
+                height="50"
+                ></v-img>
+                </div>
+
+            <v-spacer></v-spacer>
+   
       </v-app-bar>
 
 
@@ -48,6 +59,14 @@ const toggleDrawer = () => {
 <style scoped>
 .nav {
   background-color: #D8C3A5;
+}
+
+
+.navbar-image-container {
+  position: absolute;
+  margin-left: 50%;
+  transform: translateX(-50%);
+        
 }
 
 .drawer {

@@ -52,7 +52,7 @@ import avatarksenia from '@/assets/Pictures/avatar_ksenia.png';
   
   <v-row  align="center"
     justify="center" >
-<v-card-subtitle  >
+<v-card-subtitle>
     <h2>Wer wir sind, wieso es diese Seite gibt & was eine Briefwahlkarte damit zu tun hat </h2>
 </v-card-subtitle>
 </v-row>
@@ -134,9 +134,9 @@ h1 {
  
 }
 h2 {
-    font-size: 2.0em ;
+    font-size: 1.7em ;
     
-    font-weight: lighter;
+    font-weight: 500;
     font-style : italic;
    
 }
@@ -149,7 +149,7 @@ h3 {
 p {
     font-size: 1.5em;
     
-    font-weight: lighter;
+    font-weight: 300;
 }
 .header {
   background-color: #fac0b9;
