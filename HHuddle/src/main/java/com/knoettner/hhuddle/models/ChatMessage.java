@@ -27,8 +27,7 @@ public class ChatMessage {
 
     @Column(nullable = false)
     private LocalDateTime timestamp;
-
-    @Column(nullable = false)
+    @Column(nullable = false, length=1000000)
     private String text;
 
     @Column(name = "is_read", nullable = false)
