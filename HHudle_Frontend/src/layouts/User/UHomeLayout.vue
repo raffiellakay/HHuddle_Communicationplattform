@@ -58,9 +58,9 @@ const currentPageDescription = computed (() => {
   return currentItem ? currentItem.description : "Chatverlauf";
 })
 
-////////////////////////////CODE SNIPPET /////////////////////////////////
+//////////////////////////// CODE SNIPPET Start/////////////////////////////////
 
-// Kategorien für die Routen
+// Kategorien werden aus route.path abgeleitet und gemapped
 const categoryMap = {
   "user/home": "FRONTPAGE",
   "/user/board/commonrooms": "EVENTS",
@@ -69,7 +69,7 @@ const categoryMap = {
   "/user/board/search&find": "EXCHANGE",
 };
 
-// Aktuelle Kategorie bestimmen
+// Aktuelle Kategorie bestimmen und im userPostStore speichern
 const currentCategory = computed(() => userPostStore.currentCategory);
 
 // List Items
@@ -168,7 +168,11 @@ const handleClose = () => {
   showForm.value = false;
 };
 
-// Route beobachten und Kategorie setzen
+/*Route beobachten und Kategorie setzen
+Falls sich Route ändert, wird die passende Kategorie aus categoryMap gesucht
+Dann wird im userPostStore die setCategory Methode aufgerufen um die category im Store zu aktualisieren
+
+*/
 watch(
   () => route.path,
   () => {
@@ -224,6 +228,8 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
           <!-- PostForm Dialog -->
           <v-dialog v-model="showForm" max-width="500" scrollable>
             <v-card style="max-height: 80vh; overflow-y: auto">
+
+              <!-- Hier wird currentCategory als prop an die PostForm Komponente übergeben damit Komponente weiß, welche Art von post gerade erstellt wird   -->
               <PostForm
                 :category="currentCategory"
                 @close="handleClose"
