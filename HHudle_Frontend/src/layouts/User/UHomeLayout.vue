@@ -46,6 +46,7 @@ const currentPageDescription = computed (() => {
   return currentItem ? currentItem.description : "Chatverlauf";
 })
 
+////////////////////////////CODE SNIPPET /////////////////////////////////
 
 // Kategorien für die Routen
 const categoryMap = {
