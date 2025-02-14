@@ -143,7 +143,7 @@ async function login() {
                 <v-btn
                 type="submit"
                   block
-                  color="primary"
+                  color="#E98074"
                  
                 >
                   Anmelden

@@ -168,7 +168,7 @@ const goToOverview = (houseId) => {
               </v-card-text>
               <v-card-actions>
                 <v-btn text @click="editDialog = false">Abbrechen</v-btn>
-                <v-btn text color="primary" @click="updateFacility">Speichern</v-btn>
+                <v-btn text color="#E98074" @click="updateFacility">Speichern</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>

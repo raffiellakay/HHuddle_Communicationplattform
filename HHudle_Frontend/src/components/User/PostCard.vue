@@ -331,7 +331,7 @@ const formatToGermanDate = (dateTime) => {
       </v-col>
     </v-row>
     <v-container v-if="filteredUserPosts.length === 0">
-      <v-alert type="info"
+      <v-alert type="error"
         >Keine Beiträge für diese Kategorie verfügbar.</v-alert
       >
     </v-container>

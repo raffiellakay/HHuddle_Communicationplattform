@@ -544,7 +544,7 @@ console.log("Category in PostForm:", category.value);
                
                   <v-btn
                     type="submit"
-                    color="primary"
+                    color="#E98074"
                     variant="flat"
                     size="default"
                     :icon="false"
@@ -557,7 +557,7 @@ console.log("Category in PostForm:", category.value);
 
                   >
                     <span>
-                      {{ "Abschicken" }}
+                      {{ "Post hinzufügen" }}
                     </span>
                   </v-btn>
              

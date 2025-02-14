@@ -69,7 +69,7 @@ console.log("Aktuelle Kategorie: ", category)
 
   <v-card-text class="facility-text-card">
       
-      <v-tabs-window  v-model="selectedFacilityId" bg-color="primary">
+      <v-tabs-window  v-model="selectedFacilityId" >
         <v-tabs-window-item v-for="facility in facilities" :key="facility.id" :value="facility.id"> 
           {{ facility.description }} 
         </v-tabs-window-item>

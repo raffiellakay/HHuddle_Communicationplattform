@@ -77,7 +77,7 @@ const rules = [
               <v-card-actions>
                 <v-btn
                   block
-                  color="primary"
+                  color="#E98074"
                   @click="resetPassword"
                 >
                   Passwort zurücksetzen
