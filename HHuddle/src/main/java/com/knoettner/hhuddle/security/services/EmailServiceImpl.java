@@ -74,7 +74,7 @@ public class EmailServiceImpl implements EmailService {
 
             mailMessage.setFrom("hhuddle.welcome@gmail.com");
             mailMessage.setTo("hhuddle.welcome@gmail.com");
-            mailMessage.setSubject(details.getFirstName() + details.getLastName() + details.getMail() + " hat folgende Nachricht hinterlassen: ");
+            mailMessage.setSubject(details.getFirstName() + " " + details.getLastName() + " " + details.getMail() + " hat folgende Nachricht hinterlassen: ");
             mailMessage.setText(details.getMessage());
 
             javaMailSender.send(mailMessage);
