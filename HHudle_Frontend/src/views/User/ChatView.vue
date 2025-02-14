@@ -95,8 +95,39 @@ async function sendMessage() {
 }
 
 function formatDate(date) {
-  return new Date(date).toLocaleDateString() + " " + new Date(date).toLocaleTimeString();
+  if (!date) {
+    return "Kein Datum";
+  }
+
+  const messageDate = new Date(date);
+  const today = new Date();
+  const yesterday = new Date();
+  yesterday.setDate(today.getDate() - 1);
+
+  const isToday = messageDate.toDateString() === today.toDateString();
+  const isYesterday = messageDate.toDateString() === yesterday.toDateString();
+
+  const timeString = messageDate.toLocaleTimeString("de-DE", {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+
+  if (isToday) {
+    return "heute " + timeString;
+  } 
+  if (isYesterday) {
+    return "gestern " + timeString;
+  } 
+  return messageDate.toLocaleDateString("de-DE", { 
+    day: "2-digit", 
+    month: "2-digit", 
+    year: "2-digit" 
+  }) + " " + timeString;
 }
+
+
+
+
 </script>
 
 <style scoped>
