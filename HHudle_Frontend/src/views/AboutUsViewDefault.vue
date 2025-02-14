@@ -5,6 +5,7 @@ import NavbarDefault from '@/components/DefaultNavbar.vue';
 import avatarraffy from '@/assets/Pictures/avatar_raffy.png';
 import avatarhuda from '@/assets/Pictures/avatar_huda.png';
 import avatarmilly from '@/assets/Pictures/avatar_milly.png';
+import avatarksenia from '@/assets/Pictures/avatar_ksenia.png';
 
 
 </script>
@@ -43,7 +44,7 @@ import avatarmilly from '@/assets/Pictures/avatar_milly.png';
   </v-col>
    <v-col cols="1">
    <v-img
-   :src= avatarraffy
+   :src= avatarksenia
   />
       </v-col>
   </v-row>
