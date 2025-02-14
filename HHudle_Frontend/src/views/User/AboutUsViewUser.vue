@@ -118,25 +118,24 @@ import avatarksenia from '@/assets/Pictures/avatar_ksenia.png';
 
   h1 {
     font-size: 3.5em;
-    font-family: "Georgia";
+   
    
   }
   h2 {
       font-size: 2.0em ;
-      font-family: "Verdana";
+      
       font-weight: lighter;
       font-style : italic;
      
   }
   h3 {
     font-size: 2.0em ;
-      font-family: "Verdana";
+     
   
     
   }
   p {
       font-size: 1.5em;
-      font-family: "Verdana";
       font-weight: lighter;
   }
   .header {
