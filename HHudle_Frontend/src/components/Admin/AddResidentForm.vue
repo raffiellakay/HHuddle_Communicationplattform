@@ -37,7 +37,7 @@ async function saveResident() {
     <v-card-text>
       <v-form @submit.prevent="saveResident">
         <v-text-field v-model="newResident.mail" label="E-Mail" required></v-text-field>
-        <v-text-field v-model="newResident.username" label="Username" required></v-text-field>
+        <v-text-field v-model="newResident.username" label="Top" required></v-text-field>
       </v-form>
     </v-card-text>
     <v-card-actions>
