@@ -6,6 +6,8 @@ import com.knoettner.hhuddle.dto.ChatMessageResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.knoettner.hhuddle.service.ChatService;
@@ -14,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/chats")
+
 
 
 public class ChatController {
@@ -35,9 +38,11 @@ public class ChatController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/send-message")
+   // @PostMapping("/send-message")
     // Use hasRole for role-based access control
     @PreAuthorize("hasRole('RESIDENT')")
+    @MessageMapping("/chat.sendMessage")
+    @SendTo("/topic/public")
     public ResponseEntity<ChatMessageResponseDto> sendMessage(
             @RequestBody ChatMessageRequestDto chatMessageRequestDto) {
         ChatMessageResponseDto sentMessage = chatService.sendMessage(chatMessageRequestDto);

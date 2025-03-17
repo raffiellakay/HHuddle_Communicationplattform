@@ -3,12 +3,14 @@ package com.knoettner.hhuddle.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.awt.*;
 import java.time.LocalDateTime;
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class ChatMessage {
 
 
@@ -32,5 +34,9 @@ public class ChatMessage {
 
     @Column(name = "is_read", nullable = false)
     private boolean isRead = false;
+
+    private MessageType type;
+
+
 
 }
