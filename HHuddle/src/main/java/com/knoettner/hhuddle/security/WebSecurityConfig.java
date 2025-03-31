@@ -73,6 +73,10 @@ public class WebSecurityConfig {
                                 .requestMatchers("/v3/**").permitAll()
                                 .requestMatchers("/error").permitAll()
                                 .requestMatchers("/ws/**").permitAll()
+                                .requestMatchers("/websocket/**").permitAll()  //  SockJS fallback
+                                .requestMatchers("/topic/**").permitAll()      //  STOMP broadcasts
+                                .requestMatchers("/app/**").permitAll()        //  STOMP incoming messages
+                                .requestMatchers("/ws/info/**").permitAll()
                                 .anyRequest().authenticated()
                 ).cors(c -> c.configurationSource(customCorsConfiguration));
 

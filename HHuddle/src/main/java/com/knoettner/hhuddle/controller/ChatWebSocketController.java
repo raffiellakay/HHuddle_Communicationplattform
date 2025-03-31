@@ -1,6 +1,7 @@
 package com.knoettner.hhuddle.controller;
 
 import com.knoettner.hhuddle.dto.ChatMessageRequestDto;
+import com.knoettner.hhuddle.dto.ChatMessageResponseDto;
 import com.knoettner.hhuddle.dto.mapper.ChatMessageMapper;
 import com.knoettner.hhuddle.models.ChatMessage;
 import com.knoettner.hhuddle.service.ChatService;
@@ -29,9 +30,7 @@ public class ChatWebSocketController {
 
     @MessageMapping("/chat.sendMessage") //Eigehender Pfad
     @SendTo("/topic/public") //Ausgehender Pfad
-    public ChatMessage sendMessage( @Payload ChatMessageRequestDto chatMessageRequestDto) {
-        ChatMessage chatMessage = chatMessageMapper.toEntity(chatMessageRequestDto);
-
-        return chatService.sendMessage(chatMessage);
+    public ChatMessageResponseDto sendMessage(@Payload ChatMessageRequestDto chatMessageRequestDto) {
+        return chatService.sendMessage(chatMessageRequestDto);
     }
-}
+    }
