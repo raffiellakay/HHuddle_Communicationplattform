@@ -26,7 +26,21 @@ const { handleSubmit, errors } = useForm({
   validationSchema,
 });
 
+
+///////////////////////////////////// CODE SNIPPET START /////////////////////////////////////////////////////
+
+/*
+Wird als prop übergeben	category --> kommt von der übergeordneten Komponente (UHomeLayout)
+Wird als computed gespeichert	--> damit Änderungen automatisch übernommen werden
+Steuert die Sichtbarkeit von UI-Elementen	--> zeigt spezielle Felder je nach category an
+Wird für den API-Call genutzt -->	wird mit dem userPostStore an das Backend gesendet.
+Debugging über console.log --> checken ob der Wert richtig ankommt. */
+
+
+
 //Props Defintion
+/*Definition des category props zum übergeben
+Prop wird von der übergeordneten Komponente (UHomeLayout) übergeben und bestimmt welche Art von Post erstellt wird */
 const props = defineProps({
   houseId: Number, 
   boardId: Number,
@@ -40,7 +54,9 @@ const props = defineProps({
 
 
 const innerValue = ref(props.value || "");
+
 //Kategorie als Computed property
+/* category wird als computed property gespeichert, um es automatisch zu aktualisieren wenn es sich ändert*/
 const category = computed(() => props.category);
 
 //Holt sich facilities Array aus dem Store
@@ -119,16 +135,6 @@ watch(() => userPostStore.selectedFacilityId, (newVal) => {
 
 
 
-
-// Validierung der Zeit (HH:mm)
-/*function validateTimeInput(event) {
-  const value = event.target.value;
-  const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)?$/;
-  if (!timeRegex.test(value)) {
-    event.target.value = value.slice(0, -1); // Ungültige Eingabe entfernen
-  }
-}*/
-
 // Kombiniere Datum und Zeit für das Backend
 function combineDateTime(date, time) {
   if (!date || !time) return null;
@@ -175,9 +181,13 @@ const handleFileUpload = (event) => {
 
 
 //Kümmert sich um Formsubmission, emitted update-post wenn isEdit true ist mit dem überarbeitenden Post Details, ansonsten wird add-post mit den neuen Post Details emitted 
-// Form Submission
+//Form Submission
+
+
 const submitPost = handleSubmit(async (values) => {
   try {
+
+    /* Im API call wird props.category genutzt um die BoardId für das passende Board zu finden */
     const boardId = await userPostStore.getBoardIdByHouseIdAndCategory(
       authStore.user.houseId,
       props.category
@@ -191,6 +201,7 @@ const submitPost = handleSubmit(async (values) => {
     const newUserPost = {
       title: values.title,
       text: values.text,
+      /* Beim erstellen des Posts wird die aktuell category ans Backend gesendet, damit der Post dem richtigen Board zugewiesen wird.*/
       category: props.category,
       timestamp: new Date().toISOString(),
       photo: photo.value,
@@ -311,6 +322,8 @@ console.log("Category in PostForm:", category.value);
               </v-col>
             </v-row>
 
+
+            <!-- Warum brauche ich category in PostForm? Damit ich je nach aktueller Kategorie nur bestimmte Felder meiner Form anzeigen kann-->
             <div v-if="category === 'EVENTS'">
             <v-row >
               <v-col>

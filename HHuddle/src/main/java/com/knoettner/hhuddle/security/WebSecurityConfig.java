@@ -72,6 +72,7 @@ public class WebSecurityConfig {
                                 .requestMatchers("/api/user/getNewPw").permitAll()
                                 .requestMatchers("/v3/**").permitAll()
                                 .requestMatchers("/error").permitAll()
+                                .requestMatchers("/ws/**").permitAll()
                                 .anyRequest().authenticated()
                 ).cors(c -> c.configurationSource(customCorsConfiguration));
 

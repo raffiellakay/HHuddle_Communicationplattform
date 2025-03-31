@@ -122,12 +122,13 @@ import avatarksenia from '@/assets/Pictures/avatar_ksenia.png';
    
   }
   h2 {
-      font-size: 2.0em ;
-      
-      font-weight: lighter;
-      font-style : italic;
-     
-  }
+    font-size: 1.7em ;
+    
+    font-weight: 500;
+    font-style : italic;
+   
+}
+  
   h3 {
     font-size: 2.0em ;
      
@@ -135,9 +136,10 @@ import avatarksenia from '@/assets/Pictures/avatar_ksenia.png';
     
   }
   p {
-      font-size: 1.5em;
-      font-weight: lighter;
-  }
+    font-size: 1.5em;
+    
+    font-weight: 300;
+}
   .header {
     background-color:#fac0b9;
     padding-top: 2rem;

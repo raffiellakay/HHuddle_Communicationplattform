@@ -41,12 +41,10 @@ public class  ChatMessageMapper {
 */
     public ChatMessage toEntity(ChatMessageRequestDto chatMessageRequestDto) {
         ChatMessage chatMessage = new ChatMessage();
-        chatMessage.setUser(userRepository.findById(chatMessageRequestDto.getSenderId()).get());
-        chatMessage.setChat(
-                chatRepository.findById(
-                        chatMessageRequestDto.getChatId()
-                ).get()
-        );
+        chatMessage.setUser(userRepository.findById(chatMessageRequestDto.getSenderId())
+        .orElseThrow(() -> new RuntimeException("User not found")));
+        chatMessage.setChat(chatRepository.findById( chatMessageRequestDto.getChatId())
+                .orElseThrow(() -> new RuntimeException("Chat not found")));
         chatMessage.setTimestamp(LocalDateTime.now());
         chatMessage.setText(chatMessageRequestDto.getText());
         chatMessage.setRead(false);

@@ -3,9 +3,16 @@ package com.knoettner.hhuddle.controller;
 import com.knoettner.hhuddle.dto.ChatDto;
 import com.knoettner.hhuddle.dto.ChatMessageRequestDto;
 import com.knoettner.hhuddle.dto.ChatMessageResponseDto;
+import com.knoettner.hhuddle.models.ChatMessage;
+import lombok.RequiredArgsConstructor;
+import org.hibernate.PessimisticLockException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.knoettner.hhuddle.service.ChatService;
@@ -14,6 +21,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/chats")
+@RequiredArgsConstructor //Lombok automatically generates a constructor with required dependencies
+
 
 
 public class ChatController {
@@ -22,10 +31,9 @@ public class ChatController {
     @Autowired
     private ChatService chatService;
 
-    //Create a new Chat
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/create")
-    // Use hasRole for role-based access control
     @PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity<ChatDto> createChat(
             @RequestParam Long firstUserId,
@@ -34,15 +42,6 @@ public class ChatController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdChat);
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/send-message")
-    // Use hasRole for role-based access control
-    @PreAuthorize("hasRole('RESIDENT')")
-    public ResponseEntity<ChatMessageResponseDto> sendMessage(
-            @RequestBody ChatMessageRequestDto chatMessageRequestDto) {
-        ChatMessageResponseDto sentMessage = chatService.sendMessage(chatMessageRequestDto);
-        return ResponseEntity.ok(sentMessage);
-    }
 
     // Einzelnen Chat abrufen
     @GetMapping("/{chatId}")

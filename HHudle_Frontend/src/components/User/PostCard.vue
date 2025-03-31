@@ -62,23 +62,7 @@ const authStore = useAuthStore();
 const show = ref(false);
 const userId = computed(() => authStore.user.id);
 
-/*const normalizedCategory = computed(() => {
-  return category.value ? category.value.toUpperCase() : null;
-});*/
-/*
-Category {
-  //Schwarzes Brett
-    BLACKBOARD, 0
-  //Ankündigungen
-    FRONTPAGE, 1
-  //Wer hat mein Paket?
-    PACKAGE, 2
-  //Wer macht was wann wo?
-    EVENTS, 3
-  //Biete-Suche-Tausche-Verschenke
-    EXCHANGE; 4
 
-}*/
 
 //Öffnen des DeleteCheckers
 const openDeleteChecker = (filteredUserPost) => {
@@ -187,7 +171,7 @@ const createChat = async () => {
     showNewChatModal.value = false;
     text.value = "";
 
-    console.log("🔀 Navigiere zu /user/board/chatlist...");
+    console.log("Navigiere zu /user/board/chatlist...");
     router.push('/user/board/chatlist');
     return  
   }

@@ -6,6 +6,12 @@ import { useRoute } from 'vue-router';
 
 const route = useRoute();
 
+
+
+////////////////////////// CODE SNIPPET START //////////////////////////
+
+
+//Ursprung: die Konstante category wird fest auf "BLACKBOARD" gesetzt
 const category = "BLACKBOARD"
 const userPostStore = useUserPostStore();
 
@@ -26,8 +32,9 @@ const refreshPosts = async() => {
 }
 
 
+//Kategorie wird im userPostStore gespeichert
 onMounted(() => {
-  userPostStore.setCategory(category); // Setze die Kategorie im Store
+  userPostStore.setCategory(category); //Setze die Kategorie im Store
 });
 
 </script>
@@ -35,6 +42,7 @@ onMounted(() => {
 <template>
 
 <v-container>
+  <!--category wird als prop and PostCard Komponente übergeben, in diesem fall mit dem Wert "BLACKBOARD"-->
     <PostCard 
     :category="category"
     @userPost-added="refreshPosts"/>

@@ -13,6 +13,8 @@ function blobToData(blob) {
     reader.readAsDataURL(blob)
   })
 }
+
+
 ////////////////////////////CODE SNIPPET /////////////////////////////////
 
 export const useUserPostStore = defineStore ('userPost', {
@@ -26,9 +28,12 @@ export const useUserPostStore = defineStore ('userPost', {
 
     getters: {
       filteredPostsByCategory: (state) => {
-          if (!state.currentCategory) return state.userPosts;
-          return state.userPosts.filter(
-              (post) => post.category.toUpperCase() === state.currentCategory.toUpperCase()
+          if (!state.currentCategory) 
+            return state.userPosts;//Falls Kategorie null ist wird die gesamte userPostListe zurückgegeben
+          
+          
+          return state.userPosts.filter( //Falls eine Kategorie gesetzt ist, wird gefilterte Liste zurückgegeben
+              (post) => post.category.toUpperCase() === state.currentCategory.toUpperCase() //Nur posts die exakt mit currentCategory übereinstimmen werden zurückgegeben. Backend nimmt category in caps, deswegen wird beides im UpperCase umgewandelt
           );
       },
   },

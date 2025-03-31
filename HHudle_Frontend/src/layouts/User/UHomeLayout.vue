@@ -9,6 +9,8 @@ import { useUserPostStore } from "@/stores/User/userPostStore";
 import { getHouseImageById } from "@/utils/helpers";
 import { useHouseStore } from "@/stores/Admin/houseStore";
 import hhuddle from '@/assets/Pictures/hhuddle.png';
+import HouseGif from '@/assets/HouseGif.gif';
+import Frame1Gif from '@/assets/Frame1Gif.png';
 
 const userPostStore = useUserPostStore();
 const router = useRouter(); //Gibt Router Instanz zurück
@@ -16,6 +18,16 @@ const route = useRoute(); // Gibt aktuelle Route zurück
 const authStore = useAuthStore();
 const chatStore = useChatStore();
 const houseStore = useHouseStore();
+
+const currentImage = ref(HouseGif);
+
+
+const switchToStaticImage = () => {
+  setTimeout(() => {
+    currentImage.value = Frame1Gif; // Wechselt zum statischen Bild nach dem GIF
+  }, 1166.5); //Delay für Gif Dauer
+};
+
 //HausId über User
 const houseId = computed(() => authStore.user.houseId);
 
@@ -46,9 +58,9 @@ const currentPageDescription = computed (() => {
   return currentItem ? currentItem.description : "Chatverlauf";
 })
 
-////////////////////////////CODE SNIPPET /////////////////////////////////
+//////////////////////////// CODE SNIPPET Start/////////////////////////////////
 
-// Kategorien für die Routen
+// Kategorien werden aus route.path abgeleitet und gemapped
 const categoryMap = {
   "user/home": "FRONTPAGE",
   "/user/board/commonrooms": "EVENTS",
@@ -57,7 +69,7 @@ const categoryMap = {
   "/user/board/search&find": "EXCHANGE",
 };
 
-// Aktuelle Kategorie bestimmen
+// Aktuelle Kategorie bestimmen und im userPostStore speichern
 const currentCategory = computed(() => userPostStore.currentCategory);
 
 // List Items
@@ -116,6 +128,7 @@ const updateDrawerState = () => {
 
 onMounted(() => {
   updateDrawerState();
+  switchToStaticImage();
   window.addEventListener("resize", updateDrawerState);
 });
 
@@ -155,7 +168,11 @@ const handleClose = () => {
   showForm.value = false;
 };
 
-// Route beobachten und Kategorie setzen
+/*Route beobachten und Kategorie setzen
+Falls sich Route ändert, wird die passende Kategorie aus categoryMap gesucht
+Dann wird im userPostStore die setCategory Methode aufgerufen um die category im Store zu aktualisieren
+
+*/
 watch(
   () => route.path,
   () => {
@@ -171,19 +188,32 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
   <v-app>
     <v-layout>
       <!-- Navbar -->
-      <v-app-bar app class="navbar" fixed elevation="0">
+      <v-app-bar app class="navbar" elevation="0">
         <template v-slot:prepend>
           <v-app-bar-nav-icon
             v-if="isMobile"
             @click="toggleDrawer"
           ></v-app-bar-nav-icon>
         </template>
+
         <v-toolbar-title class="category-text">
           {{ currentPageTitle }}
         </v-toolbar-title>
-        <v-img
-     :src= hhuddle
-     />
+
+          <v-spacer></v-spacer>
+
+        <!-- Zentriertes Bild -->
+         <div class="navbar-image-container">
+        <v-img 
+          :src="hhuddle" 
+          class="navbar-image"
+          width="200"
+          height="50"
+        ></v-img>
+      </div>
+
+        <v-spacer></v-spacer>
+
         <template v-if="isBoardPage">
           <v-tooltip text="Neuen Post Erstellen">
             <template v-slot:activator="{ props }">
@@ -198,6 +228,8 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
           <!-- PostForm Dialog -->
           <v-dialog v-model="showForm" max-width="500" scrollable>
             <v-card style="max-height: 80vh; overflow-y: auto">
+
+              <!-- Hier wird currentCategory als prop an die PostForm Komponente übergeben damit Komponente weiß, welche Art von post gerade erstellt wird   -->
               <PostForm
                 :category="currentCategory"
                 @close="handleClose"
@@ -208,7 +240,7 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
         </template>
       </v-app-bar>
 
-      <!-- Sidebar (immer sichtbar auf Desktop) -->
+      <!-- Sidebar -->
       <v-navigation-drawer
         :permanent="!isMobile"
         v-if="!isMobile || showDrawer"
@@ -216,17 +248,25 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
         class="sidebar"
       >
         <v-container class="text-center mt-5">
-          <h3 class="font-weight-bold text-black mt-3">HHuddle</h3>
+          <v-img 
+            :src="currentImage" 
+            class="house-gif"
+            @load="switchToStaticImage"
+          />
         </v-container>
 
         <v-list dense>
-         
+            
             <v-list-item
               v-for="item in items"
               :key="item.title"
-              :title="item.title"
+              
               @click="setActiveItem(item)"
+              class="sidebar-titles"
             >
+            <v-list-item-title>
+                {{ item.title }}
+            </v-list-item-title>
               <template v-slot:prepend>
                 <v-icon class="sidebar-icons">
                   {{ item.icon }}
@@ -271,7 +311,16 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
 .navbar {
   background-color: white;
   color: black;
+ 
 }
+
+.navbar-image-container {
+  position: absolute;
+  margin-left: 50%;
+  transform: translateX(-50%);
+        
+}
+
 
 .v-layout {
   display: flex;
@@ -285,7 +334,19 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
   flex-direction: column;
   background-color: #eae7dc;
   color: black;
+  
 }
+
+.house-gif {
+  height: 50px;
+  width: auto;
+}
+
+.sidebar-titles .v-list-item-title {
+  font-size: 14px;
+  font-weight: 500;
+}
+
 
 
 
@@ -297,7 +358,7 @@ console.log("Kategorie vor Übergabe an PostForm:", currentCategory.value);
 .main-content {
   display: flex;
   flex-grow: 1;
-  min-height: calc(100vh - 64px);
+  min-height: calc(100% - 64px);
   background-color: #f1f0ef;
   height: 100%;
   width: 100%;
