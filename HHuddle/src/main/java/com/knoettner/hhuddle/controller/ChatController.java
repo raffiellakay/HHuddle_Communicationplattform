@@ -27,15 +27,13 @@ import java.util.List;
 
 public class ChatController {
 
-    private final SimpMessagingTemplate messagingTemplate;
+
     @Autowired
     private ChatService chatService;
 
 
-    //Create a new Chat
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/create")
-    // Use hasRole for role-based access control
     @PreAuthorize("hasRole('RESIDENT')")
     public ResponseEntity<ChatDto> createChat(
             @RequestParam Long firstUserId,
@@ -44,15 +42,6 @@ public class ChatController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdChat);
     }
 
-    //@ResponseStatus(HttpStatus.OK)
-   // @PostMapping("/send-message")
-    // Use hasRole for role-based access control
-    @PreAuthorize("hasRole('RESIDENT')")
-    @MessageMapping("/chat.sendMessage")
-    @SendTo("/topic/public")//broadcast to all users
-    public ChatMessage sendMessage(@Payload ChatMessage chatMessage) {
-        return chatMessage;
-    }
 
     // Einzelnen Chat abrufen
     @GetMapping("/{chatId}")
