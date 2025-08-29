@@ -6,12 +6,12 @@ Eine Hausverwaltungsplattform, die es Bewohnern ermöglicht sich zu vernetzen un
 - Benutzer-Registrierung, Login und Passwortänderung für Bewohner eines Hauses und Hausverwaltungen mittels Email-Adresse und Passwort 
 - Gesonderte Interfaces und Features für Bewohner und Hausverwaltungen 
 
-Hausbewohner: 
+### Hausbewohner: 
 - Posten von Beiträgen auf sogenannte "Boards" wie Eventboard, Schwarzes Brett, Paketfinder inkl. Daten, Uhrzeiten, Text und Bilder --> Digitalisierung von Whiteboards, die in Eingangabereichen von Wohnhäusern hängen
 - Kontakt der Beitragsersteller anonymisiert über einen Chat (Beitragsersteller und Chatuser werden nur über Top Nummern identifiziert, nicht über Namen) --> ein Teilen von persönlichen Daten zur Kontaktherstellung mit anderen Hausbewohnern wird nicht benötigt 
 - Abrufen von wichtigen Informationen geteilt durch Hausverwaltung (bspw. "Wasser wird zwischen 13 Uhr und 15 Uhr abgestellt")
 
-Hausverwaltung: 
+### Hausverwaltung: 
 - Anlegen neuer Häuser inkl. Erstellung von Tops & Gemeinschaftsräumen
 - Verwaltung von Gemeinschaftsräumen (Anpassungen von Titel und Beschreibung, Hinzufügen von Bildern) 
 - Top-Verwaltung --> Hausverwaltung kann Usern Tops mittels Email Adresse zuordnen
@@ -20,10 +20,12 @@ Hausverwaltung:
 
 
 ## Tech Stack
+
 - Frontend: Vue.js, Vuetify 
 - Backend: Spring Boot
 - Datenbank: SQL, phpMyAdmin
 - Auth: JSON Web Tokens (JWT)
+- Tools & Workflows: Postman, GitHub, Trello (Kanban)
 
 ## 🚀 Installation & Setup
 
@@ -75,11 +77,6 @@ Passwort: test
 Hausverwaltung
 Mail: test@hausverwaltungstest.at
 Passwort: admin
-
-
-
-
-
 
 
 ## Verbesserungsmöglichkeiten
