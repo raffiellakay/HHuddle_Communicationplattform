@@ -86,7 +86,7 @@ Passwort: admin
 
 
 ## Autorinnen
-- Ksenia Resch - Backend
-- Raffaela Kay - Backend
-- Huda Dawoud - Frontend 
-- Emilia Adler - Frontend
+- Ksenia Resch 
+- Raffaela Kay 
+- Huda Dawoud
+- Emilia Adler 
