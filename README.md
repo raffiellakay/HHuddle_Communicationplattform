@@ -87,6 +87,6 @@ Passwort: admin
 
 ## Autorinnen
 - Ksenia Resch 
-- Raffaela Kay 
+- Raffaela Köttner
 - Huda Dawoud
 - Emilia Adler 
