@@ -79,11 +79,6 @@ Mail: test@hausverwaltungstest.at
 Passwort: admin
 
 
-## Verbesserungsmöglichkeiten
-
-
-
-
 ## Autorinnen
 - Ksenia Resch - Backend
 - Raffaela Kay - Backend
