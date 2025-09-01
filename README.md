@@ -4,18 +4,24 @@ Eine Hausverwaltungsplattform, die es Bewohnern ermöglicht sich zu vernetzen un
 
 ## Features 
 - Benutzer-Registrierung, Login und Passwortänderung für Bewohner eines Hauses und Hausverwaltungen mittels Email-Adresse und Passwort 
-- Gesonderte Interfaces und Features für Bewohner und Hausverwaltungen 
+- Gesonderte Interfaces und Features für Bewohner und Hausverwaltungen
+
+DEMO: https://drive.google.com/file/d/1cqufjz58ISwooSiSPFhseanclF7OuJ5K/view?usp=sharing
 
 ### Hausbewohner: 
 - Posten von Beiträgen auf sogenannte "Boards" wie Eventboard, Schwarzes Brett, Paketfinder inkl. Daten, Uhrzeiten, Text und Bilder --> Digitalisierung von Whiteboards, die in Eingangabereichen von Wohnhäusern hängen
 - Kontakt der Beitragsersteller anonymisiert über einen Chat (Beitragsersteller und Chatuser werden nur über Top Nummern identifiziert, nicht über Namen) --> ein Teilen von persönlichen Daten zur Kontaktherstellung mit anderen Hausbewohnern wird nicht benötigt 
 - Abrufen von wichtigen Informationen geteilt durch Hausverwaltung (bspw. "Wasser wird zwischen 13 Uhr und 15 Uhr abgestellt")
 
+DEMO: https://drive.google.com/file/d/11w9YAHL2R-x06hwx7ZqGcM4O3nBQV-J8/view?usp=sharing
+
 ### Hausverwaltung: 
 - Anlegen neuer Häuser inkl. Erstellung von Tops & Gemeinschaftsräumen
 - Verwaltung von Gemeinschaftsräumen (Anpassungen von Titel und Beschreibung, Hinzufügen von Bildern) 
 - Top-Verwaltung --> Hausverwaltung kann Usern Tops mittels Email Adresse zuordnen
-- Teilen von Informationen für Bewohner durch Erstellen von Beiträgen 
+- Teilen von Informationen für Bewohner durch Erstellen von Beiträgen
+
+DEMO: https://drive.google.com/file/d/1bBFPyAtq1FDgj7ysYmjsc2iy8x4VGBfj/view?usp=sharing
 
 
 
